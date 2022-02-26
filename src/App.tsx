@@ -4,8 +4,9 @@ import { Layout, Breadcrumb } from "antd";
 import "antd/dist/antd.css";
 import { Home } from "./Views/Home/Home";
 import { Subject } from "./Views/Subject/Subject";
-import { Sidebar } from "./Components/Sidebar/Sidebar";
-
+import { Sidebar } from "./Layout/Sidebar/Sidebar";
+import  Cover  from "./Views/Cover/Cover";
+import Login from "./Views/Login/Login";
 const { Header, Content, Footer } = Layout;
 
 const App: React.FC = () => {

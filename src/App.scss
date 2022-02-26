@@ -1,9 +1,11 @@
-@import "./Layout/scss/colors/colors.scss";
+$color-primary-dark: black;
+$color-primary: #f17f21;
+$color-primary-light: #fff;
 
 .logo {
-  height: 32px;
+  height: 64px;
   margin: 16px;
-  background: black;
+  text-align: center;
 }
 
 .site-layout .site-layout-background {

@@ -1,0 +1,19 @@
+
+.ant-layout-sider-trigger {
+    background: #f17f21 !important;
+}
+.ant-menu-item{
+    color: white ;
+}
+.ant-menu-submenu{
+    color: white ;
+    .ant-menu-sub.ant-menu-inline{
+        background-color: #D3D3CB;
+    }
+    .ant-menu-submenu-arrow{
+        color: white;
+    }
+}
+// .ant-menu-item .ant-menu-sub.ant-menu-inline{
+//     background: black;
+// }
