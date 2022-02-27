@@ -1,65 +1,66 @@
-.coverContent {
-  margin-top: 50px;
-  margin-left: 120px;
-  width: 60%;
-  font-family: Mulish;
-}
-
-.h1-content {
-  color: #373839;
-  font-weight: 800;
-  font-size: 80px;
-}
-
-.coverImg {
-
-  position: absolute;
-  right: 120px;
-  top: 0;
-  bottom: 0px;
-  z-index: -1;
-}
-
-.coverButton {
-  background-image: linear-gradient(to right, #f17f21, #ff5400);
-  width: 340px;
-  font-weight: 800;
-  color: white;
-  border: none;
-  font-size: 50px;
-  border-radius: 20px;
-  font-family: Mulish;
-}
-
-.coverButton:hover {
-  cursor: pointer;
-  background-image: linear-gradient(to right, #f17f21e3, #ff5500de);
-}
-
-.coverLogo {
-  width: fit-content;
-  margin-top: 5rem;
-  font-size: 25px;
-  margin-right: 0px;
-  .text-label{
-    width: 26rem;
-    text-align: center;
-    margin-left: 24px;
+.cover {
+  .coverContent {
+    margin-top: 50px;
+    margin-left: 120px;
+    width: 60%;
+    font-family: Mulish;
   }
-}
 
-.imgLogo {
-  display: block;
-  margin-left: 10rem;
-  width: 20%;
-  margin-top: -30px;
-}
+  .h1-content {
+    color: #373839;
+    font-weight: 800;
+    font-size: 80px;
+  }
 
-.signCover {
-  text-align: center;
-  margin-top: 20px;
-  color: #cc5c00;
-  font-style: italic;
-  font-size: 26px;
-  width: 36rem;
+  .coverImg {
+    position: absolute;
+    right: 120px;
+    top: 0;
+    bottom: 0px;
+    z-index: -1;
+  }
+
+  .coverButton {
+    background-image: linear-gradient(to right, #f17f21, #ff5400);
+    width: 340px;
+    font-weight: 800;
+    color: white;
+    border: none;
+    font-size: 50px;
+    border-radius: 20px;
+    font-family: Mulish;
+  }
+
+  .coverButton:hover {
+    cursor: pointer;
+    background-image: linear-gradient(to right, #f17f21e3, #ff5500de);
+  }
+
+  .coverLogo {
+    width: fit-content;
+    margin-top: 5rem;
+    font-size: 25px;
+    margin-right: 0px;
+    .text-label {
+      width: 26rem;
+      text-align: center;
+      margin-left: 24px;
+    }
+  }
+
+  .imgLogo {
+    display: block;
+    margin-left: 10rem;
+    width: 20%;
+    margin-top: -30px;
+  }
+
+  .signCover {
+    text-align: center;
+    margin-top: 20px;
+    color: #cc5c00;
+    font-style: italic;
+    font-size: 26px;
+    width: 36rem;
+  }
 }

@@ -1,10 +1,10 @@
 import React from "react";
 import cover from "../../shared/img/cover2x.png";
 import "./Cover.scss";
-import logo from "../../shared/img/logo-system.png"
+import logo from "../../shared/img/logo-system.png";
 const Cover = () => {
   return (
-    <div>
+    <div className="cover">
       <div className="coverContent">
         <h1 className="h1-content">LMS - Learning Management System</h1>
         <button className="coverButton">E-Library</button>
@@ -18,7 +18,10 @@ const Cover = () => {
       </div>
       <div className="coverImg">
         <img src={cover} alt="cover" />
-        <p className="signCover">Shorten the distance, save time, high efficiency, support anytime, anywhere, ...</p>
+        <p className="signCover">
+          Shorten the distance, save time, high efficiency, support anytime,
+          anywhere, ...
+        </p>
       </div>
     </div>
   );
