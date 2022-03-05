@@ -1,9 +1,10 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import "./Login.scss";
 import logoLogin from "../../shared/img/icon/logo-second.svg";
-import {ReactComponent as Account} from '../../shared/img/icon/account.svg';
-import {ReactComponent as Password} from '../../shared/img/icon/shield-keyhole-line.svg';
+import { ReactComponent as Account } from "../../shared/img/icon/account.svg";
+import { ReactComponent as Password } from "../../shared/img/icon/shield-keyhole-line.svg";
 import { Link } from "react-router-dom";
+import { Row, Col } from "antd";
 // import { useDispatch, useSelector } from "react-redux";
 // import { RootState } from "../../redux";
 // import { setError, signin } from "../../redux/users/actions/authActions";
@@ -13,33 +14,33 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-//   const dispatch = useDispatch();
-//   const { error } = useSelector((state: RootState) => state.auth);
+  //   const dispatch = useDispatch();
+  //   const { error } = useSelector((state: RootState) => state.auth);
 
-//   useEffect(() => {
-//     return () => {
-//       if (error) {
-//         dispatch(setError(""));
-//       }
-//     };
-//   }, [error, dispatch]);
+  //   useEffect(() => {
+  //     return () => {
+  //       if (error) {
+  //         dispatch(setError(""));
+  //       }
+  //     };
+  //   }, [error, dispatch]);
 
-//   const submitHandler = (e: FormEvent) => {
-//     e.preventDefault();
-//     if (error) {
-//       dispatch(setError(""));
-//       toast(error);
-//     }
-//     setLoading(true);
-//     dispatch(signin({ email, password }, () => setLoading(false)));
-//   };
+  //   const submitHandler = (e: FormEvent) => {
+  //     e.preventDefault();
+  //     if (error) {
+  //       dispatch(setError(""));
+  //       toast(error);
+  //     }
+  //     setLoading(true);
+  //     dispatch(signin({ email, password }, () => setLoading(false)));
+  //   };
 
   return (
     <div className="login">
       <img className="logoLogin" src={logoLogin} alt="logoLogin" />
-      <div className="row">
-        <div className="col-sm-7"></div>
-        <div className="col-sm-5">
+      <Row>
+        <Col span={12}></Col>
+        <Col span={12}>
           <div className="formLogin">
             <h1 style={{ textAlign: "center", marginBottom: "50px" }}>
               Đăng nhập
@@ -77,15 +78,15 @@ const Login = () => {
 
             <button
               className="btn btn-success"
-            //   onClick={submitHandler}
+              //   onClick={submitHandler}
               disabled={loading}
             >
               {loading ? "Loading..." : "Đăng nhập"}
               {/* <ToastContainer /> */}
             </button>
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </div>
   );
 };

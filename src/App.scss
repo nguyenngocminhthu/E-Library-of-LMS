@@ -4,33 +4,19 @@ $color-primary-light: #fff;
 
 .logo {
   height: 64px;
-  margin: 16px;
+  margin: 1.6rem 0;
   text-align: center;
 }
 
-.site-layout .site-layout-background {
+.site-layout-background {
   background-color: $color-primary-light;
 }
 
-.ant-layout-sider-children {
-  background-color: $color-primary;
+.ant-layout-header {
+  background-color: $color-primary-light !important;
 }
 
-.ant-layout-sider-trigger {
-  background-color: $color-primary;
-}
-
-.ant-menu-root.ant-menu-vertical,
-.ant-menu-root.ant-menu-vertical-left,
-.ant-menu-root.ant-menu-vertical-right,
-.ant-menu-root.ant-menu-inline {
-  background-color: $color-primary;
-}
-
-.ant-menu-sub.ant-menu-inline {
-  background-color: $color-primary;
-}
-
-.ant-menu-inline {
-  background-color: $color-primary;
+.btn-header {
+  background-color: transparent;
+  border: none !important;
 }

@@ -2,12 +2,17 @@ import React from "react";
 import cover from "../../shared/img/cover2x.png";
 import "./Cover.scss";
 import logo from "../../shared/img/logo-system.png";
+import { useNavigate } from "react-router";
 const Cover = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="cover">
       <div className="coverContent">
         <h1 className="h1-content">LMS - Learning Management System</h1>
-        <button className="coverButton">E-Library</button>
+        <button className="coverButton" onClick={() => navigate("/home")}>
+          E-Library
+        </button>
 
         <div className="coverLogo">
           <p className="text-label">

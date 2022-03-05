@@ -1,13 +1,14 @@
 import "./App.scss";
 import { Route, Routes } from "react-router-dom";
-import { Layout, Breadcrumb } from "antd";
+import { Layout, Breadcrumb, Button } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
-import { Home } from "./Views/Home/Home";
-import { Subject } from "./Views/Subject/Subject";
 import { Sidebar } from "./Layout/Sidebar/Sidebar";
 import Cover from "./Views/Cover/Cover";
 import Login from "./Views/Login/Login";
 import { useLocation } from "react-router";
+import { Home } from "./Views/Leadership/Home/Home";
+import { Subject } from "./Views/Leadership/Subject/Subject";
 const { Header, Content, Footer } = Layout;
 
 const App: React.FC = () => {
@@ -43,12 +44,26 @@ const App: React.FC = () => {
                   <Layout className="site-layout">
                     <Header
                       className="site-layout-background"
-                      style={{ padding: 0 }}
-                    />
+                      style={{
+                        padding: 0,
+                        justifyContent: "right",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Button className="btn-header">
+                        <UserOutlined />
+                        Admin
+                      </Button>
+                      <Button className="btn-header">Đăng xuất</Button>
+                    </Header>
                     <Content style={{ margin: "0 16px" }}>
                       <Breadcrumb style={{ margin: "16px 0" }}>
-                        <Breadcrumb.Item>User</Breadcrumb.Item>
-                        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                        <Breadcrumb.Item>
+                          <h1 style={{ fontSize: "1.6rem", fontWeight: "700" }}>
+                            Trang chủ
+                          </h1>
+                        </Breadcrumb.Item>
                       </Breadcrumb>
                       <div
                         className="site-layout-background"
@@ -59,7 +74,7 @@ const App: React.FC = () => {
                             <Route path="/home" element={<Home />} />
                           </Route>
                           <Route>
-                            <Route path="/subject" element={<Subject />} />
+                            <Route path="/subjects" element={<Subject />} />
                           </Route>
                         </Routes>
                       </div>
