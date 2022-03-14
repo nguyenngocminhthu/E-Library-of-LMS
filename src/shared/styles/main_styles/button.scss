@@ -1,0 +1,9 @@
+@import "../variable";
+
+.ant-btn-primary {
+  background-color: $color-primary;
+}
+
+.ant-btn-primary:hover {
+  background-color: $color-primary-hover;
+}

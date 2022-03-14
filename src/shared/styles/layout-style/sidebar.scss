@@ -1,6 +1,8 @@
-$color-primary-dark: black;
-$color-primary: #f17f21;
-$color-primary-light: #fff;
+@import "../variable";
+
+.ant-layout-sider {
+  z-index: 99;
+}
 
 .sidebar {
   background-color: $color-primary;
@@ -35,6 +37,10 @@ $color-primary-light: #fff;
   position: absolute;
   left: 80px;
   height: 100%;
+
+  .ant-layout-sider-children {
+    background-color: $color-white;
+  }
 
   .ant-menu-item {
     display: inline-flex;

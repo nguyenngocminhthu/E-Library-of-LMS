@@ -1,0 +1,14 @@
+@import "../variable";
+
+.selectcomp {
+  display: flex;
+  .select-label {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+  }
+  .select {
+    max-width: 200;
+    margin: 0 8px;
+  }
+}

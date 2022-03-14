@@ -75,9 +75,7 @@ export const Sidebar: React.FC = () => {
         onMouseLeave={() => setcollapsed(true)}
         hidden={collapsed}
       >
-        <div className="logo">
-          <img src={logosecond} />
-        </div>
+        <div className="logo"></div>
         <Menu selectedKeys={key} defaultSelectedKeys={["home"]} mode="inline">
           <Menu.Item onClick={() => handleSelect(["home"])} key="home">
             Trang chủ

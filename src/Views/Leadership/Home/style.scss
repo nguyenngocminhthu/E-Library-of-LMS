@@ -1,0 +1,36 @@
+@import "../../../shared/styles/variable";
+
+.home {
+  .anacard {
+    background: linear-gradient(270deg, #ff5400 0%, #f17f21 80.56%);
+    padding: 0.5rem;
+    width: 100%;
+    color: $color-white;
+    font-weight: $font-weight-bold;
+    font-size: 18px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .anacard-blue {
+    background: linear-gradient(98.91deg, #56ccf2 1.13%, #2f80ed 100%);
+    padding: 0.5rem;
+    width: 100%;
+    color: $color-white;
+    font-weight: $font-weight-bold;
+    font-size: 18px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .ant-pagination-item {
+    display: none;
+  }
+
+  .ant-list-pagination {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .ant-pagination-item-link {
+    border: none;
+  }
+}

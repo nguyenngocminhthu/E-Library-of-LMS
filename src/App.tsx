@@ -1,7 +1,6 @@
 import "./App.scss";
 import { Route, Routes } from "react-router-dom";
 import { Layout, Breadcrumb, Button } from "antd";
-import { UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { Sidebar } from "./Layout/Sidebar/Sidebar";
 import Cover from "./Views/Cover/Cover";
@@ -9,7 +8,10 @@ import Login from "./Views/Login/Login";
 import { useLocation } from "react-router";
 import { Home } from "./Views/Leadership/Home/Home";
 import { Subject } from "./Views/Leadership/Subject/Subject";
-const { Header, Content, Footer } = Layout;
+import { HeaderComp } from "./Components/Header";
+import { FooterComp } from "./Components/Footer";
+import "./shared/styles/styles.scss";
+const { Content } = Layout;
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -42,21 +44,7 @@ const App: React.FC = () => {
                 <Layout style={{ minHeight: "100vh" }}>
                   <Sidebar />
                   <Layout className="site-layout">
-                    <Header
-                      className="site-layout-background"
-                      style={{
-                        padding: 0,
-                        justifyContent: "right",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Button className="btn-header">
-                        <UserOutlined />
-                        Admin
-                      </Button>
-                      <Button className="btn-header">Đăng xuất</Button>
-                    </Header>
+                    <HeaderComp />
                     <Content style={{ margin: "0 16px" }}>
                       <Breadcrumb style={{ margin: "16px 0" }}>
                         <Breadcrumb.Item>
@@ -79,9 +67,7 @@ const App: React.FC = () => {
                         </Routes>
                       </div>
                     </Content>
-                    <Footer style={{ textAlign: "center" }}>
-                      Ant Design ©2018 Created by Ant UED
-                    </Footer>
+                    <FooterComp />
                   </Layout>
                 </Layout>
               </div>
