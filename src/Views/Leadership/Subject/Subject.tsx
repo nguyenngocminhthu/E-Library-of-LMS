@@ -2,6 +2,8 @@ import SearchComponent from "../../../Components/SearchComponent";
 import { Row, Col } from 'antd';
 import { SelectComp } from "../../../Components/Select";
 import { Table, Tag, Space } from 'antd';
+import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import "./style.scss"
 
 const subject = [
   {
@@ -116,9 +118,10 @@ const data = [
 ];
 
 export const Subject = () => {
-  return <div>
+  return <div className="subject">
+    <BreadcrumbComp title="Danh sách môn học" />
     <Row>
-      <Col span={16}>
+      <Col className="table-header" span={16}>
           <SelectComp
               style={{ display: 'block'}}
               textLabel="Môn học"
@@ -138,7 +141,7 @@ export const Subject = () => {
               dataString={status}
             />
         </Col>
-      <Col span={8}><SearchComponent/></Col>
+      <Col className="table-header" span={8}><SearchComponent/></Col>
     </Row>
     <Table columns={columns} dataSource={data} />
   </div>;

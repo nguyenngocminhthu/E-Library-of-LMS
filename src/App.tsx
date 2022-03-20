@@ -12,6 +12,7 @@ import { Help } from "./Views/Leadership/Help/Help";
 import { HeaderComp } from "./Layout/Header/Header";
 import { FooterComp } from "./Layout/Footer/Footer";
 import "./shared/styles/styles.scss";
+import Notification from "./Views/Leadership/Noti/Noti";
 const { Content } = Layout;
 
 const App: React.FC = () => {
@@ -63,6 +64,9 @@ const App: React.FC = () => {
                           </Route>
                           <Route>
                             <Route path="/help" element={<Help />} />
+                          </Route>
+                          <Route>
+                            <Route path="/noti" element={<Notification />} />
                           </Route>
                         </Routes>
                       </div>

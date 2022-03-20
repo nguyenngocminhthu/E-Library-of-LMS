@@ -1,0 +1,39 @@
+@import "../../../shared/styles/variable";
+
+.subject {
+    .table-header {
+        margin-top: 1rem;
+        display: flex !important;
+        align-items: center;
+    }
+    .selectcomp{
+        display: block;
+        margin: 0 1rem 1rem 0;
+        .select {
+            margin: 0;
+          }
+    }
+    .ant-table-thead>tr>th {
+        background: $color-primary;
+
+    }
+    .ant-table-container{
+        margin-top: 1rem;
+    }
+    // for border table
+  .ant-table-container table>thead>tr:first-child th:first-child {
+    border-top-left-radius: $border-radius;
+  }
+
+  .ant-table-container table>thead>tr:first-child th:last-child {
+    border-top-right-radius: $border-radius;
+  }
+
+  .ant-table-tbody>tr.ant-table-row:last-child>td:first-child {
+    border-bottom-left-radius: $border-radius;
+  }
+
+  .ant-table-tbody>tr.ant-table-row:last-child>td:last-child {
+    border-bottom-right-radius: $border-radius;
+  }
+}

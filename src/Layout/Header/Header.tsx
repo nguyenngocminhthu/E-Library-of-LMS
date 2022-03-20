@@ -14,7 +14,7 @@ export const HeaderComp = () => {
         paddingRight: "1rem",
       }}
     >
-      <Button className="btn-header">
+      <Button style={{background: "transparent", boxShadow: "none"}} className="btn-header">
         <UserOutlined />
         Admin
       </Button>
