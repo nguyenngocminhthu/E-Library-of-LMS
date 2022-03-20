@@ -27,10 +27,72 @@
 
   .ant-list-pagination {
     margin-top: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .ant-pagination-item-link {
     border: none;
+  }
+
+  .btn-img {
+    position: relative;
+    height: -webkit-fill-available;
+    margin: auto;
+  }
+
+  .btn-play {
+    position: absolute;
+    top: 35%;
+    left: 35%;
+  }
+
+  .ant-card-body {
+    padding: 10px;
+  }
+
+  .ant-card {
+    border-radius: 8px;
+    box-shadow: 4px 4px 25px 4px rgba(154, 202, 245, 0.25);
+  }
+
+  h5 {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+
+  img {
+    width: -webkit-fill-available;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  h6 {
+    font-size: 14px;
+    color: $color-primary;
+    margin-bottom: 0;
+  }
+
+  .wrapper {
+    background-color: #ffa75e;
+    margin-top: 1rem;
+    h5 {
+      margin: 0.5rem 0 1rem 1.3rem;
+    }
+  }
+
+  h4 {
+    color: $color-primary;
+    font-weight: 700;
+  }
+
+  .wrapper-list {
+    position: relative;
+    margin-top: 1rem;
+    .title {
+      position: absolute;
+    }
   }
 }

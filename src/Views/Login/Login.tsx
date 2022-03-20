@@ -4,7 +4,7 @@ import logoLogin from "../../shared/img/icon/logo-second.svg";
 import { ReactComponent as Account } from "../../shared/img/icon/account.svg";
 import { ReactComponent as Password } from "../../shared/img/icon/shield-keyhole-line.svg";
 import { Link } from "react-router-dom";
-import { Row, Col } from "antd";
+import { Row, Col, Button } from "antd";
 // import { useDispatch, useSelector } from "react-redux";
 // import { RootState } from "../../redux";
 // import { setError, signin } from "../../redux/users/actions/authActions";
@@ -42,9 +42,7 @@ const Login = () => {
         <Col span={12}></Col>
         <Col span={12}>
           <div className="formLogin">
-            <h1 style={{ textAlign: "center", marginBottom: "50px" }}>
-              Đăng nhập
-            </h1>
+            <h1>Đăng nhập</h1>
 
             <label htmlFor="username">Tên đăng nhập</label>
             <div className="input-icons">
@@ -76,14 +74,15 @@ const Login = () => {
               Quên mật khẩu?
             </Link>
 
-            <button
-              className="btn btn-success"
+            <Button
+              type="primary"
               //   onClick={submitHandler}
               disabled={loading}
+              style={{ width: "100%" }}
             >
               {loading ? "Loading..." : "Đăng nhập"}
               {/* <ToastContainer /> */}
-            </button>
+            </Button>
           </div>
         </Col>
       </Row>

@@ -46,17 +46,13 @@ const App: React.FC = () => {
                   <Sidebar />
                   <Layout className="site-layout">
                     <HeaderComp />
-                    <Content style={{ margin: "0 16px" }}>
-                      <Breadcrumb style={{ margin: "16px 0" }}>
-                        <Breadcrumb.Item>
-                          <h1 style={{ fontSize: "1.6rem", fontWeight: "700" }}>
-                            Trang chủ
-                          </h1>
-                        </Breadcrumb.Item>
-                      </Breadcrumb>
+                    <Content style={{ margin: "16px 16px" }}>
                       <div
                         className="site-layout-background"
-                        style={{ padding: 24, minHeight: 360 }}
+                        style={{
+                          padding: "10px 24px 24px 24px",
+                          minHeight: 360,
+                        }}
                       >
                         <Routes>
                           <Route>

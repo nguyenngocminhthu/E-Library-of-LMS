@@ -1,9 +1,31 @@
-import { Card, Col, List, Row } from "antd";
+import { Button, Card, Col, List, Row } from "antd";
 import { useEffect } from "react";
 import { AnaCard } from "../../../Components/AnaCard";
 import { SelectComp } from "../../../Components/Select";
-import { TitleComp } from "../../../Components/Title";
 import "./style.scss";
+import WEB23 from "../../../shared/img/WEB23.png";
+import ppt from "../../../shared/img/ppt.png";
+import { CaretRightFilled } from "@ant-design/icons";
+import { Typography } from "antd";
+import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+
+const { Title } = Typography;
+
+interface IData {
+  fileName: string;
+  subject: string;
+  fileCode: string;
+  teacher: string;
+  avt: string;
+}
+
+interface IFile {
+  fileName: string;
+  createdAt: string;
+  subject: string;
+  teacher: string;
+  avt: string;
+}
 
 const year = [
   {
@@ -19,13 +41,29 @@ const year = [
 const listData: any[] | undefined = [];
 for (let i = 0; i < 23; i++) {
   listData.push({
-    title: `ant design part ${i}`,
+    fileName: "Phát triển website",
+    subject: "Web Design",
+    fileCode: `WEB${i}`,
+    teacher: "Hoa Hoa",
+    avt: `${WEB23}`,
+  });
+}
+
+const listFile: any[] | undefined = [];
+for (let i = 0; i < 10; i++) {
+  listFile.push({
+    fileName: "Thương mại điện tử là gì.docx",
+    createdAt: "12:01 12/12/2020",
+    subject: "Thương mại điện tử",
+    teacher: "Hoa Hoa",
+    avt: `${ppt}`,
   });
 }
 
 export const Home = () => {
   return (
     <div className="home">
+      <BreadcrumbComp title="Trang chủ" />
       <Row>
         <Col span={4} style={{ display: "flex", alignItems: "center" }}>
           <SelectComp
@@ -55,8 +93,8 @@ export const Home = () => {
           </Row>
         </Col>
       </Row>
-      <div style={{ marginTop: "1rem" }}>
-        <TitleComp content="Tài liệu môn học đã xem gần đây" />
+      <div className="wrapper-list">
+        <div className="title">Tài liệu môn học đã xem gần đây</div>
         <List
           grid={{ gutter: 30, column: 4 }}
           dataSource={listData}
@@ -67,13 +105,93 @@ export const Home = () => {
             },
             pageSize: 8,
           }}
-          renderItem={(item) => (
-            <List.Item key={item.title}>
-              <Card title={item.title}>Card content</Card>
+          renderItem={(item: IData) => (
+            <List.Item key={item.fileCode}>
+              <Card>
+                <Row>
+                  <Col span={8} className="btn-img">
+                    <img src={item.avt} />
+                    <Button
+                      className="btn-play"
+                      shape="circle"
+                      icon={<CaretRightFilled />}
+                    />
+                  </Col>
+                  <Col span={15} offset={1}>
+                    <h5>{item.fileName}</h5>
+                    <p>{item.subject}</p>
+                    <h6>{item.fileCode}</h6>
+                    <span>Giảng viên: {item.teacher}</span>
+                  </Col>
+                </Row>
+              </Card>
             </List.Item>
           )}
         />
       </div>
+      <Row>
+        <Col span={6}>
+          <Card className="wrapper">
+            <h5>Thống kê truy cập</h5>
+            <Card className="inside">
+              <Row>
+                <Col span={15} offset={1}>
+                  <p>Đang truy cập:</p>
+                  <p>Lượt truy cập hôm nay:</p>
+                  <p>Lượt truy cập tuần này:</p>
+                  <p>Lượt truy cập tháng này:</p>
+                  <p>Tổng lượt truy cập:</p>
+                </Col>
+                <Col span={6} offset={2}>
+                  <h4>31</h4>
+                  <h4>31</h4>
+                  <h4>31</h4>
+                  <h4>31</h4>
+                  <h4>31</h4>
+                </Col>
+              </Row>
+            </Card>
+          </Card>
+        </Col>
+        <Col span={17} offset={1}>
+          <div className="wrapper-list">
+            <div className="title">Tệp riêng tư tải lên gần đây</div>
+            <List
+              grid={{ gutter: 30, column: 3 }}
+              dataSource={listFile}
+              pagination={{
+                position: "top",
+                onChange: (page) => {
+                  console.log(page);
+                },
+                pageSize: 3,
+              }}
+              renderItem={(item: IFile) => (
+                <List.Item key={item.fileName}>
+                  <Card>
+                    <Row>
+                      <Col span={6}>
+                        <img src={ppt} />
+                      </Col>
+                      <Col span={17} offset={1}>
+                        <Title ellipsis level={5}>
+                          {item.fileName}
+                        </Title>
+                        <p>{item.createdAt}</p>
+                        <h6>{item.subject}</h6>
+                        <span>Giảng viên: {item.teacher}</span>
+                      </Col>
+                    </Row>
+                  </Card>
+                </List.Item>
+              )}
+            />
+            <span style={{ color: "grey" }}>
+              <i>Hiển thị 10 tệp tài liệu đã xem gần đây nhất</i>
+            </span>
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 };
