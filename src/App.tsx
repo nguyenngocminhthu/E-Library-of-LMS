@@ -8,8 +8,9 @@ import Login from "./Views/Login/Login";
 import { useLocation } from "react-router";
 import { Home } from "./Views/Leadership/Home/Home";
 import { Subject } from "./Views/Leadership/Subject/Subject";
-import { HeaderComp } from "./Components/Header";
-import { FooterComp } from "./Components/Footer";
+import { Help } from "./Views/Leadership/Help/Help";
+import { HeaderComp } from "./Layout/Header/Header";
+import { FooterComp } from "./Layout/Footer/Footer";
 import "./shared/styles/styles.scss";
 const { Content } = Layout;
 
@@ -63,6 +64,9 @@ const App: React.FC = () => {
                           </Route>
                           <Route>
                             <Route path="/subjects" element={<Subject />} />
+                          </Route>
+                          <Route>
+                            <Route path="/help" element={<Help />} />
                           </Route>
                         </Routes>
                       </div>

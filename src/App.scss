@@ -1,6 +1,7 @@
 $color-primary-dark: black;
 $color-primary: #f17f21;
 $color-primary-light: #fff;
+$color-site-layout: #fafbfc;
 
 .logo {
   height: 64px;
@@ -10,12 +11,15 @@ $color-primary-light: #fff;
 
 .site-layout-background {
   background-color: $color-primary-light;
+  margin-bottom: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  border-radius: 16px;
 }
-
-.ant-layout-header {
-  background-color: $color-primary-light !important;
+.ant-layout{
+  .site-layout{
+    background-color: $color-site-layout;
+  }
 }
-
 .btn-header {
   background-color: transparent;
   border: none !important;

@@ -1,11 +1,11 @@
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Button } from "antd";
+import "../../shared/styles/layout-style/header.scss";
 const { Header } = Layout;
 
 export const HeaderComp = () => {
   return (
     <Header
-      className="site-layout-background"
       style={{
         padding: 0,
         justifyContent: "right",
