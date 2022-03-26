@@ -9,10 +9,13 @@ import { useLocation } from "react-router";
 import { Home } from "./Views/Leadership/Home/Home";
 import { Subject } from "./Views/Leadership/Subject/Subject";
 import { Help } from "./Views/Leadership/Help/Help";
+import { Notification } from "./Views/Leadership/Noti/Noti";
+import { System } from "./Views/Leadership/SysSetting/System";
 import { HeaderComp } from "./Layout/Header/Header";
 import { FooterComp } from "./Layout/Footer/Footer";
 import "./shared/styles/styles.scss";
-import Notification from "./Views/Leadership/Noti/Noti";
+import  Information  from "./Views/Leadership/SysSetting/Information";
+
 const { Content } = Layout;
 
 const App: React.FC = () => {
@@ -39,6 +42,14 @@ const App: React.FC = () => {
                 </Route>
               </Routes>
             );
+            case "/system":
+              return (
+                <Routes>
+                  <Route>
+                    <Route path="/system/information" element={<Information />} />
+                  </Route>
+                </Routes>
+              );
 
           default:
             return (
@@ -67,6 +78,9 @@ const App: React.FC = () => {
                           </Route>
                           <Route>
                             <Route path="/noti" element={<Notification />} />
+                          </Route>
+                          <Route>
+                            <Route path="/setting" element={<System />} />
                           </Route>
                         </Routes>
                       </div>

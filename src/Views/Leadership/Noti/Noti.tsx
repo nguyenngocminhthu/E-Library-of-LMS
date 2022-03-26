@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { List, message, Avatar, Skeleton, Divider } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-const Notification = () => {
+export const Notification = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
 
@@ -61,4 +61,3 @@ const Notification = () => {
     </div>
   );
 };
-export default Notification;

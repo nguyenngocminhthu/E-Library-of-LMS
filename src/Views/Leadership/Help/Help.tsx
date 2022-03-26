@@ -28,7 +28,7 @@ export const Help = () => {
         <Row>
         <Col span={16} id="leftHelp">
             <h1>
-            <b style={{ fontSize: '42px', fontWeight: 'bold'}}>Bạn có thắc mắc?</b>
+            <b style={{ fontSize: '2.2rem', fontWeight: '700'}}>Bạn có thắc mắc?</b>
           </h1>
           <h5 style={{ color: "grey", fontSize: '18px' }}>
             Chúng tôi sẽ phản hồi bạn trong thời gian sớm nhất có thể.
