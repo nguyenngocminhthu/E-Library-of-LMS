@@ -1,20 +1,21 @@
-import "./App.scss";
-import { Route, Routes } from "react-router-dom";
-import { Layout, Breadcrumb, Button } from "antd";
+import { Layout } from "antd";
 import "antd/dist/antd.css";
-import { Sidebar } from "./Layout/Sidebar/Sidebar";
-import Cover from "./Views/Cover/Cover";
-import Login from "./Views/Login/Login";
 import { useLocation } from "react-router";
-import { Home } from "./Views/Leadership/Home/Home";
-import { Subject } from "./Views/Leadership/Subject/Subject";
-import { Help } from "./Views/Leadership/Help/Help";
-import { Notification } from "./Views/Leadership/Noti/Noti";
-import { System } from "./Views/Leadership/SysSetting/System";
-import { HeaderComp } from "./Layout/Header/Header";
+import { Route, Routes } from "react-router-dom";
+import "./App.scss";
 import { FooterComp } from "./Layout/Footer/Footer";
+import { HeaderComp } from "./Layout/Header/Header";
+import { Sidebar } from "./Layout/Sidebar/Sidebar";
 import "./shared/styles/styles.scss";
-import  Information  from "./Views/Leadership/SysSetting/Information";
+import Cover from "./Views/Cover/Cover";
+import { Help } from "./Views/Leadership/Help/Help";
+import { Home } from "./Views/Leadership/Home/Home";
+import { Notification } from "./Views/Leadership/Noti/Noti";
+import { Subject } from "./Views/Leadership/Subject/Subject";
+import Information from "./Views/Leadership/SysSetting/Information";
+import { System } from "./Views/Leadership/SysSetting/System";
+import Login from "./Views/Login/Login";
+import { Profile } from "./Views/Profile/Profile";
 
 const { Content } = Layout;
 
@@ -33,7 +34,6 @@ const App: React.FC = () => {
                 </Route>
               </Routes>
             );
-
           case "/login":
             return (
               <Routes>
@@ -42,15 +42,6 @@ const App: React.FC = () => {
                 </Route>
               </Routes>
             );
-            case "/system":
-              return (
-                <Routes>
-                  <Route>
-                    <Route path="/system/information" element={<Information />} />
-                  </Route>
-                </Routes>
-              );
-
           default:
             return (
               <div>
@@ -81,6 +72,15 @@ const App: React.FC = () => {
                           </Route>
                           <Route>
                             <Route path="/setting" element={<System />} />
+                          </Route>
+                          <Route>
+                            <Route path="/profile" element={<Profile />} />
+                          </Route>
+                          <Route>
+                            <Route
+                              path="/setting/information"
+                              element={<Information />}
+                            />
                           </Route>
                         </Routes>
                       </div>

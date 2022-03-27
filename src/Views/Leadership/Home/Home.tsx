@@ -1,13 +1,11 @@
-import { Button, Card, Col, List, Row } from "antd";
-import { useEffect } from "react";
-import { AnaCard } from "../../../Components/AnaCard";
-import { SelectComp } from "../../../Components/Select";
-import "./style.scss";
-import WEB23 from "../../../shared/img/WEB23.png";
-import ppt from "../../../shared/img/ppt.png";
 import { CaretRightFilled } from "@ant-design/icons";
-import { Typography } from "antd";
+import { Button, Card, Col, List, Row, Typography } from "antd";
+import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { SelectComp } from "../../../Components/Select";
+import ppt from "../../../shared/img/ppt.png";
+import WEB23 from "../../../shared/img/WEB23.png";
+import "./style.scss"; // Alt Shift O
 
 const { Title } = Typography;
 
