@@ -1,0 +1,28 @@
+@import "../../../shared/styles/variable";
+.Noti-Page{
+    .ant-tabs-tab:hover{
+        color: $color-primary;
+    }
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: $color-white;
+    }
+    .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab {
+        background: none;
+        border: none;
+    
+    }
+    .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
+        align-items: center;
+        padding: 12px 40px;
+        font-size: 0.875rem;
+        font-weight: bold;
+    }
+    .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active, .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab-active {
+        background: #373839;
+        border-radius: 24px;
+    }
+    .ant-tabs > .ant-tabs-nav, .ant-tabs > div > .ant-tabs-nav {
+        position: unset;
+    }
+    
+}
