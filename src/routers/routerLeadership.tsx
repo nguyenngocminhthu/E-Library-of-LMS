@@ -10,6 +10,7 @@ import { Home } from "../Views/Leadership/Home/Home";
 import { Subject } from "../Views/Leadership/Subject/Subject";
 import { SubjectDetail } from "../Views/Leadership/Subject/SubjectDetail";
 import Information from "../Views/Leadership/SysSetting/Information";
+import NotiSetting from "../Views/Leadership/Noti/NotiSetting";
 import { System } from "../Views/Leadership/SysSetting/System";
 import Login from "../Views/Login/Login";
 import { Profile } from "../Views/Profile/Profile";
@@ -70,7 +71,7 @@ export const Leadership = () => {
                             <Route path="/help" element={<Help />} />
                           </Route>
                           <Route>
-                            <Route path="/noti" element={<Notification />} />
+                            <Route path="/notification" element={<Notification />}/>
                           </Route>
                           <Route>
                             <Route path="/setting" element={<System />} />
@@ -82,6 +83,12 @@ export const Leadership = () => {
                             <Route
                               path="/setting/information"
                               element={<Information />}
+                            />
+                          </Route>
+                          <Route>
+                            <Route
+                              path="/notification/setting"
+                              element={<NotiSetting />}
                             />
                           </Route>
                         </Routes>

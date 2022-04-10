@@ -1,24 +1,17 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from "react";
-import { List, Avatar, Skeleton, Divider, Tabs, Checkbox, Button, Modal } from "antd";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-
-import "./style.scss"
-import { SettingOutlined } from "@ant-design/icons/lib/icons";
-=======
-import { Avatar, Checkbox, Divider, List, Skeleton, Tabs } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
+import { Avatar, Button, Checkbox, Divider, List, Modal, Skeleton, Space, Tabs, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import "./style.scss";
->>>>>>> 2586341941f8426dcce8d80c35ecf23e584cc6ab
 
 const { TabPane } = Tabs;
 export const Notification = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const navigate = useNavigate();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -56,7 +49,6 @@ export const Notification = () => {
   return (
     <div className="Noti-Page">
       <BreadcrumbComp title="Thông báo" />
-<<<<<<< HEAD
       <div className="tab-notilist">
         <Tabs defaultActiveKey="1" type="card" size={"small"}>
           <TabPane tab="Thông báo người dùng" key="1">
@@ -104,11 +96,21 @@ export const Notification = () => {
           </TabPane>
         </Tabs>
         <div className="tab-control">
-          <SettingOutlined fa-solid fa-cog fa-spin className="iconsetting" />
+          <Space className="" size="middle">
+            <Tooltip title="Setting">
+              <Button
+                type="link"
+                onClick={() => navigate("/notification/setting")}
+                icon={<SettingOutlined style={{ fontSize:"36px"}}/>}
+              />
+            </Tooltip>
+          </Space>
           <div className="line"></div>
-          <Button onClick={showModal} type="primary">Thêm thông báo</Button>
+          <Button type="primary" onClick={showModal}>
+            Thêm thông báo
+          </Button>
           <Modal
-            title="Basic Modal"
+            title="Gửi thông báo mới"
             visible={isModalVisible}
             onOk={handleOk}
             onCancel={handleCancel}
@@ -119,51 +121,6 @@ export const Notification = () => {
           </Modal>
         </div>
       </div>
-=======
-      <Tabs defaultActiveKey="1" type="card" size={"small"}>
-        <TabPane tab="Thông báo người dùng" key="1">
-          <div
-            id="scrollableDiv"
-            style={{
-              height: 400,
-              overflow: "auto",
-              padding: "0 16px",
-              border: "1px solid rgba(140, 140, 140, 0.35)",
-            }}
-          >
-            <InfiniteScroll
-              dataLength={data.length}
-              next={loadMoreData}
-              hasMore={data.length < 50}
-              loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-              endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-              scrollableTarget="scrollableDiv"
-            >
-              <List
-                dataSource={data}
-                renderItem={(item: any) => (
-                  <List.Item key={item.id}>
-                    <List.Item.Meta
-                      avatar={
-                        <Checkbox>
-                          <Avatar src={item.picture.large} />
-                        </Checkbox>
-                      }
-                      title={<a href="https://ant.design">{item.name.last}</a>}
-                      description={item.email}
-                    />
-                    <div>5 phút trước</div>
-                  </List.Item>
-                )}
-              />
-            </InfiniteScroll>
-          </div>
-        </TabPane>
-        <TabPane tab="Thông báo hệ thống" key="2">
-          Thông báo hệ thống
-        </TabPane>
-      </Tabs>
->>>>>>> 2586341941f8426dcce8d80c35ecf23e584cc6ab
     </div>
   );
 };
