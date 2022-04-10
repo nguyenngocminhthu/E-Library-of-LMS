@@ -21,7 +21,10 @@ $color-black: #000000;
 
 // MAIN BODY
 $color-background: #656568;
+$color-background-secondary: #fff9f4;
 $color-main-text: #ffffff;
+$color-second-text: #cc5c00;
+$color-text-light: #ff7506;
 $border-radius: 0.8rem;
 
 // FONT FAMILY
@@ -89,6 +92,7 @@ $color-modal-label: $color-tertiary-dark;
 $color-modal-content: $color-black;
 $color-card: #3e3e5b;
 $color-ant-input: #03031d;
+$color-input: #efefef;
 $color-ant-checkbox: #6c7585;
 $color-status-error: $color-primary;
 $color-form-note: #6c7585;
