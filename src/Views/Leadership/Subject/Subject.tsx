@@ -1,13 +1,14 @@
-import SearchComponent from "../../../Components/SearchComponent";
-import { Row, Col } from 'antd';
-import { SelectComp } from "../../../Components/Select";
-import { Table, Tag, Space } from 'antd';
+import { UnorderedListOutlined } from "@ant-design/icons";
+import { Button, Col, Row, Space, Table, Tooltip } from "antd";
+import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import "./style.scss"
+import SearchComponent from "../../../Components/SearchComponent";
+import { SelectComp } from "../../../Components/Select";
+import "./style.scss";
 
 const subject = [
   {
-    name: "hương mại điện tử",
+    name: "Thương mại điện tử",
     value: "TMDT",
   },
   {
@@ -44,105 +45,120 @@ const status = [
   },
 ];
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text:any) => <a>{text}</a>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (tags:any) => (
-      <>
-        {tags.map((tag:any) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (text:any, record:any) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
-
 export const Subject = () => {
-  return <div className="subject">
-    <BreadcrumbComp title="Danh sách môn học" />
-    <Row>
-      <Col className="table-header" span={16}>
+  const navigate = useNavigate();
+  const columns = [
+    {
+      title: "Mã môn học",
+      dataIndex: "subCode",
+      key: "subCode",
+    },
+    {
+      title: "Tên môn học",
+      dataIndex: "subName",
+      key: "subName",
+      sorter: (a: any, b: any) => a.subName.length - b.subName.length,
+    },
+    {
+      title: "Giảng viên",
+      dataIndex: "teacher",
+      key: "teacher",
+    },
+    {
+      title: "Số tài liệu chờ duyệt",
+      dataIndex: "file",
+      key: "file",
+    },
+    {
+      title: "Tình trạng tài liệu môn học",
+      dataIndex: "status",
+      key: "status",
+      render: (status: number) => (
+        <div className={status === 0 ? "gray" : "green"}>
+          {status === 0 ? "Chờ phê duyệt" : "Đã phê duyệt"}
+        </div>
+      ),
+    },
+    {
+      title: "Ngày gửi phê duyệt",
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
+    {
+      title: "",
+      key: "action",
+      render: (text: any, record: any) => (
+        <Space size="middle">
+          <Tooltip title="Detail">
+            <Button
+              onClick={() => navigate(`/subjects/${record.subCode}`)}
+              icon={<UnorderedListOutlined />}
+            />
+          </Tooltip>
+        </Space>
+      ),
+    },
+  ];
+
+  const data = [
+    {
+      key: "1",
+      subCode: "2020-6A",
+      subName: "Thương mại điện tử",
+      teacher: "Nguyễn Văn A",
+      file: "15/20",
+      status: 0,
+      createdAt: "12/02/2021",
+    },
+    {
+      key: "2",
+      subCode: "2020-6A",
+      subName: "Nguyên lý kế toán",
+      teacher: "Nguyễn Văn A",
+      file: "15/20",
+      status: 1,
+      createdAt: "12/02/2021",
+    },
+    {
+      key: "3",
+      subCode: "2020-6A",
+      subName: "Hệ thống thông tin",
+      teacher: "Nguyễn Văn A",
+      file: "15/20",
+      status: 0,
+      createdAt: "12/02/2021",
+    },
+  ];
+
+  return (
+    <div className="subject">
+      <BreadcrumbComp title="Danh sách môn học" />
+      <Row>
+        <Col className="table-header" span={16}>
           <SelectComp
-              style={{ display: 'block'}}
-              textLabel="Môn học"
-              defaultValue="Tất cả môn học"
-              dataString={subject}  
-            />  
-            <SelectComp
-            style={{ display: 'block'}}
+            style={{ display: "block" }}
+            textLabel="Môn học"
+            defaultValue="Tất cả môn học"
+            dataString={subject}
+          />
+          <SelectComp
+            style={{ display: "block" }}
             textLabel="Giảng viên"
             defaultValue="Tất cả giảng viên"
             dataString={teacher}
           />
           <SelectComp
-              style={{ display: 'block'}}
-              textLabel="Tình trạng tài liệu"
-              defaultValue="Tất cả tình trạng"
-              dataString={status}
-            />
+            style={{ display: "block" }}
+            textLabel="Tình trạng tài liệu"
+            defaultValue="Tất cả tình trạng"
+            dataString={status}
+          />
         </Col>
-      <Col className="table-header" span={8}><SearchComponent/></Col>
-    </Row>
-    <Table columns={columns} dataSource={data} />
-  </div>;
+        <Col className="table-header" span={8}>
+          <SearchComponent />
+        </Col>
+      </Row>
+      <Table columns={columns} dataSource={data} />
+    </div>
+  );
 };
