@@ -1,5 +1,22 @@
 @import "../../../shared/styles/variable";
 .Noti-Page{
+    .tab-notilist{
+        position: relative;
+        .tab-control{
+            display: flex;
+            position: absolute;
+            top: 0;
+            right: 0;
+            .iconsetting{
+                color: $color-primary;
+            }      
+            .line{
+                border-left: 1px solid $color-background-cancel;
+                height: 40px;
+                margin: 0px 10px 0px 10px;
+            }
+        }
+    }
     .ant-tabs-tab:hover{
         color: $color-primary;
     }
@@ -16,6 +33,7 @@
         padding: 12px 40px;
         font-size: 0.875rem;
         font-weight: bold;
+        transition: none;
     }
     .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active, .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab-active {
         background: #373839;
@@ -23,6 +41,8 @@
     }
     .ant-tabs > .ant-tabs-nav, .ant-tabs > div > .ant-tabs-nav {
         position: unset;
+        width: fit-content;
+        background-color: $color-grey-light-1;
+        border-radius: 24px;
     }
-    
 }

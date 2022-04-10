@@ -1,15 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { List, message, Avatar, Skeleton, Divider, Tabs, Radio, Checkbox } from "antd";
+import { List, Avatar, Skeleton, Divider, Tabs, Checkbox, Button, Modal } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 
 import "./style.scss"
+import { SettingOutlined } from "@ant-design/icons/lib/icons";
 
 const { TabPane } = Tabs;
 export const Notification = () => {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState([]);
   const [data, setData] = useState<any>([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   const loadMoreData = () => {
     if (loading) {
       return;
@@ -31,21 +45,12 @@ export const Notification = () => {
   useEffect(() => {
     loadMoreData();
   }, []);
-  // Add/Remove checked item from list
-const handleCheck = (event: { target: { checked: never;  value: never; }; }) => {
-  var updatedList:any = [...checked];
-  if (event.target.checked) {
-    updatedList = [...checked, event.target.value];
-  } else {
-    updatedList.splice(checked.indexOf(event.target.value), 1);
-  }
-  setChecked(updatedList);
-};
 
   return (
     <div className="Noti-Page">
       <BreadcrumbComp title="Thông báo" />
-      <Tabs defaultActiveKey="1" type="card" size={"small"}>
+      <div className="tab-notilist">
+        <Tabs defaultActiveKey="1" type="card" size={"small"}>
           <TabPane tab="Thông báo người dùng" key="1">
             <div
               id="scrollableDiv"
@@ -64,19 +69,25 @@ const handleCheck = (event: { target: { checked: never;  value: never; }; }) => 
                 endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
                 scrollableTarget="scrollableDiv"
               >
-                  <List
-                    dataSource={data}
-                    renderItem={(item: any) => (
-                      <List.Item key={item.id}>
-                        <List.Item.Meta
-                          avatar={<Checkbox onChange={handleCheck}><Avatar src={item.picture.large} /></Checkbox>}
-                          title={<a href="https://ant.design">{item.name.last}</a>}
-                          description={item.email}
-                        />
-                        <div>5 phút trước</div>
-                      </List.Item>
-                    )}
-                  />  
+                <List
+                  dataSource={data}
+                  renderItem={(item: any) => (
+                    <List.Item key={item.id}>
+                      <List.Item.Meta
+                        avatar={
+                          <Checkbox>
+                            <Avatar src={item.picture.large} />
+                          </Checkbox>
+                        }
+                        title={
+                          <a href="https://ant.design">{item.name.last}</a>
+                        }
+                        description={item.email}
+                      />
+                      <div>5 phút trước</div>
+                    </List.Item>
+                  )}
+                />
               </InfiniteScroll>
             </div>
           </TabPane>
@@ -84,7 +95,22 @@ const handleCheck = (event: { target: { checked: never;  value: never; }; }) => 
             Thông báo hệ thống
           </TabPane>
         </Tabs>
-     
+        <div className="tab-control">
+          <SettingOutlined fa-solid fa-cog fa-spin className="iconsetting" />
+          <div className="line"></div>
+          <Button onClick={showModal} type="primary">Thêm thông báo</Button>
+          <Modal
+            title="Basic Modal"
+            visible={isModalVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Modal>
+        </div>
+      </div>
     </div>
   );
 };

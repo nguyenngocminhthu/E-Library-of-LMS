@@ -9,7 +9,8 @@
   height: 2.5rem;
 }
 
-.ant-btn-primary:hover {
+.ant-btn-primary:hover, 
+.ant-btn-primary:focus {
   background-color: $color-primary-hover;
   border: 1px solid $color-primary;
 }
