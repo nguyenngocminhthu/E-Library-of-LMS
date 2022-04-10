@@ -14,6 +14,7 @@ import { System } from "../Views/Leadership/SysSetting/System";
 import Login from "../Views/Login/Login";
 import { Profile } from "../Views/Profile/Profile";
 import { Notification } from "../Views/Leadership/Noti/Noti";
+import { ViewSubject } from "../Views/Leadership/Subject/ViewSubject";
 
 export const Leadership = () => {
   const location = useLocation();
@@ -64,6 +65,12 @@ export const Leadership = () => {
                             <Route
                               path="/subjects/:idSub"
                               element={<SubjectDetail />}
+                            />
+                          </Route>
+                          <Route>
+                            <Route
+                              path="/viewsubject/:idSub"
+                              element={<ViewSubject />}
                             />
                           </Route>
                           <Route>
