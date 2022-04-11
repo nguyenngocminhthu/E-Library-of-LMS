@@ -135,7 +135,12 @@ export const ViewSubject = () => {
                   <br />
                   <InputLabel labelTextarea="Nội dung" />
                   <div className="footer-btn">
-                    <Button onClick={() => setQuestion(false)}>Huỷ</Button>
+                    <Button
+                      className="default-btn"
+                      onClick={() => setQuestion(false)}
+                    >
+                      Huỷ
+                    </Button>
                     <Button style={{ marginLeft: "1rem" }} type="primary">
                       Gửi
                     </Button>
