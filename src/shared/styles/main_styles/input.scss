@@ -1,0 +1,17 @@
+@import "../variable";
+
+.input-label {
+}
+
+.ant-input {
+  background: #f0f3f6;
+  border: none;
+  border-radius: 8px;
+  height: 36px;
+
+  &:focus {
+    background: white;
+    box-shadow: none;
+    border: 1px solid gray;
+  }
+}

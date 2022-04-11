@@ -69,6 +69,10 @@
   }
 }
 
+hr {
+  margin: 1rem 0;
+}
+
 .subDetail {
   h1 {
     font-size: 24px;
@@ -86,10 +90,6 @@
     font-weight: $font-weight-bold;
     color: $color-text-light;
     margin-top: 1rem;
-  }
-
-  hr {
-    margin: 1rem 0;
   }
 
   p {
@@ -220,6 +220,22 @@
 }
 
 .viewSub {
+  h1 {
+    font-size: 24px;
+    font-weight: $font-weight-bold;
+    color: $color-second-text;
+  }
+
+  h4 {
+    font-weight: 700;
+  }
+
+  .ant-tabs {
+    .ant-col {
+      line-height: 2rem;
+    }
+  }
+
   .ant-tabs-ink-bar {
     background-color: $color-text-light;
   }
@@ -237,11 +253,209 @@
     }
   }
 
-  .ant-col {
-    line-height: 2rem;
-  }
-
   .ant-col-3 {
     font-weight: 700;
+  }
+
+  .ant-col-4 {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+
+    .ant-btn {
+      background-color: #ffd8b8;
+      border: 1px solid #ff7506;
+      color: #373839;
+      border-radius: 4px;
+      font-weight: 700;
+      display: flex;
+      margin-left: auto;
+      margin-top: 0;
+      margin-right: 1.5rem;
+    }
+  }
+
+  .time {
+    text-align: right;
+    font-weight: normal;
+    font-style: italic;
+    color: #37383977;
+    font-size: 12px;
+  }
+
+  .ant-col-8 {
+    height: 670px;
+    overflow-y: scroll;
+    padding: 1rem;
+
+    .ant-btn {
+      background-color: #ffd8b8;
+      border: 1px solid #ff7506;
+      color: #373839;
+      border-radius: 4px;
+      font-weight: 700;
+      display: flex;
+      margin-left: auto;
+      margin-top: 1rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      padding: 2px 0;
+      background-color: rgba(185, 183, 183, 0.59);
+    }
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      background-color: rgb(173, 173, 173);
+    }
+  }
+
+  .ant-col-18 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ant-col-19 {
+    span {
+      font-style: italic;
+      font-size: 12px;
+    }
+  }
+
+  .flex-col {
+    display: flex;
+    align-items: center;
+  }
+
+  [data-theme="compact"]
+    .site-collapse-custom-collapse
+    .site-collapse-custom-panel,
+  .site-collapse-custom-collapse .site-collapse-custom-panel {
+    margin-bottom: 24px;
+    overflow: hidden;
+    background: #f0f3f6;
+    border: 0px;
+    border-radius: 8px;
+    .anticon svg {
+      font-size: large;
+    }
+  }
+
+  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    font-weight: 700;
+    align-items: center;
+  }
+
+  .ant-collapse > .ant-collapse-item-active {
+    background: white;
+    border: 1px solid rgba(200, 199, 199, 0.574);
+    .anticon svg {
+      color: #ff7506;
+      font-size: large;
+    }
+  }
+
+  .scroll-box {
+    height: 210px;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar-track {
+      padding: 2px 0;
+      background-color: rgba(185, 183, 183, 0.59);
+    }
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      background-color: rgb(173, 173, 173);
+    }
+  }
+
+  .question {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    padding-right: 1rem;
+
+    .sub-content {
+      padding-top: 0.5rem;
+      width: 48%;
+      margin-bottom: 1rem;
+      height: fit-content;
+
+      h4 {
+        color: $color-primary;
+        margin-bottom: 0;
+      }
+
+      .flex-row {
+        display: flex;
+        align-items: center;
+
+        .anticon svg {
+          margin-right: 0.2rem;
+        }
+
+        .gray {
+          color: gray;
+        }
+      }
+    }
+  }
+
+  .sub-noti {
+    padding-right: 1rem;
+
+    h3 {
+      font-weight: $font-weight-bold;
+      color: $color-text-light;
+    }
+
+    .noti-detail {
+      border: 1px solid gray;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .ant-col-17 {
+      border-left: 1px solid gray;
+      padding-left: 1rem;
+      line-height: normal;
+    }
+  }
+
+  .view-more {
+    color: $color-text-light;
+    font-weight: 700;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .sub-content {
+    background: #f0f3f6;
+    padding: 1rem;
+    border-radius: 8px;
+
+    .ant-col-4 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .anticon svg {
+        font-size: 30px;
+      }
+    }
   }
 }
