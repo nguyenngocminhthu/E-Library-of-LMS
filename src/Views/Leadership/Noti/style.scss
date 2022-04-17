@@ -49,3 +49,19 @@
         color: $color-primary;
     }
 }
+.ant-collapse-borderless > .ant-collapse-item {
+    border: 1px solid $color-primary;
+    margin-bottom: 12px;
+}
+.ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow{
+    color: $color-primary;
+    font-size: 24px;
+}
+.ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header {
+    background-color: $color-primary-supper-light;
+    font-weight: 700;
+    margin: 5px 36px 5px 30px;
+}
+.ant-collapse-borderless > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box {
+    margin: 0px 36px 5px 30px;
+}
