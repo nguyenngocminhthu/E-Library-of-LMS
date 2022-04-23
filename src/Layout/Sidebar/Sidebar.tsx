@@ -54,8 +54,8 @@ export const Sidebar: React.FC = () => {
             icon={<Bag />}
           ></Menu.Item>
           <Menu.Item
-            onClick={() => handleSelect(["noti"])}
-            key="noti"
+            onClick={() => handleSelect(["notification"])}
+            key="notification"
             icon={<Bell />}
           ></Menu.Item>
           <Menu.Item
@@ -100,7 +100,7 @@ export const Sidebar: React.FC = () => {
           <Menu.Item onClick={() => handleSelect(["bank"])} key="bank">
             Ngân hàng đề thi
           </Menu.Item>
-          <Menu.Item onClick={() => handleSelect(["noti"])} key="noti">
+          <Menu.Item onClick={() => handleSelect(["notification"])} key="notification">
             Thông báo
           </Menu.Item>
           <Menu.Item onClick={() => handleSelect(["setting"])} key="setting">

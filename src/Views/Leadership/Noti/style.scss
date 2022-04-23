@@ -1,5 +1,22 @@
 @import "../../../shared/styles/variable";
 .Noti-Page{
+    .tab-notilist{
+        position: relative;
+        .tab-control{
+            display: flex;
+            position: absolute;
+            top: 0;
+            right: 0;
+            .iconsetting{
+                color: $color-primary;
+            }      
+            .line{
+                border-left: 1px solid $color-background-cancel;
+                height: 40px;
+                margin: 0px 10px 0px 10px;
+            }
+        }
+    }
     .ant-tabs-tab:hover{
         color: $color-primary;
     }
@@ -16,6 +33,7 @@
         padding: 12px 40px;
         font-size: 0.875rem;
         font-weight: bold;
+        transition: none;
     }
     .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active, .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab-active {
         background: #373839;
@@ -23,6 +41,42 @@
     }
     .ant-tabs > .ant-tabs-nav, .ant-tabs > div > .ant-tabs-nav {
         position: unset;
+        width: fit-content;
+        background-color: $color-grey-light-1;
+        border-radius: 24px;
     }
-    
+    .ant-btn-icon-only{
+        color: $color-primary;
+    }
+}
+.ant-collapse-borderless > .ant-collapse-item {
+    border: 1px solid $color-primary;
+    margin-bottom: 12px;
+}
+.ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow{
+    color: $color-primary;
+    font-size: 24px;
+    margin-right: 24px;
+}
+.ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header {
+    background-color: $color-primary-supper-light;
+    font-weight: 700;
+}
+.ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
+    background-color: $color-primary-light;
+}
+.ant-collapse-content{
+    padding: 16px;
+    .conten-childpanel{
+        margin-bottom: 24px;
+        .ant-switch{
+            float: right;
+        }
+    }
+}
+.ant-modal-header{
+    background: $color-secondary-dark-light;
+}
+.ant-modal-title{
+    color: $color-white;
 }
