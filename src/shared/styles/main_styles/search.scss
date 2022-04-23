@@ -15,8 +15,6 @@
 
   .ant-input-affix-wrapper,
   input {
-    background: $color-grey-light-2 !important;
-    border: 1px solid $color-grey-light-2;
     box-sizing: border-box;
     font-size: $fs-00;
     outline: none;
@@ -42,14 +40,6 @@
       }
     }
   }
-  .ant-input-affix-wrapper-focused,
-  .ant-input-affix-wrapper:focus{
-    box-shadow: 0rem 0rem 0.4rem $color-primary;
-  }
-  .ant-input-affix-wrapper:hover{
-    border-color: $color-primary;
-  }
-
   .icon-search {
     position: absolute;
     top: 50%;
