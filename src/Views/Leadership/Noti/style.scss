@@ -15,8 +15,19 @@
                 height: 40px;
                 margin: 0px 10px 0px 10px;
             }
+            .search-bar{
+                .ant-input-affix-wrapper{
+                    padding: none;
+                }
+            }
+            .rdw-editor-main {
+                border: 1px solid $color-background-cancel;
+            }
+            
         }
+        
     }
+    
     .ant-tabs-tab:hover{
         color: $color-primary;
     }
@@ -48,6 +59,7 @@
     .ant-btn-icon-only{
         color: $color-primary;
     }
+    
 }
 .ant-collapse-borderless > .ant-collapse-item {
     border: 1px solid $color-primary;
