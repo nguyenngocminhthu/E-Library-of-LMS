@@ -1,7 +1,13 @@
-import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAction,
+  createSlice,
+  PayloadAction,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import { UserState } from "./user.reducer";
 import lodash from "lodash";
+import Auth from "../../Apis/Auth.api";
 
 // Define a type for the slice state
 interface AuthState {
