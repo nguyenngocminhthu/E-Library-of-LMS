@@ -58,6 +58,11 @@ export const Subject = () => {
       dataIndex: "subName",
       key: "subName",
       sorter: (a: any, b: any) => a.subName.length - b.subName.length,
+      render: (subName: string, record: any) => (
+        <div onClick={() => navigate(`/subjects/${record.subCode}`)}>
+          {subName}
+        </div>
+      ),
     },
     {
       title: "Giảng viên",
@@ -91,7 +96,7 @@ export const Subject = () => {
         <Space size="middle">
           <Tooltip title="Detail">
             <Button
-              onClick={() => navigate(`/subjects/${record.subCode}`)}
+              onClick={() => navigate(`/listfile/${record.subCode}`)}
               icon={<UnorderedListOutlined />}
             />
           </Tooltip>
@@ -103,7 +108,7 @@ export const Subject = () => {
   const data = [
     {
       key: "1",
-      subCode: "2020-6A",
+      subCode: "2020-6B",
       subName: "Thương mại điện tử",
       teacher: "Nguyễn Văn A",
       file: "15/20",
@@ -112,7 +117,7 @@ export const Subject = () => {
     },
     {
       key: "2",
-      subCode: "2020-6A",
+      subCode: "2020-6C",
       subName: "Nguyên lý kế toán",
       teacher: "Nguyễn Văn A",
       file: "15/20",

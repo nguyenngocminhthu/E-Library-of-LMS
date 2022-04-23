@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd';
 import React from 'react'
 
-export const Information = ()  => {
+export const UserManage = ()  => {
   return (
     <div>
       <Row>
@@ -17,5 +17,5 @@ export const Information = ()  => {
   );
 }
 
-export default Information
+export default UserManage
 

@@ -30,7 +30,10 @@ export const System = () => {
           <div className="card-content">
             <h2 className="title-card">Quản lý người dùng</h2>
             <p>Thông tin của người dùng trong hệ thống.</p>
-            <div className="img-style">
+            <div
+              className="img-style"
+              onClick={() => navigate("/setting/usermanage")}
+            >
               <img
                 style={{ width: "90%" }}
                 alt="example"

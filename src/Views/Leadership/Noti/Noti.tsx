@@ -1,16 +1,21 @@
 import { SettingOutlined } from "@ant-design/icons";
-import { Avatar, Button, Checkbox, Divider, List, Modal, Skeleton, Space, Tabs, Tooltip } from "antd";
+import { Avatar, Button, Checkbox, Col, Divider, Input, List, Modal, Row, Skeleton, Space, Tabs, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import SearchComponent from "../../../Components/SearchComponent";
+import { SelectComp } from "../../../Components/Select";
+import { Editor } from "react-draft-wysiwyg";
 import "./style.scss";
+
 
 const { TabPane } = Tabs;
 export const Notification = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editorState, setEditorState] = useState();
   const navigate = useNavigate();
 
   const showModal = () => {
@@ -23,6 +28,9 @@ export const Notification = () => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+  const onEditorStateChange = (editorState: any) => {
+    setEditorState(editorState);
   };
   const loadMoreData = () => {
     if (loading) {
@@ -101,7 +109,7 @@ export const Notification = () => {
               <Button
                 type="link"
                 onClick={() => navigate("/notification/setting")}
-                icon={<SettingOutlined style={{ fontSize:"36px"}}/>}
+                icon={<SettingOutlined style={{ fontSize: "36px" }} />}
               />
             </Tooltip>
           </Space>
@@ -114,10 +122,30 @@ export const Notification = () => {
             visible={isModalVisible}
             onOk={handleOk}
             onCancel={handleCancel}
+            footer={[
+              <Button key="submit" type="primary">
+                Gửi
+              </Button>,
+            ]}
           >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            <SelectComp
+              style={{ display: "block" }}
+              textLabel="Giảng viên"
+              defaultValue="Chọn lớp giảng dạy"
+            />
+            <Checkbox>Chọn học viên</Checkbox>
+            <SearchComponent/>
+            <Input className="none" placeholder="Chủ đề" />
+            <Editor
+              editorState={editorState}
+              toolbarClassName="toolbarClassName"
+              wrapperClassName="wrapperClassName"
+              editorClassName="editorClassName"
+              onEditorStateChange={onEditorStateChange}
+              placeholder="Để lại lời nhắn của bạn tại đây..."
+              editorStyle={{ height: "200px" }}
+              wrapperStyle={{ borderRadius: "8px" }}
+            />
           </Modal>
         </div>
       </div>

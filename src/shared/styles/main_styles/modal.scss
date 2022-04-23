@@ -1,0 +1,50 @@
+@import "../variable";
+
+.ant-modal {
+  .anticon {
+    display: none;
+  }
+
+  .ant-modal-content {
+    border-radius: 8px;
+  }
+
+  .ant-modal-confirm-content {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .ant-modal-confirm-title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 24px;
+  }
+
+  .ant-modal-confirm-btns {
+    float: unset;
+    display: flex;
+    justify-content: center;
+  }
+
+  .ant-btn-default {
+    background-color: #f2f2f2;
+    border: none;
+    border-radius: 8px;
+    height: 2.2rem;
+    min-width: 100px;
+    font-weight: 700;
+    margin-left: 0.5rem;
+
+    &:hover {
+      border: 1px solid $color-text-light;
+      color: $color-text-light;
+      background-color: $color-white;
+    }
+
+    &:focus {
+      background-color: #c9c4c0;
+      border: none;
+      color: $color-white;
+    }
+  }
+}

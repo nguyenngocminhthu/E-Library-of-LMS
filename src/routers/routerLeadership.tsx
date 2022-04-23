@@ -10,12 +10,14 @@ import { Home } from "../Views/Leadership/Home/Home";
 import { Subject } from "../Views/Leadership/Subject/Subject";
 import { SubjectDetail } from "../Views/Leadership/Subject/SubjectDetail";
 import Information from "../Views/Leadership/SysSetting/Information";
+import UserManage from "../Views/Leadership/SysSetting/UserManage";
 import NotiSetting from "../Views/Leadership/Noti/NotiSetting";
 import { System } from "../Views/Leadership/SysSetting/System";
 import Login from "../Views/Login/Login";
 import { Profile } from "../Views/Profile/Profile";
 import { Notification } from "../Views/Leadership/Noti/Noti";
 import { ViewSubject } from "../Views/Leadership/Subject/ViewSubject";
+import { ListFile } from "../Views/Leadership/ListFile/ListFile";
 
 export const Leadership = () => {
   const location = useLocation();
@@ -64,6 +66,12 @@ export const Leadership = () => {
                           </Route>
                           <Route>
                             <Route
+                              path="/listfile/:idSub"
+                              element={<ListFile />}
+                            />
+                          </Route>
+                          <Route>
+                            <Route
                               path="/subjects/:idSub"
                               element={<SubjectDetail />}
                             />
@@ -90,6 +98,12 @@ export const Leadership = () => {
                             <Route
                               path="/setting/information"
                               element={<Information />}
+                            />
+                          </Route>
+                          <Route>
+                            <Route
+                              path="/setting/usermanage"
+                              element={<UserManage />}
                             />
                           </Route>
                           <Route>

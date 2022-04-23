@@ -1,0 +1,32 @@
+@import "../../../shared/styles/variable";
+
+.sub-manage {
+  .top-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h1 {
+      font-weight: 700;
+      font-size: 24px;
+    }
+
+    .anticon svg {
+      color: $color-text-light;
+      font-size: 24px;
+      width: 50px;
+      border-right: 1px solid rgba(180, 178, 178, 0.548);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.cancel-form {
+  .ant-modal {
+    .ant-modal-confirm-content {
+      text-align: left;
+    }
+  }
+}

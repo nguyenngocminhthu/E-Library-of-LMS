@@ -56,12 +56,27 @@
 .ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow{
     color: $color-primary;
     font-size: 24px;
+    margin-right: 24px;
 }
 .ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header {
     background-color: $color-primary-supper-light;
     font-weight: 700;
-    margin: 5px 36px 5px 30px;
 }
-.ant-collapse-borderless > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box {
-    margin: 0px 36px 5px 30px;
+.ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
+    background-color: $color-primary-light;
+}
+.ant-collapse-content{
+    padding: 16px;
+    .conten-childpanel{
+        margin-bottom: 24px;
+        .ant-switch{
+            float: right;
+        }
+    }
+}
+.ant-modal-header{
+    background: $color-secondary-dark-light;
+}
+.ant-modal-title{
+    color: $color-white;
 }
