@@ -1,5 +1,5 @@
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import SunEditor from 'suneditor-react';
+import 'suneditor/dist/css/suneditor.min.css';
 import { useState } from "react";
 import { ReactComponent as Location } from "../../../shared/img/icon/location.svg";
 import { ReactComponent as Phone } from "../../../shared/img/icon/phone.svg";
@@ -17,11 +17,6 @@ const openNotification = () => {
   });
 };
 export const Help = () => {
-  const [editorState, setEditorState] = useState();
-
-  const onEditorStateChange = (editorState: any) => {
-    setEditorState(editorState);
-  };
 
   return (
     <div className="helping">
@@ -41,20 +36,35 @@ export const Help = () => {
           <Input className="topic" placeholder="Chủ đề" allowClear />
           <div
             style={{
-              border: "1px solid grey",
               marginTop: "20px",
-              borderRadius: "8px",
             }}
           >
-            <Editor
-              editorState={editorState}
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName"
-              onEditorStateChange={onEditorStateChange}
+            <SunEditor
               placeholder="Để lại lời nhắn của bạn tại đây..."
-              editorStyle={{ height: "200px" }}
-              wrapperStyle={{ borderRadius: "8px" }}
+              setOptions={{
+                buttonList: [
+                  ["undo", "redo"],
+                  ["font", "fontSize"],
+                  [
+                    "bold",
+                    "underline",
+                    "italic",
+                    "strike",
+                    "subscript",
+                    "superscript",
+                  ],
+                  ["fontColor", "hiliteColor"],
+                  ["align", "list", "lineHeight"],
+                  ["outdent", "indent"],
+
+                  ["table", "horizontalRule", "link", "image", "video"],
+                  ["preview", "print"],
+                  ["removeFormat"],
+                ],
+                defaultTag: "div",
+                minHeight: "300px",
+                showPathLabel: false,
+              }}
             />
           </div>
           <div style={{ marginTop: "20px", textAlign: "center" }}>

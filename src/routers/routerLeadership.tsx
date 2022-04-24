@@ -18,6 +18,7 @@ import { Profile } from "../Views/Profile/Profile";
 import { Notification } from "../Views/Leadership/Noti/Noti";
 import { ViewSubject } from "../Views/Leadership/Subject/ViewSubject";
 import { ListFile } from "../Views/Leadership/ListFile/ListFile";
+import { PrivateFile } from "../Views/Leadership/PrivateFile/Subject";
 
 export const Leadership = () => {
   const location = useLocation();
@@ -63,6 +64,9 @@ export const Leadership = () => {
                           </Route>
                           <Route>
                             <Route path="/subjects" element={<Subject />} />
+                          </Route>
+                          <Route>
+                            <Route path="/file" element={<PrivateFile />} />
                           </Route>
                           <Route>
                             <Route

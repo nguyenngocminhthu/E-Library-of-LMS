@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { Editor } from "react-draft-wysiwyg";
+import SunEditor from 'suneditor-react';
 import "./style.scss";
 
 
@@ -136,15 +136,13 @@ export const Notification = () => {
             <Checkbox>Chọn học viên</Checkbox>
             <SearchComponent/>
             <Input className="none" placeholder="Chủ đề" />
-            <Editor
-              editorState={editorState}
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName"
-              onEditorStateChange={onEditorStateChange}
+            <SunEditor
               placeholder="Để lại lời nhắn của bạn tại đây..."
-              editorStyle={{ height: "200px" }}
-              wrapperStyle={{ borderRadius: "8px" }}
+              setOptions={{           
+                defaultTag: "div",
+                minHeight: "250px",
+                showPathLabel: false,
+              }}
             />
           </Modal>
         </div>
