@@ -1,25 +1,26 @@
-import Cookie from "js-cookie";
 import axiosClient from "../config/axiosClient";
 
 const url = "/v1/auth";
 
-const login = async (body: any) => {
-  try {
-    const res = await axiosClient.post(`${url}/login`, body);
-    console.log("log at ==> Auth.Api.js ==> line 23 ==>  res: ", res);
-    if (res.data) {
-      Cookie.set("accessToken", res.data.tokens.access.token);
-      console.log(res.data);
-      return { data: res, success: true };
-    }
-    return { data: {}, success: false };
-  } catch (error) {
-    return {
-      success: false,
-    };
-  }
+const login = (email: string, password: string) => {
+  return axiosClient
+    .post(url + "/login", {
+      email,
+      password,
+    })
+    .then((response: any) => {
+      console.debug(response.user);
+
+      if (response.tokens) {
+        localStorage.setItem("user", JSON.stringify(response.user));
+      }
+      return response;
+    });
+};
+const logout = () => {
+  localStorage.removeItem("user");
 };
 
-const Auth = { login };
+const Auth = { login, logout };
 
 export default Auth;

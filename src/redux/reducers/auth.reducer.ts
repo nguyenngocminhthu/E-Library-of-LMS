@@ -1,81 +1,70 @@
-import {
-  createAction,
-  createSlice,
-  PayloadAction,
-  createAsyncThunk,
-} from "@reduxjs/toolkit";
-import type { RootState } from "../store";
+import { createAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { UserState } from "./user.reducer";
-import lodash from "lodash";
 import Auth from "../../Apis/Auth.api";
+import { setMessage } from "./message.reducer";
+
+const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+export const logIn = createAsyncThunk(
+  "auth/logIn",
+  async ({ email, password }: any, thunkAPI) => {
+    try {
+      const data = await Auth.login(email, password);
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+export const logout = createAsyncThunk("auth/logout", async () => {
+  await Auth.logout();
+});
 
 // Define a type for the slice state
 interface AuthState {
-  user?: UserState;
+  user?: UserState | null;
   isLogin?: boolean;
   token?: string;
 }
 
 // Define the initial state using that type
-const initialState: AuthState = {
-  user: { role: "", email: "", password: "" },
-  isLogin: false,
-  token: "",
-};
+const initialState: AuthState = user
+  ? { isLogin: true, user }
+  : { isLogin: false, user: null };
 
 export const removeProfile = createAction("authentication/removeProfile");
 export const setToken = createAction<{ token: any; remember: boolean }>(
   "authentication/setToken"
 );
 
-export const auth = createSlice({
+export const authReducer = createSlice({
   name: "auth",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
-  reducers: {
-    login: (state, action: PayloadAction<{ user?: UserState }>) =>
-      Object.assign(state, {
-        isLogin: action.payload.user != null,
-        user: action.payload.user,
-      }),
-    updateProfile: (
-      state,
-      action: PayloadAction<{
-        isLogin?: boolean;
-      }>
-    ) => Object.assign(state, action.payload),
-    logOut: (state: any) => {
-      return {
-        ...state,
-        statusLogin: false,
-        user: null,
-        token: null,
-      };
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(removeProfile, (state: any) => {
-        return {
-          ...state,
-          statusLogin: false,
-          user: null,
-          listPermissionCode: [],
-          token: null,
-          remember: false,
-        };
-      })
-      .addCase(setToken, (state, action) =>
-        Object.assign(state, action.payload, {
-          isLogin: !lodash.isEmpty(action.payload.token),
-        })
-      );
+    builder.addCase(logIn.fulfilled, (state, action) => {
+      state.isLogin = true;
+      state.user = action.payload.user;
+    });
+    builder.addCase(logIn.rejected, (state, action) => {
+      state.isLogin = false;
+      state.user = null;
+    });
+    builder.addCase(logout.fulfilled, (state, action) => {
+      state.isLogin = false;
+      state.user = null;
+    });
   },
 });
 
-export const { login, updateProfile, logOut } = auth.actions;
+const { reducer } = authReducer;
 
-// Other code such as selectors can use the imported `RootState` type
-export const selectToken = (state: RootState) => state.auth.token;
-
-export default auth.reducer;
+export default reducer;

@@ -5,12 +5,13 @@ import logo from "../../shared/img/logo-system.png";
 import { useNavigate } from "react-router";
 const Cover = () => {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   return (
     <div className="cover">
       <div className="coverContent">
         <h1 className="h1-content">LMS - Learning Management System</h1>
-        <button className="coverButton" onClick={() => navigate("/home")}>
+        <button className="coverButton" onClick={() => navigate("/login")}>
           E-Library
         </button>
 

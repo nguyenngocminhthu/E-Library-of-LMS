@@ -3,8 +3,12 @@ import "./Login.scss";
 import logoLogin from "../../shared/img/icon/logo-second.svg";
 import { ReactComponent as Account } from "../../shared/img/icon/account.svg";
 import { ReactComponent as Password } from "../../shared/img/icon/shield-keyhole-line.svg";
-import { Link } from "react-router-dom";
-import { Row, Col, Button } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { Row, Col, Button, Form } from "antd";
+import { useAppDispatch } from "../../redux/hooks";
+import { logIn, logout } from "../../redux/reducers/auth.reducer";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
 // import { useDispatch, useSelector } from "react-redux";
 // import { RootState } from "../../redux";
 // import { setError, signin } from "../../redux/users/actions/authActions";
@@ -14,26 +18,21 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  //   const dispatch = useDispatch();
-  //   const { error } = useSelector((state: RootState) => state.auth);
+  const [form] = Form.useForm();
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
 
-  //   useEffect(() => {
-  //     return () => {
-  //       if (error) {
-  //         dispatch(setError(""));
-  //       }
-  //     };
-  //   }, [error, dispatch]);
-
-  //   const submitHandler = (e: FormEvent) => {
-  //     e.preventDefault();
-  //     if (error) {
-  //       dispatch(setError(""));
-  //       toast(error);
-  //     }
-  //     setLoading(true);
-  //     dispatch(signin({ email, password }, () => setLoading(false)));
-  //   };
+  const onFinish = (values: any) => {
+    dispatch(logIn(values))
+      .unwrap()
+      .then((rs: any) => {
+        navigate("/home");
+        console.debug("rs: ", rs);
+      })
+      .catch((e: any) => {
+        console.debug("e: ", e);
+      });
+  };
 
   return (
     <div className="login">
@@ -41,34 +40,36 @@ const Login = () => {
       <Row>
         <Col span={12}></Col>
         <Col span={12}>
-          <div className="formLogin">
+          <Form onFinish={onFinish} form={form} className="formLogin">
             <h1>Đăng nhập</h1>
-
             <label htmlFor="username">Tên đăng nhập</label>
             <div className="input-icons">
               <Account className="test" />
-              <input
-                className="input-field"
-                type="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.currentTarget.value)}
-                placeholder="Email address"
-                id="username"
-              />
+              <Form.Item name="email">
+                <input
+                  className="input-field"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.currentTarget.value)}
+                  placeholder="Email address"
+                  id="username"
+                />
+              </Form.Item>
             </div>
             <label htmlFor="password">Mật khẩu</label>
             <div className="input-icons">
               <Password className="test" />
-              <input
-                className="input-field"
-                type="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.currentTarget.value)}
-                placeholder="Password"
-                id="password"
-              />
+
+              <Form.Item name="password">
+                <input
+                  className="input-field"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                  placeholder="Password"
+                  id="password"
+                />
+              </Form.Item>
             </div>
             <Link className="forgotPass" to="/forgotpassword">
               Quên mật khẩu?
@@ -76,14 +77,14 @@ const Login = () => {
 
             <Button
               type="primary"
-              //   onClick={submitHandler}
+              onClick={() => form.submit()}
               disabled={loading}
               style={{ width: "100%" }}
             >
               {loading ? "Loading..." : "Đăng nhập"}
               {/* <ToastContainer /> */}
             </Button>
-          </div>
+          </Form>
         </Col>
       </Row>
     </div>
