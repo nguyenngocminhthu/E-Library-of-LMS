@@ -2,6 +2,7 @@ import { createAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { UserState } from "./user.reducer";
 import Auth from "../../Apis/Auth.api";
 import { setMessage } from "./message.reducer";
+import { setLoading } from "./loading.reducer";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -9,7 +10,11 @@ export const logIn = createAsyncThunk(
   "auth/logIn",
   async ({ email, password }: any, thunkAPI) => {
     try {
+      thunkAPI.dispatch(setLoading(true));
       const data = await Auth.login(email, password);
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
       return data;
     } catch (error: any) {
       const message =
