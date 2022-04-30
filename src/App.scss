@@ -15,11 +15,13 @@ $color-site-layout: #fafbfc;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
   border-radius: 16px;
 }
+
 .ant-layout {
   .site-layout {
     background-color: $color-site-layout;
   }
 }
+
 .btn-header {
   background-color: transparent;
   border: none !important;

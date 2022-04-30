@@ -38,6 +38,7 @@ export const ListFile = () => {
 
   const config = {
     title: "Phê duyệt",
+    className: "file-modal",
     content:
       "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
     okText: "Xác nhận",
@@ -47,7 +48,7 @@ export const ListFile = () => {
   const config1 = {
     title: "Huỷ phê duyệt tài liệu",
     width: "50%",
-    className: "cancel-form",
+    className: "cancel-form file-modal",
     content: (
       <Form name="cancel-form" form={form}>
         <Form.Item

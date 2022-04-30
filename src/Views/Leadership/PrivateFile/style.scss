@@ -12,40 +12,46 @@
     display: flex !important;
     align-items: center;
   }
+
   .selectcomp {
     display: block;
     margin: 0 1rem 1rem 0;
+
     .select {
       margin: 0;
     }
   }
-  .ant-table-thead > tr > th {
+
+  .ant-table-thead>tr>th {
     background: $color-primary;
     color: $color-white;
   }
 
-  .ant-table-tbody > tr:nth-child(even) {
+  .ant-table-tbody>tr:nth-child(even) {
     background-color: $color-grey-light-2;
   }
+
   .ant-table-container {
     margin-top: 1rem;
   }
+
   // for border table
-  .ant-table-container table > thead > tr:first-child th:first-child {
+  .ant-table-container table>thead>tr:first-child th:first-child {
     border-top-left-radius: $border-radius;
   }
 
-  .ant-table-container table > thead > tr:first-child th:last-child {
+  .ant-table-container table>thead>tr:first-child th:last-child {
     border-top-right-radius: $border-radius;
   }
 
-  .ant-table-tbody > tr.ant-table-row:last-child > td:first-child {
+  .ant-table-tbody>tr.ant-table-row:last-child>td:first-child {
     border-bottom-left-radius: $border-radius;
   }
 
-  .ant-table-tbody > tr.ant-table-row:last-child > td:last-child {
+  .ant-table-tbody>tr.ant-table-row:last-child>td:last-child {
     border-bottom-right-radius: $border-radius;
   }
+
   .ant-btn-icon-only {
     border: none;
     color: $color-primary;
@@ -56,6 +62,7 @@
     color: $color-grey-dark-1;
     font-style: italic;
   }
+
   .green {
     color: $color-primary-green;
   }
@@ -67,27 +74,34 @@
   .ant-table-thead th.ant-table-column-has-sorters:hover {
     background-color: $color-primary-hover;
   }
+
   .search-bar {
+
     .ant-input-affix-wrapper,
     input {
       border: 1px solid $color-grey-light-2;
       background: $color-grey-light-2 !important;
     }
+
     .ant-input-affix-wrapper-focused,
-    .ant-input-affix-wrapper:focus{
+    .ant-input-affix-wrapper:focus {
       box-shadow: 0rem 0rem 0.4rem $color-primary;
     }
-    .ant-input-affix-wrapper:hover{
+
+    .ant-input-affix-wrapper:hover {
       border-color: $color-primary;
     }
   }
-  .ant-table-tbody > tr > td {
+
+  .ant-table-tbody>tr>td {
     text-align: center;
   }
+
   .ant-table-column-sorters {
     display: inline-flex;
   }
-  .ant-table-column-sorter-inner{
+
+  .ant-table-column-sorter-inner {
     color: $color-white;
   }
 }
@@ -119,6 +133,7 @@ hr {
     color: #292b2e79;
     font-style: italic;
   }
+
   .overview {
     background-color: $color-background-secondary;
     width: 100%;
@@ -145,9 +160,7 @@ hr {
     }
   }
 
-  [data-theme="compact"]
-    .site-collapse-custom-collapse
-    .site-collapse-custom-panel,
+  [data-theme="compact"] .site-collapse-custom-collapse .site-collapse-custom-panel,
   .site-collapse-custom-collapse .site-collapse-custom-panel {
     margin-bottom: 24px;
     overflow: hidden;
@@ -157,12 +170,13 @@ hr {
     border-radius: 8px;
   }
 
-  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  .ant-collapse>.ant-collapse-item>.ant-collapse-header {
     font-weight: 700;
   }
 
-  .ant-collapse > .ant-collapse-item-active > .ant-collapse-header {
+  .ant-collapse>.ant-collapse-item-active>.ant-collapse-header {
     background: linear-gradient(270deg, #ff5400 0%, #f17f21 80.56%);
+
     .anticon svg {
       color: white;
     }
@@ -206,10 +220,12 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
+
     .ant-btn {
       background-color: rgba(160, 158, 158, 0.595);
       border: none;
     }
+
     .anticon svg {
       color: white;
       font-size: 26px;
@@ -271,6 +287,7 @@ hr {
   .ant-tabs-tab {
     font-weight: 600;
     color: #3738397e;
+
     &:hover {
       color: #f17f21;
     }
@@ -356,28 +373,28 @@ hr {
     align-items: center;
   }
 
-  [data-theme="compact"]
-    .site-collapse-custom-collapse
-    .site-collapse-custom-panel,
+  [data-theme="compact"] .site-collapse-custom-collapse .site-collapse-custom-panel,
   .site-collapse-custom-collapse .site-collapse-custom-panel {
     margin-bottom: 24px;
     overflow: hidden;
     background: #f0f3f6;
     border: 0px;
     border-radius: 8px;
+
     .anticon svg {
       font-size: large;
     }
   }
 
-  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  .ant-collapse>.ant-collapse-item>.ant-collapse-header {
     font-weight: 700;
     align-items: center;
   }
 
-  .ant-collapse > .ant-collapse-item-active {
+  .ant-collapse>.ant-collapse-item-active {
     background: white;
     border: 1px solid rgba(200, 199, 199, 0.574);
+
     .anticon svg {
       color: #ff7506;
       font-size: large;
@@ -462,6 +479,7 @@ hr {
   .view-more {
     color: $color-text-light;
     font-weight: 700;
+
     &:hover {
       cursor: pointer;
     }
@@ -476,6 +494,7 @@ hr {
       display: flex;
       align-items: center;
       justify-content: center;
+
       .anticon svg {
         font-size: 30px;
       }

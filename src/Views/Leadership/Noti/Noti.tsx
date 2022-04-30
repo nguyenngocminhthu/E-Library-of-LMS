@@ -1,5 +1,5 @@
 import { SettingOutlined } from "@ant-design/icons";
-import { Avatar, Button, Checkbox, Col, Divider, Input, List, Modal, Row, Skeleton, Space, Tabs, Tooltip } from "antd";
+import { Avatar, Button, Checkbox, Divider, Input, List, Modal, Skeleton, Space, Tabs, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router";
@@ -107,6 +107,7 @@ export const Notification = () => {
           <Space className="" size="middle">
             <Tooltip title="Setting">
               <Button
+                className="setting-btn-icon"
                 type="link"
                 onClick={() => navigate("/notification/setting")}
                 icon={<SettingOutlined style={{ fontSize: "36px" }} />}
@@ -134,11 +135,11 @@ export const Notification = () => {
               defaultValue="Chọn lớp giảng dạy"
             />
             <Checkbox>Chọn học viên</Checkbox>
-            <SearchComponent/>
+            <SearchComponent />
             <Input className="none" placeholder="Chủ đề" />
             <SunEditor
               placeholder="Để lại lời nhắn của bạn tại đây..."
-              setOptions={{           
+              setOptions={{
                 defaultTag: "div",
                 minHeight: "250px",
                 showPathLabel: false,

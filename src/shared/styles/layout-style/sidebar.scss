@@ -7,6 +7,7 @@
 .sidebar {
   background-color: $color-primary;
   color: $color-primary-light;
+
   .ant-menu-item {
     display: inline-flex;
     justify-content: center;
@@ -18,7 +19,7 @@
     background-color: $color-primary;
   }
 
-  .ant-menu.ant-menu-inline-collapsed > .ant-menu-item {
+  .ant-menu.ant-menu-inline-collapsed>.ant-menu-item {
     padding: 0 0.5rem 0 1.2rem;
     margin: 0 0 0 0.3rem;
   }
@@ -55,7 +56,7 @@
     font-weight: 700;
   }
 
-  .ant-menu.ant-menu-inline > .ant-menu-item {
+  .ant-menu.ant-menu-inline>.ant-menu-item {
     padding: 0 0.5rem 0 1.2rem;
     margin: 0 0 0 0;
   }

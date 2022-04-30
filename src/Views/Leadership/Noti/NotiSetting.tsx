@@ -8,7 +8,7 @@ function NotiSetting() {
   const [ checked, setChecked ] = useState(false);
 
   return (
-    <div>
+    <div className='setting-noti-page'>
        <h1>Bạn có thể cài đặt những thông báo sẽ nhận:</h1>
         <Collapse bordered={false} className="site-collapse-custom-collapse" expandIconPosition="right" >
           <Panel
