@@ -15,41 +15,46 @@ import UserManage from "../Views/Leadership/SysSetting/UserManage";
 import Login from "../Views/Login/Login";
 import { Profile } from "../Views/Profile/Profile";
 import { PrivateFile } from "../Views/Leadership/PrivateFile/Subject";
+import { Suspense } from "react";
+import { Loader } from "../Components/Loader";
 
 export const Leadership = () => {
   return (
-    <Routes>
-      <Route>
-        <Route path="/" element={<Cover />} />
-        <Route path="/login" element={<Login />} />
-      </Route>
-      <Route path="" element={<MainLayout />}>
-        <Route path="/home" element={<Home />} />
+    <Suspense fallback={<Loader />}>
+      <Routes>
+        <Route>
+          <Route path="/" element={<Cover />} />
+          <Route path="/login" element={<Login />} />
+        </Route>
+        <Route path="" element={<MainLayout />}>
+          <Route path="/home" element={<Home />} />
 
-        <Route path="/subjects" element={<Subject />} />
+          <Route path="/subjects" element={<Subject />} />
 
-        <Route path="/listfile/:idSub" element={<ListFile />} />
+          <Route path="/listfile/:idSub" element={<ListFile />} />
 
-        <Route path="/subjects/:idSub" element={<SubjectDetail />} />
+          <Route path="/subjects/:idSub" element={<SubjectDetail />} />
 
-        <Route path="/viewsubject/:idSub" element={<ViewSubject />} />
+          <Route path="/viewsubject/:idSub" element={<ViewSubject />} />
 
-        <Route path="/file" element={<PrivateFile />} />
+          <Route path="/file" element={<PrivateFile />} />
 
-        <Route path="/help" element={<Help />} />
+          <Route path="/help" element={<Help />} />
 
-        <Route path="/notification" element={<Notification />} />
+          <Route path="/notification" element={<Notification />} />
 
-        <Route path="/setting" element={<System />} />
+          <Route path="/setting" element={<System />} />
 
-        <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
 
-        <Route path="/setting/information" element={<Information />} />
+          <Route path="/setting/information" element={<Information />} />
 
-        <Route path="/setting/usermanage" element={<UserManage />} />
+          <Route path="/setting/usermanage" element={<UserManage />} />
 
-        <Route path="/notification/setting" element={<NotiSetting />} />
-      </Route>
-    </Routes>
+          <Route path="/notification/setting" element={<NotiSetting />} />
+        </Route>
+      </Routes>
+      <Loader />
+    </Suspense>
   );
 };

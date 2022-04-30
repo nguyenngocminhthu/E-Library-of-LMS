@@ -9,10 +9,12 @@ const login = (email: string, password: string) => {
       password,
     })
     .then((response: any) => {
-      console.debug(response.user);
-
       if (response.tokens) {
         localStorage.setItem("user", JSON.stringify(response.user));
+        localStorage.setItem(
+          "accestoken",
+          JSON.stringify(response.tokens.access.token)
+        );
       }
       return response;
     });

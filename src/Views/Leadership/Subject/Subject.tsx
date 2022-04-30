@@ -1,33 +1,16 @@
 import { UnorderedListOutlined } from "@ant-design/icons";
 import { Button, Col, Row, Space, Table, Tooltip } from "antd";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
+import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
-const subject = [
-  {
-    name: "Thương mại điện tử",
-    value: "TMDT",
-  },
-  {
-    name: "Nguyên lý kế toán",
-    value: "NLKT",
-  },
-  {
-    name: "Hệ thống thông tin",
-    value: "HTTT",
-  },
-  {
-    name: "Luật thương mại",
-    value: "LTM",
-  },
-  {
-    name: "Ngân hàng ",
-    value: "NG",
-  },
-];
 const teacher = [
   {
     name: "Nguyễn Văn A",
@@ -45,8 +28,39 @@ const status = [
   },
 ];
 
+interface ISubjectSelect {
+  name: string;
+  value: string;
+}
+
 export const Subject = () => {
   const navigate = useNavigate();
+  const data = useSelector((state: any) => state.subject.listSubject.results);
+  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([]);
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getSubjects())
+      .unwrap()
+      .then((rs: any) => {
+        console.debug("rs: ", rs);
+      })
+      .catch((e: any) => {
+        console.debug("e: ", e);
+      });
+  }, []);
+
+  useEffect(() => {
+    const option: ISubjectSelect[] = [];
+    if (data) {
+      data.forEach((it: ISubject) => {
+        option.push({ name: it.subName, value: it.id });
+      });
+    }
+
+    setSubjectSelect(option);
+  }, [data]);
+
   const columns = [
     {
       title: "Mã môn học",
@@ -105,36 +119,6 @@ export const Subject = () => {
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      subCode: "2020-6B",
-      subName: "Thương mại điện tử",
-      teacher: "Nguyễn Văn A",
-      file: "15/20",
-      status: 0,
-      createdAt: "12/02/2021",
-    },
-    {
-      key: "2",
-      subCode: "2020-6C",
-      subName: "Nguyên lý kế toán",
-      teacher: "Nguyễn Văn A",
-      file: "15/20",
-      status: 1,
-      createdAt: "12/02/2021",
-    },
-    {
-      key: "3",
-      subCode: "2020-6A",
-      subName: "Hệ thống thông tin",
-      teacher: "Nguyễn Văn A",
-      file: "15/20",
-      status: 0,
-      createdAt: "12/02/2021",
-    },
-  ];
-
   return (
     <div className="subject">
       <BreadcrumbComp title="Danh sách môn học" />
@@ -144,7 +128,7 @@ export const Subject = () => {
             style={{ display: "block" }}
             textLabel="Môn học"
             defaultValue="Tất cả môn học"
-            dataString={subject}
+            dataString={subjectSelect}
           />
           <SelectComp
             style={{ display: "block" }}

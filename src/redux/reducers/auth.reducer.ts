@@ -39,11 +39,6 @@ const initialState: AuthState = user
   ? { isLogin: true, user }
   : { isLogin: false, user: null };
 
-export const removeProfile = createAction("authentication/removeProfile");
-export const setToken = createAction<{ token: any; remember: boolean }>(
-  "authentication/setToken"
-);
-
 export const authReducer = createSlice({
   name: "auth",
   // `createSlice` will infer the state type from the `initialState` argument

@@ -15,12 +15,25 @@ $color-site-layout: #fafbfc;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
   border-radius: 16px;
 }
-.ant-layout{
-  .site-layout{
+.ant-layout {
+  .site-layout {
     background-color: $color-site-layout;
   }
 }
 .btn-header {
   background-color: transparent;
   border: none !important;
+}
+
+.loader {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(187, 185, 185, 0.392);
+  z-index: 99999;
 }
