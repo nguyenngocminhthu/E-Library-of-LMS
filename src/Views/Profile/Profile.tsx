@@ -2,9 +2,15 @@ import { InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Select, Tabs } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { BreadcrumbComp } from "../../Components/Breadcrumb";
 import { InputLabel } from "../../Components/InputLabel";
-import './style.scss';
+import Toast from "../../Components/Toast";
+import { updateProfile, UserState } from "../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../redux/store";
+import "./style.scss";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const { Option } = Select;
 
@@ -12,11 +18,30 @@ const { TabPane } = Tabs;
 export const Profile = () => {
   const [form] = Form.useForm();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const [disable, setDisable] = useState(false);
+  const [disable, setDisable] = useState(true);
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    form.setFieldsValue(user)
-  },[])
+    form.setFieldsValue(user);
+  }, []);
+
+  const onFinish = (values: UserState) => {
+    const value = {
+      userName: values.userName,
+      gender: values.gender,
+      phone: values.phone,
+      address: values.address,
+      email: values.email,
+    };
+    dispatch(updateProfile({ id: values.id, payload: value })).then(
+      (rs: any) => {
+        localStorage.removeItem("user");
+        localStorage.setItem("user", JSON.stringify(rs.payload));
+        setDisable(true);
+        Toast("Cập nhật hồ sơ thành công");
+      }
+    );
+  };
 
   return (
     <div className="profile-page">
@@ -25,7 +50,13 @@ export const Profile = () => {
         <Tabs defaultActiveKey="1" type="card" size={"small"}>
           <TabPane tab="Thông tin cá nhân" key="1">
             <div className="tab-control">
-              <Button type="primary" onClick={() => setDisable(!disable)}>
+              <Button
+                hidden={!disable}
+                type="primary"
+                onClick={() => {
+                  setDisable(!disable);
+                }}
+              >
                 Chỉnh sửa
               </Button>
             </div>
@@ -39,11 +70,12 @@ export const Profile = () => {
                 name="profile-form"
                 layout="horizontal"
                 form={form}
+                onFinish={onFinish}
               >
                 <Row style={{ padding: "16px" }}>
                   <Col span={6}></Col>
                   <Col span={8} offset={1}>
-                    <Form.Item label="Mã người dùng" name="userCode">
+                    <Form.Item label="Mã người dùng" name="id">
                       <Input disabled={disable} />
                     </Form.Item>
                     <Form.Item label="Giới tính" name="gender">
@@ -72,6 +104,17 @@ export const Profile = () => {
                     </Form.Item>
                   </Col>
                 </Row>
+                <div hidden={disable} className="btn-center">
+                  <Button
+                    className="default-btn"
+                    onClick={() => setDisable(true)}
+                  >
+                    Hủy
+                  </Button>
+                  <Button type="primary" onClick={() => form.submit()}>
+                    Lưu
+                  </Button>
+                </div>
               </Form>
             </div>
           </TabPane>
@@ -144,13 +187,16 @@ export const Profile = () => {
                 </Row>
                 <div className="btn-center">
                   <Button className="default-btn">Hủy</Button>
-                  <Button type="primary">Lưu</Button>
+                  <Button type="primary" onClick={() => form.submit()}>
+                    Lưu
+                  </Button>
                 </div>
               </Form>
             </div>
           </TabPane>
         </Tabs>
       </div>
+      <ToastContainer />
     </div>
   );
 };
