@@ -1,34 +1,16 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Space, Table, Tooltip, Typography } from "antd";
+import { Button, Col, Row, Space, Table, Tooltip } from "antd";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
 import {ReactComponent as Edit} from '../../../shared/img/icon/edit.svg'
 import {ReactComponent as Trash} from '../../../shared/img/icon/trash.svg'
 
 import "./style.scss";
 
-const { Title } = Typography;
 
-export const UserManage = () => {
+export const RoleManage = () => {
   const navigate = useNavigate();
-
-  const roleMenu = [
-    {
-      name: "Quản trị viên",
-      value: "admin",
-    },
-    {
-      name: "Học sinh",
-      value: "student",
-    },
-    {
-      name: "Giáo viên",
-      value: "teacher",
-    },
-  ];
-  
   const columns = [
     {
       title: "Tên nhóm",
@@ -94,21 +76,11 @@ export const UserManage = () => {
   return (
     <div className="rule-manager-page">
       <BreadcrumbComp title="Tất cả các tệp" />
-      <div className="title-page">
-        <Title ellipsis level={5}>
-          Danh sách người dùng trên hệ thống
-        </Title>
-          <Button className="btn-location" type="primary" icon={<PlusOutlined />}>
-            Thêm mới
-          </Button>
-      </div>
       <Row>
         <Col className="table-header" span={16}>
-          <SelectComp
-            style={{ display: "block" }}
-            defaultValue="Chọn vai trò"
-            dataString={roleMenu}
-          />
+          <Button type="primary" icon={<PlusOutlined />}>
+            Thêm vai trò
+          </Button>
         </Col>
         <Col className="table-header" span={8}>
           <SearchComponent />
@@ -118,5 +90,3 @@ export const UserManage = () => {
     </div>
   );
 };
-
-export default UserManage

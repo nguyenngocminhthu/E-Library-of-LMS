@@ -14,9 +14,10 @@ import { System } from "../Views/Leadership/SysSetting/System";
 import UserManage from "../Views/Leadership/SysSetting/UserManage";
 import Login from "../Views/Login/Login";
 import { Profile } from "../Views/Profile/Profile";
-import { PrivateFile } from "../Views/Leadership/PrivateFile/Subject";
+import { PrivateFile } from "../Views/Leadership/PrivateFile/PrivateFile";
 import { Suspense } from "react";
 import { Loader } from "../Components/Loader";
+import { RoleManage } from "../Views/Leadership/SysSetting/RoleManage";
 
 export const Leadership = () => {
   return (
@@ -50,6 +51,8 @@ export const Leadership = () => {
           <Route path="/setting/information" element={<Information />} />
 
           <Route path="/setting/usermanage" element={<UserManage />} />
+
+          <Route path="/setting/rolemanage" element={<RoleManage />} />
 
           <Route path="/notification/setting" element={<NotiSetting />} />
         </Route>

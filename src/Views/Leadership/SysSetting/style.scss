@@ -27,3 +27,199 @@
     width: 300px;
   }
 }
+
+.information-system-page {
+  .ant-form-item-label {
+    text-align: left;
+  }
+
+  .tab-control {
+    text-align: end;
+    margin-bottom: 20px;
+
+    .ant-btn .anticon {
+      font-size: 18px;
+    }
+  }
+
+  .tab-notilist {
+    position: relative;
+
+    .ant-form-item-label>label {
+      font-weight: 600;
+    }
+
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      border-radius: 8px;
+      height: 36px;
+    }
+
+    .box-cover {
+      background: $color-white;
+      border-radius: 16px;
+      height: fit-content;
+      overflow: auto;
+      border: 1px solid rgba(140, 140, 140, 0.35);
+
+      .header-box {
+        background: $color-second-text;
+
+        .text-header {
+          color: $color-white;
+          font-size: 0.875rem;
+          font-weight: bold;
+          padding: 16px;
+          margin-left: 36px;
+        }
+      }
+
+      .line {
+        border-top: 1px solid $color-primary;
+        margin: 20px;
+      }
+
+      .input-title {
+        display: flex;
+      }
+
+      .waring-passwod {
+        color: $color-primary;
+        font-size: 28px;
+      }
+
+      .btn-center {
+        text-align: center;
+      }
+
+      .default-btn {
+        background-color: #f2f2f2;
+        border: none;
+        color: $color-black;
+        margin-right: 24px;
+      }
+
+      .default-btn:hover {
+        background-color: $color-white;
+        color: $color-primary;
+        border: 1px solid $color-primary;
+      }
+    }
+  }
+}
+
+.rule-manager-page {
+  .ant-table table {
+    border-radius: 15px;
+    border: 1px solid rgba(223, 223, 223, 0.636);
+    border-bottom: none;
+  }
+
+  .table-header {
+    margin-top: 1rem;
+    display: flex !important;
+    align-items: center;
+  }
+
+  .selectcomp {
+    display: block;
+    margin: 0 1rem 1rem 0;
+
+    .select {
+      margin: 0;
+    }
+  }
+
+  .title-page {
+    position: relative;
+
+    .btn-location {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  .ant-table-thead>tr>th {
+    background: $color-primary;
+    color: $color-white;
+  }
+
+  .ant-table-tbody>tr:nth-child(even) {
+    background-color: $color-grey-light-2;
+  }
+
+  .ant-table-container {
+    margin-top: 1rem;
+  }
+
+  // for border table
+  .ant-table-container table>thead>tr:first-child th:first-child {
+    border-top-left-radius: $border-radius;
+  }
+
+  .ant-table-container table>thead>tr:first-child th:last-child {
+    border-top-right-radius: $border-radius;
+  }
+
+  .ant-table-tbody>tr.ant-table-row:last-child>td:first-child {
+    border-bottom-left-radius: $border-radius;
+  }
+
+  .ant-table-tbody>tr.ant-table-row:last-child>td:last-child {
+    border-bottom-right-radius: $border-radius;
+  }
+
+  .ant-btn-icon-only {
+    border: none;
+    color: $color-primary;
+    background-color: transparent;
+  }
+
+  .gray {
+    color: $color-grey-dark-1;
+    font-style: italic;
+  }
+
+  .green {
+    color: $color-primary-green;
+  }
+
+  .ant-table-thead th.ant-table-column-sort:hover {
+    background-color: $color-primary-hover;
+  }
+
+  .ant-table-thead th.ant-table-column-has-sorters:hover {
+    background-color: $color-primary-hover;
+  }
+
+
+  .search-bar {
+
+    .ant-input-affix-wrapper,
+    input {
+      border: 1px solid $color-grey-light-2;
+      background: $color-grey-light-2 !important;
+    }
+
+    .ant-input-affix-wrapper-focused,
+    .ant-input-affix-wrapper:focus {
+      box-shadow: 0rem 0rem 0.4rem $color-primary;
+    }
+
+    .ant-input-affix-wrapper:hover {
+      border-color: $color-primary;
+    }
+  }
+
+  .ant-table-tbody>tr>td {
+    text-align: center;
+  }
+
+  .ant-table-column-sorters {
+    display: inline-flex;
+  }
+
+  .ant-table-column-sorter-inner {
+    color: $color-white;
+  }
+}
