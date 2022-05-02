@@ -26,7 +26,11 @@ const Login = () => {
     dispatch(logIn(values))
       .unwrap()
       .then((rs: any) => {
-        navigate("/home");
+        if (rs.user.role === "teacher") {
+          navigate("/teacher/home");
+        } else {
+          navigate("/home");
+        }
         console.debug("rs: ", rs);
       })
       .catch((e: any) => {
