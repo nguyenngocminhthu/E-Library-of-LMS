@@ -23,11 +23,7 @@ export const Leadership = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route>
-          <Route path="/" element={<Cover />} />
-          <Route path="/login" element={<Login />} />
-        </Route>
-        <Route path="" element={<MainLayout />}>
+        <Route element={<MainLayout />}>
           <Route path="/home" element={<Home />} />
 
           <Route path="/subjects" element={<Subject />} />

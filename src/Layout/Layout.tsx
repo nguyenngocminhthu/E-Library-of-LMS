@@ -10,11 +10,12 @@ import { TeacherSidebar } from "./Sidebar/TeacherSidebar";
 export const MainLayout = () => {
   const acception = ["admin", "leadership", "teacher", "student"];
 
-  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  console.debug("user: ", user);
 
   return (
     <div>
-      {acception.includes(user.role) ? (
+      {user !== null ? (
         <Layout style={{ minHeight: "100vh" }}>
           {user.role === "teacher" ? <TeacherSidebar /> : <Sidebar />}
           <Layout className="site-layout">
