@@ -36,6 +36,7 @@ export interface UserState {
   userName: string;
   phone: string;
   address: string;
+  avt: any;
 }
 
 interface IUser {

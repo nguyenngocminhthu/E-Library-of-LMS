@@ -1,5 +1,9 @@
-import { InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, Row, Select, Tabs } from "antd";
+import {
+  CameraOutlined,
+  InfoCircleOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
+import { Button, Col, Form, Input, Row, Select, Tabs, Upload } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -11,6 +15,8 @@ import { AppDispatch } from "../../redux/store";
 import "./style.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import cloudinaryUpload from "../../Apis/Cloudinary";
+import ImgCrop from "antd-img-crop";
 
 const { Option } = Select;
 
@@ -20,10 +26,56 @@ export const Profile = () => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [disable, setDisable] = useState(true);
   const dispatch: AppDispatch = useDispatch();
+  const [fileList, setFileList] = useState<any>([
+    {
+      uid: "-1",
+      name: "image.png",
+      status: "done",
+      url: "https://icons-for-free.com/iconfiles/png/512/gallery+image+landscape+mobile+museum+open+line+icon-1320183049020185924.png",
+    },
+  ]);
 
   useEffect(() => {
     form.setFieldsValue(user);
+    setFileList([
+      {
+        uid: "-1",
+        name: "image.png",
+        status: "done",
+        url: `${user.avt}`,
+      },
+    ]);
   }, []);
+
+  const onPreview = async (file: any) => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+
+  const handleFileUpload = (e: any) => {
+    const uploadData = new FormData();
+    uploadData.append("file", e, "file");
+    cloudinaryUpload(uploadData).then((rs: any) => {
+      dispatch(updateProfile({ id: user.id, payload: { avt: rs.url } })).then(
+        (rs: any) => {
+          localStorage.removeItem("user");
+          localStorage.setItem("user", JSON.stringify(rs.payload));
+          setDisable(true);
+          Toast("Cập nhật ảnh đại diện thành công");
+        }
+      );
+    });
+  };
 
   const onFinish = (values: UserState) => {
     const value = {
@@ -33,6 +85,7 @@ export const Profile = () => {
       address: values.address,
       email: values.email,
     };
+    console.debug("value: ", values);
     dispatch(updateProfile({ id: values.id, payload: value })).then(
       (rs: any) => {
         localStorage.removeItem("user");
@@ -73,8 +126,32 @@ export const Profile = () => {
                 onFinish={onFinish}
               >
                 <Row style={{ padding: "16px" }}>
-                  <Col span={6}></Col>
-                  <Col span={8} offset={1}>
+                  <Col span={7}>
+                    <Form.Item name="avt">
+                      <ImgCrop
+                        rotate
+                        shape="round"
+                        onModalOk={(file) => handleFileUpload(file)}
+                      >
+                        <Upload
+                          showUploadList={{
+                            showPreviewIcon: false,
+                            showRemoveIcon: false,
+                          }}
+                          listType="picture-card"
+                          fileList={fileList}
+                          onChange={({ fileList: newFileList }) => {
+                            setFileList(newFileList);
+                          }}
+                          maxCount={1}
+                          onPreview={onPreview}
+                        >
+                          <CameraOutlined />
+                        </Upload>
+                      </ImgCrop>
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
                     <Form.Item label="Mã người dùng" name="id">
                       <Input disabled={disable} />
                     </Form.Item>
