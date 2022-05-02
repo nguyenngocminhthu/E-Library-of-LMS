@@ -107,11 +107,18 @@
   }
 }
 
-.rule-manager-page {
+.role-manage-page {
   .ant-table table {
     border-radius: 15px;
     border: 1px solid rgba(223, 223, 223, 0.636);
     border-bottom: none;
+  }
+  .ant-modal-body{
+    padding: 36px;
+  }
+  .ant-form-item-label {
+    text-align: left;
+    font-weight: 600;
   }
 
   .table-header {
@@ -129,6 +136,7 @@
     }
   }
 
+
   .title-page {
     position: relative;
 
@@ -138,6 +146,11 @@
       right: 0;
     }
   }
+
+  .line {
+    border-top: 1px solid #C9C4C0;
+  }
+
 
   .ant-table-thead>tr>th {
     background: $color-primary;

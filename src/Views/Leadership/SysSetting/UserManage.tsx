@@ -40,13 +40,7 @@ export const UserManage = () => {
       title: "Mô tả",
       dataIndex: "describe",
       key: "describe",
-      sorter: true,
       // sorter: (a: any, b: any) => a.subName.length - b.subName.length,
-      // render: (subName: string, record: any) => (
-      //   <div onClick={() => navigate(`/subjects/${record.subCode}`)}>
-      //     {subName}
-      //   </div>
-      // ),
     },
     {
       title: "Lần cập nhật cuối",
