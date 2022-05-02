@@ -4,14 +4,14 @@ import { Loader } from "../Components/Loader";
 import { MainLayout } from "../Layout/Layout";
 import Cover from "../Views/Cover/Cover";
 import { Help } from "../Views/Leadership/Help/Help";
-import { Home } from "../Views/Leadership/Home/Home";
 import { Notification } from "../Views/Leadership/Noti/Noti";
 import NotiSetting from "../Views/Leadership/Noti/NotiSetting";
-import { Subject } from "../Views/Leadership/Subject/Subject";
 import Login from "../Views/Login/Login";
 import { Profile } from "../Views/Profile/Profile";
 import { Exam } from "../Views/Teacher/Exam/Exam";
+import { Home } from "../Views/Teacher/Home/Home";
 import { Resource } from "../Views/Teacher/Resource/Resource";
+import { Subject } from "../Views/Teacher/Subject/Subject";
 
 export const Teacher = () => {
   return (

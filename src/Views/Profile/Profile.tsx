@@ -70,7 +70,6 @@ export const Profile = () => {
         (rs: any) => {
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(rs.payload));
-          setDisable(true);
           Toast("Cập nhật ảnh đại diện thành công");
         }
       );
