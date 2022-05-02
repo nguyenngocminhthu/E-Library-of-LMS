@@ -17,11 +17,7 @@ export const Teacher = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route>
-          <Route path="/" element={<Cover />} />
-          <Route path="/login" element={<Login />} />
-        </Route>
-        <Route path="" element={<MainLayout />}>
+        <Route element={<MainLayout />}>
           <Route path="/teacher/home" element={<Home />} />
 
           <Route path="/teacher/subject" element={<Subject />} />
