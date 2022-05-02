@@ -3,12 +3,14 @@ import { Layout, Button } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { logout } from "../../redux/reducers/auth.reducer";
+import { UserState } from "../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../redux/store";
 import "../../shared/styles/layout-style/header.scss";
 const { Header } = Layout;
 
 export const HeaderComp = () => {
   const dispatch: AppDispatch = useDispatch();
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
   return (
     <Header
@@ -26,7 +28,7 @@ export const HeaderComp = () => {
         className="btn-header"
       >
         <UserOutlined />
-        Admin
+        {user.userName}
       </Button>
       <Button
         onClick={() => {
