@@ -1,8 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Col, Form, Input, Modal, Row, Space, Table, Tooltip, Typography } from "antd";
+import { Button, Checkbox, Col, Form, Input, Row, Space, Table, Tooltip, Typography } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import modal from "antd/lib/modal";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import {ReactComponent as Edit} from '../../../shared/img/icon/edit.svg'
@@ -13,20 +12,6 @@ import "./style.scss";
 const { Title } = Typography;
 
 export const RoleManage = () => {
-  const navigate = useNavigate();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
   const columns = [
     {
       title: "Tên nhóm",
@@ -54,69 +39,37 @@ export const RoleManage = () => {
             <Button icon={<Edit />} />
           </Tooltip>
           <Tooltip title="Delete">
-            <Button icon={<Trash />} />
+            <Button icon={<Trash onClick={() => modal.confirm(deleteRow)}/>} />
           </Tooltip>
         </Space>
       ),
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      groupName: "Quản trị viên",
-      describe: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam malesuada posuere justo.",
-      lastUpdate: "12/12/2021",
-    },
-    {
-      key: "2",
-      groupName: "Quản trị viên",
-      describe: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam malesuada posuere justo.",
-      lastUpdate: "12/12/2021",
-    },
-    {
-      key: "3",
-      groupName: "Quản trị viên",
-      describe: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam malesuada posuere justo.",
-      lastUpdate: "12/12/2021",
-    },
-  ];
+  const deleteRow = {
+    title: "Xóa vai trò",
+    className: "modal-delete",
+    content:
+      "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+  };
 
-  return (
-    <div className="role-manage-page">
-      <BreadcrumbComp title="Tất cả các tệp" />
-      <div className="title-page">
-        <Title ellipsis level={5}>
-          Danh sách các nhóm người dùng
-        </Title>
-
-        <Button
-          className="btn-location"
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={showModal}
-        >
-          Thêm vai trò
-        </Button>
-      </div>
-      <Modal
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okText="Lưu"
-        cancelText="Hủy"
-        width={800}
-      >
-        <Form
+  const modalAddRole = {
+    title: "Thiết lập vai trò",
+    width: "50%",
+    className: "modal-add-role",
+    content: (
+      <Form
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
           name="profile-form"
           layout="horizontal"
         >
-          <Form.Item label="Tên vai trò" name="id">
+          <Form.Item label="Tên vai trò" name="1">
             <Input />
           </Form.Item>
-          <Form.Item label="Mô tả" name="id">
+          <Form.Item label="Mô tả" name="2">
             <TextArea rows={4} />
           </Form.Item>
           <Form.Item label="Môn học" name="id">
@@ -251,7 +204,49 @@ export const RoleManage = () => {
             </Row>
           </Form.Item>
         </Form>
-      </Modal>
+    ),
+    okText: "Lưu",
+    cancelText: "Huỷ",
+  };
+
+  const data = [
+    {
+      key: "1",
+      groupName: "Quản trị viên",
+      describe: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam malesuada posuere justo.",
+      lastUpdate: "12/12/2021",
+    },
+    {
+      key: "2",
+      groupName: "Quản trị viên",
+      describe: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam malesuada posuere justo.",
+      lastUpdate: "12/12/2021",
+    },
+    {
+      key: "3",
+      groupName: "Quản trị viên",
+      describe: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam malesuada posuere justo.",
+      lastUpdate: "12/12/2021",
+    },
+  ];
+
+  return (
+    <div className="role-manage-page">
+      <BreadcrumbComp title="Quản lý vai trò" />
+      <div className="title-page">
+        <Title ellipsis level={5}>
+          Danh sách các nhóm người dùng
+        </Title>
+
+        <Button
+          className="btn-location"
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => modal.confirm(modalAddRole)}
+        >
+          Thêm vai trò
+        </Button>
+      </div>
       <Row>
         <Col className="table-header" span={16}></Col>
         <Col className="table-header" span={8}>

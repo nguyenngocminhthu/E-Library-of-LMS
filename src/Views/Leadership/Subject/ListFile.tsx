@@ -1,6 +1,7 @@
 import { DownloadOutlined, EyeOutlined } from "@ant-design/icons";
 import {
   Button,
+  Checkbox,
   Col,
   DatePicker,
   Form,
@@ -11,6 +12,7 @@ import {
   Tag,
   Tooltip,
 } from "antd";
+import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -47,10 +49,16 @@ export const ListFile = () => {
 
   const config1 = {
     title: "Huỷ phê duyệt tài liệu",
-    width: "50%",
+    width: "40%",
     className: "cancel-form file-modal",
     content: (
-      <Form name="cancel-form" form={form}>
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        name="cancel-form"
+        layout="horizontal"
+        form={form}
+      >
         <Form.Item
           name="startDate"
           label="Ngày bắt đầu"
@@ -61,9 +69,15 @@ export const ListFile = () => {
         <Form.Item name="user" label="Người huỷ" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
+        <Form.Item name="note" label="Ghi chú">
+          <TextArea rows={4} />
+        </Form.Item >
+        <Form.Item name="cbnotification" label=" ">
+          <Checkbox className="cb-style">Gửi thông báo cho người tạo</Checkbox>
+        </Form.Item>
       </Form>
     ),
-    okText: "Xác nhận",
+    okText: "Lưu",
     cancelText: "Huỷ",
   };
   const columns = [

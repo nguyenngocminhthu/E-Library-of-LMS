@@ -2,12 +2,9 @@ import { Suspense } from "react";
 import { Route, Routes } from "react-router";
 import { Loader } from "../Components/Loader";
 import { MainLayout } from "../Layout/Layout";
-import Cover from "../Views/Cover/Cover";
 import { Help } from "../Views/Leadership/Help/Help";
 import { Notification } from "../Views/Leadership/Noti/Noti";
 import NotiSetting from "../Views/Leadership/Noti/NotiSetting";
-import Login from "../Views/Login/Login";
-import { Profile } from "../Views/Profile/Profile";
 import { Exam } from "../Views/Teacher/Exam/Exam";
 import { Home } from "../Views/Teacher/Home/Home";
 import { Resource } from "../Views/Teacher/Resource/Resource";
@@ -29,8 +26,6 @@ export const Teacher = () => {
           <Route path="/teacher/help" element={<Help />} />
 
           <Route path="/teacher/notification" element={<Notification />} />
-
-          <Route path="/profile" element={<Profile />} />
 
           <Route
             path="/teacher/notification/setting"

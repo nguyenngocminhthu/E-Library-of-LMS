@@ -113,13 +113,7 @@
     border: 1px solid rgba(223, 223, 223, 0.636);
     border-bottom: none;
   }
-  .ant-modal-body{
-    padding: 36px;
-  }
-  .ant-form-item-label {
-    text-align: left;
-    font-weight: 600;
-  }
+
 
   .table-header {
     margin-top: 1rem;
@@ -234,5 +228,49 @@
 
   .ant-table-column-sorter-inner {
     color: $color-white;
+  }
+}
+
+.modal-add-role {
+  .ant-modal-body {
+    padding: 24px;
+  }
+
+  .anticon {
+    display: none !important;
+  }
+
+  .ant-form-item-label {
+    text-align: left;
+    font-weight: 700;
+  }
+
+  .ant-col-6 {
+    text-align: left;
+  }
+
+  .ant-checkbox {
+    transform: scale(1.2);
+  }
+
+  .ant-checkbox-inner {
+    border: 2px solid #0B80EC;
+  }
+
+  .ant-modal-confirm-title {
+    margin-bottom: 24px;
+  }
+  .ant-modal-confirm-body > .anticon + .ant-modal-confirm-title + .ant-modal-confirm-content {
+    margin-left: 0
+  }
+}
+
+.modal-delete {
+  .anticon {
+    display: none !important;
+  }
+
+  .ant-modal-confirm-body>.anticon+.ant-modal-confirm-title+.ant-modal-confirm-content {
+    margin-left: 0;
   }
 }

@@ -1,5 +1,6 @@
 import { MoreOutlined } from "@ant-design/icons";
-import { Button, Col, Dropdown, Menu, Row, Space, Table, Tooltip } from "antd";
+import { Button, Col, Dropdown, Input, Menu, Row, Space, Table, Tooltip } from "antd";
+import modal from "antd/lib/modal";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
@@ -32,6 +33,28 @@ const subject = [
     value: "xlsx",
   },
 ];
+const modalChangeName = {
+  title: "Đổi tên tệp",
+  width: "50%",
+  className: "modal-change-name",  
+  content: (
+    <div className="input-layout">
+      <Input />
+      .file
+    </div>
+  ),
+  okText: "Lưu",
+  cancelText: "Huỷ",
+};
+
+const removeRow = {
+  title: "Xác nhận xóa",
+  className: "modal-change-name",
+  content:
+    "Bạn có chắc chắn muốn xóa tệp này khỏi thư viện không?",
+  okText: "Xoá",
+  cancelText: "Huỷ",
+};
 
 export const PrivateFile = () => {
   const navigate = useNavigate();
@@ -39,11 +62,11 @@ export const PrivateFile = () => {
     <Menu>
       <Menu.Item key="1">Xem trước</Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="2">Đổi tên</Menu.Item>
+      <Menu.Item key="2"  onClick = {() => modal.confirm(modalChangeName)}>Đổi tên</Menu.Item>
       <Menu.Divider />
       <Menu.Item key="3">Tải xuống</Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="4">Xóa</Menu.Item>
+      <Menu.Item key="4" onClick = {() => modal.confirm(removeRow)}>Xóa</Menu.Item>
     </Menu>
   );
   const columns = [
@@ -95,6 +118,7 @@ export const PrivateFile = () => {
             style={{
               fontSize: '24px',
             }}
+           
           />
         }
       ></Dropdown.Button>
