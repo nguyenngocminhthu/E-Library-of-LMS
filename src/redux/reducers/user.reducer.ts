@@ -72,6 +72,29 @@ export const createUser = createAsyncThunk(
   }
 );
 
+export const deleteUser = createAsyncThunk(
+  "user/deleteUser",
+  async (id: string, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await User.deleteUser(id);
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 // Define a type for the slice state
 export interface UserState {
   id: string;
@@ -115,6 +138,12 @@ export const userReducer = createSlice({
       state.listUser = action.payload;
     });
     builder.addCase(createUser.rejected, (state, action) => {
+      state.listUser = [];
+    });
+    builder.addCase(deleteUser.fulfilled, (state, action) => {
+      state.listUser = action.payload;
+    });
+    builder.addCase(deleteUser.rejected, (state, action) => {
       state.listUser = [];
     });
   },

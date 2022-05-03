@@ -20,6 +20,12 @@ const updateProfile = (id: string, payload: any) => {
   });
 };
 
-const User = { getUsers, updateProfile, createUser };
+const deleteUser = (id: string) => {
+  return axiosClient.delete(url + `/${id}`).then((rs: any) => {
+    return rs;
+  });
+};
+
+const User = { getUsers, updateProfile, createUser, deleteUser };
 
 export default User;

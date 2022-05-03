@@ -9,6 +9,7 @@ import { SelectComp } from "../../../Components/Select";
 import { getSubjects } from "../../../redux/reducers/subject.reducer";
 import {
   createUser,
+  deleteUser,
   getUsers,
   UserState,
 } from "../../../redux/reducers/user.reducer";
@@ -25,6 +26,7 @@ export const UserManage = () => {
   const dispatch: AppDispatch = useDispatch();
   const [data, setData] = useState<UserState[]>([]);
   const [form] = Form.useForm();
+  const [rowSelected, setRowSelected] = useState("");
 
   useEffect(() => {
     dispatch(getUsers())
@@ -87,7 +89,16 @@ export const UserManage = () => {
             <Button icon={<Edit />} />
           </Tooltip>
           <Tooltip title="Delete">
-            <Button icon={<Trash onClick={() => modal.confirm(deleteRow)} />} />
+            <Button
+              icon={
+                <Trash
+                  onClick={() => {
+                    modal.confirm(deleteRow);
+                    setRowSelected(record.id);
+                  }}
+                />
+              }
+            />
           </Tooltip>
         </Space>
       ),
@@ -114,6 +125,17 @@ export const UserManage = () => {
       "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
     okText: "Xác nhận",
     cancelText: "Huỷ",
+    onOk: () =>
+      dispatch(deleteUser(rowSelected)).then(() => {
+        dispatch(getUsers())
+          .unwrap()
+          .then((rs: any) => {
+            setData(rs.results);
+          })
+          .catch((e: any) => {
+            console.debug("e: ", e);
+          });
+      }),
   };
 
   const modalAdd = {
