@@ -11,6 +11,7 @@ import {
   Table,
   Tag,
   Tooltip,
+  Typography,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
@@ -21,22 +22,84 @@ import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import "./style.scss";
 
-const status = [
-  {
-    name: "Đã phê duyệt",
-    value: "DPD",
-  },
-  {
-    name: "Chờ phê duyệt",
-    value: "CPD",
-  },
-];
-
-export const ListFile = () => {
+const { Title } = Typography;
+    const status = [
+      {
+        name: "Đã phê duyệt",
+        value: "DPD",
+      },
+      {
+        name: "Chờ phê duyệt",
+        value: "CPD",
+      },
+    ];
+    const schoolYears = [
+      {
+        name: "2018-2029",
+        value: "1819",
+      },
+      {
+        name: "2019-2020",
+        value: "1920",
+      },
+      {
+        name: "2020-2021",
+        value: "2021",
+      },
+    ];
+  const allSubject = [
+    {
+      name: "Thương mại điện tử",
+      value: "TMDT",
+    },
+    {
+      name: "Nguyên lý kế toán",
+      value: "NLKT",
+    },
+    {
+      name: "Hệ thống thông tin",
+      value: "HTTT",
+    },
+    {
+      name: "Luật thương mại",
+      value: "LTM",
+    },
+    {
+      name: "Ngân hàng ",
+      value: "NG",
+    },
+  ];
+  const allTeacher = [
+    {
+      name: "Nguyễn Văn A",
+      value: "NVA",
+    },
+    {
+      name: "Nguyễn Văn C",
+      value: "NVC",
+    },
+  ];
+  
+  const downloadFile = {
+    title: "Tải xuống tệp",
+    className: "modal-change-name",
+    content:
+      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+  };
+export const ExamBank = () => {
   const navigate = useNavigate();
-  const params = useParams<{ idSub: string }>();
+  const params = useParams<{ fileExam: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
+
+  const seeDetails = {
+    title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
+    className: "modal-delete",
+    width: "90%",
+    content: <div></div>,
+  };
 
   const config = {
     title: "Phê duyệt",
@@ -71,7 +134,7 @@ export const ListFile = () => {
         </Form.Item>
         <Form.Item name="note" label="Ghi chú">
           <TextArea rows={4} />
-        </Form.Item >
+        </Form.Item>
         <Form.Item name="cbnotification" label=" ">
           <Checkbox className="cb-style">Gửi thông báo cho người tạo</Checkbox>
         </Form.Item>
@@ -82,15 +145,21 @@ export const ListFile = () => {
   };
   const columns = [
     {
-      title: "Tên tài liệu",
-      dataIndex: "fileName",
-      key: "fileName",
+      title: "Loại file",
+      dataIndex: "fileType",
+      key: "fileType",
+      sorter: true,
+    },
+    {
+      title: "Tên đề thi",
+      dataIndex: "fileExam",
+      key: "fileExam",
       sorter: (a: any, b: any) => a.fileName.length - b.fileName.length,
     },
     {
-      title: "Phân loại",
-      dataIndex: "fileType",
-      key: "fileType",
+      title: "Môn học",
+      dataIndex: "subject",
+      key: "subject",
     },
     {
       title: "Giảng viên",
@@ -98,9 +167,14 @@ export const ListFile = () => {
       key: "teacher",
     },
     {
-      title: "Ngày gửi",
-      dataIndex: "createdAt",
-      key: "createdAt",
+      title: "Hình thức",
+      dataIndex: "formality",
+      key: "formality",
+    },
+    {
+      title: "Thời lượng",
+      dataIndex: "time",
+      key: "time",
     },
     {
       title: "Tình trạng tài liệu môn học",
@@ -153,8 +227,7 @@ export const ListFile = () => {
         <Space size="middle">
           <Tooltip title="Detail">
             <Button
-              onClick={() => modal.confirm(seeDetails)}
-              // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
+              onClick={() => navigate(`/exambank/examdetails/${record.fileExam}`)}
               icon={<EyeOutlined />}
             />
           </Tooltip>
@@ -166,44 +239,35 @@ export const ListFile = () => {
   const data = [
     {
       key: "1",
-      fileName: "2020-6B",
-      fileType: "Bài giảng",
-      teacher: "Nguyễn Văn A",
+      fileType: "word",
+      fileExam: "Kiểm tra chủ đề 01.ppt",
+      subject: "Toán Đại Số",
+      teacher: "GV. Nguyễn Văn A",
+      formality: "Trắc nghiệm",
+      time: "45 phút",
       status: 0,
-      createdAt: "12/02/2021",
     },
     {
       key: "2",
-      fileName: "2020-6C",
-      fileType: "Tài nguyên",
-      teacher: "Nguyễn Văn A",
+      fileType: "excel",
+      fileExam: "Kiểm tra chủ đề 02.ppt",
+      subject: "Toán Hình học",
+      teacher: "GV. Nguyễn Văn A",
+      formality: "Tự luận",
+      time: "15 phút",
       status: 1,
-      createdAt: "12/02/2021",
     },
     {
       key: "3",
-      fileName: "2020-6A",
-      fileType: "Bài giảng",
-      teacher: "Nguyễn Văn A",
+      fileType: "powerpoint",
+      fileExam: "Kiểm tra chủ đề 03.ppt",
+      subject: "Toán Đại Số",
+      teacher: "GV. Nguyễn Văn A",
+      formality: "Trắc nghiệm",
+      time: "45 phút",
       status: 2,
-      createdAt: "12/02/2021",
     },
   ];
-  const downloadFile = {
-    title: "Tải xuống tệp",
-    className: "modal-change-name",
-    content:
-      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
-
-  const seeDetails = {
-    title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
-    className: "modal-delete",
-    width: "90%",
-    content: <div></div>,
-  };
 
   const onSelectChange = (selectedRowKeys: any) => {
     setSelectedRowKeys(selectedRowKeys);
@@ -215,14 +279,12 @@ export const ListFile = () => {
   };
 
   return (
-    <div className="subject sub-manage">
+    <div className="exam-bank sub-exam-bank">
       <BreadcrumbComp
-        title="Danh sách tài liệu"
-        prevPageTitle="Quản lý môn học"
-        prevPage="subjects"
+        title="Ngân hàng đề thi"
       />
       <div className="top-head">
-        <h1>{params.idSub}</h1>
+        <Title ellipsis level={5}>Danh sách đề thi</Title>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
             <Tooltip title="Download">
@@ -241,7 +303,6 @@ export const ListFile = () => {
           <Button
             className="default-btn"
             disabled={selectedRowKeys.length === 0 ? true : false}
-            style={{ marginLeft: "1rem" }}
           >
             Huỷ phê duyệt
           </Button>
@@ -261,6 +322,24 @@ export const ListFile = () => {
             textLabel="Tình trạng tài liệu"
             defaultValue="Tất cả tình trạng"
             dataString={status}
+          />
+          <SelectComp
+            style={{ display: "block" }}
+            textLabel="Niên khóa"
+            defaultValue="Niên khóa"
+            dataString={schoolYears}
+          />
+          <SelectComp
+            style={{ display: "block" }}
+            textLabel="Tất cả môn học"
+            defaultValue="Tất cả môn học"
+            dataString={allSubject}
+          />
+          <SelectComp
+            style={{ display: "block" }}
+            textLabel="Tất cả giảng viên"
+            defaultValue="Tất cả giảng viên"
+            dataString={allTeacher}
           />
         </Col>
         <Col className="table-header" span={8}>

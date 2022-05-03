@@ -21,22 +21,73 @@ import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import "./style.scss";
 
-const status = [
-  {
-    name: "Đã phê duyệt",
-    value: "DPD",
-  },
-  {
-    name: "Chờ phê duyệt",
-    value: "CPD",
-  },
-];
-
-export const ListFile = () => {
+    const status = [
+      {
+        name: "Đã phê duyệt",
+        value: "DPD",
+      },
+      {
+        name: "Chờ phê duyệt",
+        value: "CPD",
+      },
+    ];
+    const schoolYears = [
+      {
+        name: "2018-2029",
+        value: "1819",
+      },
+      {
+        name: "2019-2020",
+        value: "1920",
+      },
+      {
+        name: "2020-2021",
+        value: "2021",
+      },
+    ];
+  const allSubject = [
+    {
+      name: "Thương mại điện tử",
+      value: "TMDT",
+    },
+    {
+      name: "Nguyên lý kế toán",
+      value: "NLKT",
+    },
+    {
+      name: "Hệ thống thông tin",
+      value: "HTTT",
+    },
+    {
+      name: "Luật thương mại",
+      value: "LTM",
+    },
+    {
+      name: "Ngân hàng ",
+      value: "NG",
+    },
+  ];
+  
+  const downloadFile = {
+    title: "Tải xuống tệp",
+    className: "modal-change-name",
+    content:
+      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+  };
+export const SubjectManage = () => {
   const navigate = useNavigate();
   const params = useParams<{ idSub: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
+
+  const seeDetails = {
+    title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
+    className: "modal-delete",
+    width: "90%",
+    content: <div></div>,
+  };
 
   const config = {
     title: "Phê duyệt",
@@ -71,7 +122,7 @@ export const ListFile = () => {
         </Form.Item>
         <Form.Item name="note" label="Ghi chú">
           <TextArea rows={4} />
-        </Form.Item >
+        </Form.Item>
         <Form.Item name="cbnotification" label=" ">
           <Checkbox className="cb-style">Gửi thông báo cho người tạo</Checkbox>
         </Form.Item>
@@ -91,6 +142,11 @@ export const ListFile = () => {
       title: "Phân loại",
       dataIndex: "fileType",
       key: "fileType",
+    },
+    {
+      title: "Môn học",
+      dataIndex: "subject",
+      key: "subject",
     },
     {
       title: "Giảng viên",
@@ -154,7 +210,7 @@ export const ListFile = () => {
           <Tooltip title="Detail">
             <Button
               onClick={() => modal.confirm(seeDetails)}
-              // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
+              //   onClick={() => navigate(`/subjectManage/${record.subCode}`)}
               icon={<EyeOutlined />}
             />
           </Tooltip>
@@ -168,6 +224,7 @@ export const ListFile = () => {
       key: "1",
       fileName: "2020-6B",
       fileType: "Bài giảng",
+      subject: "Thương mại điệu tử",
       teacher: "Nguyễn Văn A",
       status: 0,
       createdAt: "12/02/2021",
@@ -176,6 +233,7 @@ export const ListFile = () => {
       key: "2",
       fileName: "2020-6C",
       fileType: "Tài nguyên",
+      subject: "Hệ thống thông tin",
       teacher: "Nguyễn Văn A",
       status: 1,
       createdAt: "12/02/2021",
@@ -184,26 +242,12 @@ export const ListFile = () => {
       key: "3",
       fileName: "2020-6A",
       fileType: "Bài giảng",
+      subject: "Nguyên lý kế toán",
       teacher: "Nguyễn Văn A",
       status: 2,
       createdAt: "12/02/2021",
     },
   ];
-  const downloadFile = {
-    title: "Tải xuống tệp",
-    className: "modal-change-name",
-    content:
-      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
-
-  const seeDetails = {
-    title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
-    className: "modal-delete",
-    width: "90%",
-    content: <div></div>,
-  };
 
   const onSelectChange = (selectedRowKeys: any) => {
     setSelectedRowKeys(selectedRowKeys);
@@ -217,12 +261,12 @@ export const ListFile = () => {
   return (
     <div className="subject sub-manage">
       <BreadcrumbComp
-        title="Danh sách tài liệu"
+        title="Phê duyệt tài liệu môn học"
         prevPageTitle="Quản lý môn học"
         prevPage="subjects"
       />
       <div className="top-head">
-        <h1>{params.idSub}</h1>
+        <div></div>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
             <Tooltip title="Download">
@@ -241,7 +285,6 @@ export const ListFile = () => {
           <Button
             className="default-btn"
             disabled={selectedRowKeys.length === 0 ? true : false}
-            style={{ marginLeft: "1rem" }}
           >
             Huỷ phê duyệt
           </Button>
@@ -261,6 +304,18 @@ export const ListFile = () => {
             textLabel="Tình trạng tài liệu"
             defaultValue="Tất cả tình trạng"
             dataString={status}
+          />
+          <SelectComp
+            style={{ display: "block" }}
+            textLabel="Niên khóa"
+            defaultValue="Niên khóa"
+            dataString={schoolYears}
+          />
+          <SelectComp
+            style={{ display: "block" }}
+            textLabel="Tất cả môn học"
+            defaultValue="Tất cả môn học"
+            dataString={allSubject}
           />
         </Col>
         <Col className="table-header" span={8}>

@@ -1,4 +1,4 @@
-import { MoreOutlined } from "@ant-design/icons";
+import { DownloadOutlined, MoreOutlined } from "@ant-design/icons";
 import { Button, Col, Dropdown, Input, Menu, Row, Space, Table, Tooltip } from "antd";
 import modal from "antd/lib/modal";
 import { useNavigate } from "react-router";
@@ -56,6 +56,15 @@ const removeRow = {
   cancelText: "Huỷ",
 };
 
+const downloadFile = {
+  title: "Tải xuống tệp",
+  className: "modal-change-name",
+  content:
+    "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+  okText: "Xác nhận",
+  cancelText: "Huỷ",
+};
+
 export const PrivateFile = () => {
   const navigate = useNavigate();
   const userMenu = (
@@ -64,7 +73,7 @@ export const PrivateFile = () => {
       <Menu.Divider />
       <Menu.Item key="2"  onClick = {() => modal.confirm(modalChangeName)}>Đổi tên</Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="3">Tải xuống</Menu.Item>
+      <Menu.Item key="3" onClick = {() => modal.confirm(downloadFile)}>Tải xuống</Menu.Item>
       <Menu.Divider />
       <Menu.Item key="4" onClick = {() => modal.confirm(removeRow)}>Xóa</Menu.Item>
     </Menu>
@@ -159,6 +168,18 @@ export const PrivateFile = () => {
   return (
     <div className="privateFile-page">
       <BreadcrumbComp title="Tất cả các tệp" />
+      <div className="header-control">
+        <Space className="" size="middle">
+          <Tooltip title="Download">
+            <Button
+              type="link"
+              icon={<DownloadOutlined onClick = {() => modal.confirm(downloadFile)} style={{ fontSize: "36px" }} />}
+            />
+          </Tooltip>
+        </Space>
+        <div className="line"></div>
+        <Button type="primary">Đăng tải</Button>
+      </div>
       <Row>
         <Col className="table-header" span={16}>
           <SelectComp

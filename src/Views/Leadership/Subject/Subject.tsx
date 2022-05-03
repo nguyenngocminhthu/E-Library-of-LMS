@@ -108,8 +108,8 @@ export const Subject = () => {
         <Space size="middle">
           <Tooltip title="Detail">
             <Button
-              onClick={() => navigate(`/listfile/${record.subCode}`)}
-              icon={<UnorderedListOutlined />}
+              onClick={() => navigate(`/subjects/listfile/${record.subCode}`)}
+              icon={<UnorderedListOutlined/>}
             />
           </Tooltip>
         </Space>

@@ -15,6 +15,9 @@ import { PrivateFile } from "../Views/Leadership/PrivateFile/PrivateFile";
 import { Suspense } from "react";
 import { Loader } from "../Components/Loader";
 import { RoleManage } from "../Views/Leadership/SysSetting/RoleManage";
+import { SubjectManage } from "../Views/Leadership/Subject/SubjectManage";
+import { ExamBank } from "../Views/Leadership/ExamBank/ExamBank";
+import { ExamDetails } from "../Views/Leadership/ExamBank/ExamDetails";
 
 export const Leadership = () => {
   return (
@@ -25,13 +28,19 @@ export const Leadership = () => {
 
           <Route path="/subjects" element={<Subject />} />
 
-          <Route path="/listfile/:idSub" element={<ListFile />} />
+          <Route path="/subjects/listfile/:idSub" element={<ListFile />} />
 
-          <Route path="/subjects/:idSub" element={<SubjectDetail />} />
+          <Route path="/subjectManage" element={<SubjectManage />} />
 
-          <Route path="/viewsubject/:idSub" element={<ViewSubject />} />
+          <Route path="/subjects/subjectdetails/:idSub" element={<SubjectDetail />} />
 
-          <Route path="/file" element={<PrivateFile />} />
+          <Route path="/subjects/viewsubject/:idSub" element={<ViewSubject />} />
+
+          <Route path="/privatefile" element={<PrivateFile />} />      
+
+          <Route path="/exambank" element={<ExamBank />} />
+
+          <Route path="/exambank/examdetails/:fileExam" element={<ExamDetails />} />
 
           <Route path="/help" element={<Help />} />
 

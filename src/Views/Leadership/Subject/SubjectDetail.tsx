@@ -78,7 +78,7 @@ export const SubjectDetail = () => {
                   size="large"
                   shape="circle"
                   icon={<CaretRightOutlined />}
-                  onClick={() => navigate(`/viewsubject/${params.idSub}`)}
+                  onClick={() => navigate(`/subjects/viewsubject/${params.idSub}`)}
                 />
               </Tooltip>
             </div>
