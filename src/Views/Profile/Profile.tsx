@@ -218,7 +218,7 @@ export const Profile = () => {
                         },
                       ]}
                     >
-                      <Input.Password disabled={disable} />
+                      <Input.Password />
                     </Form.Item>
                     <Form.Item
                       label="Mật khẩu mới"
@@ -230,7 +230,7 @@ export const Profile = () => {
                         },
                       ]}
                     >
-                      <Input.Password disabled={disable} />
+                      <Input.Password />
                     </Form.Item>
                     <Form.Item
                       label="Nhập lại mật khẩu mới"
@@ -242,7 +242,7 @@ export const Profile = () => {
                         },
                       ]}
                     >
-                      <Input.Password disabled={disable} />
+                      <Input.Password />
                     </Form.Item>
                   </Col>
                   <Col span={6} offset={2}>
@@ -252,11 +252,13 @@ export const Profile = () => {
                       </Col>
                       <Col span={21} offset={1}>
                         Mật khẩu phải có ít nhất 8 ký tự bao gồm:
-                        <li>- Chữ cái</li>
-                        <li>- Số</li>
-                        <li>- Chữ cái viết hoa </li>
-                        <li>- Chữ cái viết thường</li>
-                        <li>- Các ký tự đặc biệt như ! ~ / ) * ^ $ &...</li>
+                        <ul>
+                          <li>Chữ cái</li>
+                          <li>Số</li>
+                          <li>Chữ cái viết hoa </li>
+                          <li>Chữ cái viết thường</li>
+                          <li>Các ký tự đặc biệt như ! ~ / ) * ^ $ &...</li>
+                        </ul>
                       </Col>
                     </Row>
                   </Col>

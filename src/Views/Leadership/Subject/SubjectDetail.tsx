@@ -4,18 +4,38 @@ import {
   LinkOutlined,
 } from "@ant-design/icons";
 import { Row, Col, Collapse, Tooltip, Button } from "antd";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { getSubject, ISubject } from "../../../redux/reducers/subject.reducer";
+import { AppDispatch } from "../../../redux/store";
 
 const { Panel } = Collapse;
 
 export const SubjectDetail = () => {
   const params = useParams<{ idSub: string }>();
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+  const [data, setData] = useState<ISubject>();
+
+  useEffect(() => {
+    if (params.idSub) {
+      dispatch(getSubject(params.idSub))
+        .unwrap()
+        .then((rs: ISubject) => {
+          setData(rs);
+        })
+        .catch((e: any) => {
+          console.debug("e: ", e);
+        });
+    }
+  }, []);
+
   return (
     <div className="subDetail">
       <BreadcrumbComp
-        title={params.idSub}
+        title={data?.subName}
         prevPageTitle="Danh sách môn học"
         prevPage="subjects"
       />
@@ -25,15 +45,15 @@ export const SubjectDetail = () => {
           <Col span={6}>
             <Row>
               <Col span={8}>Mã môn học:</Col>
-              <Col span={16}>2020-6A1</Col>
+              <Col span={16}>{data?.subCode}</Col>
               <Col span={8}>Môn học:</Col>
-              <Col span={16}>Thương mại điện tử</Col>
+              <Col span={16}>{data?.subName}</Col>
             </Row>
           </Col>
           <Col span={17} offset={1}>
             <Row>
               <Col span={3}>Giảng viên:</Col>
-              <Col span={21}>Hoa Hoa</Col>
+              <Col span={21}>{data?.teacher}</Col>
               <Col span={3}>Mô tả:</Col>
               <Col span={21}>
                 Thương mại điện tử, hay còn gọi là e-commerce, e-comm hay EC, là

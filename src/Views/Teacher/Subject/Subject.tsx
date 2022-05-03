@@ -23,7 +23,7 @@ export const Subject = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSubjects())
+    dispatch(getSubjects(999))
       .unwrap()
       .then((rs: any) => {
         console.debug("rs: ", rs);

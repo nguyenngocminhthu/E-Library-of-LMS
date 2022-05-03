@@ -40,7 +40,7 @@ export const Subject = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSubjects())
+    dispatch(getSubjects(999))
       .unwrap()
       .then((rs: any) => {
         console.debug("rs: ", rs);
@@ -73,9 +73,7 @@ export const Subject = () => {
       key: "subName",
       sorter: (a: any, b: any) => a.subName.length - b.subName.length,
       render: (subName: string, record: any) => (
-        <div onClick={() => navigate(`/subjects/${record.subCode}`)}>
-          {subName}
-        </div>
+        <div onClick={() => navigate(`/subjects/${record.id}`)}>{subName}</div>
       ),
     },
     {

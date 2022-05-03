@@ -5,18 +5,27 @@ import { ReactComponent as Bag } from "../../shared/img/icon/u_bag.svg";
 import { ReactComponent as Bell } from "../../shared/img/icon/fi_bell.svg";
 import { ReactComponent as Setting } from "../../shared/img/icon/fi_settings.svg";
 import { ReactComponent as Question } from "../../shared/img/icon/u_comment-question.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 import logosecond from "../../shared/img/icon/logo-second.svg";
 import "../../shared/styles/layout-style/sidebar.scss";
+import { useLocation } from "react-router";
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 export const Sidebar: React.FC = () => {
   const [collapsed, setcollapsed] = useState(true);
+  const location = useLocation();
   const navigate = useNavigate();
-  const [key, setKey] = useState(["home"]);
+  const fakeKey = location.pathname.split("/");
+  const [key, setKey] = useState([`${fakeKey[1]}`]);
+
+  useEffect(() => {
+    if (fakeKey[1] === "subjects") {
+      setKey(["subjects", "subject"]);
+    }
+  }, []);
 
   const handleSelect = (key: any) => {
     navigate(`/${key[0]}`);
@@ -30,7 +39,7 @@ export const Sidebar: React.FC = () => {
         collapsed={true}
       >
         <div className="logo">
-          <img src={logosecond} />
+          <img src={logosecond} alt="logo" />
         </div>
         <Menu selectedKeys={key} defaultSelectedKeys={["home"]} mode="inline">
           <Menu.Item
@@ -100,7 +109,10 @@ export const Sidebar: React.FC = () => {
           <Menu.Item onClick={() => handleSelect(["bank"])} key="bank">
             Ngân hàng đề thi
           </Menu.Item>
-          <Menu.Item onClick={() => handleSelect(["notification"])} key="notification">
+          <Menu.Item
+            onClick={() => handleSelect(["notification"])}
+            key="notification"
+          >
             Thông báo
           </Menu.Item>
           <Menu.Item onClick={() => handleSelect(["setting"])} key="setting">

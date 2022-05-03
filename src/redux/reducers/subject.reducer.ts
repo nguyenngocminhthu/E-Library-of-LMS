@@ -6,10 +6,33 @@ import { setLoading } from "./loading.reducer";
 
 export const getSubjects = createAsyncThunk(
   "subject/getSubjects",
-  async (_, thunkAPI) => {
+  async (limit: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Subject.getSubjects();
+      const data = await Subject.getSubjects(limit);
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const getSubject = createAsyncThunk(
+  "subject/getSubject",
+  async (id: string, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Subject.getSubject(id);
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -56,6 +79,12 @@ export const subjectReducer = createSlice({
       state.listSubject = action.payload;
     });
     builder.addCase(getSubjects.rejected, (state, action) => {
+      state.listSubject = [];
+    });
+    builder.addCase(getSubject.fulfilled, (state, action) => {
+      state.listSubject = action.payload;
+    });
+    builder.addCase(getSubject.rejected, (state, action) => {
       state.listSubject = [];
     });
   },

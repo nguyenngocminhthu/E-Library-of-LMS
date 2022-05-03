@@ -5,9 +5,9 @@ import { ReactComponent as Bag } from "../../shared/img/icon/u_bag.svg";
 import { ReactComponent as Bell } from "../../shared/img/icon/fi_bell.svg";
 import { ReactComponent as Setting } from "../../shared/img/icon/fi_settings.svg";
 import { ReactComponent as Question } from "../../shared/img/icon/u_comment-question.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logosecond from "../../shared/img/icon/logo-second.svg";
 import "../../shared/styles/layout-style/sidebar.scss";
 const { Sider } = Layout;
@@ -16,10 +16,19 @@ const { SubMenu } = Menu;
 export const TeacherSidebar: React.FC = () => {
   const [collapsed, setcollapsed] = useState(true);
   const navigate = useNavigate();
-  const [key, setKey] = useState(["home"]);
+  const location = useLocation();
+  const fakeKey = location.pathname.split("/");
+  const [key, setKey] = useState([`${fakeKey[2]}`]);
+
+  useEffect(() => {
+    if (fakeKey[2] === "lessons") {
+      setKey(["lessons", "resource"]);
+    } else if (fakeKey[2] === "exams") {
+      setKey(["exams", "exam"]);
+    }
+  }, []);
 
   const handleSelect = (key: any) => {
-    console.debug("key: ", key);
     navigate(`/teacher/${key[0]}`);
     setKey(key);
   };
@@ -31,7 +40,7 @@ export const TeacherSidebar: React.FC = () => {
         collapsed={true}
       >
         <div className="logo">
-          <img src={logosecond} />
+          <img src={logosecond} alt="logo" />
         </div>
         <Menu selectedKeys={key} defaultSelectedKeys={["home"]} mode="inline">
           <Menu.Item

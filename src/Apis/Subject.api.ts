@@ -2,12 +2,18 @@ import axiosClient from "../config/axiosClient";
 
 const url = "/v1/subjects";
 
-const getSubjects = () => {
-  return axiosClient.get(url).then((rs: any) => {
+const getSubjects = (limit: any) => {
+  return axiosClient.get(url + `?limit=${limit}`).then((rs: any) => {
     return rs;
   });
 };
 
-const Subject = { getSubjects };
+const getSubject = (id: string) => {
+  return axiosClient.get(url + `/${id}`).then((rs: any) => {
+    return rs;
+  });
+};
+
+const Subject = { getSubjects, getSubject };
 
 export default Subject;
