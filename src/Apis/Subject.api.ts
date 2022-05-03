@@ -4,7 +4,6 @@ const url = "/v1/subjects";
 
 const getSubjects = () => {
   return axiosClient.get(url).then((rs: any) => {
-    console.debug("subject: ", rs);
     return rs;
   });
 };

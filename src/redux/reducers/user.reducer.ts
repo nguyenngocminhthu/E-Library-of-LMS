@@ -1,7 +1,30 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import User from "../../Apis/User.api";
 import { setLoading } from "./loading.reducer";
 import { setMessage } from "./message.reducer";
+
+export const getUsers = createAsyncThunk(
+  "user/getUsers",
+  async (_, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await User.getUsers();
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
 
 export const updateProfile = createAsyncThunk(
   "user/updateProfile",
@@ -9,6 +32,29 @@ export const updateProfile = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await User.updateProfile(id, payload);
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const createUser = createAsyncThunk(
+  "user/createUser",
+  async (payload: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await User.createUser(payload);
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -57,6 +103,18 @@ export const userReducer = createSlice({
       state.listUser = action.payload;
     });
     builder.addCase(updateProfile.rejected, (state, action) => {
+      state.listUser = [];
+    });
+    builder.addCase(getUsers.fulfilled, (state, action) => {
+      state.listUser = action.payload;
+    });
+    builder.addCase(getUsers.rejected, (state, action) => {
+      state.listUser = [];
+    });
+    builder.addCase(createUser.fulfilled, (state, action) => {
+      state.listUser = action.payload;
+    });
+    builder.addCase(createUser.rejected, (state, action) => {
       state.listUser = [];
     });
   },

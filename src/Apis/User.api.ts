@@ -1,10 +1,17 @@
-import Toast from "../Components/Toast";
 import axiosClient from "../config/axiosClient";
 
 const url = "/v1/users";
 
 const getUsers = () => {
-  return axiosClient.get(url);
+  return axiosClient.get(url).then((rs: any) => {
+    return rs;
+  });
+};
+
+const createUser = (payload: any) => {
+  return axiosClient.post(url, payload).then((rs: any) => {
+    return rs;
+  });
 };
 
 const updateProfile = (id: string, payload: any) => {
@@ -13,6 +20,6 @@ const updateProfile = (id: string, payload: any) => {
   });
 };
 
-const User = { getUsers, updateProfile };
+const User = { getUsers, updateProfile, createUser };
 
 export default User;

@@ -1,11 +1,20 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Select, Space, Table, Tooltip, Typography } from "antd";
 import modal from "antd/lib/modal";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import {ReactComponent as Edit} from '../../../shared/img/icon/edit.svg'
-import {ReactComponent as Trash} from '../../../shared/img/icon/trash.svg'
+import { getSubjects } from "../../../redux/reducers/subject.reducer";
+import {
+  createUser,
+  getUsers,
+  UserState,
+} from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
+import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
+import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
 
 import "./style.scss";
 
@@ -13,6 +22,20 @@ const { Option } = Select;
 const { Title } = Typography;
 
 export const UserManage = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const [data, setData] = useState<UserState[]>([]);
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    dispatch(getUsers())
+      .unwrap()
+      .then((rs: any) => {
+        setData(rs.results);
+      })
+      .catch((e: any) => {
+        console.debug("e: ", e);
+      });
+  }, []);
 
   const roleMenu = [
     {
@@ -28,25 +51,32 @@ export const UserManage = () => {
       value: "teacher",
     },
   ];
-  
+
   const columns = [
     {
-      title: "Tên nhóm",
-      dataIndex: "groupName",
-      key: "groupName",
-      sorter: true,
+      title: "Mã người dùng",
+      dataIndex: "id",
+      key: "id",
     },
     {
-      title: "Mô tả",
-      dataIndex: "describe",
-      key: "describe",
-      // sorter: (a: any, b: any) => a.subName.length - b.subName.length,
+      title: "Tên người dùng",
+      dataIndex: "userName",
+      key: "userName",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Vai trò",
+      dataIndex: "role",
+      key: "role",
     },
     {
       title: "Lần cập nhật cuối",
-      dataIndex: "lastUpdate",
-      key: "lastUpdate",
-      sorter: true,
+      dataIndex: "updatedAt",
+      key: "updatedAt",
     },
     {
       title: "",
@@ -57,22 +87,25 @@ export const UserManage = () => {
             <Button icon={<Edit />} />
           </Tooltip>
           <Tooltip title="Delete">
-            <Button icon={<Trash onClick={() => modal.confirm(deleteRow)}/>} />
+            <Button icon={<Trash onClick={() => modal.confirm(deleteRow)} />} />
           </Tooltip>
         </Space>
       ),
     },
   ];
-  const status = [
-    {
-      name: "Đã phê duyệt",
-      value: "DPD",
-    },
-    {
-      name: "Chờ phê duyệt",
-      value: "CPD",
-    },
-  ];
+
+  const onFinish = (values: any) => {
+    dispatch(createUser(values)).then(() => {
+      dispatch(getUsers())
+        .unwrap()
+        .then((rs: any) => {
+          setData(rs.results);
+        })
+        .catch((e: any) => {
+          console.debug("e: ", e);
+        });
+    });
+  };
 
   const deleteRow = {
     title: "Xóa vai trò",
@@ -93,54 +126,35 @@ export const UserManage = () => {
         wrapperCol={{ span: 18 }}
         name="profile-form"
         layout="horizontal"
+        form={form}
+        onFinish={onFinish}
       >
-        <Form.Item label="Mã người dùng" name="1">
+        <Form.Item label="Tên" name="userName">
           <Input />
         </Form.Item>
-        <Form.Item label="Tên" name="2">
+        <Form.Item label="Email" name="email">
           <Input />
         </Form.Item>
-        <Form.Item label="Email" name="3">
-          <Input />
+        <Form.Item label="Mật khẩu" name="password">
+          <Input.Password />
         </Form.Item>
-        <Form.Item label="Tên vai trò" name="4">
-          <Select defaultValue={"Nhân viên"}>
-            <Option value={0}>Nhân viên</Option>
-            <Option value={1}>Quản lý</Option>
-            <Option value={2}>Học viên</Option>
-            <Option value={2}>Admin</Option>
+        <Form.Item label="Tên vai trò" name="role">
+          <Select>
+            <Option value={"leadership"}>Quản trị viên</Option>
+            <Option value={"teacher"}>Giáo viên</Option>
+            <Option value={"student"}>Sinh viên</Option>
           </Select>
         </Form.Item>
       </Form>
     ),
     okText: "Lưu",
     cancelText: "Huỷ",
+    onOk: () => form.submit(),
   };
-
-  const data = [
-    {
-      key: "1",
-      groupName: "Quản trị viên",
-      describe: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam malesuada posuere justo.",
-      lastUpdate: "12/12/2021",
-    },
-    {
-      key: "2",
-      groupName: "Quản trị viên",
-      describe: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam malesuada posuere justo.",
-      lastUpdate: "12/12/2021",
-    },
-    {
-      key: "3",
-      groupName: "Quản trị viên",
-      describe: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam malesuada posuere justo.",
-      lastUpdate: "12/12/2021",
-    },
-  ];
 
   return (
     <div className="role-manage-page">
-      <BreadcrumbComp title="Tất cả các tệp" />
+      <BreadcrumbComp title="Quản lý người dùng" />
       <div className="title-page">
         <Title ellipsis level={5}>
           Danh sách người dùng trên hệ thống
