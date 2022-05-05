@@ -108,12 +108,12 @@ export const Home = () => {
               <Card>
                 <Row>
                   <Col span={8} className="btn-img">
-                    <img src={item.avt} />
-                    <Button
-                      className="btn-play"
-                      shape="circle"
-                      icon={<CaretRightFilled />}
-                    />
+                    <div className="img-play">
+                      <img src={item.avt} alt="avt" />
+                    </div>
+                    <div className="btn-play">
+                      <Button shape="circle" icon={<CaretRightFilled />} />
+                    </div>
                   </Col>
                   <Col span={15} offset={1}>
                     <h5>{item.fileName}</h5>
@@ -169,7 +169,7 @@ export const Home = () => {
                   <Card>
                     <Row>
                       <Col span={6}>
-                        <img src={ppt} />
+                        <img src={ppt} alt="file" />
                       </Col>
                       <Col span={17} offset={1}>
                         <Title ellipsis level={5}>
