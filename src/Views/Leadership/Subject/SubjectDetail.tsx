@@ -25,6 +25,7 @@ export const SubjectDetail = () => {
         .unwrap()
         .then((rs: ISubject) => {
           setData(rs);
+          console.debug('teacher: ', rs)
         })
         .catch((e: any) => {
           console.debug("e: ", e);
@@ -53,7 +54,7 @@ export const SubjectDetail = () => {
           <Col span={17} offset={1}>
             <Row>
               <Col span={3}>Giảng viên:</Col>
-              <Col span={21}>{data?.teacher}</Col>
+              <Col span={21}>{data?.teacher?.userName}</Col>
               <Col span={3}>Mô tả:</Col>
               <Col span={21}>
                 Thương mại điện tử, hay còn gọi là e-commerce, e-comm hay EC, là

@@ -8,6 +8,7 @@ import NotiSetting from "../Views/Leadership/Noti/NotiSetting";
 import { Exam } from "../Views/Teacher/Exam/Exam";
 import { Home } from "../Views/Teacher/Home/Home";
 import { Resource } from "../Views/Teacher/Resource/Resource";
+import { ListFile } from "../Views/Teacher/Subject/ListFile";
 import { Subject } from "../Views/Teacher/Subject/Subject";
 
 export const Teacher = () => {
@@ -18,6 +19,8 @@ export const Teacher = () => {
           <Route path="/teacher/home" element={<Home />} />
 
           <Route path="/teacher/subject" element={<Subject />} />
+
+          <Route path="/subjects/listfile" element={<ListFile />} />
 
           <Route path="/teacher/lessons" element={<Resource />} />
 

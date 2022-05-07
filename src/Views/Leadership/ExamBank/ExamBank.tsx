@@ -1,4 +1,4 @@
-import { DownloadOutlined, EyeOutlined } from "@ant-design/icons";
+import { DesktopOutlined, DownloadOutlined, EyeOutlined } from "@ant-design/icons";
 import {
   Button,
   Checkbox,
@@ -15,11 +15,18 @@ import {
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
+import { getBanks, IBanks } from "../../../redux/reducers/banks.reducer";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
+import {ReactComponent as Word} from '../../../shared/img/icon/word.svg';
 import "./style.scss";
 
 const { Title } = Typography;
@@ -89,10 +96,22 @@ const { Title } = Typography;
     cancelText: "Huỷ",
   };
 export const ExamBank = () => {
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  const params = useParams<{ fileExam: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
+
+  const [data, setData] = useState<IBanks[]>([]);
+  useEffect(() => {
+    dispatch(getBanks(999))
+      .unwrap()
+      .then((rs: any) => {
+        setData(rs.results);
+      })
+      .catch((e: any) => {
+        console.debug("e: ", e);
+      });
+  }, []);
 
   const seeDetails = {
     title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
@@ -149,35 +168,40 @@ export const ExamBank = () => {
       dataIndex: "fileType",
       key: "fileType",
       sorter: true,
+      render: ( fileType : number ) => {return <>{fileType === 0 ? <DesktopOutlined style={{ fontSize: 32}}/> : <Word/> }</>}
     },
     {
       title: "Tên đề thi",
-      dataIndex: "fileExam",
-      key: "fileExam",
+      dataIndex: "examName",
+      key: "examName",
       sorter: (a: any, b: any) => a.fileName.length - b.fileName.length,
     },
     {
       title: "Môn học",
       dataIndex: "subject",
       key: "subject",
+      render: (subject: ISubject) => {return subject?.subName}
     },
     {
       title: "Giảng viên",
-      dataIndex: "teacher",
-      key: "teacher",
+      dataIndex: "user",
+      key: "user",
+      render: (teacher: UserState) => {return teacher?.userName}
     },
     {
       title: "Hình thức",
-      dataIndex: "formality",
-      key: "formality",
+      dataIndex: "examType",
+      key: "examType",
+      render: ( examType : number ) => {return <>{examType === 0 ? <div>Trắc nghiệm</div> : <div>Tự luận</div> }</>}
     },
     {
       title: "Thời lượng",
       dataIndex: "time",
       key: "time",
+      render: ( time : number ) => {return <div>{time} phút</div>}
     },
     {
-      title: "Tình trạng tài liệu môn học",
+      title: "Tình trạng",
       dataIndex: "status",
       key: "status",
       render: (status: number) => (
@@ -227,7 +251,7 @@ export const ExamBank = () => {
         <Space size="middle">
           <Tooltip title="Detail">
             <Button
-              onClick={() => navigate(`/exambank/examdetails/${record.fileExam}`)}
+              onClick={() => navigate(`/exambank/examdetails/${record.id}`)}
               icon={<EyeOutlined />}
             />
           </Tooltip>
@@ -236,38 +260,6 @@ export const ExamBank = () => {
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      fileType: "word",
-      fileExam: "Kiểm tra chủ đề 01.ppt",
-      subject: "Toán Đại Số",
-      teacher: "GV. Nguyễn Văn A",
-      formality: "Trắc nghiệm",
-      time: "45 phút",
-      status: 0,
-    },
-    {
-      key: "2",
-      fileType: "excel",
-      fileExam: "Kiểm tra chủ đề 02.ppt",
-      subject: "Toán Hình học",
-      teacher: "GV. Nguyễn Văn A",
-      formality: "Tự luận",
-      time: "15 phút",
-      status: 1,
-    },
-    {
-      key: "3",
-      fileType: "powerpoint",
-      fileExam: "Kiểm tra chủ đề 03.ppt",
-      subject: "Toán Đại Số",
-      teacher: "GV. Nguyễn Văn A",
-      formality: "Trắc nghiệm",
-      time: "45 phút",
-      status: 2,
-    },
-  ];
 
   const onSelectChange = (selectedRowKeys: any) => {
     setSelectedRowKeys(selectedRowKeys);
@@ -350,3 +342,4 @@ export const ExamBank = () => {
     </div>
   );
 };
+

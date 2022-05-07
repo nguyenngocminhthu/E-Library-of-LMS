@@ -1,4 +1,4 @@
-import { DownloadOutlined, EyeOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import {
   Button,
   Checkbox,
@@ -246,9 +246,7 @@ export const ListFile = () => {
                 type="link"
                 disabled={selectedRowKeys.length === 0 ? true : false}
                 icon={
-                  <DownloadOutlined
-                    onClick={() => modal.confirm(downloadFile)}
-                  />
+                  <DeleteOutlined />
                 }
               />
             </Tooltip>

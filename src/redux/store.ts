@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./reducers/auth.reducer";
+import banksReducer from "./reducers/banks.reducer";
 import loadingReducer from "./reducers/loading.reducer";
 import messageReducer from "./reducers/message.reducer";
 import subjectReducer from "./reducers/subject.reducer";
@@ -10,6 +11,7 @@ const reducer = {
   auth: authReducer,
   user: userReducer,
   subject: subjectReducer,
+  bank: banksReducer,
   message: messageReducer,
   loading: loadingReducer,
 };

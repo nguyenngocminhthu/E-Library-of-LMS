@@ -1,12 +1,32 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Button, Col, Radio, Row, Space } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { getBank, IBanks } from "../../../redux/reducers/banks.reducer";
+import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 export const ExamDetails = () => {
-  const params = useParams<{ fileExam: string }>();
+  const dispatch: AppDispatch = useDispatch();
+  const params = useParams<{ id: string }>();
   const [select, setSelect] = useState(1);
+  const [data, setData] = useState<IBanks>();
+
+  useEffect(() => {
+    if (params.id) {
+      dispatch(getBank(params.id))
+        .unwrap()
+        .then((rs: IBanks) => {
+          setData(rs);
+        })
+        .catch((e: any) => {
+          console.debug("bank: ", e);
+        });
+    }
+  }, []);
+
+  
 
   let question: any[] = [];
   let i;
@@ -32,8 +52,8 @@ export const ExamDetails = () => {
               <div>Thời lượng: </div>
             </div>
             <div>
-              <div>Lịch sử</div>
-              <div>45 phút</div>
+              <div>{data?.subject?.subName}</div>
+              <div>{data?.time}</div>
             </div>
           </div>
           <div className="d-flex">
@@ -42,8 +62,8 @@ export const ExamDetails = () => {
               <div>Hình thức: </div>
             </div>
             <div>
-              <div>Kiểm tra 45 phút</div>
-              <div>Trắc nghiệm</div>
+              <div>Kiểm tra {data?.time} phút</div>
+              <div>{data?.examType === 0 ? <div>Trắc nghiệm</div> : <div>Tự luận</div> }</div>
             </div>
           </div>
           <div className="d-flex">
@@ -52,8 +72,8 @@ export const ExamDetails = () => {
               <div>Ngày tạo: </div>
             </div>
             <div>
-              <div>Nguyễn Văn A</div>
-              <div>24/02/2021</div>
+              <div>{data?.user?.userName || 'null'}</div>
+              <div>{data?.createdAt}</div>
             </div>
           </div>
         </div>

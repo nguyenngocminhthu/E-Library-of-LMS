@@ -1,5 +1,6 @@
 import { CaretRightFilled, DoubleRightOutlined } from "@ant-design/icons";
-import { Button, Card, Col, List, Row, Typography } from "antd";
+import { Avatar, Button, Card, Col, List, Row, Typography } from "antd";
+import { useEffect, useState } from "react";
 import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { SelectComp } from "../../../Components/Select";
@@ -58,6 +59,29 @@ for (let i = 0; i < 10; i++) {
 }
 
 export const Home = () => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<any>([]);
+  const loadMoreData = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    fetch(
+      "https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo"
+    )
+      .then((res) => res.json())
+      .then((body) => {
+        setData([...data, ...body.results]);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    loadMoreData();
+  }, []);
   return (
     <div className="home">
       <BreadcrumbComp title="Trang chủ" />
@@ -116,11 +140,7 @@ export const Home = () => {
                 <Row>
                   <Col span={8} className="btn-img">
                     <img src={item.avt} />
-                    <Button
-                      className="btn-play"
-                      shape="circle"
-                      icon={<CaretRightFilled />}
-                    />
+                    zz
                   </Col>
                   <Col span={15} offset={1}>
                     <h5>{item.fileName}</h5>
@@ -184,7 +204,23 @@ export const Home = () => {
               </span>
             </div>
 
-            <Card className="inside">list</Card>
+            <Card className="inside">
+              <List
+                dataSource={data}
+                renderItem={(item: any) => (
+                  <List.Item key={item.id}>
+                    <List.Item.Meta
+                      avatar={
+                          <Avatar src={item.picture.large} />
+                      }
+                      title={<a href="https://ant.design">{item.name.last}</a>}
+                      description={item.email}
+                    />
+                    <div>5 phút trước</div>
+                  </List.Item>
+                )}
+              />
+            </Card>
           </Card>
         </Col>
       </Row>

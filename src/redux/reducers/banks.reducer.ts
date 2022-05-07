@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message.reducer";
-import Subject from "../../Apis/Subject.api";
-import { RootState } from "../store";
+import Banks from "../../Apis/Banks.api";
 import { setLoading } from "./loading.reducer";
+import { ISubject } from "./subject.reducer";
 import { UserState } from "./user.reducer";
 
-export const getSubjects = createAsyncThunk(
-  "subject/getSubjects",
+export const getBanks = createAsyncThunk(
+  "Banks/getBanks",
   async (limit: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Subject.getSubjects(limit);
+      const data = await Banks.getBanks(limit);
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -28,12 +28,12 @@ export const getSubjects = createAsyncThunk(
   }
 );
 
-export const getSubject = createAsyncThunk(
-  "subject/getSubject",
+export const getBank = createAsyncThunk(
+  "Banks/getBank",
   async (id: string, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Subject.getSubject(id);
+      const data = await Banks.getBank(id);
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -51,48 +51,47 @@ export const getSubject = createAsyncThunk(
   }
 );
 
-export interface ISubject {
+export interface IBanks {
   id: string;
-  subCode: string;
-  subName: string;
-  teacher: UserState;
   status: number;
-  file: number;
-  image: string;
+  fileType: number;
+  examName: string;
+  subject: ISubject; 
+  examType: number;
+  user: UserState;
   createdAt: string;
   updatedAt: string;
+  time: number;
 }
 
-interface SubjectState {
-  listSubject: ISubject[];
+interface banksState {
+  listBanks: IBanks[];
 }
 
-const initialState: SubjectState = {
-  listSubject: [],
+const initialState: banksState = {
+  listBanks: [],
 };
 
-export const subjectReducer = createSlice({
-  name: "subject",
+export const banksReducer = createSlice({
+  name: "Banks",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getSubjects.fulfilled, (state, action) => {
-      state.listSubject = action.payload;
+    builder.addCase(getBanks.fulfilled, (state, action) => {
+      state.listBanks = action.payload;
     });
-    builder.addCase(getSubjects.rejected, (state, action) => {
-      state.listSubject = [];
+    builder.addCase(getBanks.rejected, (state, action) => {
+      state.listBanks = [];
     });
-    builder.addCase(getSubject.fulfilled, (state, action) => {
-      state.listSubject = action.payload;
+    builder.addCase(getBank.fulfilled, (state, action) => {
+      state.listBanks = action.payload;
     });
-    builder.addCase(getSubject.rejected, (state, action) => {
-      state.listSubject = [];
+    builder.addCase(getBank.rejected, (state, action) => {
+      state.listBanks = [];
     });
   },
 });
 
-const { reducer } = subjectReducer;
-
-export const listSubject = (state: RootState) => state.subject.listSubject;
+const { reducer } = banksReducer;
 
 export default reducer;

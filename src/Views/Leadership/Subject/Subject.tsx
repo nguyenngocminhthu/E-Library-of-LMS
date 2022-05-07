@@ -8,6 +8,7 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
@@ -80,6 +81,7 @@ export const Subject = () => {
       title: "Giảng viên",
       dataIndex: "teacher",
       key: "teacher",
+      render: (teacher: UserState) => {return teacher?.userName}
     },
     {
       title: "Số tài liệu chờ duyệt",

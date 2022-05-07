@@ -1,25 +1,35 @@
-import { UnorderedListOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Space, Table, Tooltip } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
+import { Button, Col, Dropdown, Input, Menu, Row, Space, Table, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import modal from "antd/lib/modal";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import { getSubjects } from "../../../redux/reducers/subject.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
-interface ISubjectSelect {
-  name: string;
-  value: string;
-}
+const modalChangeName = {
+  title: "Đổi tên tệp",
+  width: "50%",
+  className: "modal-change-name",  
+  content: (
+    <div className="input-layout">
+      <Input />
+      .file
+    </div>
+  ),
+  okText: "Lưu",
+  cancelText: "Huỷ",
+};
+
 
 export const Subject = () => {
   const navigate = useNavigate();
   const data = useSelector((state: any) => state.subject.listSubject.results);
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([]);
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -32,18 +42,26 @@ export const Subject = () => {
         console.debug("e: ", e);
       });
   }, []);
-
-  useEffect(() => {
-    const option: ISubjectSelect[] = [];
-    if (data) {
-      data.forEach((it: ISubject) => {
-        option.push({ name: it.subName, value: it.id });
-      });
-    }
-
-    setSubjectSelect(option);
-  }, [data]);
-
+  
+  const userMenu = (
+    <Menu>
+      <Menu.Item key="1">Chi tiết môn học</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="2"   onClick={() => navigate(`/subjects/listfile`)}>Danh sách tài liệu</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="3" onClick = {() => modal.confirm(modalChangeName)}>Phân công tài liệu</Menu.Item>
+    </Menu>
+  );
+  const subjectSelect = [
+    {
+      value: "Xếp theo tên môn học",
+      key: "XSTMH",
+    },
+    {
+      value: "Lần truy cập gần nhất",
+      key: "LTCGN",
+    },
+  ]
   const columns = [
     {
       title: "Mã môn học",
@@ -62,17 +80,12 @@ export const Subject = () => {
       ),
     },
     {
-      title: "Giảng viên",
-      dataIndex: "teacher",
-      key: "teacher",
+      title: "Mô tả",
+      dataIndex: "description",
+      key: "description",
     },
     {
-      title: "Số tài liệu chờ duyệt",
-      dataIndex: "file",
-      key: "file",
-    },
-    {
-      title: "Tình trạng tài liệu môn học",
+      title: "Tình trạng",
       dataIndex: "status",
       key: "status",
       render: (status: number) => (
@@ -82,22 +95,26 @@ export const Subject = () => {
       ),
     },
     {
-      title: "Ngày gửi phê duyệt",
-      dataIndex: "createdAt",
-      key: "createdAt",
+      title: "Số tài liệu chờ duyệt",
+      dataIndex: "file",
+      key: "file",
     },
     {
       title: "",
       key: "action",
       render: (text: any, record: any) => (
-        <Space size="middle">
-          <Tooltip title="Detail">
-            <Button
-              onClick={() => navigate(`/subjects/listfile/${record.subCode}`)}
-              icon={<UnorderedListOutlined />}
-            />
-          </Tooltip>
-        </Space>
+        <Dropdown.Button
+        className="dropdown-btn"
+        overlay={userMenu}
+        icon={
+          <MoreOutlined
+            style={{
+              fontSize: '24px',
+            }}
+           
+          />
+        }
+      ></Dropdown.Button>
       ),
     },
   ];
@@ -109,8 +126,7 @@ export const Subject = () => {
         <Col className="table-header" span={16}>
           <SelectComp
             style={{ display: "block" }}
-            textLabel="Môn học"
-            defaultValue="Tất cả môn học"
+            defaultValue="Xếp theo tên môn học"
             dataString={subjectSelect}
           />
         </Col>

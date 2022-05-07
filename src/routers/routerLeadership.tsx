@@ -40,7 +40,7 @@ export const Leadership = () => {
 
           <Route path="/exambank" element={<ExamBank />} />
 
-          <Route path="/exambank/examdetails/:fileExam" element={<ExamDetails />} />
+          <Route path="/exambank/examdetails/:id" element={<ExamDetails />} />
 
           <Route path="/help" element={<Help />} />
 
