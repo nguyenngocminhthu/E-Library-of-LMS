@@ -335,7 +335,7 @@ export const ExamBank = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent />
+          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..."/>
         </Col>
       </Row>
       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />

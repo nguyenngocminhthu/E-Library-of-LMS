@@ -250,7 +250,7 @@ export const RoleManage = () => {
       <Row>
         <Col className="table-header" span={16}></Col>
         <Col className="table-header" span={8}>
-          <SearchComponent />
+          <SearchComponent placeholder="Tìm kết quả theo tên nhóm"/>
         </Col>
       </Row>
       <Table columns={columns} dataSource={data} />

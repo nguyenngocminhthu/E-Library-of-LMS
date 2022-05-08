@@ -199,7 +199,7 @@ export const UserManage = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent />
+          <SearchComponent placeholder="Tìm kết quả theo mã người dùng, tên"/>
         </Col>
       </Row>
       <Table columns={columns} dataSource={data} />

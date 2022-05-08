@@ -1,5 +1,5 @@
 import { MoreOutlined } from "@ant-design/icons";
-import { Button, Col, Dropdown, Input, Menu, Row, Space, Table, Tooltip } from "antd";
+import { Button, Col, Dropdown, Form, Input, Menu, Row, Select, Space, Table, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -12,25 +12,14 @@ import { getSubjects } from "../../../redux/reducers/subject.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
-const modalChangeName = {
-  title: "Đổi tên tệp",
-  width: "50%",
-  className: "modal-change-name",  
-  content: (
-    <div className="input-layout">
-      <Input />
-      .file
-    </div>
-  ),
-  okText: "Lưu",
-  cancelText: "Huỷ",
-};
-
+const { Option } = Select;
 
 export const Subject = () => {
   const navigate = useNavigate();
   const data = useSelector((state: any) => state.subject.listSubject.results);
   const dispatch: AppDispatch = useDispatch();
+  const [form] = Form.useForm();
+  const [disable, setDisable] = useState(false);
 
   useEffect(() => {
     dispatch(getSubjects(999))
@@ -43,9 +32,38 @@ export const Subject = () => {
       });
   }, []);
   
+  const modalChangeName = {
+    title: "Phân công tài liệu môn học",
+    width: "50%",
+    className: "modal-change-name",
+    content: (
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        name="cancel-form"
+        layout="horizontal"
+        form={form}
+      >
+        <Form.Item name="fileName" label="Tên bài giảng">
+          <div>Thương mại điện tử</div>
+        </Form.Item>
+        <Form.Item name="chooseTopic" label="Chọn chủ đề">
+          <Select disabled={disable} defaultValue="Chọn chủ đề">
+            <Option value={0}>Văn hóa xã hội</Option>
+            <Option value={1}>Sample</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="fileNameTitle" label="Tiêu đề bài giảng">
+          <Input />
+        </Form.Item>
+      </Form>
+    ),
+    okText: "Lưu",
+    cancelText: "Huỷ",
+  };
   const userMenu = (
     <Menu>
-      <Menu.Item key="1">Chi tiết môn học</Menu.Item>
+      <Menu.Item key="1" onClick={() => navigate(`/subjects/subjectdetail`)}>Chi tiết môn học</Menu.Item>
       <Menu.Divider />
       <Menu.Item key="2"   onClick={() => navigate(`/subjects/listfile`)}>Danh sách tài liệu</Menu.Item>
       <Menu.Divider />
@@ -131,7 +149,7 @@ export const Subject = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent />
+          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..."/>
         </Col>
       </Row>
       <Table

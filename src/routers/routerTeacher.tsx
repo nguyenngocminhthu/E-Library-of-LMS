@@ -10,6 +10,8 @@ import { Home } from "../Views/Teacher/Home/Home";
 import { Resource } from "../Views/Teacher/Resource/Resource";
 import { ListFile } from "../Views/Teacher/Subject/ListFile";
 import { Subject } from "../Views/Teacher/Subject/Subject";
+import { SubjectDetail } from "../Views/Teacher/Subject/SubjectDetail";
+import { ViewSubject } from "../Views/Teacher/Subject/ViewSubject";
 
 export const Teacher = () => {
   return (
@@ -19,6 +21,10 @@ export const Teacher = () => {
           <Route path="/teacher/home" element={<Home />} />
 
           <Route path="/teacher/subject" element={<Subject />} />
+
+          <Route path="/subjects/subjectdetail" element={<SubjectDetail />} />
+
+          <Route path="/subjects/viewsubject" element={<ViewSubject />} />
 
           <Route path="/subjects/listfile" element={<ListFile />} />
 

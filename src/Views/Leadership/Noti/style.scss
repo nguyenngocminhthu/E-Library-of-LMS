@@ -24,8 +24,11 @@
                 margin: 0px 10px 0px 10px;
             }
         }
+        
 
     }
+
+
 
     .ant-tabs-tab:hover {
         color: $color-primary;
@@ -89,10 +92,8 @@
     }
 }
 
-.search-bar {
-    .ant-input-affix-wrapper {
-        padding: none !important;
-    }
+.ant-input-affix-wrapper {
+    padding: none !important;
 }
 
 .ant-modal-footer {
@@ -133,8 +134,24 @@
 
 .ant-modal-header {
     background: $color-secondary-dark-light;
+    border-radius: 8px 8px 0px 0px;
 }
-
+.ant-modal-content {
+    .anticon svg {
+        color: $color-white;
+    }
+}
 .ant-modal-title {
     color: $color-white;
+}
+.selectcomp{
+    display: block !important;
+    margin-bottom: 12px;
+    .select{
+        width: 100% !important;
+        margin: 0 !important;
+    }
+}
+.ant-checkbox-wrapper{
+    margin-bottom: 6px;
 }

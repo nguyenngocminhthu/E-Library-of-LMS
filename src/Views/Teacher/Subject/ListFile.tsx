@@ -1,12 +1,12 @@
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
-  Checkbox,
   Col,
-  DatePicker,
   Form,
   Input,
+  Radio,
   Row,
+  Select,
   Space,
   Table,
   Tag,
@@ -14,12 +14,14 @@ import {
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import "./style.scss";
+
+const { Option } = Select;
 
 const status = [
   {
@@ -36,66 +38,62 @@ export const ListFile = () => {
   const navigate = useNavigate();
   const params = useParams<{ idSub: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [form] = Form.useForm();
-  // const dispatch: AppDispatch = useDispatch();
-  // const [data, setData] = useState<ISubject>();
+  const [radioChangeComponent, setRadioChangeComponent] = useState();
 
-  // useEffect(() => {
-  //   if (params.idSub) {
-  //     dispatch(getSubject(params.idSub))
-  //       .unwrap()
-  //       .then((rs: ISubject) => {
-  //         setData(rs);
-  //         console.debug('teacher: ', rs)
-  //       })
-  //       .catch((e: any) => {
-  //         console.debug("e: ", e);
-  //       });
-  //   }
-  // }, []);
-
-  const config = {
-    title: "Phê duyệt",
-    className: "file-modal",
-    content:
-      "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
-
-  const config1 = {
-    title: "Huỷ phê duyệt tài liệu",
-    width: "40%",
-    className: "cancel-form file-modal",
-    content: (
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-        name="cancel-form"
-        layout="horizontal"
-        form={form}
-      >
-        <Form.Item
-          name="startDate"
-          label="Ngày bắt đầu"
-          rules={[{ required: true }]}
+  const handleModal = () => {
+    const addNewLecture = {
+      title: "Thêm bài giảng mới",
+      width: "40%",
+      className: "cancel-form file-modal",
+      forceRender: true,
+      content: (
+        <Form
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+          name="cancel-form"
+          layout="horizontal"
+          form={form}
         >
-          <DatePicker style={{ width: "50%" }} />
-        </Form.Item>
-        <Form.Item name="user" label="Người huỷ" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item name="note" label="Ghi chú">
-          <TextArea rows={4} />
-        </Form.Item >
-        <Form.Item name="cbnotification" label=" ">
-          <Checkbox className="cb-style">Gửi thông báo cho người tạo</Checkbox>
-        </Form.Item>
-      </Form>
-    ),
-    okText: "Lưu",
-    cancelText: "Huỷ",
+          <Form.Item name="fileName" label="Tên bài giảng">
+            <div>Thương mại điện tử</div>
+          </Form.Item>
+          <Form.Item name="chooseTopic" label="Chọn chủ đề">
+            <Select disabled={disable} defaultValue="Chọn chủ đề">
+              <Option value={0}>Văn hóa xã hội</Option>
+              <Option value={1}>Sample</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="fileNameTitle" label="Tiêu đề bài giảng">
+            <Input />
+          </Form.Item>
+          <Form.Item name="chooseFile" label="Chọn tệp">
+            <Radio.Group onChange={(e) => handleChange(e)} className="teacher-subject">
+              <Radio value={0}>Tải tệp lên</Radio>
+              <Radio value={1}>Bài giảng</Radio>
+            </Radio.Group>
+          </Form.Item>
+            <Form.Item name='file'>
+              {form.getFieldValue('file') === 0 ? <div>0</div> : <div>1</div>}
+              {console.debug(form.getFieldValue('file'))}
+            </Form.Item>
+        </Form>
+      ),
+      okText: "Lưu",
+      cancelText: "Huỷ",
+    };
+  }
+
+
+  const handleChange = (e: any) => {
+    setRadioChangeComponent(e.target.value)
+    form.setFieldsValue({file: e.target.value})
   };
+
+  const [form] = Form.useForm();
+  const [disable, setDisable] = useState(false);
+
+
+ 
   const columns = [
     {
       title: "Tên tài liệu",
@@ -109,17 +107,17 @@ export const ListFile = () => {
       key: "fileType",
     },
     {
-      title: "Giảng viên",
-      dataIndex: "teacher",
-      key: "teacher",
-    },
-    {
-      title: "Ngày gửi",
+      title: "Ngày gửi phê duyệt",
       dataIndex: "createdAt",
       key: "createdAt",
     },
     {
-      title: "Tình trạng tài liệu môn học",
+      title: "Người phê duyệt",
+      dataIndex: "approver",
+      key: "approver",
+    },
+    {
+      title: "Tình trạng phê duyệt",
       dataIndex: "status",
       key: "status",
       render: (status: number) => (
@@ -136,32 +134,11 @@ export const ListFile = () => {
       ),
     },
     {
-      title: "Phê duyệt tài liệu",
-      dataIndex: "verify",
-      key: "verify",
-      render: (stt: any, record: any) => (
-        <div>
-          {record.status === 0 ? (
-            <div style={{ display: "flex" }}>
-              <Button onClick={() => modal.confirm(config)} type="primary">
-                Phê duyệt
-              </Button>
-              <Button
-                onClick={() => modal.confirm(config1)}
-                className="cancel-btn"
-              >
-                Huỷ
-              </Button>
-            </div>
-          ) : record.status === 1 ? (
-            <span className="gray">Đã phê duyệt</span>
-          ) : (
-            <span className="gray">Đã huỷ</span>
-          )}
-        </div>
-      ),
+      title: "Ghi chú",
+      dataIndex: "note",
+      key: "note",
+      render: (note: string) => {return <div style={{ color: '#ED2025'}}>{note}</div>}
     },
-
     {
       title: "",
       key: "action",
@@ -182,27 +159,30 @@ export const ListFile = () => {
   const data = [
     {
       key: "1",
-      fileName: "2020-6B",
+      fileName: "Thương mại điện tử.mp4",
       fileType: "Bài giảng",
-      teacher: "Nguyễn Văn A",
-      status: 0,
       createdAt: "12/02/2021",
+      approver: "Admin",
+      status: 0,
+      note: "Không phù hợp giáo trình",
     },
     {
       key: "2",
-      fileName: "2020-6C",
-      fileType: "Tài nguyên",
-      teacher: "Nguyễn Văn A",
-      status: 1,
+      fileName: "Nguyên lý kế toán.docx",
+      fileType: "Bài giảng",
       createdAt: "12/02/2021",
+      approver: "Admin",
+      status: 0,
+      note: "",
     },
     {
       key: "3",
-      fileName: "2020-6A",
+      fileName: "Hệ thống thông tin.xlsx",
       fileType: "Bài giảng",
-      teacher: "Nguyễn Văn A",
-      status: 2,
       createdAt: "12/02/2021",
+      approver: "Admin",
+      status: 0,
+      note: "",
     },
   ];
   const downloadFile = {
@@ -231,40 +211,37 @@ export const ListFile = () => {
   };
 
   return (
-    <div className="subject sub-manage">
+    <div className="subject sub-manage teacher-subject">
       <BreadcrumbComp
         title="Danh sách tài liệu"
-        prevPageTitle="Quản lý môn học"
-        prevPage="subjects"
+        prevPageTitle="Danh sách môn giảng dạy"
+        prevPage="teacher/subject"
       />
       <div className="top-head">
-        <h1>{params.idSub}</h1>
+        <h1>Thương mại điện tử</h1>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Download">
+            <Tooltip title="Delete">
               <Button
                 type="link"
                 disabled={selectedRowKeys.length === 0 ? true : false}
-                icon={
-                  <DeleteOutlined />
-                }
+                icon={<DeleteOutlined />}
               />
             </Tooltip>
           </Space>
           <div className="line"></div>
           <Button
             className="default-btn"
-            disabled={selectedRowKeys.length === 0 ? true : false}
             style={{ marginLeft: "1rem" }}
           >
-            Huỷ phê duyệt
+            Tải xuống
           </Button>
           <Button
-            disabled={selectedRowKeys.length === 0 ? true : false}
             style={{ marginLeft: "1rem" }}
             type="primary"
+            onClick={() => handleModal()}
           >
-            Phê duyệt
+            Thêm mới
           </Button>
         </div>
       </div>
@@ -278,7 +255,7 @@ export const ListFile = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent />
+          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..."/>
         </Col>
       </Row>
       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />

@@ -3,11 +3,13 @@ import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import '../shared/styles/main_styles/search.scss'
 
-
-export const SearchComponent = () => {
+interface Props{
+  placeholder : string
+}
+export const SearchComponent: React.FC<Props> = ({placeholder}) => {
   return (
     <div className='search-bar'>
-      <Input placeholder="Tìm kết quả theo tên, lớp, môn học,..." suffix={<SearchOutlined />} />
+      <Input placeholder={placeholder} suffix={<SearchOutlined />} />
     </div>
   )
 }

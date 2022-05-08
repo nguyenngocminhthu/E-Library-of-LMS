@@ -9,6 +9,20 @@ import { SelectComp } from "../../../Components/Select";
 import SunEditor from 'suneditor-react';
 import "./style.scss";
 
+const classTeach = [
+  {
+    name: "Tất cả các lớp",
+    value: "all",
+  },
+  {
+    name: "Lớp nâng cao",
+    value: "advancedClass",
+  },
+  {
+    name: "Lớp cơ bản",
+    value: "basicClass",
+  },
+];
 
 const { TabPane } = Tabs;
 export const Notification = () => {
@@ -130,13 +144,13 @@ export const Notification = () => {
             ]}
           >
             <SelectComp
-              style={{ display: "block" }}
-              textLabel="Giảng viên"
-              defaultValue="Chọn lớp giảng dạy"
+              textLabel="Chọn lớp giảng dạy"
+              defaultValue="Tất cả các lớp"
+              dataString={classTeach}
             />
-            <Checkbox>Chọn học viên</Checkbox>
-            <SearchComponent />
-            <Input className="none" placeholder="Chủ đề" />
+            <Checkbox className="cb-style" style={{fontWeight: 700}}>Chọn học viên</Checkbox>
+            <SearchComponent placeholder="Tìm kiếm"/>
+            <Input style={{margin: "10px 0px 10px 0px"}} placeholder="Chủ đề" />
             <SunEditor
               placeholder="Để lại lời nhắn của bạn tại đây..."
               setOptions={{

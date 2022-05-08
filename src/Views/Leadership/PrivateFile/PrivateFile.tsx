@@ -189,7 +189,7 @@ export const PrivateFile = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent />
+          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..."/>
         </Col>
       </Row>
       <Table columns={columns} dataSource={data} />
