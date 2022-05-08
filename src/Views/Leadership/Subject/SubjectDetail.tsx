@@ -25,7 +25,7 @@ export const SubjectDetail = () => {
         .unwrap()
         .then((rs: ISubject) => {
           setData(rs);
-          console.debug('teacher: ', rs)
+          console.debug("teacher: ", rs);
         })
         .catch((e: any) => {
           console.debug("e: ", e);
@@ -56,11 +56,7 @@ export const SubjectDetail = () => {
               <Col span={3}>Giảng viên:</Col>
               <Col span={21}>{data?.teacher?.userName}</Col>
               <Col span={3}>Mô tả:</Col>
-              <Col span={21}>
-                Thương mại điện tử, hay còn gọi là e-commerce, e-comm hay EC, là
-                sự mua bán sản phẩm hay dịch vụ trên các hệ thống điện tử như
-                Internet và các mạng máy tính.
-              </Col>
+              <Col span={21}>{data?.description}</Col>
             </Row>
           </Col>
         </Row>
@@ -79,7 +75,9 @@ export const SubjectDetail = () => {
                   size="large"
                   shape="circle"
                   icon={<CaretRightOutlined />}
-                  onClick={() => navigate(`/subjects/viewsubject/${params.idSub}`)}
+                  onClick={() =>
+                    navigate(`/subjects/viewsubject/${params.idSub}`)
+                  }
                 />
               </Tooltip>
             </div>
