@@ -74,14 +74,18 @@ export const Subject = () => {
       key: "subName",
       sorter: (a: any, b: any) => a.subName.length - b.subName.length,
       render: (subName: string, record: any) => (
-        <div onClick={() => navigate(`/subjects/${record.id}`)}>{subName}</div>
+        <div onClick={() => navigate(`/subjects/subjectdetails/${record.id}`)}>
+          {subName}
+        </div>
       ),
     },
     {
       title: "Giảng viên",
       dataIndex: "teacher",
       key: "teacher",
-      render: (teacher: UserState) => {return teacher?.userName}
+      render: (teacher: UserState) => {
+        return teacher?.userName;
+      },
     },
     {
       title: "Số tài liệu chờ duyệt",
@@ -111,7 +115,7 @@ export const Subject = () => {
           <Tooltip title="Detail">
             <Button
               onClick={() => navigate(`/subjects/listfile/${record.subCode}`)}
-              icon={<UnorderedListOutlined/>}
+              icon={<UnorderedListOutlined />}
             />
           </Tooltip>
         </Space>

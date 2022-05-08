@@ -56,6 +56,7 @@ export interface ISubject {
   subCode: string;
   subName: string;
   teacher: UserState;
+  description: string;
   status: number;
   file: number;
   image: string;
