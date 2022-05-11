@@ -28,7 +28,17 @@
         padding: 0px 24px;
         float: right;
     }
+    .selectcomp{
+        margin: 0 1rem 1rem 0;
+    }
     .selectcomp .select{
         width: fit-content !important;
     }
+    
+}
+.sun-editor .se-toolbar{
+    text-align: left;
+}
+.select-margin{
+    margin-right: 16px;
 }

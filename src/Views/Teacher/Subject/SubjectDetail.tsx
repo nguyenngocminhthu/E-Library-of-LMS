@@ -19,6 +19,7 @@ import { AppDispatch } from "../../../redux/store";
   const { Option } = Select;
   const { TabPane } = Tabs;
   const { Panel } = Collapse;
+
   const classTeach = [
     {
       name: "Tất cả các lớp",
@@ -33,6 +34,7 @@ import { AppDispatch } from "../../../redux/store";
       value: "basicClass",
     },
   ];
+
   export const SubjectDetail = () => {
     const params = useParams<{ idSub: string }>();
     const navigate = useNavigate();
@@ -95,7 +97,7 @@ import { AppDispatch } from "../../../redux/store";
       const modalChangeName = {
         title: "Tạo câu hỏi cho học viên",
         width: "50%",
-        className: "modal-change-name",
+        className: "modal-add-role",
         content: (
           <Form
             labelCol={{ span: 6 }}
@@ -104,17 +106,43 @@ import { AppDispatch } from "../../../redux/store";
             layout="horizontal"
             form={form}
           >
-            <Form.Item name="fileName" label="Tên bài giảng">
-              <div>Thương mại điện tử</div>
+            <Form.Item name="fileName" label="Tiêu đề (tóm tắt)">
+              <Input />
             </Form.Item>
-            <Form.Item name="chooseTopic" label="Chọn chủ đề">
-              <Select disabled={disable} defaultValue="Chọn chủ đề">
-                <Option value={0}>Văn hóa xã hội</Option>
-                <Option value={1}>Sample</Option>
+            <Form.Item name="chooseTopic" label="Chi tiết (tuỳ chọn)">
+              <SunEditor
+                setOptions={{
+                  defaultTag: "div",
+                  minHeight: "150px",
+                  showPathLabel: false,
+                  buttonList: [
+                    // default
+                    ["undo", "redo"],
+                    ["bold", "underline", "italic", "list"],
+                    ["table", "link", "image"],
+                    ["fullScreen"],
+                  ],
+                }}
+              />
+            </Form.Item>
+            <Form.Item name="fileNameTitle" label="Lớp giảng dạy">
+              <Select className="select" defaultValue={0}>
+                <Option value={0}>Tất cả các lớp</Option>
+                <Option value={1}>Lớp nâng cao</Option>
+                <Option value={2}>Lớp căn bản</Option>
               </Select>
             </Form.Item>
-            <Form.Item name="fileNameTitle" label="Tiêu đề bài giảng">
-              <Input />
+            <Form.Item name="fileNameTitle" label="Chủ đề">
+              <Select className="select" defaultValue="Tuỳ chọn chủ đề">
+                <Option value={0}>Giới thiệu chung về Thương mại Điện tử</Option>
+                <Option value={1}>Thương mại điện tử</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item name="fileNameTitle" label="Bài giảng">
+              <Select className="select" defaultValue="Tuỳ chọn bài giảng">
+                <Option value={0}>Giới thiệu về thương mại điện tử trong những năm gần đây</Option>
+                <Option value={1}>Thương mại điện tử đã thay đổi sự phát triển của nền kinh tế thế giới</Option>
+              </Select>
             </Form.Item>
           </Form>
         ),
@@ -489,7 +517,7 @@ import { AppDispatch } from "../../../redux/store";
                     padding: "0 16px",
                   }}
                 >
-                  <div className="space-with-noti">
+                  <div className="space-with-noti selectcomp">
                     <Select className="select" defaultValue={0}>
                       <Option value={0}>Thương mại điện tử</Option>
                       <Option value={1}>Toán cao cấp</Option>
