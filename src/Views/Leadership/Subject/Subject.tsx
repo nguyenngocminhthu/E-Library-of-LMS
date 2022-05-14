@@ -7,8 +7,16 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
-import { UserState } from "../../../redux/reducers/user.reducer";
+import {
+  getSubject,
+  getSubjects,
+  ISubject,
+} from "../../../redux/reducers/subject.reducer";
+import {
+  getUser,
+  updateProfile,
+  UserState,
+} from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
@@ -39,6 +47,7 @@ export const Subject = () => {
   const data = useSelector((state: any) => state.subject.listSubject.results);
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([]);
   const dispatch: AppDispatch = useDispatch();
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
 
   useEffect(() => {
     dispatch(getSubjects(999))
@@ -62,6 +71,54 @@ export const Subject = () => {
     setSubjectSelect(option);
   }, [data]);
 
+  const handleClick = (id: string) => {
+    navigate(`/subjects/subjectdetails/${id}`);
+    console.debug(user);
+    const subjectIds = user.recentSubjectId;
+    if (subjectIds.length === 10) {
+      subjectIds.pop();
+    }
+    if (subjectIds.includes(id)) {
+      const newSubjectIds = subjectIds.filter(function (e: any) {
+        return e !== id;
+      });
+      dispatch(
+        updateProfile({
+          id: user.id,
+          payload: { recentSubjectId: [id, ...newSubjectIds] },
+        })
+      )
+        .unwrap()
+        .then(() => {
+          dispatch(getUser(user.id))
+            .unwrap()
+            .then((rs: UserState) => {
+              localStorage.setItem("user", JSON.stringify(rs));
+            });
+        });
+      localStorage.setItem(
+        "subjectIds",
+        JSON.stringify([id, ...newSubjectIds])
+      );
+    } else {
+      dispatch(
+        updateProfile({
+          id: user.id,
+          payload: { recentSubjectId: [id, ...subjectIds] },
+        })
+      )
+        .unwrap()
+        .then(() => {
+          dispatch(getUser(user.id))
+            .unwrap()
+            .then((rs: UserState) => {
+              localStorage.setItem("user", JSON.stringify(rs));
+            });
+        });
+      localStorage.setItem("subjectIds", JSON.stringify([id, ...subjectIds]));
+    }
+  };
+
   const columns = [
     {
       title: "Mã môn học",
@@ -74,9 +131,7 @@ export const Subject = () => {
       key: "subName",
       sorter: (a: any, b: any) => a.subName.length - b.subName.length,
       render: (subName: string, record: any) => (
-        <div onClick={() => navigate(`/subjects/subjectdetails/${record.id}`)}>
-          {subName}
-        </div>
+        <div onClick={() => handleClick(record.id)}>{subName}</div>
       ),
     },
     {
@@ -148,7 +203,7 @@ export const Subject = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..."/>
+          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
         </Col>
       </Row>
       <Table columns={columns} dataSource={data} />

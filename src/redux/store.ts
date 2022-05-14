@@ -3,6 +3,7 @@ import authReducer from "./reducers/auth.reducer";
 import banksReducer from "./reducers/banks.reducer";
 import loadingReducer from "./reducers/loading.reducer";
 import messageReducer from "./reducers/message.reducer";
+import questionReducer from "./reducers/question.reducer";
 import subjectReducer from "./reducers/subject.reducer";
 import userReducer from "./reducers/user.reducer";
 // ...
@@ -12,6 +13,7 @@ const reducer = {
   user: userReducer,
   subject: subjectReducer,
   bank: banksReducer,
+  question: questionReducer,
   message: messageReducer,
   loading: loadingReducer,
 };

@@ -14,6 +14,12 @@ const getBank = (id: string) => {
   });
 };
 
-const Banks = { getBanks, getBank };
+const updateBank = (id: string, payload: any) => {
+  return axiosClient.patch(url + `/${id}`, payload).then((rs: any) => {
+    return rs;
+  });
+};
+
+const Banks = { getBanks, getBank, updateBank };
 
 export default Banks;

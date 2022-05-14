@@ -1,16 +1,22 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Button, Col, Radio, Row, Space } from "antd";
+import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import { getBank, IBanks } from "../../../redux/reducers/banks.reducer";
+import {
+  getBank,
+  IBanks,
+  updateBank,
+} from "../../../redux/reducers/banks.reducer";
+import { IQuestion } from "../../../redux/reducers/question.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 export const ExamDetails = () => {
   const dispatch: AppDispatch = useDispatch();
   const params = useParams<{ id: string }>();
-  const [select, setSelect] = useState(1);
+  const [select, setSelect] = useState(0);
   const [data, setData] = useState<IBanks>();
 
   useEffect(() => {
@@ -19,6 +25,7 @@ export const ExamDetails = () => {
         .unwrap()
         .then((rs: IBanks) => {
           setData(rs);
+          setSelect(0);
         })
         .catch((e: any) => {
           console.debug("bank: ", e);
@@ -26,13 +33,31 @@ export const ExamDetails = () => {
     }
   }, []);
 
-  
+  const handleSelect = (idx: number) => {
+    setSelect(idx);
+  };
 
-  let question: any[] = [];
-  let i;
-  for (i = 1; i <= 20; i++) {
-    question.push({ quesNum: i, answer: "B" });
-  }
+  const config = {
+    title: "Phê duyệt",
+    className: "file-modal",
+    content:
+      "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+    onOk: () =>
+      dispatch(updateBank({ id: params.id, payload: { status: 1 } }))
+        .unwrap()
+        .then(() => {
+          if (params.id) {
+            dispatch(getBank(params.id))
+              .unwrap()
+              .then((rs: IBanks) => {
+                setData(rs);
+                setSelect(0);
+              });
+          }
+        }),
+  };
 
   return (
     <div className="sub-exam-bank">
@@ -63,7 +88,13 @@ export const ExamDetails = () => {
             </div>
             <div>
               <div>Kiểm tra {data?.time} phút</div>
-              <div>{data?.examType === 0 ? <div>Trắc nghiệm</div> : <div>Tự luận</div> }</div>
+              <div>
+                {data?.examType === 0 ? (
+                  <div>Trắc nghiệm</div>
+                ) : (
+                  <div>Tự luận</div>
+                )}
+              </div>
             </div>
           </div>
           <div className="d-flex">
@@ -72,17 +103,26 @@ export const ExamDetails = () => {
               <div>Ngày tạo: </div>
             </div>
             <div>
-              <div>{data?.user?.userName || 'null'}</div>
+              <div>{data?.user?.userName || "null"}</div>
               <div>{data?.createdAt}</div>
             </div>
           </div>
         </div>
 
         <div className="d-flex">
-          <Button className="default-btn" style={{ marginLeft: "1rem" }}>
+          <Button
+            disabled={data?.status !== 0}
+            className="default-btn"
+            style={{ marginLeft: "1rem" }}
+          >
             Huỷ phê duyệt
           </Button>
-          <Button style={{ marginLeft: "1rem" }} type="primary">
+          <Button
+            disabled={data?.status !== 0}
+            onClick={() => modal.confirm(config)}
+            style={{ marginLeft: "1rem" }}
+            type="primary"
+          >
             Phê duyệt
           </Button>
         </div>
@@ -91,14 +131,21 @@ export const ExamDetails = () => {
         <Row>
           <Col span={6}>
             <div>Phần câu hỏi - đáp án:</div>
-            {question.map((vl) => (
+            {data?.question.map((vl, idx) => (
               <div
-                className={select === vl.quesNum ? "answer true" : "answer"}
-                key={vl.quesNum}
-                onClick={() => setSelect(vl.quesNum)}
+                className={select === idx ? "answer true" : "answer"}
+                key={vl.id}
+                onClick={() => handleSelect(idx)}
               >
-                Câu {vl.quesNum}.{vl.answer}
-                <div hidden={!(select === vl.quesNum)} className="icon-true">
+                Câu {idx + 1}.
+                {vl.correct[0] === 0
+                  ? "A"
+                  : vl.correct[0] === 1
+                  ? "B"
+                  : vl.correct[0] === 2
+                  ? "C"
+                  : "D"}
+                <div hidden={!(select === idx)} className="icon-true">
                   <CheckCircleOutlined />
                 </div>
               </div>
@@ -106,26 +153,13 @@ export const ExamDetails = () => {
           </Col>
           <Col span={18}>
             <h3>
-              Câu 1: Lý do hình thành nhờ nước Cộng hòa Liên bang Đức là gì?
+              Câu {select + 1}: {data?.question[select].quesName}
             </h3>
-            <Radio.Group value={1}>
+            <Radio.Group value={data?.question[select].correct[0]}>
               <Space direction="vertical">
-                <Radio value={1}>
-                  A. Kết quả của cuộc đấu tranh vì độc lập, tự do của người dân
-                  Đức.
-                </Radio>
-                <Radio value={2}>
-                  B. Sự thoả thuận của Anh, Mĩ, Liên Xô tại Hội nghị I-an-ta.
-                </Radio>
-                <Radio value={3}>
-                  C. Âm mưu của các nước Anh, Pháp, Mĩ hòng chia cắtt lâu dài
-                  nước Đức; xây dựng một tiền đồn chống chủ nghĩa xã hội ở châu
-                  Âu.
-                </Radio>
-                <Radio value={4}>
-                  D. Hậu quả của những chính sách phản động mà Chủ nghĩa phát
-                  xít đã thi hành ờ đất nước này.
-                </Radio>
+                {data?.question[select].answers.map((vl, idx) => (
+                  <Radio value={idx}>{vl}</Radio>
+                ))}
               </Space>
             </Radio.Group>
           </Col>

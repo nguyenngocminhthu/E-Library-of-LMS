@@ -4,6 +4,7 @@ import Banks from "../../Apis/Banks.api";
 import { setLoading } from "./loading.reducer";
 import { ISubject } from "./subject.reducer";
 import { UserState } from "./user.reducer";
+import { IQuestion } from "./question.reducer";
 
 export const getBanks = createAsyncThunk(
   "Banks/getBanks",
@@ -51,14 +52,38 @@ export const getBank = createAsyncThunk(
   }
 );
 
+export const updateBank = createAsyncThunk(
+  "Banks/updateBank",
+  async ({ id, payload }: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Banks.updateBank(id, payload);
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export interface IBanks {
   id: string;
   status: number;
   fileType: number;
   examName: string;
-  subject: ISubject; 
+  subject: ISubject;
   examType: number;
   user: UserState;
+  question: IQuestion[];
   createdAt: string;
   updatedAt: string;
   time: number;
@@ -87,6 +112,12 @@ export const banksReducer = createSlice({
       state.listBanks = action.payload;
     });
     builder.addCase(getBank.rejected, (state, action) => {
+      state.listBanks = [];
+    });
+    builder.addCase(updateBank.fulfilled, (state, action) => {
+      state.listBanks = action.payload;
+    });
+    builder.addCase(updateBank.rejected, (state, action) => {
       state.listBanks = [];
     });
   },

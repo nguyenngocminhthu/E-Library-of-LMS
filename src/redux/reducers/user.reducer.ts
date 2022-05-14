@@ -26,6 +26,25 @@ export const getUsers = createAsyncThunk(
   }
 );
 
+export const getUser = createAsyncThunk(
+  "user/getUser",
+  async (id: string, thunkAPI) => {
+    try {
+      const data = await User.getUser(id);
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export const updateProfile = createAsyncThunk(
   "user/updateProfile",
   async ({ id, payload }: any, thunkAPI) => {
@@ -105,6 +124,8 @@ export interface UserState {
   userName: string;
   phone: string;
   address: string;
+  recentSubject: any[];
+  recentSubjectId: string[];
   avt: any;
 }
 
@@ -144,6 +165,12 @@ export const userReducer = createSlice({
       state.listUser = action.payload;
     });
     builder.addCase(deleteUser.rejected, (state, action) => {
+      state.listUser = [];
+    });
+    builder.addCase(getUser.fulfilled, (state, action) => {
+      state.listUser = action.payload;
+    });
+    builder.addCase(getUser.rejected, (state, action) => {
       state.listUser = [];
     });
   },

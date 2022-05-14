@@ -3,6 +3,8 @@ import { Button, Card, Col, List, Row, Typography } from "antd";
 import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { SelectComp } from "../../../Components/Select";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
 import ppt from "../../../shared/img/ppt.png";
 import WEB23 from "../../../shared/img/WEB23.png";
 import "./style.scss"; // Alt Shift O
@@ -59,6 +61,8 @@ for (let i = 0; i < 10; i++) {
 }
 
 export const Home = () => {
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+
   return (
     <div className="home">
       <BreadcrumbComp title="Trang chủ" />
@@ -95,7 +99,7 @@ export const Home = () => {
         <div className="title">Tài liệu môn học đã xem gần đây</div>
         <List
           grid={{ gutter: 30, column: 4 }}
-          dataSource={listData}
+          dataSource={user.recentSubject}
           pagination={{
             position: "top",
             onChange: (page) => {
@@ -103,23 +107,23 @@ export const Home = () => {
             },
             pageSize: 8,
           }}
-          renderItem={(item: IData) => (
-            <List.Item key={item.fileCode}>
+          renderItem={(item: ISubject) => (
+            <List.Item key={item.subCode}>
               <Card>
                 <Row>
                   <Col span={8} className="btn-img">
                     <div className="img-play">
-                      <img src={item.avt} alt="avt" />
+                      <img src={item.image} alt="avt" />
                     </div>
                     <div className="btn-play">
                       <Button shape="circle" icon={<CaretRightFilled />} />
                     </div>
                   </Col>
                   <Col span={15} offset={1}>
-                    <h5>{item.fileName}</h5>
-                    <p>{item.subject}</p>
-                    <h6>{item.fileCode}</h6>
-                    <span>Giảng viên: {item.teacher}</span>
+                    <h5>{item.subName}</h5>
+                    <p>{item.subCode}</p>
+                    <h6>{item.subCode}</h6>
+                    <span>Giảng viên: {item.teacher.userName}</span>
                   </Col>
                 </Row>
               </Card>

@@ -140,7 +140,6 @@ export const Home = () => {
                 <Row>
                   <Col span={8} className="btn-img">
                     <img src={item.avt} />
-                    zz
                   </Col>
                   <Col span={15} offset={1}>
                     <h5>{item.fileName}</h5>
@@ -210,9 +209,7 @@ export const Home = () => {
                 renderItem={(item: any) => (
                   <List.Item key={item.id}>
                     <List.Item.Meta
-                      avatar={
-                          <Avatar src={item.picture.large} />
-                      }
+                      avatar={<Avatar src={item.picture.large} />}
                       title={<a href="https://ant.design">{item.name.last}</a>}
                       description={item.email}
                     />

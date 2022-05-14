@@ -8,6 +8,12 @@ const getUsers = () => {
   });
 };
 
+const getUser = (id: string) => {
+  return axiosClient.get(url + `/${id}`).then((rs: any) => {
+    return rs;
+  });
+};
+
 const createUser = (payload: any) => {
   return axiosClient.post(url, payload).then((rs: any) => {
     return rs;
@@ -26,6 +32,6 @@ const deleteUser = (id: string) => {
   });
 };
 
-const User = { getUsers, updateProfile, createUser, deleteUser };
+const User = { getUsers, updateProfile, createUser, deleteUser, getUser };
 
 export default User;

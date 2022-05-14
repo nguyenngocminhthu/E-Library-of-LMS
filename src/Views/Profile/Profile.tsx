@@ -84,7 +84,6 @@ export const Profile = () => {
       address: values.address,
       email: values.email,
     };
-    console.debug("value: ", values);
     dispatch(updateProfile({ id: values.id, payload: value })).then(
       (rs: any) => {
         localStorage.removeItem("user");
