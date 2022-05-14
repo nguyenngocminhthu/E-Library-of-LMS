@@ -11,7 +11,6 @@ export const MainLayout = () => {
   const acception = ["admin", "leadership", "teacher", "student"];
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  console.debug("user: ", user);
 
   return (
     <div>
