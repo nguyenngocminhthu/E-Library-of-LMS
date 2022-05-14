@@ -16,10 +16,10 @@ import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
-import "./style.scss";
+import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
+import SearchComponent from "../../../../Components/SearchComponent";
+import { SelectComp } from "../../../../Components/Select";
+import "../style.scss";
 
 const { Option } = Select;
 

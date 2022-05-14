@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import ReactPlayer from "react-player";
 import { Row, Col, Tabs, Collapse, Button, Avatar } from "antd";
 import { useState } from "react";
@@ -12,8 +12,8 @@ import {
   PlayCircleFilled,
   UserOutlined,
 } from "@ant-design/icons";
-import { SelectComp } from "../../../Components/Select";
-import { InputLabel } from "../../../Components/InputLabel";
+import { SelectComp } from "../../../../Components/Select";
+import { InputLabel } from "../../../../Components/InputLabel";
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
