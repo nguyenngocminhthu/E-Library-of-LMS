@@ -1,0 +1,18 @@
+.icon-custom {
+  .anticon svg {
+    font-size: 20px !important;
+    width: fit-content !important;
+  }
+}
+
+.popover {
+  p {
+    border-bottom: 1px solid orange;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

@@ -5,13 +5,14 @@ import { setLoading } from "./loading.reducer";
 import { ISubject } from "./subject.reducer";
 import { UserState } from "./user.reducer";
 import { IQuestion } from "./question.reducer";
+import { ISubjectGroup } from "./subjectgroup.reducer";
 
 export const getBanks = createAsyncThunk(
   "Banks/getBanks",
-  async (limit: any, thunkAPI) => {
+  async ({ limit, subjectGroup, subject, user }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Banks.getBanks(limit);
+      const data = await Banks.getBanks({ limit, subjectGroup, subject, user });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -77,10 +78,12 @@ export const updateBank = createAsyncThunk(
 
 export interface IBanks {
   id: string;
+  key?: number;
   status: number;
   fileType: number;
   examName: string;
   subject: ISubject;
+  subjectGroup: string;
   examType: number;
   user: UserState;
   question: IQuestion[];

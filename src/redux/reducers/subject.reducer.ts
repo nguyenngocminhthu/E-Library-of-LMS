@@ -53,6 +53,7 @@ export const getSubject = createAsyncThunk(
 
 export interface ISubject {
   id: string;
+  key?: number;
   subCode: string;
   subName: string;
   teacher: UserState;

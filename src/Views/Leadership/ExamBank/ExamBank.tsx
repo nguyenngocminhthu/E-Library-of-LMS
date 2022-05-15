@@ -1,4 +1,8 @@
-import { DesktopOutlined, DownloadOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  DesktopOutlined,
+  DownloadOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Checkbox,
@@ -26,87 +30,92 @@ import { getBanks, IBanks } from "../../../redux/reducers/banks.reducer";
 import { ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import {ReactComponent as Word} from '../../../shared/img/icon/word.svg';
+import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import "./style.scss";
 
 const { Title } = Typography;
-    const status = [
-      {
-        name: "Đã phê duyệt",
-        value: "DPD",
-      },
-      {
-        name: "Chờ phê duyệt",
-        value: "CPD",
-      },
-    ];
-    const schoolYears = [
-      {
-        name: "2018-2029",
-        value: "1819",
-      },
-      {
-        name: "2019-2020",
-        value: "1920",
-      },
-      {
-        name: "2020-2021",
-        value: "2021",
-      },
-    ];
-  const allSubject = [
-    {
-      name: "Thương mại điện tử",
-      value: "TMDT",
-    },
-    {
-      name: "Nguyên lý kế toán",
-      value: "NLKT",
-    },
-    {
-      name: "Hệ thống thông tin",
-      value: "HTTT",
-    },
-    {
-      name: "Luật thương mại",
-      value: "LTM",
-    },
-    {
-      name: "Ngân hàng ",
-      value: "NG",
-    },
-  ];
-  const allTeacher = [
-    {
-      name: "Nguyễn Văn A",
-      value: "NVA",
-    },
-    {
-      name: "Nguyễn Văn C",
-      value: "NVC",
-    },
-  ];
-  
-  const downloadFile = {
-    title: "Tải xuống tệp",
-    className: "modal-change-name",
-    content:
-      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
+const status = [
+  {
+    name: "Đã phê duyệt",
+    value: "DPD",
+  },
+  {
+    name: "Chờ phê duyệt",
+    value: "CPD",
+  },
+];
+const schoolYears = [
+  {
+    name: "2018-2029",
+    value: "1819",
+  },
+  {
+    name: "2019-2020",
+    value: "1920",
+  },
+  {
+    name: "2020-2021",
+    value: "2021",
+  },
+];
+const allSubject = [
+  {
+    name: "Thương mại điện tử",
+    value: "TMDT",
+  },
+  {
+    name: "Nguyên lý kế toán",
+    value: "NLKT",
+  },
+  {
+    name: "Hệ thống thông tin",
+    value: "HTTT",
+  },
+  {
+    name: "Luật thương mại",
+    value: "LTM",
+  },
+  {
+    name: "Ngân hàng ",
+    value: "NG",
+  },
+];
+const allTeacher = [
+  {
+    name: "Nguyễn Văn A",
+    value: "NVA",
+  },
+  {
+    name: "Nguyễn Văn C",
+    value: "NVC",
+  },
+];
+
+const downloadFile = {
+  title: "Tải xuống tệp",
+  className: "modal-change-name",
+  content:
+    "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+  okText: "Xác nhận",
+  cancelText: "Huỷ",
+};
 export const ExamBank = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
+  const [filter, setFilter] = useState<any>({ limit: 999 });
 
   const [data, setData] = useState<IBanks[]>([]);
   useEffect(() => {
-    dispatch(getBanks(999))
+    dispatch(getBanks(filter))
       .unwrap()
       .then((rs: any) => {
-        setData(rs.results);
+        let list: IBanks[] = [];
+        rs.results.forEach((vl: IBanks, idx: number) => {
+          list.push({ key: idx, ...vl });
+        });
+        setData(list);
       })
       .catch((e: any) => {
         console.debug("e: ", e);
@@ -168,7 +177,17 @@ export const ExamBank = () => {
       dataIndex: "fileType",
       key: "fileType",
       sorter: true,
-      render: ( fileType : number ) => {return <>{fileType === 0 ? <DesktopOutlined style={{ fontSize: 32}}/> : <Word/> }</>}
+      render: (fileType: number) => {
+        return (
+          <>
+            {fileType === 0 ? (
+              <DesktopOutlined style={{ fontSize: 32 }} />
+            ) : (
+              <Word />
+            )}
+          </>
+        );
+      },
     },
     {
       title: "Tên đề thi",
@@ -180,25 +199,35 @@ export const ExamBank = () => {
       title: "Môn học",
       dataIndex: "subject",
       key: "subject",
-      render: (subject: ISubject) => {return subject?.subName}
+      render: (subject: ISubject) => {
+        return subject?.subName;
+      },
     },
     {
       title: "Giảng viên",
       dataIndex: "user",
       key: "user",
-      render: (teacher: UserState) => {return teacher?.userName}
+      render: (teacher: UserState) => {
+        return teacher?.userName;
+      },
     },
     {
       title: "Hình thức",
       dataIndex: "examType",
       key: "examType",
-      render: ( examType : number ) => {return <>{examType === 0 ? <div>Trắc nghiệm</div> : <div>Tự luận</div> }</>}
+      render: (examType: number) => {
+        return (
+          <>{examType === 0 ? <div>Trắc nghiệm</div> : <div>Tự luận</div>}</>
+        );
+      },
     },
     {
       title: "Thời lượng",
       dataIndex: "time",
       key: "time",
-      render: ( time : number ) => {return <div>{time} phút</div>}
+      render: (time: number) => {
+        return <div>{time} phút</div>;
+      },
     },
     {
       title: "Tình trạng",
@@ -260,7 +289,6 @@ export const ExamBank = () => {
     },
   ];
 
-
   const onSelectChange = (selectedRowKeys: any) => {
     setSelectedRowKeys(selectedRowKeys);
   };
@@ -272,11 +300,11 @@ export const ExamBank = () => {
 
   return (
     <div className="exam-bank sub-exam-bank">
-      <BreadcrumbComp
-        title="Ngân hàng đề thi"
-      />
+      <BreadcrumbComp title="Ngân hàng đề thi" />
       <div className="top-head">
-        <Title ellipsis level={5}>Danh sách đề thi</Title>
+        <Title ellipsis level={5}>
+          Danh sách đề thi
+        </Title>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
             <Tooltip title="Download">
@@ -335,11 +363,10 @@ export const ExamBank = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..."/>
+          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
         </Col>
       </Row>
       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
     </div>
   );
 };
-
