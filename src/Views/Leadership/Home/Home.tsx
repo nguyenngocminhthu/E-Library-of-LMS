@@ -1,5 +1,6 @@
 import { CaretRightFilled } from "@ant-design/icons";
 import { Button, Card, Col, List, Row, Typography } from "antd";
+import { useNavigate } from "react-router";
 import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { SelectComp } from "../../../Components/Select";
@@ -10,14 +11,6 @@ import WEB23 from "../../../shared/img/WEB23.png";
 import "./style.scss"; // Alt Shift O
 
 const { Title } = Typography;
-
-interface IData {
-  fileName: string;
-  subject: string;
-  fileCode: string;
-  teacher: string;
-  avt: string;
-}
 
 interface IFile {
   fileName: string;
@@ -38,17 +31,6 @@ const year = [
   },
 ];
 
-const listData: any[] | undefined = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    fileName: "Phát triển website",
-    subject: "Web Design",
-    fileCode: `WEB${i}`,
-    teacher: "Hoa Hoa",
-    avt: `${WEB23}`,
-  });
-}
-
 const listFile: any[] | undefined = [];
 for (let i = 0; i < 10; i++) {
   listFile.push({
@@ -62,6 +44,7 @@ for (let i = 0; i < 10; i++) {
 
 export const Home = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const navigate = useNavigate();
 
   return (
     <div className="home">
@@ -109,7 +92,9 @@ export const Home = () => {
           }}
           renderItem={(item: ISubject) => (
             <List.Item key={item.subCode}>
-              <Card>
+              <Card
+                onClick={() => navigate(`/subjects/subjectdetails/${item.id}`)}
+              >
                 <Row>
                   <Col span={8} className="btn-img">
                     <div className="img-play">

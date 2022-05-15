@@ -1,5 +1,17 @@
 import { MoreOutlined } from "@ant-design/icons";
-import { Button, Col, Dropdown, Form, Input, Menu, Row, Select, Space, Table, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Dropdown,
+  Form,
+  Input,
+  Menu,
+  Row,
+  Select,
+  Space,
+  Table,
+  Tooltip,
+} from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -8,7 +20,7 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { getSubjects } from "../../../redux/reducers/subject.reducer";
+import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
@@ -16,22 +28,26 @@ const { Option } = Select;
 
 export const Subject = () => {
   const navigate = useNavigate();
-  const data = useSelector((state: any) => state.subject.listSubject.results);
   const dispatch: AppDispatch = useDispatch();
   const [form] = Form.useForm();
   const [disable, setDisable] = useState(false);
+  const [data, setData] = useState<ISubject[]>([]);
 
   useEffect(() => {
     dispatch(getSubjects(999))
       .unwrap()
       .then((rs: any) => {
-        console.debug("rs: ", rs);
+        let list: ISubject[] = [];
+        rs.results.forEach((vl: ISubject, idx: number) => {
+          list.push({ key: idx, ...vl });
+        });
+        setData(list);
       })
       .catch((e: any) => {
         console.debug("e: ", e);
       });
   }, []);
-  
+
   const modalChangeName = {
     title: "Phân công tài liệu môn học",
     width: "50%",
@@ -63,11 +79,17 @@ export const Subject = () => {
   };
   const userMenu = (
     <Menu>
-      <Menu.Item key="1" onClick={() => navigate(`/subjects/subjectdetail`)}>Chi tiết môn học</Menu.Item>
+      <Menu.Item key="1" onClick={() => navigate(`/subjects/subjectdetail`)}>
+        Chi tiết môn học
+      </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="2"   onClick={() => navigate(`/subjects/listfile`)}>Danh sách tài liệu</Menu.Item>
+      <Menu.Item key="2" onClick={() => navigate(`/subjects/listfile`)}>
+        Danh sách tài liệu
+      </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="3" onClick = {() => modal.confirm(modalChangeName)}>Phân công tài liệu</Menu.Item>
+      <Menu.Item key="3" onClick={() => modal.confirm(modalChangeName)}>
+        Phân công tài liệu
+      </Menu.Item>
     </Menu>
   );
   const subjectSelect = [
@@ -79,7 +101,7 @@ export const Subject = () => {
       value: "Lần truy cập gần nhất",
       key: "LTCGN",
     },
-  ]
+  ];
   const columns = [
     {
       title: "Mã môn học",
@@ -122,17 +144,16 @@ export const Subject = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Dropdown.Button
-        className="dropdown-btn"
-        overlay={userMenu}
-        icon={
-          <MoreOutlined
-            style={{
-              fontSize: '24px',
-            }}
-           
-          />
-        }
-      ></Dropdown.Button>
+          className="dropdown-btn"
+          overlay={userMenu}
+          icon={
+            <MoreOutlined
+              style={{
+                fontSize: "24px",
+              }}
+            />
+          }
+        ></Dropdown.Button>
       ),
     },
   ];
@@ -149,7 +170,7 @@ export const Subject = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..."/>
+          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
         </Col>
       </Row>
       <Table

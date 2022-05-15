@@ -37,7 +37,7 @@ const status = [
   },
 ];
 
-interface ISubjectSelect {
+export interface ISubjectSelect {
   name: string;
   value: string;
 }
