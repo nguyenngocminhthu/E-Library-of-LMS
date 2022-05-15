@@ -12,6 +12,8 @@ import { ListFile } from "../Views/Teacher/Subject/SubjectList/ListFile";
 import { Subject } from "../Views/Teacher/Subject/Subject";
 import { SubjectDetail } from "../Views/Teacher/Subject/SubjectDetail/SubjectDetail";
 import { ViewSubject } from "../Views/Teacher/Subject/SubjectDetail/ViewSubject";
+import { EditSubject } from "../Views/Teacher/Subject/SubjectDetail/EditSubject";
+import { AddSubject } from "../Views/Teacher/Subject/SubjectDetail/AddSubject";
 
 export const Teacher = () => {
   return (
@@ -23,6 +25,10 @@ export const Teacher = () => {
           <Route path="/teacher/subject" element={<Subject />} />
 
           <Route path="/subjects/subjectdetail" element={<SubjectDetail />} />
+
+          <Route path="/subjects/editsubject" element={<EditSubject />} />
+
+          <Route path="/subjects/addsubject" element={<AddSubject />} />
 
           <Route path="/subjects/viewsubject" element={<ViewSubject />} />
 

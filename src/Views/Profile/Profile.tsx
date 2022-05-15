@@ -143,6 +143,7 @@ export const Profile = () => {
                           }}
                           maxCount={1}
                           onPreview={onPreview}
+                          disabled={disable}
                         >
                           <CameraOutlined />
                         </Upload>

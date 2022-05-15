@@ -1,8 +1,14 @@
-import { FormOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, Row, Select } from "antd";
+import { CameraOutlined, FormOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Input, Row, Select, Upload } from "antd";
+import ImgCrop from "antd-img-crop";
 import { useEffect, useState } from "react";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import cloudinaryUpload from "../../../Apis/Cloudinary";
+import { updateProfile, UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import './style.scss';
+import { useDispatch } from "react-redux";
+import Toast from "../../../Components/Toast";
 
 const { Option } = Select;
 
@@ -10,10 +16,60 @@ export const Information = () => {
   const [form] = Form.useForm();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [disable, setDisable] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
+  const [fileList, setFileList] = useState<any>([
+    {
+      uid: "-1",
+      name: "image.png",
+      status: "done",
+      url: "https://icons-for-free.com/iconfiles/png/512/gallery+image+landscape+mobile+museum+open+line+icon-1320183049020185924.png",
+    },
+  ]);
+
+  useEffect(() => {
+    form.setFieldsValue(user);
+    setFileList([
+      {
+        uid: "-1",
+        name: "image.png",
+        status: "done",
+        url: `${user.avt}`,
+      },
+    ]);
+  }, []);
 
   useEffect(() => {
     form.setFieldsValue(user)
   },[])
+
+  const onPreview = async (file: any) => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+
+  const handleFileUpload = (e: any) => {
+    const uploadData = new FormData();
+    uploadData.append("file", e, "file");
+    cloudinaryUpload(uploadData).then((rs: any) => {
+      dispatch(updateProfile({ id: user.id, payload: { avt: rs.url } })).then(
+        (rs: any) => {
+          localStorage.removeItem("user");
+          localStorage.setItem("user", JSON.stringify(rs.payload));
+          Toast("Cập nhật ảnh đại diện thành công");
+        }
+      );
+    });
+  };
 
   return (
     <div className="information-system-page">
@@ -37,8 +93,33 @@ export const Information = () => {
             form={form}
           >
             <Row style={{ padding: "16px" }}>
-              <Col span={6}></Col>
-              <Col span={8} offset={1}>
+              <Col span={7}>
+                <Form.Item name="avt">
+                  <ImgCrop
+                    rotate
+                    shape="round"
+                    onModalOk={(file) => handleFileUpload(file)}
+                  >
+                    <Upload
+                      showUploadList={{
+                        showPreviewIcon: false,
+                        showRemoveIcon: false,
+                      }}
+                      listType="picture-card"
+                      fileList={fileList}
+                      onChange={({ fileList: newFileList }) => {
+                        setFileList(newFileList);
+                      }}
+                      maxCount={1}
+                      onPreview={onPreview}
+                      disabled={disable}
+                    >
+                      <CameraOutlined />
+                    </Upload>
+                  </ImgCrop>
+                </Form.Item>
+              </Col>
+              <Col span={8}>
                 <Form.Item label="Mã trường học" name="schoolCode">
                   <Input disabled={disable} />
                 </Form.Item>
@@ -61,7 +142,6 @@ export const Information = () => {
                 </Form.Item>
               </Col>
             </Row>
-            <hr className="line" />
             <Row style={{ padding: "16px" }}>
               <Col span={6}></Col>
               <Col span={8} offset={1}>
@@ -81,7 +161,6 @@ export const Information = () => {
                 </Form.Item>
               </Col>
             </Row>
-            <hr className="line" />
             <Row style={{ padding: "16px" }}>
               <Col span={6}></Col>
               <Col span={8} offset={1}>

@@ -1,23 +1,28 @@
 @import "../../../shared/styles/variable";
 
-.teacher-subject{
+.teacher-subject {
     .ant-checkbox {
         transform: scale(1.2);
     }
+
     .ant-checkbox-inner {
         border: 2px solid #0B80EC;
     }
-    .ant-list{
+
+    .ant-list {
         border: 1px solid #F2F2F2;
         border-radius: 8px;
     }
-    .ant-list-item{
+
+    .ant-list-item {
         margin: 0px 20px 0px 20px;
     }
-    .space-with-noti{
+
+    .space-with-noti {
         margin-bottom: 24px;
     }
-    .btn-create-min{
+
+    .btn-create-min {
         align-items: center;
         padding: 0px;
         background: $color-primary-light;
@@ -28,17 +33,90 @@
         padding: 0px 24px;
         float: right;
     }
-    .selectcomp{
+
+    .selectcomp {
         margin: 0 1rem 1rem 0;
     }
-    .selectcomp .select{
+
+    .selectcomp .select {
         width: fit-content !important;
     }
-    
+
+    .Noti-Page {
+        .tab-notilist {
+            .ant-form-horizontal .ant-form-item-label {
+                text-align: left;
+                font-weight: 700;
+            }
+        }
+    }
+    .add-description{
+        background-color: $color-primary-light;
+        .anticon svg{
+            color: $color-ant-input;
+            font-size: none;
+        }
+        color: $color-black;
+        font-size: none;
+    }
+    .add-description-input {
+        background-color: $color-background-secondary;
+        width: 100%;
+        padding: 1rem 1.5rem;
+        border: 1px dashed #ff7506;
+        box-sizing: border-box;
+        border-radius: 16px;
+      } 
+    .group-btn-add{
+        text-align: end;
+        margin-top: 16px;
+    }
+    .sub-title{
+        font-weight: 700;
+        margin: 16px;
+        span{
+            color: $color-primary;
+        }
+    }
+    .box-cover {
+        background: $color-white;
+        border-radius: 16px;
+        height: fit-content;
+        overflow: auto;
+        border: 1px solid rgba(140, 140, 140, 0.35);
+  
+        .header-box {
+          background: $color-second-text;
+  
+          .text-header {
+            color: $color-white;
+            font-size: 0.875rem;
+            font-weight: bold;
+            padding: 16px;
+            margin-left: 36px;
+          }
+        }
+        .add-subject-container{
+            padding: 28px 56px;
+        }
+        .note-span{
+            font-style: italic;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            opacity: 0.5;
+        }
+    }
+    .action-btn-add{
+        text-align: center;
+        margin-top: 24px;
+    }
 }
-.sun-editor .se-toolbar{
+
+.sun-editor .se-toolbar {
     text-align: left;
 }
-.select-margin{
+
+.select-margin {
     margin-right: 16px;
 }

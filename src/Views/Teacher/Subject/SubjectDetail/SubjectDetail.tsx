@@ -126,23 +126,36 @@ import { AppDispatch } from "../../../../redux/store";
               />
             </Form.Item>
             <Form.Item name="fileNameTitle" label="Lớp giảng dạy">
-              <Select className="select" defaultValue={0}>
-                <Option value={0}>Tất cả các lớp</Option>
-                <Option value={1}>Lớp nâng cao</Option>
-                <Option value={2}>Lớp căn bản</Option>
-              </Select>
+              <div className="selectcomp">
+                <Select className="select" defaultValue={0}>
+                  <Option value={0}>Tất cả các lớp</Option>
+                  <Option value={1}>Lớp nâng cao</Option>
+                  <Option value={2}>Lớp căn bản</Option>
+                </Select>
+              </div>
             </Form.Item>
             <Form.Item name="fileNameTitle" label="Chủ đề">
-              <Select className="select" defaultValue="Tuỳ chọn chủ đề">
-                <Option value={0}>Giới thiệu chung về Thương mại Điện tử</Option>
-                <Option value={1}>Thương mại điện tử</Option>
-              </Select>
+              <div className="selectcomp">
+                <Select className="select" defaultValue="Tuỳ chọn chủ đề">
+                  <Option value={0}>
+                    Giới thiệu chung về Thương mại Điện tử
+                  </Option>
+                  <Option value={1}>Thương mại điện tử</Option>
+                </Select>
+              </div>
             </Form.Item>
             <Form.Item name="fileNameTitle" label="Bài giảng">
-              <Select className="select" defaultValue="Tuỳ chọn bài giảng">
-                <Option value={0}>Giới thiệu về thương mại điện tử trong những năm gần đây</Option>
-                <Option value={1}>Thương mại điện tử đã thay đổi sự phát triển của nền kinh tế thế giới</Option>
-              </Select>
+              <div className="selectcomp">
+                <Select className="select" defaultValue="Tuỳ chọn bài giảng">
+                  <Option value={0}>
+                    Giới thiệu về thương mại điện tử trong những năm gần đây
+                  </Option>
+                  <Option value={1}>
+                    Thương mại điện tử đã thay đổi sự phát triển của nền kinh tế
+                    thế giới
+                  </Option>
+                </Select>
+              </div>
             </Form.Item>
           </Form>
         ),
@@ -223,11 +236,7 @@ import { AppDispatch } from "../../../../redux/store";
                               size="large"
                               shape="circle"
                               icon={<CaretRightOutlined />}
-                              onClick={() =>
-                                navigate(
-                                  `/subjects/viewsubject`
-                                )
-                              }
+                              onClick={() => navigate(`/subjects/viewsubject`)}
                             />
                           </Tooltip>
                         </div>
@@ -502,10 +511,14 @@ import { AppDispatch } from "../../../../redux/store";
                       <Option value={0}>Câu hỏi tôi hỏi</Option>
                       <Option value={1}>Câu hỏi tôi thích</Option>
                     </Select>
-                    <Button className="btn-create-min" type="primary" onClick = {() => modal.confirm(modalChangeName)}>
+                    </div>
+                    <Button
+                      className="btn-create-min"
+                      type="primary"
+                      onClick={() => modal.confirm(modalChangeName)}
+                    >
                       Thêm câu hỏi mới
                     </Button>
-                  </div>
                 </div>
               </TabPane>
               <TabPane tab="Thông báo môn học" key="4">
@@ -524,7 +537,11 @@ import { AppDispatch } from "../../../../redux/store";
                       <Option value={2}>Đại số </Option>
                       <Option value={3}>Luật sở hữu trí tuệ</Option>
                     </Select>
-                    <Button className="btn-create-min" type="primary" onClick={showModal}>
+                    <Button
+                      className="btn-create-min"
+                      type="primary"
+                      onClick={showModal}
+                    >
                       Tạo thông báo mới
                     </Button>
                     <Modal
@@ -597,7 +614,7 @@ import { AppDispatch } from "../../../../redux/store";
               <Button
                 type="primary"
                 onClick={() => {
-                  setDisable(!disable);
+                  navigate(`/subjects/editsubject`);
                 }}
               >
                 Chỉnh sửa

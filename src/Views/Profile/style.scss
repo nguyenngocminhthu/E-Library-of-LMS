@@ -1,46 +1,7 @@
 @import "../../shared/styles/variable";
 
 .profile-page {
-  .ant-upload-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .ant-upload-list-picture-card-container {
-      width: 200px;
-      height: 200px;
-      margin: 0;
-    }
-
-    .ant-upload-list-item-info {
-      border-radius: 50%;
-    }
-
-    .ant-upload-list-item-info::before {
-      display: none;
-    }
-
-    .ant-upload-list-item {
-      border-radius: 50%;
-      padding: 0;
-    }
-
-    .ant-upload-select-picture-card {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      border: 2px solid white;
-      background-color: #cc5c00;
-      position: absolute;
-      bottom: -30px;
-
-      .anticon {
-        color: white;
-        font-size: 25px;
-      }
-    }
-  }
-
+ 
   .ant-form-item-label {
     text-align: left;
   }
@@ -169,5 +130,44 @@
 
   .ant-btn-icon-only {
     color: $color-primary;
+  }
+}
+.ant-upload-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .ant-upload-list-picture-card-container {
+    width: 200px;
+    height: 200px;
+    margin: 0;
+  }
+
+  .ant-upload-list-item-info {
+    border-radius: 50%;
+  }
+
+  .ant-upload-list-item-info::before {
+    display: none;
+  }
+
+  .ant-upload-list-item {
+    border-radius: 50%;
+    padding: 0;
+  }
+
+  .ant-upload-select-picture-card {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background-color: #cc5c00;
+    position: absolute;
+    bottom: -30px;
+
+    .anticon {
+      color: white;
+      font-size: 25px;
+    }
   }
 }
