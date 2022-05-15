@@ -10,11 +10,11 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import SunEditor from "suneditor-react";
-import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
-import { getSubject, ISubject } from "../../../redux/reducers/subject.reducer";
-import { AppDispatch } from "../../../redux/store";
+import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
+import SearchComponent from "../../../../Components/SearchComponent";
+import { SelectComp } from "../../../../Components/Select";
+import { getSubject, ISubject } from "../../../../redux/reducers/subject.reducer";
+import { AppDispatch } from "../../../../redux/store";
   
   const { Option } = Select;
   const { TabPane } = Tabs;

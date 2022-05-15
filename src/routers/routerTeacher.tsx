@@ -8,10 +8,10 @@ import NotiSetting from "../Views/Leadership/Noti/NotiSetting";
 import { Exam } from "../Views/Teacher/Exam/Exam";
 import { Home } from "../Views/Teacher/Home/Home";
 import { Resource } from "../Views/Teacher/Resource/Resource";
-import { ListFile } from "../Views/Teacher/Subject/ListFile";
+import { ListFile } from "../Views/Teacher/Subject/SubjectList/ListFile";
 import { Subject } from "../Views/Teacher/Subject/Subject";
-import { SubjectDetail } from "../Views/Teacher/Subject/SubjectDetail";
-import { ViewSubject } from "../Views/Teacher/Subject/ViewSubject";
+import { SubjectDetail } from "../Views/Teacher/Subject/SubjectDetail/SubjectDetail";
+import { ViewSubject } from "../Views/Teacher/Subject/SubjectDetail/ViewSubject";
 
 export const Teacher = () => {
   return (

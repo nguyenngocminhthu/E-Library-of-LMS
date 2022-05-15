@@ -160,7 +160,7 @@ export const Subject = () => {
 
   return (
     <div className="subject">
-      <BreadcrumbComp title="Danh sách môn học" />
+      <BreadcrumbComp title="Danh sách môn giảng dạy" />
       <Row>
         <Col className="table-header" span={16}>
           <SelectComp
