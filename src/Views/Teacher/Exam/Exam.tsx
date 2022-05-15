@@ -8,7 +8,9 @@ import {
   Button,
   Col,
   Form,
+  Modal,
   Popover,
+  Radio,
   Row,
   Space,
   Table,
@@ -104,6 +106,40 @@ export const Exam = () => {
     setSubjectGroupSelect(option);
   }, [dataSubGroup]);
 
+  const handleModal = () => {
+    let test = 0;
+    const config = {
+      title: "Tạo đề thi mới",
+      width: "40%",
+      className: "cancel-form file-modal",
+      content: (
+        <Row>
+          <Col span={6}>
+            <b>Cách tạo đề thi</b>
+          </Col>
+          <Col span={18}>
+            <Radio.Group
+              defaultValue={0}
+              onChange={(e) => {
+                test = e.target.value;
+              }}
+            >
+              <Radio value={0}>Tạo đề thi từ ngân hàng câu hỏi</Radio>
+              <Radio value={1}>Tạo đề thi với câu hỏi mới</Radio>
+            </Radio.Group>
+          </Col>
+        </Row>
+      ),
+      okText: "Tiếp tục",
+      cancelText: "Huỷ",
+      onOk: () => {
+        if (test === 1) {
+          navigate("/teacher/exams/createExam");
+        }
+      },
+    };
+    const modalCreate = modal.confirm(config);
+  };
   const columns = [
     {
       title: "Loại file",
@@ -255,7 +291,11 @@ export const Exam = () => {
           <Button icon={<UploadOutlined />} className="default-btn icon-custom">
             Tải lên
           </Button>
-          <Button style={{ marginLeft: "1rem" }} type="primary">
+          <Button
+            onClick={handleModal}
+            style={{ marginLeft: "1rem" }}
+            type="primary"
+          >
             Tạo mới
           </Button>
         </div>
