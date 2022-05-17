@@ -12,12 +12,9 @@ import { ListFile } from "../Views/Teacher/Subject/SubjectList/ListFile";
 import { Subject } from "../Views/Teacher/Subject/Subject";
 import { SubjectDetail } from "../Views/Teacher/Subject/SubjectDetail/SubjectDetail";
 import { ViewSubject } from "../Views/Teacher/Subject/SubjectDetail/ViewSubject";
-<<<<<<< HEAD
 import { EditSubject } from "../Views/Teacher/Subject/SubjectDetail/EditSubject";
 import { AddSubject } from "../Views/Teacher/Subject/SubjectDetail/AddSubject";
-=======
 import { CreateExam } from "../Views/Teacher/Exam/CreateExam";
->>>>>>> 714bcd079c3b471a9874e610d03a1d2c7207f890
 
 export const Teacher = () => {
   return (
