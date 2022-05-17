@@ -1,6 +1,7 @@
 .icon-custom {
   .anticon svg {
     font-size: 20px !important;
+    width: -moz-fit-content !important;
     width: fit-content !important;
   }
 }
@@ -15,4 +16,40 @@
       cursor: pointer;
     }
   }
+}
+
+.new-exam-form {
+  h3 {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .ant-form-item {
+    justify-content: center;
+  }
+
+  .question-number {
+    .ant-form-item-control-input {
+      display: inline-block;
+      padding-top: 5px;
+    }
+
+    .ant-form-item-control-input-content {
+      text-align: center;
+      position: relative;
+      height: 100%;
+
+      .answer {
+        display: block;
+        margin-top: 0;
+      }
+
+      .anticon {
+        position: absolute;
+        right: 0;
+        top: 8px;
+      }
+    }
+  }
+
 }

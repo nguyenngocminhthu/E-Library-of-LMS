@@ -122,13 +122,6 @@ export const ExamBank = () => {
       });
   }, []);
 
-  const seeDetails = {
-    title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
-    className: "modal-delete",
-    width: "90%",
-    content: <div></div>,
-  };
-
   const config = {
     title: "Phê duyệt",
     className: "file-modal",
