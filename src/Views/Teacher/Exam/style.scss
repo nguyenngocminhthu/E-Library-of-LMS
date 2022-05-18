@@ -52,4 +52,21 @@
     }
   }
 
+  .answer-form {
+    .ant-form-item-control-input-content {
+      text-align: right;
+    }
+  }
+  
+  .answer-input {
+    .ant-form-item-control-input-content {
+      display: flex;
+      align-items: center;
+    }
+  
+    .dynamic-delete-button {
+      margin-left: 1rem;
+      color: #823B00;
+    }
+  }
 }

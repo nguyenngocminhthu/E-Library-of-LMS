@@ -1,5 +1,6 @@
 import {
   CheckCircleOutlined,
+  CloseOutlined,
   MinusCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
@@ -14,6 +15,7 @@ import { AppDispatch } from "../../../redux/store";
 import { ISubjectGroup } from "../../../redux/reducers/subjectgroup.reducer";
 import "./style.scss";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import TextArea from "antd/lib/input/TextArea";
 
 const { Option } = Select;
 
@@ -28,6 +30,7 @@ export const CreateExam = () => {
   const dataSub = useSelector(
     (state: any) => state.subject.listSubject.results
   );
+  const [answerNum, setAnswerNum] = useState<any[]>([]);
 
   useEffect(() => {
     dispatch(getSubjectGroups(999));
@@ -148,10 +151,105 @@ export const CreateExam = () => {
               </Form.List>
             </Col>
             <Col span={18} className="question-detail">
-              <Form.Item name=""></Form.Item>
-              <h3>
-                Câu hỏi {select + 1}: {data?.question[select].quesName}
-              </h3>
+              <Form.Item
+                labelCol={{ span: 4 }}
+                name="quesName"
+                label={`Câu hỏi ${select + 1}:`}
+              >
+                <TextArea rows={2} />
+              </Form.Item>
+              <Form.Item
+                labelCol={{ span: 4 }}
+                name="quesType"
+                label="Câu trả lời"
+              >
+                <Radio.Group>
+                  <Radio value={0}>Một đáp án</Radio>
+                  <Radio value={1}>Nhiều đáp án</Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.List
+                name="answers"
+                rules={[
+                  {
+                    validator: async (_, names) => {
+                      if (!names || names.length < 2) {
+                        return Promise.reject(new Error("Ít nhất 2 đáp án"));
+                      }
+                    },
+                  },
+                ]}
+              >
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map((field, index) => (
+                      <Form.Item
+                        labelCol={{ span: 4 }}
+                        label={`Đáp án ${
+                          index === 0
+                            ? "A"
+                            : index === 1
+                            ? "B"
+                            : index === 2
+                            ? "C"
+                            : "D"
+                        }`}
+                        required={false}
+                        key={field.key}
+                        className="answer-input"
+                      >
+                        <Input />
+                        {fields.length > 1 ? (
+                          <CloseOutlined
+                            className="dynamic-delete-button"
+                            onClick={() => {
+                              let count = answerNum;
+                              count.pop();
+                              remove(field.name);
+                              setAnswerNum([...count]);
+                            }}
+                          />
+                        ) : null}
+                      </Form.Item>
+                    ))}
+                    <Form.Item
+                      wrapperCol={{ span: 22 }}
+                      className="answer-form"
+                    >
+                      <Button
+                        className="default-btn"
+                        type="default"
+                        onClick={() => {
+                          add();
+                          setAnswerNum([...answerNum, fields.length]);
+                        }}
+                        disabled={fields.length === 4}
+                      >
+                        Thêm đáp án
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
+              </Form.List>
+              <Form.Item
+                labelCol={{ span: 4 }}
+                name="correct"
+                label="Đáp án đúng"
+              >
+                <Radio.Group>
+                  {answerNum.map((vl, idx) => (
+                    <Radio key={vl} value={idx}>
+                      {idx === 0
+                        ? "A"
+                        : idx === 1
+                        ? "B"
+                        : idx === 2
+                        ? "C"
+                        : "D"}
+                    </Radio>
+                  ))}
+                </Radio.Group>
+              </Form.Item>
               <Radio.Group value={data?.question[select].correct[0]}>
                 <Space direction="vertical">
                   {data?.question[select].answers.map((vl, idx) => (
