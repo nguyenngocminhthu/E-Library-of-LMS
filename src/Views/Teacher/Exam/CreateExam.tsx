@@ -1,28 +1,23 @@
-import {
-  CheckCircleOutlined,
-  CloseOutlined,
-  MinusCircleOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
-import { Button, Col, Form, Input, Radio, Row, Select, Space } from "antd";
+import { MinusCircleOutlined, CloseOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Input, Radio, Row, Select } from "antd";
+import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import { getBank, IBanks } from "../../../redux/reducers/banks.reducer";
-import { getSubjectGroups } from "../../../redux/reducers/subjectgroup.reducer";
-import { AppDispatch } from "../../../redux/store";
-import { ISubjectGroup } from "../../../redux/reducers/subjectgroup.reducer";
-import "./style.scss";
+import { IQuestion } from "../../../redux/reducers/question.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
-import TextArea from "antd/lib/input/TextArea";
+import {
+  getSubjectGroups,
+  ISubjectGroup,
+} from "../../../redux/reducers/subjectgroup.reducer";
+import { AppDispatch } from "../../../redux/store";
+import "./style.scss";
 
 const { Option } = Select;
 
 export const CreateExam = () => {
   const dispatch: AppDispatch = useDispatch();
   const [select, setSelect] = useState(0);
-  const [data, setData] = useState<IBanks>();
   const [form] = Form.useForm();
   const dataSubGroup = useSelector(
     (state: any) => state.subjectgroup.listSubjectGroup.results
@@ -31,14 +26,17 @@ export const CreateExam = () => {
     (state: any) => state.subject.listSubject.results
   );
   const [answerNum, setAnswerNum] = useState<any[]>([]);
+  const [question, setQuestion] = useState<any[]>([]);
 
   useEffect(() => {
     dispatch(getSubjectGroups(999));
     dispatch(getSubjects(999));
   }, []);
 
-  const handleSelect = (idx: number) => {
-    setSelect(idx);
+  const questionFinish = (values: IQuestion) => {
+    console.debug(values);
+    setQuestion([...question, values]);
+    form.resetFields(["quesName", "quesType", "answers", "correct"]);
   };
 
   return (
@@ -51,6 +49,7 @@ export const CreateExam = () => {
       <Form
         className="new-exam-form"
         form={form}
+        onFinish={questionFinish}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
       >
@@ -99,8 +98,16 @@ export const CreateExam = () => {
             </Form.Item>
           </Col>
         </Row>
-
-        <div className="body-bank">
+      </Form>
+      <div className="body-bank">
+        <Form
+          className="new-exam-form"
+          name="question-form"
+          onFinish={questionFinish}
+          form={form}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+        >
           <Row>
             <Col span={6} className="question-number">
               <div style={{ marginBottom: "1rem" }}>Phần câu hỏi - đáp án:</div>
@@ -124,13 +131,41 @@ export const CreateExam = () => {
                           className={
                             select === index ? "answer true" : "answer"
                           }
-                          onClick={() => handleSelect(index)}
+                          onClick={() => {
+                            setSelect(index);
+                            if (question[index] !== undefined) {
+                              delete question[index].question;
+                              form.setFieldsValue(question[index]);
+                              switch (question[index].answers.length) {
+                                case 1:
+                                  return setAnswerNum([0]);
+                                case 2:
+                                  return setAnswerNum([0, 1]);
+                                case 3:
+                                  return setAnswerNum([0, 1, 2]);
+                                case 4:
+                                  return setAnswerNum([0, 1, 2, 3]);
+                                default:
+                                  return setAnswerNum([]);
+                              }
+                            } else
+                              form.resetFields([
+                                "quesName",
+                                "quesType",
+                                "answers",
+                                "correct",
+                              ]);
+                            setAnswerNum([]);
+                          }}
                         >
                           <Form.Item {...field}>Câu {index + 1}</Form.Item>
                           {fields.length > 1 ? (
                             <MinusCircleOutlined
                               className="dynamic-delete-button"
-                              onClick={() => remove(field.name)}
+                              onClick={() => {
+                                remove(field.name);
+                                setSelect(0);
+                              }}
                             />
                           ) : null}
                         </div>
@@ -140,7 +175,12 @@ export const CreateExam = () => {
                       <Button
                         className="default-btn"
                         type="default"
-                        onClick={() => add()}
+                        onClick={() => {
+                          add();
+                          form.submit();
+                          setSelect(fields.length);
+                          setAnswerNum([]);
+                        }}
                         style={{ width: "100%" }}
                       >
                         Thêm câu hỏi
@@ -198,7 +238,12 @@ export const CreateExam = () => {
                         key={field.key}
                         className="answer-input"
                       >
-                        <Input />
+                        <Form.Item
+                          {...field}
+                          validateTrigger={["onChange", "onBlur"]}
+                        >
+                          <Input />
+                        </Form.Item>
                         {fields.length > 1 ? (
                           <CloseOutlined
                             className="dynamic-delete-button"
@@ -250,17 +295,10 @@ export const CreateExam = () => {
                   ))}
                 </Radio.Group>
               </Form.Item>
-              <Radio.Group value={data?.question[select].correct[0]}>
-                <Space direction="vertical">
-                  {data?.question[select].answers.map((vl, idx) => (
-                    <Radio value={idx}>{vl}</Radio>
-                  ))}
-                </Space>
-              </Radio.Group>
             </Col>
           </Row>
-        </div>
-      </Form>
+        </Form>
+      </div>
     </div>
   );
 };
