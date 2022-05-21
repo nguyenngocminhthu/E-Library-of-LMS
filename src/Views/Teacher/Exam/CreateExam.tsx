@@ -327,7 +327,7 @@ export const CreateExam = () => {
                     name="correctEssay"
                     label="Đáp án đúng"
                   >
-                    <TextArea rows={4} />
+                    <TextArea rows={16} />
                   </Form.Item>
                 </div>
               )}

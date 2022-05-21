@@ -8,6 +8,7 @@ import NotiSetting from "../Views/Leadership/Noti/NotiSetting";
 import { CreateExam } from "../Views/Teacher/Exam/CreateExam";
 import { Exam } from "../Views/Teacher/Exam/Exam";
 import { Home } from "../Views/Teacher/Home/Home";
+import { Question } from "../Views/Teacher/Question/Question";
 import { Resource } from "../Views/Teacher/Resource/Resource";
 import { Subject } from "../Views/Teacher/Subject/Subject";
 import { AddSubject } from "../Views/Teacher/Subject/SubjectDetail/AddSubject";
@@ -46,6 +47,8 @@ export const Teacher = () => {
           <Route path="/teacher/exams" element={<Exam />} />
 
           <Route path="/teacher/exams/createExam" element={<CreateExam />} />
+
+          <Route path="/teacher/questions" element={<Question />} />
 
           <Route path="/teacher/help" element={<Help />} />
 

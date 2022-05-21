@@ -1,0 +1,14 @@
+@import '../../../shared/styles/variable';
+
+.question-page {
+    .ant-card {
+        border: 1px solid #FFA75E;
+        border-radius: 8px;
+        margin-top: 2.5rem;
+
+        .ant-card-head {
+            background: $color-primary;
+            color: white;
+        }
+    }
+}

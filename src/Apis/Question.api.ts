@@ -1,9 +1,11 @@
 import axiosClient from "../config/axiosClient";
+import queryString from "query-string";
 
 const url = "/v1/questions";
 
-const getQuestions = (limit: any) => {
-  return axiosClient.get(url + `?limit=${limit}`).then((rs: any) => {
+const getQuestions = (params: any) => {
+  const query = queryString.stringify(params);
+  return axiosClient.get(url + `?${query}`).then((rs: any) => {
     return rs;
   });
 };
