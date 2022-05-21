@@ -77,21 +77,7 @@ export const Subject = () => {
     okText: "Lưu",
     cancelText: "Huỷ",
   };
-  const userMenu = (
-    <Menu>
-      <Menu.Item key="1" onClick={() => navigate(`/subjects/subjectdetail`)}>
-        Chi tiết môn học
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="2" onClick={() => navigate(`/subjects/listfile`)}>
-        Danh sách tài liệu
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="3" onClick={() => modal.confirm(modalChangeName)}>
-        Phân công tài liệu
-      </Menu.Item>
-    </Menu>
-  );
+
   const subjectSelect = [
     {
       value: "Xếp theo tên môn học",
@@ -114,7 +100,7 @@ export const Subject = () => {
       key: "subName",
       sorter: (a: any, b: any) => a.subName.length - b.subName.length,
       render: (subName: string, record: any) => (
-        <div onClick={() => navigate(`/subjects/${record.subCode}`)}>
+        <div onClick={() => navigate(`subjectdetail/${record.id}`)}>
           {subName}
         </div>
       ),
@@ -145,7 +131,27 @@ export const Subject = () => {
       render: (text: any, record: any) => (
         <Dropdown.Button
           className="dropdown-btn"
-          overlay={userMenu}
+          overlay={
+            <Menu>
+              <Menu.Item
+                key="1"
+                onClick={() => navigate(`subjectdetail/${record.id}`)}
+              >
+                Chi tiết môn học
+              </Menu.Item>
+              <Menu.Divider />
+              <Menu.Item
+                key="2"
+                onClick={() => navigate(`listfile/${record.id}`)}
+              >
+                Danh sách tài liệu
+              </Menu.Item>
+              <Menu.Divider />
+              <Menu.Item key="3" onClick={() => modal.confirm(modalChangeName)}>
+                Phân công tài liệu
+              </Menu.Item>
+            </Menu>
+          }
           icon={
             <MoreOutlined
               style={{

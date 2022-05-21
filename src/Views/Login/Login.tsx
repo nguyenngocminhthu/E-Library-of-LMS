@@ -28,10 +28,11 @@ const Login = () => {
       .then((rs: any) => {
         if (rs.user.role === "teacher") {
           navigate("/teacher/home");
+        } else if (rs.user.role === "student") {
+          navigate("/student/home");
         } else {
           navigate("/home");
         }
-        console.debug("rs: ", rs);
       })
       .catch((e: any) => {
         console.debug("e: ", e);

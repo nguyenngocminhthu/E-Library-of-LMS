@@ -32,11 +32,17 @@ export const Leadership = () => {
 
           <Route path="/subjectManage" element={<SubjectManage />} />
 
-          <Route path="/subjects/subjectdetails/:idSub" element={<SubjectDetail />} />
+          <Route
+            path="/subjects/subjectdetails/:idSub"
+            element={<SubjectDetail />}
+          />
 
-          <Route path="/subjects/viewsubject/:idSub" element={<ViewSubject />} />
+          <Route
+            path="/subjects/viewsubject/:idSub"
+            element={<ViewSubject />}
+          />
 
-          <Route path="/privatefile" element={<PrivateFile />} />      
+          <Route path="/privatefile" element={<PrivateFile />} />
 
           <Route path="/exambank" element={<ExamBank />} />
 
