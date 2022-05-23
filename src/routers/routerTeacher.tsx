@@ -40,7 +40,7 @@ export const Teacher = () => {
 
           <Route path="teacher/subject/viewsubject" element={<ViewSubject />} />
 
-          <Route path="teacher/subject/listfile" element={<ListFile />} />
+          <Route path="teacher/subject/listfile/:id" element={<ListFile />} />
 
           <Route path="/teacher/lessons" element={<Resource />} />
 

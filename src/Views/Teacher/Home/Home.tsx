@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { SelectComp } from "../../../Components/Select";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
 import ppt from "../../../shared/img/ppt.png";
 import WEB23 from "../../../shared/img/WEB23.png";
 
@@ -61,6 +63,8 @@ for (let i = 0; i < 10; i++) {
 export const Home = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+
   const loadMoreData = () => {
     if (loading) {
       return;
@@ -126,7 +130,7 @@ export const Home = () => {
         <div className="title">Môn giảng dạy</div>
         <List
           grid={{ gutter: 30, column: 4 }}
-          dataSource={listData}
+          dataSource={user.recentSubject}
           pagination={{
             position: "top",
             onChange: (page) => {
@@ -134,16 +138,16 @@ export const Home = () => {
             },
             pageSize: 8,
           }}
-          renderItem={(item: IData) => (
-            <List.Item key={item.fileCode}>
+          renderItem={(item: ISubject) => (
+            <List.Item key={item.subCode}>
               <Card>
                 <Row>
                   <Col span={8} className="btn-img">
-                    <img src={item.avt} />
+                    <img src={item.image} alt="avt" />
                   </Col>
                   <Col span={15} offset={1}>
-                    <h5>{item.fileName}</h5>
-                    <h6>{item.fileCode}</h6>
+                    <h5>{item.subName}</h5>
+                    <h6>{item.subCode}</h6>
 
                     <span style={{ position: "absolute", bottom: 0 }}>
                       Đang dạy 5 lớp
@@ -174,7 +178,7 @@ export const Home = () => {
                   <Card>
                     <Row>
                       <Col span={6}>
-                        <img src={ppt} />
+                        <img src={ppt} alt="file" />
                       </Col>
                       <Col span={17} offset={1}>
                         <Title ellipsis level={5}>
