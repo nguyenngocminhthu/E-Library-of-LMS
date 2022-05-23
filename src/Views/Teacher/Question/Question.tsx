@@ -1,41 +1,42 @@
 import {
-  DesktopOutlined,
   DownloadOutlined,
   MoreOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
 import {
   Button,
+  Card,
   Col,
+  Collapse,
   Form,
-  Modal,
   Popover,
   Radio,
   Row,
   Space,
   Table,
-  Tag,
   Tooltip,
   Typography,
 } from "antd";
 import modal from "antd/lib/modal";
-import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { getBanks, IBanks } from "../../../redux/reducers/banks.reducer";
+import { IBanks } from "../../../redux/reducers/banks.reducer";
+import { getQuestions } from "../../../redux/reducers/question.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
   ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 import "./style.scss";
+
+const { Panel } = Collapse;
 
 const { Title } = Typography;
 
@@ -47,10 +48,9 @@ const downloadFile = {
   okText: "Xác nhận",
   cancelText: "Huỷ",
 };
-export const Exam = () => {
+export const Question = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
@@ -69,7 +69,7 @@ export const Exam = () => {
   const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
 
   useEffect(() => {
-    dispatch(getBanks(filter))
+    dispatch(getQuestions(filter))
       .unwrap()
       .then((rs: any) => {
         let list: IBanks[] = [];
@@ -142,70 +142,36 @@ export const Exam = () => {
   };
   const columns = [
     {
-      title: "Loại file",
-      dataIndex: "fileType",
-      key: "fileType",
+      title: "STT",
+      dataIndex: "key",
+      key: "key",
       sorter: true,
-      render: (fileType: number) => {
+      render: (key: number) => {
+        return <div>{key + 1}</div>;
+      },
+    },
+    {
+      title: "Mã câu hỏi",
+      dataIndex: "quesCode",
+      key: "quesCode",
+    },
+    {
+      title: "Độ khó",
+      dataIndex: "level",
+      key: "level",
+      render: (level: number) => {
         return (
-          <>
-            {fileType === 0 ? (
-              <DesktopOutlined style={{ fontSize: 32 }} />
-            ) : (
-              <Word />
-            )}
-          </>
+          <div>{level === 0 ? "Thấp" : level === 1 ? "Trung bình" : "Cao"}</div>
         );
       },
     },
     {
-      title: "Tên đề thi",
-      dataIndex: "examName",
-      key: "examName",
-      sorter: (a: any, b: any) => a.fileName.length - b.fileName.length,
-    },
-    {
-      title: "Hình thức",
-      dataIndex: "examType",
-      key: "examType",
-      render: (examType: number) => {
-        return (
-          <>{examType === 0 ? <div>Trắc nghiệm</div> : <div>Tự luận</div>}</>
-        );
+      title: "Được tạo bởi",
+      dataIndex: "user",
+      key: "user",
+      render: (user: UserState) => {
+        return <div>{user.userName}</div>;
       },
-    },
-    {
-      title: "Thời lượng",
-      dataIndex: "time",
-      key: "time",
-      render: (time: number) => {
-        return <div>{time} phút</div>;
-      },
-    },
-    {
-      title: "Thời gian tạo",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (createdAt: number) => {
-        return <div>{moment(createdAt).format("DD/MM/YYYY")}</div>;
-      },
-    },
-    {
-      title: "Tình trạng",
-      dataIndex: "status",
-      key: "status",
-      render: (status: number) => (
-        <Tag
-          color={status === 0 ? "green" : status === 1 ? "blue" : "red"}
-          key={status}
-        >
-          {status === 0
-            ? "Chờ phê duyệt"
-            : status === 1
-            ? "Đã phê duyệt"
-            : "Đã huỷ"}
-        </Tag>
-      ),
     },
     {
       title: "",
@@ -239,15 +205,6 @@ export const Exam = () => {
     },
   ];
 
-  const onSelectChange = (selectedRowKeys: any) => {
-    setSelectedRowKeys(selectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
-
   const handleFilter = (e: any) => {
     if (e !== "") {
       setFilter({ ...filter, subjectGroup: e });
@@ -267,18 +224,14 @@ export const Exam = () => {
   };
 
   return (
-    <div className="exam-bank sub-exam-bank">
-      <BreadcrumbComp title="Ngân hàng đề thi" />
-      <div className="top-head">
-        <Title ellipsis level={5}>
-          Danh sách đề thi
-        </Title>
+    <div className="exam-bank sub-exam-bank question-page subDetail">
+      <BreadcrumbComp title="Ngân hàng câu hỏi trắc nghiệm" />
+      <div className="top-head" style={{ justifyContent: "right" }}>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
             <Tooltip title="Download">
               <Button
                 type="link"
-                disabled={selectedRowKeys.length === 0 ? true : false}
                 icon={
                   <DownloadOutlined
                     onClick={() => modal.confirm(downloadFile)}
@@ -301,27 +254,61 @@ export const Exam = () => {
         </div>
       </div>
       <Row>
-        <Col className="table-header" span={16}>
-          <SelectComp
-            style={{ display: "block" }}
-            textLabel="Tổ bộ môn"
-            defaultValue=""
-            dataString={subjectGroupSelect}
-            onChange={(e: any) => handleFilter(e)}
-          />
-          <SelectComp
-            style={{ display: "block" }}
-            textLabel="Bộ môn"
-            defaultValue=""
-            dataString={subjectSelect}
-            onChange={(e: any) => handleFilterSub(e)}
-          />
+        <Col span={8}>
+          <Title ellipsis level={3}>
+            Bộ lọc câu hỏi
+          </Title>
+          <Card title="Lọc theo dạng" bordered={false}>
+            <SelectComp
+              style={{ display: "block" }}
+              textLabel="Tổ bộ môn"
+              defaultValue=""
+              dataString={subjectGroupSelect}
+              onChange={(e: any) => handleFilter(e)}
+            />
+            <SelectComp
+              style={{ display: "block" }}
+              textLabel="Bộ môn"
+              defaultValue=""
+              dataString={subjectSelect}
+              onChange={(e: any) => handleFilterSub(e)}
+            />
+            <div className="select-label">Độ khó</div>
+            <Radio.Group>
+              <Radio value="">Tất cả</Radio>
+              <Radio value={0}>Thấp</Radio>
+              <Radio value={1}>Trung bình</Radio>
+              <Radio value={2}>Cao</Radio>
+            </Radio.Group>
+          </Card>
         </Col>
-        <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
+        <Col span={15} offset={1}>
+          <Row>
+            <Col span={12}>
+              <Title ellipsis level={3}>
+                Danh sách câu hỏi
+              </Title>
+            </Col>
+            <Col className="table-header" span={12}>
+              <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
+            </Col>
+          </Row>
+          <Table
+            pagination={{ defaultPageSize: 4 }}
+            columns={columns}
+            dataSource={data}
+          />
+          <Collapse bordered={false} className="site-collapse-custom-collapse">
+            <Panel
+              header="Nội dung câu hỏi"
+              key="3"
+              className="site-collapse-custom-panel"
+            >
+              hehe
+            </Panel>
+          </Collapse>
         </Col>
       </Row>
-      <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
     </div>
   );
 };

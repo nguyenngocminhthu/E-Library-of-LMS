@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
 import { MainLayout } from "../Layout/Layout";
-import { Help } from "../Views/Leadership/Help/Help";
+import { Help } from "../Views/Help/Help";
 import { Home } from "../Views/Leadership/Home/Home";
 import { ListFile } from "../Views/Leadership/Subject/ListFile";
 import { Notification } from "../Views/Leadership/Noti/Noti";
@@ -32,11 +32,17 @@ export const Leadership = () => {
 
           <Route path="/subjectManage" element={<SubjectManage />} />
 
-          <Route path="/subjects/subjectdetails/:idSub" element={<SubjectDetail />} />
+          <Route
+            path="/subjects/subjectdetails/:idSub"
+            element={<SubjectDetail />}
+          />
 
-          <Route path="/subjects/viewsubject/:idSub" element={<ViewSubject />} />
+          <Route
+            path="/subjects/viewsubject/:idSub"
+            element={<ViewSubject />}
+          />
 
-          <Route path="/privatefile" element={<PrivateFile />} />      
+          <Route path="/privatefile" element={<PrivateFile />} />
 
           <Route path="/exambank" element={<ExamBank />} />
 

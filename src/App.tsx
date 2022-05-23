@@ -6,6 +6,7 @@ import { Loader } from "./Components/Loader";
 import { MainLayout } from "./Layout/Layout";
 import { UserState } from "./redux/reducers/user.reducer";
 import { Leadership } from "./routers/routerLeadership";
+import { Student } from "./routers/routerStudent";
 import { Teacher } from "./routers/routerTeacher";
 import "./shared/styles/styles.scss";
 import Cover from "./Views/Cover/Cover";
@@ -13,8 +14,6 @@ import Login from "./Views/Login/Login";
 import { Profile } from "./Views/Profile/Profile";
 
 const App: React.FC = () => {
-  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
-
   return (
     <div className="App">
       <Suspense fallback={<Loader />}>
@@ -31,7 +30,7 @@ const App: React.FC = () => {
       </Suspense>
       <Leadership />
       <Teacher />
-      {/* {user.role === "teacher" ? <Teacher /> : <Leadership />} */}
+      <Student />
     </div>
   );
 };

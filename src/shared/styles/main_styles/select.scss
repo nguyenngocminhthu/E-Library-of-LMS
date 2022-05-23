@@ -3,13 +3,6 @@
 .selectcomp {
   display: flex;
 
-  .select-label {
-    display: flex;
-    align-items: center;
-    font-weight: 700;
-    margin-bottom: 5px;
-  }
-
   .select {
     max-width: 200;
   }
@@ -21,4 +14,10 @@
 }
 .ant-select-selection-item{
   flex: none;
+}
+.select-label {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  margin-bottom: 5px;
 }

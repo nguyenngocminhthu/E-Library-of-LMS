@@ -1,14 +1,14 @@
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
 import { useState } from "react";
-import { ReactComponent as Location } from "../../../shared/img/icon/location.svg";
-import { ReactComponent as Phone } from "../../../shared/img/icon/phone.svg";
-import { ReactComponent as Email } from "../../../shared/img/icon/mail.svg";
+import { ReactComponent as Location } from "../../shared/img/icon/location.svg";
+import { ReactComponent as Phone } from "../../shared/img/icon/phone.svg";
+import { ReactComponent as Email } from "../../shared/img/icon/mail.svg";
 import { Button, notification, Input, Row, Col } from "antd";
 import * as React from "react";
 import CheckCircleFilled from "@ant-design/icons";
 import "./style.scss";
-import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { BreadcrumbComp } from "../../Components/Breadcrumb";
 
 const openNotification = () => {
   notification.open({

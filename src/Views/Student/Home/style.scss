@@ -1,0 +1,15 @@
+@import "../../../shared/styles/variable";
+
+.home {
+
+    .ant-progress-success-bg,
+    .ant-progress-bg {
+        background-color: $color-primary;
+    }
+
+    .lesson-style {
+        font-style: normal;
+        font-weight: 700;
+        color: #0B80EC;
+    }
+}
