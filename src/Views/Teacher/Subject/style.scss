@@ -1,12 +1,15 @@
 @import "../../../shared/styles/variable";
 
 .teacher-subject {
-    .ant-checkbox {
+    .ant-checkbox,.ant-radio {
         transform: scale(1.2);
     }
 
     .ant-checkbox-inner {
         border: 2px solid #0B80EC;
+    }
+    .ant-form label{
+        align-items: center;
     }
 
     .ant-list {

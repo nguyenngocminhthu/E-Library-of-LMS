@@ -259,6 +259,31 @@
   .ant-modal-confirm-body > .anticon + .ant-modal-confirm-title + .ant-modal-confirm-content {
     margin-left: 0
   }
+  .download-file {
+    display: flex;
+    margin-top: 1rem;
+
+    .file-name {
+      background-color: $color-input;
+      margin-right: 1rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+      width: 250px;
+
+      .anticon svg {
+        margin-right: 1rem;
+        color: $color-primary;
+      }
+    }
+
+    .ant-btn {
+      background-color: #ffd8b8;
+      border: 1px solid  $color-primary;
+      color: #373839;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+  }
 }
 
 .modal-delete {
