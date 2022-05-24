@@ -1,26 +1,18 @@
 import { MoreOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  Dropdown,
-  Form,
-  Input,
-  Menu,
-  Row,
-  Select,
-  Space,
-  Table,
-  Tooltip,
-} from "antd";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { Col, Dropdown, Form, Input, Menu, Row, Select, Table } from "antd";
 import modal from "antd/lib/modal";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import {
+  getUser,
+  updateProfile,
+  UserState,
+} from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
@@ -32,6 +24,7 @@ export const Subject = () => {
   const [form] = Form.useForm();
   const [disable, setDisable] = useState(false);
   const [data, setData] = useState<ISubject[]>([]);
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
 
   useEffect(() => {
     dispatch(getSubjects(999))
@@ -47,6 +40,48 @@ export const Subject = () => {
         console.debug("e: ", e);
       });
   }, []);
+
+  const handleClick = (id: string) => {
+    navigate(`subjectdetail/${id}`);
+    const subjectIds = user.recentSubjectId;
+    if (subjectIds.length === 10) {
+      subjectIds.pop();
+    }
+    if (subjectIds.includes(id)) {
+      const newSubjectIds = subjectIds.filter(function (e: any) {
+        return e !== id;
+      });
+      dispatch(
+        updateProfile({
+          id: user.id,
+          payload: { recentSubjectId: [id, ...newSubjectIds] },
+        })
+      )
+        .unwrap()
+        .then(() => {
+          dispatch(getUser(user.id))
+            .unwrap()
+            .then((rs: UserState) => {
+              localStorage.setItem("user", JSON.stringify(rs));
+            });
+        });
+    } else {
+      dispatch(
+        updateProfile({
+          id: user.id,
+          payload: { recentSubjectId: [id, ...subjectIds] },
+        })
+      )
+        .unwrap()
+        .then(() => {
+          dispatch(getUser(user.id))
+            .unwrap()
+            .then((rs: UserState) => {
+              localStorage.setItem("user", JSON.stringify(rs));
+            });
+        });
+    }
+  };
 
   const modalChangeName = {
     title: "Phân công tài liệu môn học",
@@ -133,10 +168,7 @@ export const Subject = () => {
           className="dropdown-btn"
           overlay={
             <Menu>
-              <Menu.Item
-                key="1"
-                onClick={() => navigate(`subjectdetail/${record.id}`)}
-              >
+              <Menu.Item key="1" onClick={() => handleClick(record.id)}>
                 Chi tiết môn học
               </Menu.Item>
               <Menu.Divider />

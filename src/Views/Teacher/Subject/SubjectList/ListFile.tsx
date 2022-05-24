@@ -1,27 +1,13 @@
-import { DeleteOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  Radio,
-  Row,
-  Select,
-  Space,
-  Table,
-  Tag,
-  Tooltip,
-} from "antd";
-import TextArea from "antd/lib/input/TextArea";
+import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { Button, Col, Row, Space, Table, Tag, Tooltip } from "antd";
 import modal from "antd/lib/modal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import SearchComponent from "../../../../Components/SearchComponent";
 import { SelectComp } from "../../../../Components/Select";
 import "../style.scss";
-
-const { Option } = Select;
+import { ModalAdd } from "./ModalAdd";
 
 const status = [
   {
@@ -38,62 +24,8 @@ export const ListFile = () => {
   const navigate = useNavigate();
   const params = useParams<{ idSub: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [radioChangeComponent, setRadioChangeComponent] = useState();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const handleModal = () => {
-    const addNewLecture = {
-      title: "Thêm bài giảng mới",
-      width: "40%",
-      className: "cancel-form file-modal",
-      forceRender: true,
-      content: (
-        <Form
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 18 }}
-          name="cancel-form"
-          layout="horizontal"
-          form={form}
-        >
-          <Form.Item name="fileName" label="Tên bài giảng">
-            <div>Thương mại điện tử</div>
-          </Form.Item>
-          <Form.Item name="chooseTopic" label="Chọn chủ đề">
-            <Select disabled={disable} defaultValue="Chọn chủ đề">
-              <Option value={0}>Văn hóa xã hội</Option>
-              <Option value={1}>Sample</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="fileNameTitle" label="Tiêu đề bài giảng">
-            <Input />
-          </Form.Item>
-          <Form.Item name="chooseFile" label="Chọn tệp">
-            <Radio.Group onChange={(e) => handleChange(e)} className="teacher-subject">
-              <Radio value={0}>Tải tệp lên</Radio>
-              <Radio value={1}>Bài giảng</Radio>
-            </Radio.Group>
-          </Form.Item>
-            <Form.Item name='file'>
-              {form.getFieldValue('file') === 0 ? <div>0</div> : <div>1</div>}
-              {console.debug(form.getFieldValue('file'))}
-            </Form.Item>
-        </Form>
-      ),
-      okText: "Lưu",
-      cancelText: "Huỷ",
-    };
-  }
-
-
-  const handleChange = (e: any) => {
-    setRadioChangeComponent(e.target.value)
-    form.setFieldsValue({file: e.target.value})
-  };
-
-  const [form] = Form.useForm();
-  const [disable, setDisable] = useState(false);
-
-
- 
   const columns = [
     {
       title: "Tên tài liệu",
@@ -137,7 +69,9 @@ export const ListFile = () => {
       title: "Ghi chú",
       dataIndex: "note",
       key: "note",
-      render: (note: string) => {return <div style={{ color: '#ED2025'}}>{note}</div>}
+      render: (note: string) => {
+        return <div style={{ color: "#ED2025" }}>{note}</div>;
+      },
     },
     {
       title: "",
@@ -230,16 +164,13 @@ export const ListFile = () => {
             </Tooltip>
           </Space>
           <div className="line"></div>
-          <Button
-            className="default-btn"
-            style={{ marginLeft: "1rem" }}
-          >
+          <Button className="default-btn" style={{ marginLeft: "1rem" }}>
             Tải xuống
           </Button>
           <Button
             style={{ marginLeft: "1rem" }}
             type="primary"
-            onClick={() => handleModal()}
+            onClick={() => setIsModalVisible(true)}
           >
             Thêm mới
           </Button>
@@ -255,10 +186,11 @@ export const ListFile = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..."/>
+          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
         </Col>
       </Row>
       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      <ModalAdd visible={isModalVisible} setVisible={setIsModalVisible} />
     </div>
   );
 };

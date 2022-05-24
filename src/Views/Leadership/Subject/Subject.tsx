@@ -1,17 +1,12 @@
 import { UnorderedListOutlined } from "@ant-design/icons";
 import { Button, Col, Row, Space, Table, Tooltip } from "antd";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import {
-  getSubject,
-  getSubjects,
-  ISubject,
-} from "../../../redux/reducers/subject.reducer";
+import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getUser,
   updateProfile,
@@ -73,7 +68,6 @@ export const Subject = () => {
 
   const handleClick = (id: string) => {
     navigate(`/subjects/subjectdetails/${id}`);
-    console.debug(user);
     const subjectIds = user.recentSubjectId;
     if (subjectIds.length === 10) {
       subjectIds.pop();
@@ -96,10 +90,6 @@ export const Subject = () => {
               localStorage.setItem("user", JSON.stringify(rs));
             });
         });
-      localStorage.setItem(
-        "subjectIds",
-        JSON.stringify([id, ...newSubjectIds])
-      );
     } else {
       dispatch(
         updateProfile({
@@ -115,7 +105,6 @@ export const Subject = () => {
               localStorage.setItem("user", JSON.stringify(rs));
             });
         });
-      localStorage.setItem("subjectIds", JSON.stringify([id, ...subjectIds]));
     }
   };
 
