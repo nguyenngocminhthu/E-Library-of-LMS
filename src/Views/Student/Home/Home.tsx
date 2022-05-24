@@ -1,14 +1,11 @@
-import { CaretRightFilled } from "@ant-design/icons";
-import { Button, Card, Col, List, Progress, Row, Typography } from "antd";
+import { Card, Col, List, Progress, Row, Typography } from "antd";
+import React from "react";
 import { useNavigate } from "react-router";
-import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import { SelectComp } from "../../../Components/Select";
-import { ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import ppt from "../../../shared/img/ppt.png";
-import WEB23 from "../../../shared/img/WEB23.png";
-import "./style.scss"
+import { Column } from "@ant-design/plots";
+import "./style.scss";
 
 const { Title } = Typography;
 
@@ -35,8 +32,70 @@ export const Home = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
 
+  const data = [
+    {
+      day: "Thứ 2",
+      time: 15,
+    },
+    {
+      day: "Thứ 3",
+      time: 9,
+    },
+    {
+      day: "Thứ 4",
+      time: 21,
+    },
+    {
+      day: "Thứ 5",
+      time: 6,
+    },
+    {
+      day: "Thứ 6",
+      time: 9,
+    },
+    {
+      day: "Thứ 7",
+      time: 21,
+    },
+    {
+      day: "CN",
+      time: 21,
+    },
+  ];
+  const config = {
+    data,
+    xField: "day",
+    yField: "time",
+    xAxis: {
+      label: {
+        autoHide: true,
+        autoRotate: false,
+      },
+    },
+    meta: {
+      day: {
+        alias: "Thứ",
+      },
+      time: {
+        alias: "Thời gian",
+      },
+    },
+    minColumnWidth: 20,
+    maxColumnWidth: 20,
+    color: "#FFA75E",
+    columnStyle: {
+      radius: [20, 20, 20, 20],
+    },
+    yAxis: {
+      maxLimit: 24,
+      title: {
+        text: "Giờ",
+      },
+    },
+  };
+
   return (
-    <div className="home">
+    <div className="home student">
       <BreadcrumbComp title="Trang chủ" />
       <div className="wrapper-list">
         <div className="title">Môn đang học</div>
@@ -71,16 +130,17 @@ export const Home = () => {
             </List.Item>
           )}
         />
-        <Row>
-          <Col span={12}>
+        <Row className="chart">
+          <Col span={11}>
             <div className="title">Thống kê học tập</div>
+            <Column {...config} />
           </Col>
-          <Col span={12}>
+          <Col span={11} offset={2}>
             <div className="title">Môn học nhiều nhất</div>
           </Col>
         </Row>
       </div>
-{/* 
+      {/* 
 import { useDispatch } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { AppDispatch } from "../../../redux/store";
