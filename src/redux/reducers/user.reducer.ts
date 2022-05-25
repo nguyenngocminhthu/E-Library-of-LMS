@@ -1,14 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import User from "../../Apis/User.api";
+import { RootState } from "../store";
 import { setLoading } from "./loading.reducer";
 import { setMessage } from "./message.reducer";
 
 export const getUsers = createAsyncThunk(
   "user/getUsers",
-  async (_, thunkAPI) => {
+  async ({ limit, role }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await User.getUsers();
+      const data = await User.getUsers({ limit, role });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -175,6 +176,8 @@ export const userReducer = createSlice({
     });
   },
 });
+
+export const listUser = (state: RootState) => state.user.listUser;
 
 const { reducer } = userReducer;
 

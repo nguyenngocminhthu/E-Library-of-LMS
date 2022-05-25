@@ -5,7 +5,6 @@ import { setLoading } from "./loading.reducer";
 import { ISubject } from "./subject.reducer";
 import { UserState } from "./user.reducer";
 import { IQuestion } from "./question.reducer";
-import { ISubjectGroup } from "./subjectgroup.reducer";
 
 export const getBanks = createAsyncThunk(
   "Banks/getBanks",

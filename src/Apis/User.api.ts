@@ -1,9 +1,11 @@
 import axiosClient from "../config/axiosClient";
+import queryString from "query-string";
 
 const url = "/v1/users";
 
-const getUsers = () => {
-  return axiosClient.get(url).then((rs: any) => {
+const getUsers = (params: any) => {
+  const query = queryString.stringify(params);
+  return axiosClient.get(url + `?${query}`).then((rs: any) => {
     return rs;
   });
 };

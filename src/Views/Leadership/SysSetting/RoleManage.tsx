@@ -48,7 +48,6 @@ export const RoleManage = () => {
 
   const deleteRow = {
     title: "Xóa vai trò",
-    className: "modal-delete",
     content:
       "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
     okText: "Xác nhận",

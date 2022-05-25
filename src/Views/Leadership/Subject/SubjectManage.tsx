@@ -84,7 +84,6 @@ export const SubjectManage = () => {
 
   const seeDetails = {
     title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
-    className: "modal-delete",
     width: "90%",
     content: <div></div>,
   };

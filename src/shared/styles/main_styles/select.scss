@@ -10,7 +10,7 @@
     height: 36px;
     border-radius: 8px;
   }
-    
+  
 }
 .ant-select-selection-item{
   flex: none;
@@ -20,4 +20,8 @@
   align-items: center;
   font-weight: 700;
   margin-bottom: 5px;
+}
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  height: 36px;
+  border-radius: 8px;
 }

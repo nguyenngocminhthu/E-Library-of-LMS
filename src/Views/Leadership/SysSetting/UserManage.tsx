@@ -27,9 +27,11 @@ export const UserManage = () => {
   const [data, setData] = useState<UserState[]>([]);
   const [form] = Form.useForm();
   const [rowSelected, setRowSelected] = useState("");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const [filter, setFilter] = useState<any>({ limit: 999 });
 
   useEffect(() => {
-    dispatch(getUsers())
+    dispatch(getUsers(filter))
       .unwrap()
       .then((rs: any) => {
         setData(rs.results);
@@ -37,15 +39,19 @@ export const UserManage = () => {
       .catch((e: any) => {
         console.debug("e: ", e);
       });
-  }, []);
+  }, [filter]);
 
   const roleMenu = [
     {
-      name: "Quản trị viên",
-      value: "admin",
+      name: "Tất cả",
+      value: "",
     },
     {
-      name: "Học sinh",
+      name: "Quản trị viên",
+      value: "leadership",
+    },
+    {
+      name: "Sinh viên",
       value: "student",
     },
     {
@@ -107,7 +113,7 @@ export const UserManage = () => {
 
   const onFinish = (values: any) => {
     dispatch(createUser(values)).then(() => {
-      dispatch(getUsers())
+      dispatch(getUsers(filter))
         .unwrap()
         .then((rs: any) => {
           setData(rs.results);
@@ -120,14 +126,13 @@ export const UserManage = () => {
 
   const deleteRow = {
     title: "Xóa vai trò",
-    className: "modal-delete",
     content:
       "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
     okText: "Xác nhận",
     cancelText: "Huỷ",
     onOk: () =>
       dispatch(deleteUser(rowSelected)).then(() => {
-        dispatch(getUsers())
+        dispatch(getUsers(filter))
           .unwrap()
           .then((rs: any) => {
             setData(rs.results);
@@ -174,6 +179,15 @@ export const UserManage = () => {
     onOk: () => form.submit(),
   };
 
+  const handleFilter = (e: any) => {
+    if (e !== "") {
+      setFilter({ ...filter, role: e });
+    } else {
+      delete filter.role;
+      setFilter({ ...filter });
+    }
+  };
+
   return (
     <div className="role-manage-page">
       <BreadcrumbComp title="Quản lý người dùng" />
@@ -196,10 +210,11 @@ export const UserManage = () => {
             style={{ display: "block" }}
             defaultValue="Chọn vai trò"
             dataString={roleMenu}
+            onChange={(e: any) => handleFilter(e)}
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo mã người dùng, tên"/>
+          <SearchComponent placeholder="Tìm kết quả theo mã người dùng, tên" />
         </Col>
       </Row>
       <Table columns={columns} dataSource={data} />

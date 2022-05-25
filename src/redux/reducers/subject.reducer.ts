@@ -5,12 +5,35 @@ import { RootState } from "../store";
 import { setLoading } from "./loading.reducer";
 import { UserState } from "./user.reducer";
 
-export const getSubjects = createAsyncThunk(
-  "subject/getSubjects",
-  async (limit: any, thunkAPI) => {
+export const createSubject = createAsyncThunk(
+  "subject/createSubject",
+  async (body: ISubject, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Subject.getSubjects(limit);
+      const data = await Subject.createSubject(body);
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const getSubjects = createAsyncThunk(
+  "subject/getSubjects",
+  async ({ limit, teacher }: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Subject.getSubjects({ limit, teacher });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -78,16 +101,22 @@ export const subjectReducer = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(createSubject.fulfilled, (state, action) => {
+      state.listSubject = action.payload;
+    });
+    builder.addCase(createSubject.rejected, (state) => {
+      state.listSubject = [];
+    });
     builder.addCase(getSubjects.fulfilled, (state, action) => {
       state.listSubject = action.payload;
     });
-    builder.addCase(getSubjects.rejected, (state, action) => {
+    builder.addCase(getSubjects.rejected, (state) => {
       state.listSubject = [];
     });
     builder.addCase(getSubject.fulfilled, (state, action) => {
       state.listSubject = action.payload;
     });
-    builder.addCase(getSubject.rejected, (state, action) => {
+    builder.addCase(getSubject.rejected, (state) => {
       state.listSubject = [];
     });
   },

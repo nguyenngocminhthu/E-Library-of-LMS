@@ -5,8 +5,11 @@
     border-radius: 8px;
   }
 
+  .ant-modal-confirm-body>.anticon {
+    display: none;
+  }
   .ant-modal-confirm-content {
-    margin-left: 0;
+    margin-left: 0 !important;
     text-align: center;
   }
 

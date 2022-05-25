@@ -519,9 +519,7 @@ hr {
 }
 
 .file-modal {
-  .anticon {
-    display: none !important;
-  }
+  
 
   .ant-modal-confirm-body>.anticon+.ant-modal-confirm-title+.ant-modal-confirm-content {
     margin-left: 0;
@@ -551,4 +549,11 @@ hr {
     border: 2px solid #0B80EC;
   }
 
+}
+.upload-inline {
+  display: flex;
+
+  .anticon svg {
+    color: $color-primary !important;
+  }
 }

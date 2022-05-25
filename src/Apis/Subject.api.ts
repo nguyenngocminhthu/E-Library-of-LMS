@@ -1,9 +1,18 @@
 import axiosClient from "../config/axiosClient";
+import queryString from "query-string";
+import { ISubject } from "../redux/reducers/subject.reducer";
 
 const url = "/v1/subjects";
 
-const getSubjects = (limit: any) => {
-  return axiosClient.get(url + `?limit=${limit}`).then((rs: any) => {
+const createSubject = (body: ISubject) => {
+  return axiosClient.post(url, body).then((rs: any) => {
+    return rs;
+  });
+};
+
+const getSubjects = (params: any) => {
+  const query = queryString.stringify(params);
+  return axiosClient.get(url + `?${query}`).then((rs: any) => {
     return rs;
   });
 };
@@ -14,6 +23,6 @@ const getSubject = (id: string) => {
   });
 };
 
-const Subject = { getSubjects, getSubject };
+const Subject = { getSubjects, getSubject, createSubject };
 
 export default Subject;

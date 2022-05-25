@@ -1,19 +1,43 @@
-import { UnorderedListOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Space, Table, Tooltip } from "antd";
+import { UnorderedListOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Space,
+  Table,
+  Tooltip,
+  Upload,
+} from "antd";
+import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import {
+  createSubject,
+  getSubjects,
+  ISubject,
+} from "../../../redux/reducers/subject.reducer";
+import {
+  getSubjectGroups,
+  ISubjectGroup,
+} from "../../../redux/reducers/subjectgroup.reducer";
 import {
   getUser,
+  getUsers,
   updateProfile,
   UserState,
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
+
+const { Option } = Select;
 
 const teacher = [
   {
@@ -40,23 +64,30 @@ export interface ISubjectSelect {
 export const Subject = () => {
   const navigate = useNavigate();
   const data = useSelector((state: any) => state.subject.listSubject.results);
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([]);
+  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
+    { name: "Tất cả bộ môn", value: "" },
+  ]);
+  const [teacherSelect, setTeacherSelect] = useState<ISubjectSelect[]>([
+    { name: "Tất cả giảng viên", value: "" },
+  ]);
   const dispatch: AppDispatch = useDispatch();
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const [form] = Form.useForm();
+  const dataSubGroup = useSelector(
+    (state: any) => state.subjectgroup.listSubjectGroup.results
+  );
+  const [filter, setFilter] = useState<any>({ limit: 999 });
+
+  const teacher = useSelector((state: any) => state.user.listUser.results);
 
   useEffect(() => {
-    dispatch(getSubjects(999))
-      .unwrap()
-      .then((rs: any) => {
-        console.debug("rs: ", rs);
-      })
-      .catch((e: any) => {
-        console.debug("e: ", e);
-      });
-  }, []);
+    dispatch(getSubjects(filter));
+    dispatch(getSubjectGroups(999));
+    dispatch(getUsers({ limit: 999, role: "teacher" }));
+  }, [filter]);
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [];
+    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
     if (data) {
       data.forEach((it: ISubject) => {
         option.push({ name: it.subName, value: it.id });
@@ -65,6 +96,21 @@ export const Subject = () => {
 
     setSubjectSelect(option);
   }, [data]);
+
+  useEffect(() => {
+    const option: ISubjectSelect[] = [{ name: "Tất cả giảng viên", value: "" }];
+    if (teacher) {
+      teacher.forEach((it: UserState) => {
+        option.push({ name: it.userName, value: it.id });
+      });
+    }
+
+    setTeacherSelect(option);
+  }, [teacher]);
+
+  const handleRefresh = () => {
+    dispatch(getSubjects(filter));
+  };
 
   const handleClick = (id: string) => {
     navigate(`/subjects/subjectdetails/${id}`);
@@ -105,6 +151,15 @@ export const Subject = () => {
               localStorage.setItem("user", JSON.stringify(rs));
             });
         });
+    }
+  };
+
+  const handleFilter = (e: any) => {
+    if (e !== "") {
+      setFilter({ ...filter, teacher: e });
+    } else {
+      delete filter.teacher;
+      setFilter({ ...filter });
     }
   };
 
@@ -158,7 +213,7 @@ export const Subject = () => {
         <Space size="middle">
           <Tooltip title="Detail">
             <Button
-              onClick={() => navigate(`/subjects/listfile/${record.subCode}`)}
+              onClick={() => navigate(`/subjects/listfile/${record.id}`)}
               icon={<UnorderedListOutlined />}
             />
           </Tooltip>
@@ -167,22 +222,86 @@ export const Subject = () => {
     },
   ];
 
+  const onFinish = async (values: any) => {
+    await dispatch(uploadFilesToFirebase([values.image.file], "Subject")).then(
+      (rs: any) => {
+        values.image = rs;
+        dispatch(createSubject(values)).then((rs) => {
+          handleRefresh();
+        });
+      }
+    );
+  };
+
+  const handleModal = () => {
+    const config = {
+      title: "Tạo môn học mới",
+      width: "40%",
+      className: "cancel-form",
+      content: (
+        <Form
+          form={form}
+          onFinish={onFinish}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+        >
+          <Form.Item name="subCode" label="Mã môn học">
+            <Input />
+          </Form.Item>
+          <Form.Item name="subName" label="Tên môn học">
+            <Input />
+          </Form.Item>
+          <Form.Item name="subGroup" label="Tổ bộ môn">
+            <Select>
+              {dataSubGroup.map((vl: ISubjectGroup) => (
+                <Option value={vl.id}>{vl.groupName}</Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item name="teacher" label="Giảng viên">
+            <Select>
+              <Option value="">Tất cả</Option>
+              {teacher.map((vl: UserState) => (
+                <Option value={vl.id}>{vl.userName}</Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item name="image" label="Hình ảnh">
+            <Upload
+              beforeUpload={() => false}
+              maxCount={1}
+              className="upload-inline"
+            >
+              <Button icon={<UploadOutlined />}>Upload</Button>
+            </Upload>
+          </Form.Item>
+        </Form>
+      ),
+      okText: "Tạo",
+      cancelText: "Huỷ",
+      onOk: () => form.submit(),
+    };
+    modal.confirm(config);
+  };
+
   return (
     <div className="subject">
       <BreadcrumbComp title="Danh sách môn học" />
+
       <Row>
-        <Col className="table-header" span={16}>
+        <Col className="table-header" span={14}>
           <SelectComp
             style={{ display: "block" }}
+            defaultValue=""
             textLabel="Môn học"
-            defaultValue="Tất cả môn học"
             dataString={subjectSelect}
           />
           <SelectComp
             style={{ display: "block" }}
+            defaultValue=""
             textLabel="Giảng viên"
-            defaultValue="Tất cả giảng viên"
-            dataString={teacher}
+            dataString={teacherSelect}
+            onChange={(e: any) => handleFilter(e)}
           />
           <SelectComp
             style={{ display: "block" }}
@@ -193,6 +312,15 @@ export const Subject = () => {
         </Col>
         <Col className="table-header" span={8}>
           <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
+        </Col>
+        <Col
+          className="table-header"
+          span={2}
+          style={{ display: "flex", justifyContent: "right" }}
+        >
+          <Button onClick={handleModal} type="primary">
+            Tạo mới
+          </Button>
         </Col>
       </Row>
       <Table columns={columns} dataSource={data} />
