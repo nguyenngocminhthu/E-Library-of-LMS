@@ -1,14 +1,17 @@
 @import "../../../shared/styles/variable";
 
 .teacher-subject {
-    .ant-checkbox,.ant-radio {
+
+    .ant-checkbox,
+    .ant-radio {
         transform: scale(1.2);
     }
 
     .ant-checkbox-inner {
         border: 2px solid #0B80EC;
     }
-    .ant-form label{
+
+    .ant-form label {
         align-items: center;
     }
 
@@ -55,15 +58,19 @@
             }
         }
     }
-    .add-description{
+
+    .add-description {
         background-color: $color-primary-light;
-        .anticon svg{
+
+        .anticon svg {
             color: $color-ant-input;
             font-size: none;
         }
+
         color: $color-black;
         font-size: none;
     }
+
     .add-description-input {
         background-color: $color-background-secondary;
         width: 100%;
@@ -71,40 +78,46 @@
         border: 1px dashed #ff7506;
         box-sizing: border-box;
         border-radius: 16px;
-      } 
-    .group-btn-add{
+    }
+
+    .group-btn-add {
         text-align: end;
         margin-top: 16px;
     }
-    .sub-title{
+
+    .sub-title {
         font-weight: 700;
         margin: 16px;
-        span{
+
+        span {
             color: $color-primary;
         }
     }
+
     .box-cover {
         background: $color-white;
         border-radius: 16px;
         height: fit-content;
         overflow: auto;
         border: 1px solid rgba(140, 140, 140, 0.35);
-  
+
         .header-box {
-          background: $color-second-text;
-  
-          .text-header {
-            color: $color-white;
-            font-size: 0.875rem;
-            font-weight: bold;
-            padding: 16px;
-            margin-left: 36px;
-          }
+            background: $color-second-text;
+
+            .text-header {
+                color: $color-white;
+                font-size: 0.875rem;
+                font-weight: bold;
+                padding: 16px;
+                margin-left: 36px;
+            }
         }
-        .add-subject-container{
+
+        .add-subject-container {
             padding: 28px 56px;
         }
-        .note-span{
+
+        .note-span {
             font-style: italic;
             font-weight: 400;
             font-size: 16px;
@@ -112,7 +125,8 @@
             opacity: 0.5;
         }
     }
-    .action-btn-add{
+
+    .action-btn-add {
         text-align: center;
         margin-top: 24px;
     }
@@ -124,4 +138,19 @@
 
 .select-margin {
     margin-right: 16px;
+}
+
+.table-nested {
+    .ant-table {
+        margin: -16px 36px 0px 42px !important;
+    }
+
+    .ant-table-cell{
+       text-align: center;
+    }
+    .ant-table-thead>tr>th {
+        background: $color-secondary-dark-light;
+    }
+
+
 }
