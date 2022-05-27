@@ -14,7 +14,7 @@ import UserManage from "../Views/Leadership/SysSetting/UserManage";
 import { PrivateFile } from "../Views/Leadership/PrivateFile/PrivateFile";
 import { Suspense } from "react";
 import { Loader } from "../Components/Loader";
-import { RoleManage } from "../Views/Leadership/SysSetting/RoleManage";
+import { ClassManage } from "../Views/Leadership/SysSetting/ClassManage";
 import { SubjectManage } from "../Views/Leadership/Subject/SubjectManage";
 import { ExamBank } from "../Views/Leadership/ExamBank/ExamBank";
 import { ExamDetails } from "../Views/Leadership/ExamBank/ExamDetails";
@@ -58,7 +58,7 @@ export const Leadership = () => {
 
           <Route path="/setting/usermanage" element={<UserManage />} />
 
-          <Route path="/setting/rolemanage" element={<RoleManage />} />
+          <Route path="/setting/classmanage" element={<ClassManage />} />
 
           <Route path="/notification/setting" element={<NotiSetting />} />
         </Route>

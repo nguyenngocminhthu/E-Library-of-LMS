@@ -39,12 +39,7 @@ import "./style.scss";
 
 const { Option } = Select;
 
-const teacher = [
-  {
-    name: "Nguyễn Văn A",
-    value: "NVA",
-  },
-];
+
 const status = [
   {
     name: "Đã phê duyệt",

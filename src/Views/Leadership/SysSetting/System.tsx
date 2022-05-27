@@ -44,11 +44,13 @@ export const System = () => {
         </Col>
         <Col span={8}>
           <div className="card-content">
-            <h2 className="title-card">Quản lý vai trò</h2>
-            <p>Tạo, phân quyền và quản lý các vai trò hệ thống của thư viện.</p>
+            <h2 className="title-card">Quản lý lớp học</h2>
+            <p>
+              Tạo, phân bố và quản lý các lớp học cho từng môn học của thư viện.
+            </p>
             <div
               className="img-style"
-              onClick={() => navigate("/setting/rolemanage")}
+              onClick={() => navigate("/setting/classmanage")}
             >
               <img
                 style={{ width: "85%" }}
@@ -56,7 +58,8 @@ export const System = () => {
                 src={require("../../../shared/img/sys-access.png")}
               />
             </div>
-          </div>x
+          </div>
+          x
         </Col>
       </Row>
     </div>

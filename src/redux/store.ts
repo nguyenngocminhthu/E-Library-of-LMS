@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./reducers/auth.reducer";
 import banksReducer from "./reducers/banks.reducer";
+import classesReducer from "./reducers/classes.reducer";
 import loadingReducer from "./reducers/loading.reducer";
 import messageReducer from "./reducers/message.reducer";
 import questionReducer from "./reducers/question.reducer";
@@ -18,6 +19,7 @@ const reducer = {
   message: messageReducer,
   loading: loadingReducer,
   subjectgroup: subjectgroupReducer,
+  classes: classesReducer,
 };
 
 export const store = configureStore({

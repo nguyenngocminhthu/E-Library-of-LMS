@@ -27,20 +27,26 @@ export const Teacher = () => {
           <Route path="/teacher/subject" element={<Subject />} />
 
           <Route
-            path="teacher/subject/subjectdetail/:id"
+            path="/teacher/subject/subjectdetail/:id"
             element={<SubjectDetail />}
           />
 
           <Route
-            path="teacher/subject/editsubject/:id"
+            path="/teacher/subject/editsubject/:id"
             element={<EditSubject />}
           />
 
-          <Route path="teacher/subject/addsubject" element={<AddSubject />} />
+          <Route
+            path="/teacher/subject/addsubject/:id"
+            element={<AddSubject />}
+          />
 
-          <Route path="teacher/subject/viewsubject" element={<ViewSubject />} />
+          <Route
+            path="/teacher/subject/viewsubject/:id"
+            element={<ViewSubject />}
+          />
 
-          <Route path="teacher/subject/listfile/:id" element={<ListFile />} />
+          <Route path="/teacher/subject/listfile/:id" element={<ListFile />} />
 
           <Route path="/teacher/lessons" element={<Resource />} />
 

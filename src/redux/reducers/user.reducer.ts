@@ -118,6 +118,7 @@ export const deleteUser = createAsyncThunk(
 // Define a type for the slice state
 export interface UserState {
   id: string;
+  userCode: string;
   email: string;
   role: string;
   password: string;

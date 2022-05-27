@@ -50,27 +50,20 @@ const classTeach = [
 ];
 
 export const EditSubject = () => {
-  const params = useParams<{ idSub: string }>();
+  const params = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const [data, setData] = useState<ISubject>();
-  const [disable, setDisable] = useState(true);
   const [loading, setLoading] = useState(false);
   const [dataNotification, setDataNotification] = useState<any>([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editorState, setEditorState] = useState();
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (params.idSub) {
-      dispatch(getSubject(params.idSub))
+    if (params.id) {
+      dispatch(getSubject(params.id))
         .unwrap()
         .then((rs: ISubject) => {
           setData(rs);
-          console.debug("teacher: ", rs);
-        })
-        .catch((e: any) => {
-          console.debug("e: ", e);
         });
     }
   }, []);
@@ -117,13 +110,13 @@ export const EditSubject = () => {
                   style={{ width: "85%" }}
                 >
                   <Form.Item name="subcode" label="Mã môn học">
-                    <div>#DLK6</div>
+                    <div>{data?.subCode}</div>
                   </Form.Item>
                   <Form.Item name="codesuject" label="Môn học">
-                    <div>Thương mại điện tử</div>
+                    <div>{data?.subName}</div>
                   </Form.Item>
                   <Form.Item name="teacher" label="Giảng viên">
-                    <div>Hoa Hoa</div>
+                    <div>{data?.teacher.userName}</div>
                   </Form.Item>
                   <Form.Item name="description" label="Mô tả">
                     <TextArea rows={3} />
@@ -228,7 +221,11 @@ export const EditSubject = () => {
                             size="large"
                             shape="circle"
                             icon={<CaretRightOutlined />}
-                            onClick={() => navigate(`/subjects/viewsubject`)}
+                            onClick={() =>
+                              navigate(
+                                `/teacher/subject/viewsubject/${params.id}`
+                              )
+                            }
                           />
                         </Tooltip>
                       </div>
@@ -461,7 +458,7 @@ export const EditSubject = () => {
                     className="add-description"
                     icon={<PlusOutlined />}
                     onClick={() => {
-                      navigate(`/subjects/addsubject`);
+                      navigate(`/teacher/subject/addsubject/${params.id}`);
                     }}
                   >
                     Thêm bài giảng
@@ -471,7 +468,14 @@ export const EditSubject = () => {
             </TabPane>
           </Tabs>
           <div className="tab-control">
-            <Button className="cancel-btn">Huỷ</Button>
+            <Button
+              onClick={() =>
+                navigate(`/teacher/subject/subjectdetail/${params.id}`)
+              }
+              className="cancel-btn"
+            >
+              Huỷ
+            </Button>
             <Button type="primary" style={{ marginLeft: "1rem" }}>
               Lưu và gửi phê duyệt
             </Button>
