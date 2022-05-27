@@ -1,5 +1,5 @@
-import { MoreOutlined } from "@ant-design/icons";
-import { Col, Dropdown, Form, Input, Menu, Row, Select, Table } from "antd";
+import { EyeOutlined, MoreOutlined } from "@ant-design/icons";
+import { Button, Col, Dropdown, Form, Input, Menu, Row, Select, Space, Table, Tooltip } from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -112,6 +112,60 @@ export const Subject = () => {
     okText: "Lưu",
     cancelText: "Huỷ",
   };
+  const seeDetails = {
+    title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
+    width: "90%",
+    content: <div></div>,
+  };
+
+  const expandedRowRender = () => {
+    const dataNested =[
+      {
+        key:"11",
+        classCode: "DLK6102H2021",
+        className: "Thương mại điện tử",
+      },
+      {
+        key:"12",
+        classCode: "DLK6102H2021",
+        className: "Công nghệ phần mềm",
+      },
+      {
+        key:"13",
+        classCode: "DLK6102H2021",
+        className: "Thương mại điện tử",
+      }
+    ]
+    const columnsNested = [
+      {
+        title: "Mã lớp",
+        dataIndex: "classCode",
+        key: "classCode",
+      },
+      {
+        title: "Tên lớp",
+        dataIndex: "className",
+        key: "className",
+      },
+      {
+        title: "Xem chi tiết",
+        dataIndex: "details",
+        key: "details",
+        render: () => (
+          <Space size="middle">
+            <Tooltip title="Detail">
+              <Button
+                onClick={() => modal.confirm(seeDetails)}
+                // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
+                icon={<EyeOutlined />}
+              />
+            </Tooltip>
+          </Space>
+        ),
+      },
+    ]
+    return <Table columns={columnsNested} dataSource={dataNested} pagination={false} className="table-nested"/>;
+  };
 
   const subjectSelect = [
     {
@@ -123,6 +177,7 @@ export const Subject = () => {
       key: "LTCGN",
     },
   ];
+  
   const columns = [
     {
       title: "Mã môn học",
@@ -214,11 +269,7 @@ export const Subject = () => {
       <Table
         columns={columns}
         dataSource={data}
-        expandable={{
-          expandedRowRender: (record) => (
-            <p style={{ margin: 0 }}>{record.id}</p>
-          ),
-        }}
+        expandable={{ expandedRowRender }}
       />
     </div>
   );
