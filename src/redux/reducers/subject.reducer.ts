@@ -4,6 +4,8 @@ import Subject from "../../Apis/Subject.api";
 import { RootState } from "../store";
 import { setLoading } from "./loading.reducer";
 import { UserState } from "./user.reducer";
+import { IClass } from "./classes.reducer";
+import { ITopic } from "./topic.reducer";
 
 export const createSubject = createAsyncThunk(
   "subject/createSubject",
@@ -84,6 +86,8 @@ export interface ISubject {
   status: number;
   file: number;
   image: string;
+  classes: IClass[];
+  topic: ITopic[];
   createdAt: string;
   updatedAt: string;
 }

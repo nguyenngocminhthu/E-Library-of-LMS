@@ -151,13 +151,13 @@ export const ExamDetails = () => {
               </div>
             ))}
           </Col>
-          <Col span={18}>
+          <Col style={{ padding: "2rem" }} span={18}>
             <h3>
-              Câu {select + 1}: {data?.question[select].quesName}
+              Câu {select + 1}: {data?.question[select]?.quesName}
             </h3>
-            <Radio.Group value={data?.question[select].correct[0]}>
+            <Radio.Group value={data?.question[select]?.correct[0]}>
               <Space direction="vertical">
-                {data?.question[select].answers.map((vl, idx) => (
+                {data?.question[select]?.answers.map((vl, idx) => (
                   <Radio value={idx}>{vl}</Radio>
                 ))}
               </Space>

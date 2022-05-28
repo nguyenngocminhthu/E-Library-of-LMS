@@ -7,6 +7,7 @@ import messageReducer from "./reducers/message.reducer";
 import questionReducer from "./reducers/question.reducer";
 import subjectReducer from "./reducers/subject.reducer";
 import subjectgroupReducer from "./reducers/subjectgroup.reducer";
+import topicReducer from "./reducers/topic.reducer";
 import userReducer from "./reducers/user.reducer";
 // ...
 
@@ -20,6 +21,7 @@ const reducer = {
   loading: loadingReducer,
   subjectgroup: subjectgroupReducer,
   classes: classesReducer,
+  topic: topicReducer,
 };
 
 export const store = configureStore({

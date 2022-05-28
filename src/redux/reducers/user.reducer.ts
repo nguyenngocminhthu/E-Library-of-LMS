@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import User from "../../Apis/User.api";
 import { RootState } from "../store";
+import { IClass } from "./classes.reducer";
 import { setLoading } from "./loading.reducer";
 import { setMessage } from "./message.reducer";
 
@@ -129,6 +130,7 @@ export interface UserState {
   recentSubject: any[];
   recentSubjectId: string[];
   avt: any;
+  classes: IClass[];
 }
 
 interface IUser {
