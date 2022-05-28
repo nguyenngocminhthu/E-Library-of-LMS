@@ -21,66 +21,67 @@ import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import "./style.scss";
 
-    const status = [
-      {
-        name: "Đã phê duyệt",
-        value: "DPD",
-      },
-      {
-        name: "Chờ phê duyệt",
-        value: "CPD",
-      },
-    ];
-    const schoolYears = [
-      {
-        name: "2018-2029",
-        value: "1819",
-      },
-      {
-        name: "2019-2020",
-        value: "1920",
-      },
-      {
-        name: "2020-2021",
-        value: "2021",
-      },
-    ];
-  const allSubject = [
-    {
-      name: "Thương mại điện tử",
-      value: "TMDT",
-    },
-    {
-      name: "Nguyên lý kế toán",
-      value: "NLKT",
-    },
-    {
-      name: "Hệ thống thông tin",
-      value: "HTTT",
-    },
-    {
-      name: "Luật thương mại",
-      value: "LTM",
-    },
-    {
-      name: "Ngân hàng ",
-      value: "NG",
-    },
-  ];
-  
-  const downloadFile = {
-    title: "Tải xuống tệp",
-    className: "modal-change-name",
-    content:
-      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
 export const SubjectManage = () => {
   const navigate = useNavigate();
   const params = useParams<{ idSub: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
+
+  const status = [
+    {
+      name: "Đã phê duyệt",
+      value: "DPD",
+    },
+    {
+      name: "Chờ phê duyệt",
+      value: "CPD",
+    },
+  ];
+  const schoolYears = [
+    {
+      name: "2018-2029",
+      value: "1819",
+    },
+    {
+      name: "2019-2020",
+      value: "1920",
+    },
+    {
+      name: "2020-2021",
+      value: "2021",
+    },
+  ];
+const allSubject = [
+  {
+    name: "Thương mại điện tử",
+    value: "TMDT",
+  },
+  {
+    name: "Nguyên lý kế toán",
+    value: "NLKT",
+  },
+  {
+    name: "Hệ thống thông tin",
+    value: "HTTT",
+  },
+  {
+    name: "Luật thương mại",
+    value: "LTM",
+  },
+  {
+    name: "Ngân hàng ",
+    value: "NG",
+  },
+];
+
+const downloadFile = {
+  title: "Tải xuống tệp",
+  className: "modal-common-style",
+  content:
+    "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+  okText: "Xác nhận",
+  cancelText: "Huỷ",
+};
 
   const seeDetails = {
     title: "Tổng quan về Thương mại Điện tử ở Việt Nam",

@@ -38,19 +38,6 @@ import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
 const { Option } = Select;
-
-
-const status = [
-  {
-    name: "Đã phê duyệt",
-    value: "DPD",
-  },
-  {
-    name: "Chờ phê duyệt",
-    value: "CPD",
-  },
-];
-
 export interface ISubjectSelect {
   name: string;
   value: string;
@@ -158,65 +145,6 @@ export const Subject = () => {
     }
   };
 
-  const columns = [
-    {
-      title: "Mã môn học",
-      dataIndex: "subCode",
-      key: "subCode",
-    },
-    {
-      title: "Tên môn học",
-      dataIndex: "subName",
-      key: "subName",
-      sorter: (a: any, b: any) => a.subName.length - b.subName.length,
-      render: (subName: string, record: any) => (
-        <div onClick={() => handleClick(record.id)}>{subName}</div>
-      ),
-    },
-    {
-      title: "Giảng viên",
-      dataIndex: "teacher",
-      key: "teacher",
-      render: (teacher: UserState) => {
-        return teacher?.userName;
-      },
-    },
-    {
-      title: "Số tài liệu chờ duyệt",
-      dataIndex: "file",
-      key: "file",
-    },
-    {
-      title: "Tình trạng tài liệu môn học",
-      dataIndex: "status",
-      key: "status",
-      render: (status: number) => (
-        <div className={status === 0 ? "gray" : "green"}>
-          {status === 0 ? "Chờ phê duyệt" : "Đã phê duyệt"}
-        </div>
-      ),
-    },
-    {
-      title: "Ngày gửi phê duyệt",
-      dataIndex: "createdAt",
-      key: "createdAt",
-    },
-    {
-      title: "",
-      key: "action",
-      render: (text: any, record: any) => (
-        <Space size="middle">
-          <Tooltip title="Detail">
-            <Button
-              onClick={() => navigate(`/subjects/listfile/${record.id}`)}
-              icon={<UnorderedListOutlined />}
-            />
-          </Tooltip>
-        </Space>
-      ),
-    },
-  ];
-
   const onFinish = async (values: any) => {
     await dispatch(uploadFilesToFirebase([values.image.file], "Subject")).then(
       (rs: any) => {
@@ -278,6 +206,78 @@ export const Subject = () => {
     };
     modal.confirm(config);
   };
+
+  const status = [
+    {
+      name: "Đã phê duyệt",
+      value: "DPD",
+    },
+    {
+      name: "Chờ phê duyệt",
+      value: "CPD",
+    },
+  ];
+
+  const columns = [
+    {
+      title: "Mã môn học",
+      dataIndex: "subCode",
+      key: "subCode",
+    },
+    {
+      title: "Tên môn học",
+      dataIndex: "subName",
+      key: "subName",
+      sorter: (a: any, b: any) => a.subName.length - b.subName.length,
+      render: (subName: string, record: any) => (
+        <div onClick={() => handleClick(record.id)}>{subName}</div>
+      ),
+    },
+    {
+      title: "Giảng viên",
+      dataIndex: "teacher",
+      key: "teacher",
+      render: (teacher: UserState) => {
+        return teacher?.userName;
+      },
+    },
+    {
+      title: "Số tài liệu chờ duyệt",
+      dataIndex: "file",
+      key: "file",
+    },
+    {
+      title: "Tình trạng tài liệu môn học",
+      dataIndex: "status",
+      key: "status",
+      render: (status: number) => (
+        <div className={status === 0 ? "gray" : "green"}>
+          {status === 0 ? "Chờ phê duyệt" : "Đã phê duyệt"}
+        </div>
+      ),
+    },
+    {
+      title: "Ngày gửi phê duyệt",
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
+    {
+      title: "",
+      key: "action",
+      render: (text: any, record: any) => (
+        <Space size="middle">
+          <Tooltip title="Detail">
+            <Button
+              onClick={() => navigate(`/subjects/listfile/${record.id}`)}
+              icon={<UnorderedListOutlined />}
+            />
+          </Tooltip>
+        </Space>
+      ),
+    },
+  ];
+
+
 
   return (
     <div className="subject">

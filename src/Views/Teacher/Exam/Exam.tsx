@@ -8,6 +8,7 @@ import {
   Button,
   Col,
   Form,
+  Input,
   Modal,
   Popover,
   Radio,
@@ -39,14 +40,6 @@ import "./style.scss";
 
 const { Title } = Typography;
 
-const downloadFile = {
-  title: "Tải xuống tệp",
-  className: "modal-change-name",
-  content:
-    "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-  okText: "Xác nhận",
-  cancelText: "Huỷ",
-};
 export const Exam = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -110,7 +103,7 @@ export const Exam = () => {
     let test = 0;
     const config = {
       title: "Tạo đề thi mới",
-      width: "40%",
+      width: "35%",
       className: "cancel-form file-modal",
       content: (
         <Row>
@@ -123,6 +116,7 @@ export const Exam = () => {
               onChange={(e) => {
                 test = e.target.value;
               }}
+              style={{ textAlign: "left", marginLeft: "36px"}}
             >
               <Radio value={0}>Tạo đề thi từ ngân hàng câu hỏi</Radio>
               <Radio value={1}>Tạo đề thi với câu hỏi mới</Radio>
@@ -140,6 +134,100 @@ export const Exam = () => {
     };
     modal.confirm(config);
   };
+
+  const modalChangeName = {
+    title: "Đổi tên tệp",
+    width: "40%",
+    className: "modal-common-style",
+    content: (
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        name="profile-form"
+        layout="horizontal"
+        form={form}
+      >
+        <Form.Item label="Tên mới" name="userName">
+          <div className="input-layout">
+            <Input />
+            .file
+          </div>
+        </Form.Item>
+      </Form>
+    ),
+    okText: "Lưu",
+    cancelText: "Huỷ",
+  };
+
+  const removeRow = {
+    title: "Xác nhận xóa",
+    className: "modal-common-style",
+    content: "Bạn có chắc chắn muốn xóa tệp này khỏi thư viện không?",
+    okText: "Xoá",
+    cancelText: "Huỷ",
+  };
+
+  const downloadFile = {
+    title: "Tải xuống tệp",
+    className: "modal-common-style",
+    content:
+      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+  };
+
+  const sendApprove = {
+    title: "Gửi phê duyệt",
+    className: "modal-common-style",
+    content:
+      "Xác nhận muốn gửi đề thi, kiểm tra này và toàn bộ thông tin, các file chứa bên trong để được phê duyệt.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+  };
+
+  const modalUpload = {
+    title: "Tải tệp lên",
+    width: "40%",
+    className: "modal-add-role",
+    content: (
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        name="profile-form"
+        layout="horizontal"
+        form={form}
+      >
+        <Form.Item label="Chọn môn học">
+          <div className="upload-file">
+            <Button icon={<UploadOutlined style={{color: "#f17f21"}}/>} style={{ float: "left" }}>
+              Tải tệp lên
+            </Button>
+          </div>
+          Chọn tệp để tải lên
+        </Form.Item>
+        <Form.Item label="Lưu thành">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Lưu thành">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Chọn tổ bộ môn">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Chọn môn học">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Được tạo bởi">
+          <Input />
+        </Form.Item>
+      </Form>
+    ),
+    okText: "Lưu",
+    cancelText: "Huỷ",
+    onOk: () => form.submit(),
+  };
+
+
   const columns = [
     {
       title: "Loại file",
@@ -223,15 +311,23 @@ export const Exam = () => {
                   >
                     Xem chi tiết
                   </p>
-                  <p>Đổi tên</p>
-                  <p>Tải xuống</p>
-                  <p>Gửi phê duyệt</p>
-                  <p>Xoá file</p>
+                  <p onClick={() => modal.confirm(modalChangeName)}>Đổi tên</p>
+                  <p onClick={() => modal.confirm(downloadFile)}>Tải xuống</p>
+                  <p onClick={() => modal.confirm(sendApprove)}>Gửi phê duyệt</p>
+                  <p onClick={() => modal.confirm(removeRow)}>Xoá file</p>
                 </div>
               }
               trigger="click"
             >
-              <Button icon={<MoreOutlined />} size="large" />
+              <Button
+                icon={
+                  <MoreOutlined
+                    style={{
+                      fontSize: "24px",
+                    }}
+                  />
+                }
+              />
             </Popover>
           </Tooltip>
         </Space>
@@ -288,7 +384,7 @@ export const Exam = () => {
             </Tooltip>
           </Space>
           <div className="line"></div>
-          <Button icon={<UploadOutlined />} className="default-btn icon-custom">
+          <Button onClick={() => modal.confirm(modalUpload)} icon={<UploadOutlined />} className="default-btn icon-custom">
             Tải lên
           </Button>
           <Button

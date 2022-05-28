@@ -1,5 +1,5 @@
 import { EyeOutlined, MoreOutlined } from "@ant-design/icons";
-import { Button, Col, Dropdown, Form, Input, Menu, Row, Select, Space, Table, Tooltip } from "antd";
+import { Button, Col, Dropdown, Form, Input, Menu, Popover, Row, Select, Space, Table, Tooltip } from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -83,10 +83,9 @@ export const Subject = () => {
     }
   };
 
-  const modalChangeName = {
+  const modalCourseManage = {
     title: "Phân công tài liệu môn học",
     width: "50%",
-    className: "modal-change-name",
     content: (
       <Form
         labelCol={{ span: 6 }}
@@ -94,9 +93,23 @@ export const Subject = () => {
         name="cancel-form"
         layout="horizontal"
         form={form}
+        style={{ textAlign: "left"}}
       >
-        <Form.Item name="fileName" label="Tên bài giảng">
+        <Form.Item name="fileName" label="Mã môn học">
+          <div>#DLK6</div>
+        </Form.Item>
+        <Form.Item name="fileName" label="Môn học">
           <div>Thương mại điện tử</div>
+        </Form.Item>
+        <Form.Item name="fileName" label="Giảng viên">
+          <div>Hoa Hoa</div>
+        </Form.Item>
+        <p style={{ fontWeight: "700", marginBottom: "16px"}}>Phân công vào các lớp giảng dạy</p>
+        <Form.Item name="chooseTopic" label="Tất cả lớp học">
+          <Select disabled={disable} defaultValue="Tùy chọn lớp học">
+            <Option value={0}>Văn hóa xã hội</Option>
+            <Option value={1}>Sample</Option>
+          </Select>
         </Form.Item>
         <Form.Item name="chooseTopic" label="Chọn chủ đề">
           <Select disabled={disable} defaultValue="Chọn chủ đề">
@@ -104,8 +117,11 @@ export const Subject = () => {
             <Option value={1}>Sample</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="fileNameTitle" label="Tiêu đề bài giảng">
-          <Input />
+        <Form.Item name="fileNameTitle" label="Chọn bài giảng">
+        <Select disabled={disable} defaultValue="Chọn bài giảng">
+            <Option value={0}>Văn hóa xã hội</Option>
+            <Option value={1}>Sample</Option>
+          </Select>
         </Form.Item>
       </Form>
     ),
@@ -219,34 +235,35 @@ export const Subject = () => {
       title: "",
       key: "action",
       render: (text: any, record: any) => (
-        <Dropdown.Button
-          className="dropdown-btn"
-          overlay={
-            <Menu>
-              <Menu.Item key="1" onClick={() => handleClick(record.id)}>
-                Chi tiết môn học
-              </Menu.Item>
-              <Menu.Divider />
-              <Menu.Item
-                key="2"
-                onClick={() => navigate(`listfile/${record.id}`)}
-              >
-                Danh sách tài liệu
-              </Menu.Item>
-              <Menu.Divider />
-              <Menu.Item key="3" onClick={() => modal.confirm(modalChangeName)}>
-                Phân công tài liệu
-              </Menu.Item>
-            </Menu>
-          }
-          icon={
-            <MoreOutlined
-              style={{
-                fontSize: "24px",
-              }}
-            />
-          }
-        ></Dropdown.Button>
+        <Space size="middle">
+          <Tooltip title="More">
+            <Popover
+              content={
+                <div className="popover">
+                  <p onClick={() => handleClick(record.id)}>Chi tiết môn học</p>
+                  <p onClick={() => navigate(`listfile/${record.id}`)}>
+                    Danh sách tài liệu
+                  </p>
+                  <p onClick={() => modal.confirm(modalCourseManage)}>
+                    Phân công tài liệu
+                  </p>
+                </div>
+              }
+              trigger="click"
+            >
+              <Button
+                // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
+                icon={
+                  <MoreOutlined
+                    style={{
+                      fontSize: "24px",
+                    }}
+                  />
+                }
+              />
+            </Popover>
+          </Tooltip>
+        </Space>
       ),
     },
   ];

@@ -1,5 +1,5 @@
 import { DownloadOutlined, MoreOutlined } from "@ant-design/icons";
-import { Button, Col, Dropdown, Input, Menu, Row, Space, Table, Tooltip } from "antd";
+import { Button, Col, Form, Input, Popover, Row, Space, Table, Tooltip } from "antd";
 import modal from "antd/lib/modal";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
@@ -7,77 +7,106 @@ import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import "./style.scss";
 
-const subject = [
-  {
-    name: "Thể loại",
-    value: "default",
-  },
-  {
-    name: "Mp4",
-    value: "mp4",
-  },
-  {
-    name: "Mp3",
-    value: "mp3",
-  },
-  {
-    name: "Doc",
-    value: "doc",
-  },
-  {
-    name: "Pptx",
-    value: "pptx",
-  },
-  {
-    name: "Xlsx",
-    value: "xlsx",
-  },
-];
-const modalChangeName = {
-  title: "Đổi tên tệp",
-  width: "50%",
-  className: "modal-change-name",  
-  content: (
-    <div className="input-layout">
-      <Input />
-      .file
-    </div>
-  ),
-  okText: "Lưu",
-  cancelText: "Huỷ",
-};
-
-const removeRow = {
-  title: "Xác nhận xóa",
-  className: "modal-change-name",
-  content:
-    "Bạn có chắc chắn muốn xóa tệp này khỏi thư viện không?",
-  okText: "Xoá",
-  cancelText: "Huỷ",
-};
-
-const downloadFile = {
-  title: "Tải xuống tệp",
-  className: "modal-change-name",
-  content:
-    "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-  okText: "Xác nhận",
-  cancelText: "Huỷ",
-};
-
 export const PrivateFile = () => {
   const navigate = useNavigate();
-  const userMenu = (
-    <Menu>
-      <Menu.Item key="1">Xem trước</Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="2"  onClick = {() => modal.confirm(modalChangeName)}>Đổi tên</Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="3" onClick = {() => modal.confirm(downloadFile)}>Tải xuống</Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="4" onClick = {() => modal.confirm(removeRow)}>Xóa</Menu.Item>
-    </Menu>
-  );
+  const [form] = Form.useForm();
+
+  const data = [
+    {
+      key: "1",
+      subCode: "2020-6B",
+      subName: "Thương mại điện tử",
+      teacher: "Nguyễn Văn A",
+      file: "15/20",
+      status: 0,
+      createdAt: "12/02/2021",
+    },
+    {
+      key: "2",
+      subCode: "2020-6C",
+      subName: "Nguyên lý kế toán",
+      teacher: "Nguyễn Văn A",
+      file: "15/20",
+      status: 1,
+      createdAt: "12/02/2021",
+    },
+    {
+      key: "3",
+      subCode: "2020-6A",
+      subName: "Hệ thống thông tin",
+      teacher: "Nguyễn Văn A",
+      file: "15/20",
+      status: 0,
+      createdAt: "12/02/2021",
+    },
+  ];
+  const subject = [
+    {
+      name: "Thể loại",
+      value: "default",
+    },
+    {
+      name: "Mp4",
+      value: "mp4",
+    },
+    {
+      name: "Mp3",
+      value: "mp3",
+    },
+    {
+      name: "Doc",
+      value: "doc",
+    },
+    {
+      name: "Pptx",
+      value: "pptx",
+    },
+    {
+      name: "Xlsx",
+      value: "xlsx",
+    },
+  ];
+  const modalChangeName = {
+    title: "Đổi tên tệp",
+    width: "40%",
+    className: "modal-common-style",
+    content: (
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        name="profile-form"
+        layout="horizontal"
+        form={form}
+      >
+        <Form.Item label="Tên mới" name="userName">
+          <div className="input-layout">
+            <Input />
+            .file
+          </div>
+        </Form.Item>
+      </Form>
+    ),
+    okText: "Lưu",
+    cancelText: "Huỷ",
+  };
+  
+  const removeRow = {
+    title: "Xác nhận xóa",
+    className: "modal-common-style",
+    content:
+      "Bạn có chắc chắn muốn xóa tệp này khỏi thư viện không?",
+    okText: "Xoá",
+    cancelText: "Huỷ",
+  };
+  
+  const downloadFile = {
+    title: "Tải xuống tệp",
+    className: "modal-common-style",
+    content:
+      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+  };
   const columns = [
     {
       title: "Thể loại",
@@ -119,51 +148,29 @@ export const PrivateFile = () => {
       title: "",
       key: "action",
       render: (text: any, record: any) => (
-        <Dropdown.Button
-        className="dropdown-btn"
-        overlay={userMenu}
-        icon={
-          <MoreOutlined
-            style={{
-              fontSize: '24px',
-            }}
-           
-          />
-        }
-      ></Dropdown.Button>
+        <Space size="middle">
+        <Tooltip title="More">
+          <Popover
+            content={
+              <div className="popover">
+                <p>Xem trước</p>
+                <p onClick = {() => modal.confirm(modalChangeName)}>Đổi tên</p>
+                <p onClick = {() => modal.confirm(downloadFile)}>Tải xuống</p>
+                <p onClick = {() => modal.confirm(removeRow)}>Xóa</p>
+              </div>
+            }
+            trigger="click"
+          >
+            <Button icon={<MoreOutlined  style={{
+              fontSize: "24px",
+            }}/>}/>
+          </Popover>
+        </Tooltip>
+      </Space>
       ),
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      subCode: "2020-6B",
-      subName: "Thương mại điện tử",
-      teacher: "Nguyễn Văn A",
-      file: "15/20",
-      status: 0,
-      createdAt: "12/02/2021",
-    },
-    {
-      key: "2",
-      subCode: "2020-6C",
-      subName: "Nguyên lý kế toán",
-      teacher: "Nguyễn Văn A",
-      file: "15/20",
-      status: 1,
-      createdAt: "12/02/2021",
-    },
-    {
-      key: "3",
-      subCode: "2020-6A",
-      subName: "Hệ thống thông tin",
-      teacher: "Nguyễn Văn A",
-      file: "15/20",
-      status: 0,
-      createdAt: "12/02/2021",
-    },
-  ];
 
   return (
     <div className="privateFile-page">

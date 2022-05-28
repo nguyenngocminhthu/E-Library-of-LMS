@@ -40,14 +40,6 @@ const { Panel } = Collapse;
 
 const { Title } = Typography;
 
-const downloadFile = {
-  title: "Tải xuống tệp",
-  className: "modal-change-name",
-  content:
-    "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-  okText: "Xác nhận",
-  cancelText: "Huỷ",
-};
 export const Question = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -140,6 +132,16 @@ export const Question = () => {
     };
     modal.confirm(config);
   };
+
+  const downloadFile = {
+    title: "Tải xuống tệp",
+    className: "modal-change-name",
+    content:
+      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+  };
+  
   const columns = [
     {
       title: "STT",
@@ -197,7 +199,9 @@ export const Question = () => {
               }
               trigger="click"
             >
-              <Button icon={<MoreOutlined />} size="large" />
+              <Button icon={<MoreOutlined  style={{
+                fontSize: "24px",
+              }}/>}/>
             </Popover>
           </Tooltip>
         </Space>

@@ -40,21 +40,6 @@ const { Option } = Select;
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
 
-const classTeach = [
-  {
-    name: "Tất cả các lớp",
-    value: "all",
-  },
-  {
-    name: "Lớp nâng cao",
-    value: "advancedClass",
-  },
-  {
-    name: "Lớp cơ bản",
-    value: "basicClass",
-  },
-];
-
 export const SubjectDetail = () => {
   const params = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -108,7 +93,23 @@ export const SubjectDetail = () => {
   useEffect(() => {
     loadMoreData();
   }, []);
-  const modalChangeName = {
+
+  const classTeach = [
+    {
+      name: "Tất cả các lớp",
+      value: "all",
+    },
+    {
+      name: "Lớp nâng cao",
+      value: "advancedClass",
+    },
+    {
+      name: "Lớp cơ bản",
+      value: "basicClass",
+    },
+  ];
+  
+  const modalAddQuestion = {
     title: "Tạo câu hỏi cho học viên",
     width: "50%",
     className: "modal-add-role",
@@ -385,7 +386,7 @@ export const SubjectDetail = () => {
                 <Button
                   className="btn-create-min"
                   type="primary"
-                  onClick={() => modal.confirm(modalChangeName)}
+                  onClick={() => modal.confirm(modalAddQuestion)}
                 >
                   Thêm câu hỏi mới
                 </Button>

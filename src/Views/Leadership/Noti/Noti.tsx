@@ -9,21 +9,6 @@ import { SelectComp } from "../../../Components/Select";
 import SunEditor from 'suneditor-react';
 import "./style.scss";
 
-const classTeach = [
-  {
-    name: "Tất cả các lớp",
-    value: "all",
-  },
-  {
-    name: "Lớp nâng cao",
-    value: "advancedClass",
-  },
-  {
-    name: "Lớp cơ bản",
-    value: "basicClass",
-  },
-];
-
 const { TabPane } = Tabs;
 export const Notification = () => {
   const [loading, setLoading] = useState(false);
@@ -67,6 +52,20 @@ export const Notification = () => {
   useEffect(() => {
     loadMoreData();
   }, []);
+  const classTeach = [
+    {
+      name: "Tất cả các lớp",
+      value: "all",
+    },
+    {
+      name: "Lớp nâng cao",
+      value: "advancedClass",
+    },
+    {
+      name: "Lớp cơ bản",
+      value: "basicClass",
+    },
+  ];
 
   return (
     <div className="Noti-Page">

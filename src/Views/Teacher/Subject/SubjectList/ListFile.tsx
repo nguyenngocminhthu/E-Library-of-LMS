@@ -26,6 +26,15 @@ export const ListFile = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const onSelectChange = (selectedRowKeys: any) => {
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+  
   const columns = [
     {
       title: "Tên tài liệu",
@@ -134,14 +143,6 @@ export const ListFile = () => {
     content: <div></div>,
   };
 
-  const onSelectChange = (selectedRowKeys: any) => {
-    setSelectedRowKeys(selectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
 
   return (
     <div className="subject sub-manage teacher-subject">

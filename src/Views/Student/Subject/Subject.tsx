@@ -5,6 +5,7 @@ import {
   Dropdown,
   Form,
   Menu,
+  Popover,
   Row,
   Select,
   Space,
@@ -12,6 +13,7 @@ import {
   Tooltip,
   Typography,
 } from "antd";
+import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
@@ -26,8 +28,8 @@ const { Option } = Select;
 
 export const Subject = () => {
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
   const [form] = Form.useForm();
+  const dispatch: AppDispatch = useDispatch();
   const [disable, setDisable] = useState(false);
   const [data, setData] = useState<ISubject[]>([]);
 
@@ -68,6 +70,16 @@ export const Subject = () => {
       key: "LKD",
     },
   ];
+
+  const downloadFile = {
+    title: "Tải xuống tệp",
+    className: "modal-common-style",
+    content:
+      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+  };
+
   const columns = [
     {
       title: "",
@@ -103,30 +115,29 @@ export const Subject = () => {
       title: "",
       key: "action",
       render: (text: any, record: any) => (
-        <Dropdown.Button
-          className="dropdown-btn"
-          overlay={
-            <Menu>
-              <Menu.Item
-                key="1"
-                onClick={() =>
-                  navigate(`/student/subjects/viewsubject`)
-                }
-              >
-                Chi tiết
-              </Menu.Item>
-              <Menu.Divider />
-              <Menu.Item key="2">Tải xuống tài nguyên</Menu.Item>
-            </Menu>
-          }
-          icon={
-            <MoreOutlined
-              style={{
-                fontSize: "24px",
-              }}
-            />
-          }
-        ></Dropdown.Button>
+        <Space size="middle">
+        <Tooltip title="More">
+          <Popover
+            content={
+              <div className="popover">
+                <p
+                   onClick={() =>
+                    navigate(`/student/subjects/viewsubject`)
+                  }
+                >
+                  Chi tiết
+                </p>
+                <p onClick={() => modal.confirm(downloadFile)}>Tải xuống tài nguyên</p>
+              </div>
+            }
+            trigger="click"
+          >
+            <Button icon={<MoreOutlined  style={{
+              fontSize: "24px",
+            }}/>}/>
+          </Popover>
+        </Tooltip>
+      </Space>
       ),
     },
   ];

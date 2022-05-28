@@ -17,20 +17,20 @@ interface IFile {
   progress: number;
 }
 
-const listFile: any[] | undefined = [];
-for (let i = 0; i < 10; i++) {
-  listFile.push({
-    subject: "Toán đại số",
-    learn: "2. Nguyên tắc thiết kế",
-    lesson: "Bài 1: Lorem Ipsum Dolem",
-    progress: 50,
-    avt: `${ppt}`,
-  });
-}
-
 export const Home = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
+
+  const listFile: any[] | undefined = [];
+  for (let i = 0; i < 10; i++) {
+    listFile.push({
+      subject: "Toán đại số",
+      learn: "2. Nguyên tắc thiết kế",
+      lesson: "Bài 1: Lorem Ipsum Dolem",
+      progress: 50,
+      avt: `${ppt}`,
+    });
+  }
 
   const data = [
     {

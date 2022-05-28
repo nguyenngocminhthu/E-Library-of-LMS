@@ -10,9 +10,9 @@ import {
   IBanks,
   updateBank,
 } from "../../../redux/reducers/banks.reducer";
-import { IQuestion } from "../../../redux/reducers/question.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
+
 export const ExamDetails = () => {
   const dispatch: AppDispatch = useDispatch();
   const params = useParams<{ id: string }>();

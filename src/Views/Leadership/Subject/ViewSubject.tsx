@@ -18,46 +18,46 @@ import { InputLabel } from "../../../Components/InputLabel";
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
 
-const subject = [
-  {
-    name: "Thương mại điện tử",
-    value: "TMDT",
-  },
-  {
-    name: "Nguyên lý kế toán",
-    value: "NLKT",
-  },
-  {
-    name: "Hệ thống thông tin",
-    value: "HTTT",
-  },
-  {
-    name: "Luật thương mại",
-    value: "LTM",
-  },
-  {
-    name: "Ngân hàng ",
-    value: "NG",
-  },
-];
-
-const sorta = [
-  { name: "Sắp xếp theo mới nhất", value: "Newest" },
-  { name: "Sắp xếp theo cũ nhất", value: "Oldest" },
-  { name: "Nhiều tương tác nhất", value: "Interactive" },
-];
-
-const sortb = [
-  { name: "Lọc những câu hỏi theo", value: "question" },
-  { name: "Câu hỏi mới nhất", value: "NewestQues" },
-  { name: "Câu hỏi cũ nhất", value: "OldestQues" },
-  { name: "Câu hỏi được quan tâm nhất", value: "Carest" },
-];
-
 export const ViewSubject = () => {
   const params = useParams<{ idSub: string }>();
   const [viewMore, setViewMore] = useState(false);
   const [question, setQuestion] = useState(false);
+
+  const subject = [
+    {
+      name: "Thương mại điện tử",
+      value: "TMDT",
+    },
+    {
+      name: "Nguyên lý kế toán",
+      value: "NLKT",
+    },
+    {
+      name: "Hệ thống thông tin",
+      value: "HTTT",
+    },
+    {
+      name: "Luật thương mại",
+      value: "LTM",
+    },
+    {
+      name: "Ngân hàng ",
+      value: "NG",
+    },
+  ];
+  
+  const sorta = [
+    { name: "Sắp xếp theo mới nhất", value: "Newest" },
+    { name: "Sắp xếp theo cũ nhất", value: "Oldest" },
+    { name: "Nhiều tương tác nhất", value: "Interactive" },
+  ];
+  
+  const sortb = [
+    { name: "Lọc những câu hỏi theo", value: "question" },
+    { name: "Câu hỏi mới nhất", value: "NewestQues" },
+    { name: "Câu hỏi cũ nhất", value: "OldestQues" },
+    { name: "Câu hỏi được quan tâm nhất", value: "Carest" },
+  ];
 
   const Header = () => {
     return (

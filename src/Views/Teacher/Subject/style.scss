@@ -151,13 +151,10 @@
     .ant-table-thead>tr>th {
         background: $color-secondary-dark-light;
     }
-
-
 }
-.dropdown-btn {
-    .ant-btn-icon-only {
-        border: none;
-        background: transparent;
+.modal-course-manage{
+    .ant-modal .ant-modal-confirm-content{
+        text-align: left !important;
     }
-
+ 
 }

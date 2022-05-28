@@ -80,41 +80,10 @@ export const ClassManage = () => {
     setTeacherSelect(option);
   }, [teacher]);
 
-  const columns = [
-    {
-      title: "Mã lớp",
-      dataIndex: "classCode",
-      key: "classCode",
-      sorter: true,
-    },
-    {
-      title: "Tên lớp",
-      dataIndex: "className",
-      key: "className",
-    },
-    {
-      title: "Giảng viên",
-      dataIndex: "teacher",
-      key: "teacher",
-      render: (teacher: UserState) => {
-        return teacher.userName;
-      },
-    },
-    {
-      title: "",
-      key: "action",
-      render: (text: any, record: any) => (
-        <Space size="middle">
-          <Tooltip title="Edit">
-            <Button icon={<Edit />} />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Button icon={<Trash onClick={() => modal.confirm(deleteRow)} />} />
-          </Tooltip>
-        </Space>
-      ),
-    },
-  ];
+  const onFinish = (values: any) => {
+    console.debug(values);
+  };
+
 
   const deleteRow = {
     title: "Xóa Lớp học",
@@ -123,11 +92,7 @@ export const ClassManage = () => {
     okText: "Xác nhận",
     cancelText: "Huỷ",
   };
-
-  const onFinish = (values: any) => {
-    console.debug(values);
-  };
-
+  
   const modalAddRole = {
     title: "Thiết lập lớp học",
     width: "50%",
@@ -175,6 +140,43 @@ export const ClassManage = () => {
     cancelText: "Huỷ",
     onOk: () => form.submit(),
   };
+
+  const columns = [
+    {
+      title: "Mã lớp",
+      dataIndex: "classCode",
+      key: "classCode",
+      sorter: true,
+    },
+    {
+      title: "Tên lớp",
+      dataIndex: "className",
+      key: "className",
+    },
+    {
+      title: "Giảng viên",
+      dataIndex: "teacher",
+      key: "teacher",
+      render: (teacher: UserState) => {
+        return teacher.userName;
+      },
+    },
+    {
+      title: "",
+      key: "action",
+      render: (text: any, record: any) => (
+        <Space size="middle">
+          <Tooltip title="Edit">
+            <Button icon={<Edit />} />
+          </Tooltip>
+          <Tooltip title="Delete">
+            <Button icon={<Trash onClick={() => modal.confirm(deleteRow)} />} />
+          </Tooltip>
+        </Space>
+      ),
+    },
+  ];
+
 
   return (
     <div className="role-manage-page">

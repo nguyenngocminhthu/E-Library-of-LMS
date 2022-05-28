@@ -10,13 +10,13 @@ import CheckCircleFilled from "@ant-design/icons";
 import "./style.scss";
 import { BreadcrumbComp } from "../../Components/Breadcrumb";
 
-const openNotification = () => {
-  notification.open({
-    message: "Chúng tôi sẽ phản hồi sớm nhất!.",
-    icon: <CheckCircleFilled style={{ color: "#49C510" }} />,
-  });
-};
 export const Help = () => {
+  const openNotification = () => {
+    notification.open({
+      message: "Chúng tôi sẽ phản hồi sớm nhất!.",
+      icon: <CheckCircleFilled style={{ color: "#49C510" }} />,
+    });
+  };
 
   return (
     <div className="helping">
@@ -130,14 +130,6 @@ export const Help = () => {
           </div>
         </Col>
       </Row>
-      {/* <div className="row" id="helping">
-        <div className="col-sm-8" id="leftHelp">
-         
-        </div>
-        <div className="col-sm-4" id="bgRight">
-          
-        </div>
-      </div> */}
     </div>
   );
 };

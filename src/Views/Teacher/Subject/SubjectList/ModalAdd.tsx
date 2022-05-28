@@ -15,6 +15,17 @@ export const ModalAdd: React.FC<{ visible: boolean; setVisible: any }> = (
   const [form] = Form.useForm();
   const [test, setTest] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+ 
+
+  const onSelectChange = (selectedRowKeys: any) => {
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
   const columns = [
     {
       title: "Thể loại",
@@ -68,15 +79,6 @@ export const ModalAdd: React.FC<{ visible: boolean; setVisible: any }> = (
       size: "20.5 MB",
     },
   ];
-
-  const onSelectChange = (selectedRowKeys: any) => {
-    setSelectedRowKeys(selectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
   return (
     <Modal
       title="Thêm bài giảng mới"

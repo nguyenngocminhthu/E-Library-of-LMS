@@ -27,39 +27,6 @@ interface IFile {
   avt: string;
 }
 
-const year = [
-  {
-    value: "2020-2021",
-    name: "2020-2021",
-  },
-  {
-    value: "2021-2022",
-    name: "2021-2022",
-  },
-];
-
-const listData: any[] | undefined = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    fileName: "Phát triển website",
-    subject: "Web Design",
-    fileCode: `WEB${i}`,
-    teacher: "Hoa Hoa",
-    avt: `${WEB23}`,
-  });
-}
-
-const listFile: any[] | undefined = [];
-for (let i = 0; i < 10; i++) {
-  listFile.push({
-    fileName: "Thương mại điện tử là gì.docx",
-    createdAt: "12:01 12/12/2020",
-    subject: "Thương mại điện tử",
-    teacher: "Hoa Hoa",
-    avt: `${ppt}`,
-  });
-}
-
 export const Home = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
@@ -86,6 +53,39 @@ export const Home = () => {
   useEffect(() => {
     loadMoreData();
   }, []);
+
+  const year = [
+    {
+      value: "2020-2021",
+      name: "2020-2021",
+    },
+    {
+      value: "2021-2022",
+      name: "2021-2022",
+    },
+  ];
+  
+  const listData: any[] | undefined = [];
+  for (let i = 0; i < 23; i++) {
+    listData.push({
+      fileName: "Phát triển website",
+      subject: "Web Design",
+      fileCode: `WEB${i}`,
+      teacher: "Hoa Hoa",
+      avt: `${WEB23}`,
+    });
+  }
+  
+  const listFile: any[] | undefined = [];
+  for (let i = 0; i < 10; i++) {
+    listFile.push({
+      fileName: "Thương mại điện tử là gì.docx",
+      createdAt: "12:01 12/12/2020",
+      subject: "Thương mại điện tử",
+      teacher: "Hoa Hoa",
+      avt: `${ppt}`,
+    });
+  }
   return (
     <div className="home">
       <BreadcrumbComp title="Trang chủ" />

@@ -20,31 +20,31 @@ interface IFile {
   avt: string;
 }
 
-const year = [
-  {
-    value: "2020-2021",
-    name: "2020-2021",
-  },
-  {
-    value: "2021-2022",
-    name: "2021-2022",
-  },
-];
-
-const listFile: any[] | undefined = [];
-for (let i = 0; i < 10; i++) {
-  listFile.push({
-    fileName: "Thương mại điện tử là gì.docx",
-    createdAt: "12:01 12/12/2020",
-    subject: "Thương mại điện tử",
-    teacher: "Hoa Hoa",
-    avt: `${ppt}`,
-  });
-}
-
 export const Home = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
+
+  const year = [
+    {
+      value: "2020-2021",
+      name: "2020-2021",
+    },
+    {
+      value: "2021-2022",
+      name: "2021-2022",
+    },
+  ];
+  
+  const listFile: any[] | undefined = [];
+  for (let i = 0; i < 10; i++) {
+    listFile.push({
+      fileName: "Thương mại điện tử là gì.docx",
+      createdAt: "12:01 12/12/2020",
+      subject: "Thương mại điện tử",
+      teacher: "Hoa Hoa",
+      avt: `${ppt}`,
+    });
+  }
 
   return (
     <div className="home">

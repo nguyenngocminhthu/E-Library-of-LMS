@@ -21,22 +21,20 @@ import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import "./style.scss";
 
-const status = [
-  {
-    name: "Đã phê duyệt",
-    value: "DPD",
-  },
-  {
-    name: "Chờ phê duyệt",
-    value: "CPD",
-  },
-];
-
 export const ListFile = () => {
   const navigate = useNavigate();
   const params = useParams<{ idSub: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
+
+  const onSelectChange = (selectedRowKeys: any) => {
+    setSelectedRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
   // const dispatch: AppDispatch = useDispatch();
   // const [data, setData] = useState<ISubject>();
 
@@ -53,6 +51,17 @@ export const ListFile = () => {
   //       });
   //   }
   // }, []);
+  const status = [
+    {
+      name: "Đã phê duyệt",
+      value: "DPD",
+    },
+    {
+      name: "Chờ phê duyệt",
+      value: "CPD",
+    },
+  ];
+  
 
   const config = {
     title: "Phê duyệt",
@@ -96,6 +105,22 @@ export const ListFile = () => {
     okText: "Lưu",
     cancelText: "Huỷ",
   };
+
+  const downloadFile = {
+    title: "Tải xuống tệp",
+    className: "modal-common-style",
+    content:
+      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+  };
+
+  const seeDetails = {
+    title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
+    width: "90%",
+    content: <div></div>,
+  };
+
   const columns = [
     {
       title: "Tên tài liệu",
@@ -205,29 +230,6 @@ export const ListFile = () => {
       createdAt: "12/02/2021",
     },
   ];
-  const downloadFile = {
-    title: "Tải xuống tệp",
-    className: "modal-change-name",
-    content:
-      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
-
-  const seeDetails = {
-    title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
-    width: "90%",
-    content: <div></div>,
-  };
-
-  const onSelectChange = (selectedRowKeys: any) => {
-    setSelectedRowKeys(selectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
 
   return (
     <div className="subject sub-manage">

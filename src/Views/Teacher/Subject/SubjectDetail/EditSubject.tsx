@@ -89,7 +89,6 @@ export const EditSubject = () => {
 
   const genExtra = (index: number) => (
     <Dropdown.Button
-      className="dropdown-btn"
       overlay={
         <Menu>
           <Menu.Item
