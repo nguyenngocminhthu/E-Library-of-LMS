@@ -383,13 +383,20 @@ export const SubjectDetail = () => {
                     <Option value={1}>Câu hỏi tôi thích</Option>
                   </Select>
                 </div>
-                <Button
-                  className="btn-create-min"
-                  type="primary"
-                  onClick={() => modal.confirm(modalAddQuestion)}
-                >
-                  Thêm câu hỏi mới
-                </Button>
+                <div className="header-question-control">
+                  <div className="subject" style={{ width: "450px"}}>
+                    <SearchComponent placeholder="Tìm kiếm" />
+                  </div>
+
+                  <Button
+                    className="btn-create-min"
+                    type="primary"
+                    onClick={() => modal.confirm(modalAddQuestion)}
+                    style={{ margin: "10px"}}
+                  >
+                    Thêm câu hỏi mới
+                  </Button>
+                </div>
               </div>
             </TabPane>
             <TabPane tab="Thông báo môn học" key="4">

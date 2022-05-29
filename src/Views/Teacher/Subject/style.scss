@@ -130,6 +130,14 @@
         text-align: center;
         margin-top: 24px;
     }
+    .header-question-control{
+        padding: 16px 0px 16px 40px;
+        display: flex;
+        place-content: space-between;
+        background: #FFFFFF;
+        box-shadow: 4px 4px 25px 4px rgba(154, 202, 245, 0.25);
+        border-radius: 8px 8px 0px 0px;
+    }
 }
 
 .sun-editor .se-toolbar {

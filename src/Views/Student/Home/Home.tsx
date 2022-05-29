@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import ppt from "../../../shared/img/ppt.png";
+import math from "../../../shared/img/math.png";
 import { Column } from "@ant-design/plots";
 import "./style.scss";
 
@@ -14,6 +15,12 @@ interface IFile {
   subject: string;
   lesson: string;
   avt: string;
+  progress: number;
+}
+
+interface ILearnTime {
+  subject: string;
+  time: string;
   progress: number;
 }
 
@@ -29,6 +36,15 @@ export const Home = () => {
       lesson: "Bài 1: Lorem Ipsum Dolem",
       progress: 50,
       avt: `${ppt}`,
+    });
+  }
+
+  const listLearnTime: any[] | undefined = [];
+  for (let i = 0; i < 10; i++) {
+    listLearnTime.push({
+      subject: "Toán đại số",
+      time: "3 giờ",
+      progress: 40,
     });
   }
 
@@ -135,34 +151,37 @@ export const Home = () => {
             <div className="title">Thống kê học tập</div>
             <Column {...config} />
           </Col>
-          <Col span={11} offset={2}>
+          <Col span={12} offset={1}>
             <div className="title">Môn học nhiều nhất</div>
+            <List
+              style={{ marginBottom: "24px" }}
+              itemLayout="vertical"
+              grid={{ gutter: 20, column: 2 }}
+              dataSource={listLearnTime}
+              renderItem={(item: ILearnTime) => (
+                <List.Item key={item.subject}>
+                  <Card>
+                    <Row>
+                      <Col span={6}>
+                        <img src={math} alt="file" />
+                      </Col>
+                      <Col span={17} offset={1}>
+                        <div style={{ display: "flex", placeContent: "space-between", height: "20px" }}>
+                          <Title ellipsis level={5}>
+                            {item.subject}
+                          </Title>
+                          <p style={{ float: "right"}}>{item.time}</p>
+                        </div>
+                        <Progress percent={item.progress} showInfo={false} />
+                      </Col>
+                    </Row>
+                  </Card>
+                </List.Item>
+              )}
+            />
           </Col>
         </Row>
       </div>
-      {/* 
-import { useDispatch } from "react-redux";
-import { uploadFilesToFirebase } from "../../../Apis/Firebase";
-import { AppDispatch } from "../../../redux/store";
-
-export const Home = () => {
-  const dispatch: AppDispatch = useDispatch();
-
-  const handleFileUpload = async (e: any) => {
-    await dispatch(uploadFilesToFirebase([e.target.files[0]], "File")).then(
-      (rs: any) => {
-        console.debug(rs);
-      }
-    );
-  };
-  return (
-    <div>
-      <input
-        type="file"
-        name="file"
-        placeholder="hehe"
-        onChange={(e) => handleFileUpload(e)}
-      /> */}
     </div>
   );
 };
