@@ -166,3 +166,15 @@
     }
  
 }
+
+.dropdown-create {
+    .ant-dropdown-menu {
+        background-color: transparent;
+        box-shadow: none;
+
+        .ant-dropdown-menu-item:hover {
+            background-color: transparent;
+        }
+
+    }
+}

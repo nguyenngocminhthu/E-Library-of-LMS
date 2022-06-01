@@ -1,5 +1,15 @@
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Space, Table, Tag, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Dropdown,
+  Menu,
+  Row,
+  Space,
+  Table,
+  Tag,
+  Tooltip,
+} from "antd";
 import modal from "antd/lib/modal";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -25,6 +35,7 @@ export const ListFile = () => {
   const params = useParams<{ idSub: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalType, setModalType] = useState<string>("lesson");
 
   const onSelectChange = (selectedRowKeys: any) => {
     setSelectedRowKeys(selectedRowKeys);
@@ -34,7 +45,7 @@ export const ListFile = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-  
+
   const columns = [
     {
       title: "Tên tài liệu",
@@ -143,6 +154,40 @@ export const ListFile = () => {
     content: <div></div>,
   };
 
+  const menu = (
+    <Menu
+      items={[
+        {
+          key: "1",
+          label: (
+            <Button
+              onClick={() => {
+                setModalType("lesson");
+                setIsModalVisible(true);
+              }}
+              className="default-btn"
+            >
+              Bài giảng
+            </Button>
+          ),
+        },
+        {
+          key: "2",
+          label: (
+            <Button
+              onClick={() => {
+                setModalType("resource");
+                setIsModalVisible(true);
+              }}
+              className="default-btn"
+            >
+              Tài nguyên
+            </Button>
+          ),
+        },
+      ]}
+    />
+  );
 
   return (
     <div className="subject sub-manage teacher-subject">
@@ -167,13 +212,16 @@ export const ListFile = () => {
           <Button className="default-btn" style={{ marginLeft: "1rem" }}>
             Tải xuống
           </Button>
-          <Button
-            style={{ marginLeft: "1rem" }}
-            type="primary"
-            onClick={() => setIsModalVisible(true)}
+
+          <Dropdown
+            overlayClassName="dropdown-create"
+            overlay={menu}
+            placement="bottom"
           >
-            Thêm mới
-          </Button>
+            <Button style={{ marginLeft: "1rem" }} type="primary">
+              Thêm mới
+            </Button>
+          </Dropdown>
         </div>
       </div>
       <Row>
@@ -190,7 +238,11 @@ export const ListFile = () => {
         </Col>
       </Row>
       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
-      <ModalAdd visible={isModalVisible} setVisible={setIsModalVisible} />
+      <ModalAdd
+        visible={isModalVisible}
+        setVisible={setIsModalVisible}
+        modalType={modalType}
+      />
     </div>
   );
 };
