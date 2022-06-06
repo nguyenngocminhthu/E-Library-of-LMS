@@ -167,19 +167,18 @@ export const Subject = () => {
         title: "Xem chi tiết",
         dataIndex: "details",
         key: "details",
-        render: () => (
+        render: (record: any) => (
           <Space size="middle">
             <Tooltip title="Detail">
               <Button
-                onClick={() => modal.confirm(seeDetails)}
-                // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
+                onClick={() => navigate(`subjectdetail/${record.id}`)}
                 icon={<EyeOutlined />}
               />
             </Tooltip>
           </Space>
         ),
       },
-    ]
+    ];
     return <Table columns={columnsNested} dataSource={dataNested} pagination={false} className="table-nested"/>;
   };
 

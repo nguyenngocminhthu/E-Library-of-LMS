@@ -306,7 +306,7 @@ export const Exam = () => {
                 <div className="popover">
                   <p
                     onClick={() =>
-                      navigate(`/teacher/exams/examdetail/${record.id}`)
+                      navigate(`/teacher/exams/examdetail/${record?.id}`)
                     }
                   >
                     Xem chi tiết
