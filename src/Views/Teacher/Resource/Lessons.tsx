@@ -13,6 +13,7 @@ import {
   Space,
   Table,
   Tooltip,
+  Upload,
 } from "antd";
 import modal from "antd/lib/modal";
 import { useState } from "react";
@@ -145,15 +146,15 @@ export const Lessons = () => {
       dataIndex: "size",
       key: "size",
     },
-    { 
+    {
       title: "",
       key: "action",
       render: (text: any, record: any) => (
         <Delete
-        style={{
-          fontSize: "24px",
-        }}
-      />
+          style={{
+            fontSize: "24px",
+          }}
+        />
       ),
     },
   ];
@@ -225,6 +226,10 @@ export const Lessons = () => {
     cancelText: "Huỷ",
   };
 
+  const handleChange = (fileList: any) => {
+    console.debug(fileList);
+  };
+
   const modalUpload = {
     title: "Thêm bài giảng",
     width: "40%",
@@ -238,27 +243,19 @@ export const Lessons = () => {
         form={form}
       >
         <Form.Item label="Chọn môn học" name="userName">
-          <SelectComp
-            style={{ display: "block" }}
-            defaultValue="Tùy chọn môn học"
-            dataString={subjectSelect}
-          />
-          <div className="upload-file">
-            <Button
-              icon={<UploadOutlined style={{ color: "#f17f21" }} />}
-              style={{ float: "left" }}
-            >
+          <SelectComp style={{ display: "block" }} dataString={subjectSelect} />
+        </Form.Item>
+        <Form.Item name="video" label="Video" className="upload-file">
+          <Upload
+            maxCount={1}
+            beforeUpload={() => false}
+            onChange={handleChange}
+          >
+            <Button icon={<UploadOutlined style={{ color: "#f17f21" }} />}>
               Tải lên
             </Button>
-          </div>
+          </Upload>
         </Form.Item>
-        <div className="subject">
-          <Table
-            columns={columnsTable}
-            dataSource={dataTable}
-            pagination={false}
-          />
-        </div>
       </Form>
     ),
     okText: "Lưu",
@@ -286,25 +283,13 @@ export const Lessons = () => {
           />
         </div>
         <Form.Item label="Chọn môn học">
-          <SelectComp
-            style={{ display: "block" }}
-            defaultValue="Tùy chọn môn học"
-            dataString={subjectSelect}
-          />
+          <SelectComp style={{ display: "block" }} dataString={subjectSelect} />
         </Form.Item>
         <Form.Item label="Chọn lớp học">
-          <SelectComp
-            style={{ display: "block" }}
-            defaultValue="Tùy chọn môn học"
-            dataString={classSelect}
-          />
+          <SelectComp style={{ display: "block" }} dataString={classSelect} />
         </Form.Item>
         <Form.Item label="Chọn chủ đề">
-          <SelectComp
-            style={{ display: "block" }}
-            defaultValue="Tùy chọn môn học"
-            dataString={topicSelect}
-          />
+          <SelectComp style={{ display: "block" }} dataString={topicSelect} />
         </Form.Item>
         <Form.Item label="Tiêu đề bài giảng">
           <Input />
