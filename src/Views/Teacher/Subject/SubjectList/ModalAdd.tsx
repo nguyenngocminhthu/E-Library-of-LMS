@@ -9,13 +9,14 @@ import { ReactComponent as Mp4 } from "../../../../shared/img/icon/mp4_file.svg"
 
 const { Option } = Select;
 
-export const ModalAdd: React.FC<{ visible: boolean; setVisible: any }> = (
-  props
-) => {
+export const ModalAdd: React.FC<{
+  visible: boolean;
+  setVisible: any;
+  modalType: string;
+}> = (props) => {
   const [form] = Form.useForm();
   const [test, setTest] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
- 
 
   const onSelectChange = (selectedRowKeys: any) => {
     setSelectedRowKeys(selectedRowKeys);
@@ -81,7 +82,11 @@ export const ModalAdd: React.FC<{ visible: boolean; setVisible: any }> = (
   ];
   return (
     <Modal
-      title="Thêm bài giảng mới"
+      title={
+        props.modalType === "lesson"
+          ? "Thêm bài giảng mới"
+          : "Thêm tài nguyên mới"
+      }
       className="modal-add-role subject sub-manage teacher-subject"
       width="40%"
       visible={props.visible}
@@ -99,7 +104,12 @@ export const ModalAdd: React.FC<{ visible: boolean; setVisible: any }> = (
         layout="horizontal"
         form={form}
       >
-        <Form.Item name="fileName" label="Tên bài giảng">
+        <Form.Item
+          name="fileName"
+          label={
+            props.modalType === "lesson" ? "Tên bài giảng" : "Tên tài nguyên"
+          }
+        >
           <div>Thương mại điện tử</div>
         </Form.Item>
         <Form.Item name="topic" label="Chọn chủ đề">
@@ -108,7 +118,14 @@ export const ModalAdd: React.FC<{ visible: boolean; setVisible: any }> = (
             <Option value={1}>Sample</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="title" label="Tiêu đề bài giảng">
+        <Form.Item
+          name="title"
+          label={
+            props.modalType === "lesson"
+              ? "Tiêu đề bài giảng"
+              : "Tiêu đề tài nguyên"
+          }
+        >
           <Input />
         </Form.Item>
         <Form.Item label="Chọn tệp">
@@ -119,7 +136,9 @@ export const ModalAdd: React.FC<{ visible: boolean; setVisible: any }> = (
             className="teacher-subject"
           >
             <Radio value={0}>Tải tệp lên</Radio>
-            <Radio value={1}>Bài giảng</Radio>
+            <Radio value={1}>
+              {props.modalType === "lesson" ? "Bài giảng" : "Tài nguyên"}
+            </Radio>
           </Radio.Group>
         </Form.Item>
 

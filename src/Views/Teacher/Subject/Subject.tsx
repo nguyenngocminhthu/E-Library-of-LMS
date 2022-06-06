@@ -134,24 +134,7 @@ export const Subject = () => {
     content: <div></div>,
   };
 
-  const expandedRowRender = () => {
-    const dataNested =[
-      {
-        key:"11",
-        classCode: "DLK6102H2021",
-        className: "Thương mại điện tử",
-      },
-      {
-        key:"12",
-        classCode: "DLK6102H2021",
-        className: "Công nghệ phần mềm",
-      },
-      {
-        key:"13",
-        classCode: "DLK6102H2021",
-        className: "Thương mại điện tử",
-      }
-    ]
+  const expandedRowRender = (record: ISubject) => {
     const columnsNested = [
       {
         title: "Mã lớp",
@@ -179,7 +162,14 @@ export const Subject = () => {
         ),
       },
     ];
-    return <Table columns={columnsNested} dataSource={dataNested} pagination={false} className="table-nested"/>;
+    return (
+      <Table
+        columns={columnsNested}
+        dataSource={record.classes}
+        pagination={false}
+        className="table-nested"
+      />
+    );
   };
 
   const subjectSelect = [
@@ -192,7 +182,7 @@ export const Subject = () => {
       key: "LTCGN",
     },
   ];
-  
+
   const columns = [
     {
       title: "Mã môn học",
@@ -285,7 +275,9 @@ export const Subject = () => {
       <Table
         columns={columns}
         dataSource={data}
-        expandable={{ expandedRowRender }}
+        expandable={{
+          expandedRowRender: (record) => expandedRowRender(record),
+        }}
       />
     </div>
   );
