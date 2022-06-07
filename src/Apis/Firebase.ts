@@ -4,7 +4,7 @@ const uploadFilesToFirebase = (file: any, folder: any) => {
   return async () => {
     const result = await Promise.all(
       file.map(async (file: any) => {
-        return await upload(file, folder);
+        return await upload(file.originFileObj, folder);
       })
     );
 

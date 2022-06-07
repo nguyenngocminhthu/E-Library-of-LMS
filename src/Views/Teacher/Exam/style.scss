@@ -73,8 +73,11 @@
   }
 }
 .upload-file{
-  .ant-upload-list {
+  .ant-form-item-control-input {
     text-align: left;
+  }
+  .ant-upload-list {
+    align-items: unset;
   }
   .ant-btn {
     background-color: #ffd8b8 !important;

@@ -13,23 +13,22 @@ import {
   Space,
   Table,
   Tooltip,
-  Upload,
 } from "antd";
 import modal from "antd/lib/modal";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
-import { ReactComponent as Powerpoint } from "../../../shared/img/icon/pptw_file.svg";
 import { ReactComponent as Excel } from "../../../shared/img/icon/excel_file.svg";
-import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
 import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
+import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
+import { ReactComponent as Powerpoint } from "../../../shared/img/icon/pptw_file.svg";
+import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
+import { ModalUpload } from "./modalUpload";
 
 export const Lessons = () => {
   const navigate = useNavigate();
-  const params = useParams<{ idSub: string }>();
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -226,43 +225,6 @@ export const Lessons = () => {
     cancelText: "Huỷ",
   };
 
-  const handleChange = (fileList: any) => {
-    console.debug(fileList);
-  };
-
-  const modalUpload = {
-    title: "Thêm bài giảng",
-    width: "40%",
-    className: "modal-add-role",
-    content: (
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-        name="profile-form"
-        layout="horizontal"
-        form={form}
-      >
-        <Form.Item label="Chọn môn học" name="userName">
-          <SelectComp style={{ display: "block" }} dataString={subjectSelect} />
-        </Form.Item>
-        <Form.Item name="video" label="Video" className="upload-file">
-          <Upload
-            maxCount={1}
-            beforeUpload={() => false}
-            onChange={handleChange}
-          >
-            <Button icon={<UploadOutlined style={{ color: "#f17f21" }} />}>
-              Tải lên
-            </Button>
-          </Upload>
-        </Form.Item>
-      </Form>
-    ),
-    okText: "Lưu",
-    cancelText: "Huỷ",
-    onOk: () => form.submit(),
-  };
-
   const modalAddSubject = {
     title: "Thêm bài giảng vào môn học",
     width: "40%",
@@ -409,7 +371,7 @@ export const Lessons = () => {
           <div className="line"></div>
           <Button
             icon={<UploadOutlined />}
-            onClick={() => modal.confirm(modalUpload)}
+            onClick={() => setIsModalVisible(true)}
             className="default-btn icon-custom"
           >
             Tải lên
@@ -429,6 +391,11 @@ export const Lessons = () => {
         </Col>
       </Row>
       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      <ModalUpload
+        visible={isModalVisible}
+        setVisible={setIsModalVisible}
+        data={subjectSelect}
+      />
     </div>
   );
 };
