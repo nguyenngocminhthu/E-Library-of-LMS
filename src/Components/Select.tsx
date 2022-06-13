@@ -19,6 +19,9 @@ export interface ISelectAndLabel {
   className?: string;
   dropdownClassName?: string;
   name?: string;
+  disabled?: boolean;
+  mode?: "multiple" | "tags" | undefined;
+  allowClear?: boolean;
 }
 
 export const SelectComp: React.FC<ISelectAndLabel> = (props) => {
@@ -40,6 +43,9 @@ export const SelectComp: React.FC<ISelectAndLabel> = (props) => {
         className="select"
         onChange={onChange}
         defaultValue={props.defaultValue}
+        disabled={props.disabled}
+        mode={props.mode}
+        allowClear={props.allowClear}
       >
         {!lodash.isEmpty(props?.dataString) &&
           props?.dataString?.map((item, index) => {

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./reducers/auth.reducer";
 import banksReducer from "./reducers/banks.reducer";
 import classesReducer from "./reducers/classes.reducer";
+import lessonReducer from "./reducers/lesson.reducer";
 import loadingReducer from "./reducers/loading.reducer";
 import messageReducer from "./reducers/message.reducer";
 import questionReducer from "./reducers/question.reducer";
@@ -22,6 +23,7 @@ const reducer = {
   subjectgroup: subjectgroupReducer,
   classes: classesReducer,
   topic: topicReducer,
+  lesson: lessonReducer,
 };
 
 export const store = configureStore({

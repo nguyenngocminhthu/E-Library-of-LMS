@@ -108,7 +108,7 @@ export const SubjectDetail = () => {
       value: "basicClass",
     },
   ];
-  
+
   const modalAddQuestion = {
     title: "Tạo câu hỏi cho học viên",
     width: "50%",
@@ -239,20 +239,23 @@ export const SubjectDetail = () => {
                         key={idx}
                         className="site-collapse-custom-panel"
                       >
-                        <div className="accor-video">
-                          <Tooltip title="Play">
-                            <Button
-                              size="large"
-                              shape="circle"
-                              icon={<CaretRightOutlined />}
-                              onClick={() =>
-                                navigate(
-                                  `/teacher/subject/viewsubject/${params.id}`
-                                )
-                              }
-                            />
-                          </Tooltip>
-                        </div>
+                        {vl.lesson.length !== 0 && (
+                          <div className="accor-video">
+                            <Tooltip title="Play">
+                              <Button
+                                size="large"
+                                shape="circle"
+                                icon={<CaretRightOutlined />}
+                                onClick={() =>
+                                  navigate(
+                                    `/teacher/subject/viewsubject/${params.id}`
+                                  )
+                                }
+                              />
+                            </Tooltip>
+                          </div>
+                        )}
+
                         <h4>Tài nguyên</h4>
                         <hr />
                         <div className="download-file">
@@ -384,7 +387,7 @@ export const SubjectDetail = () => {
                   </Select>
                 </div>
                 <div className="header-question-control">
-                  <div className="subject" style={{ width: "450px"}}>
+                  <div className="subject" style={{ width: "450px" }}>
                     <SearchComponent placeholder="Tìm kiếm" />
                   </div>
 
@@ -392,7 +395,7 @@ export const SubjectDetail = () => {
                     className="btn-create-min"
                     type="primary"
                     onClick={() => modal.confirm(modalAddQuestion)}
-                    style={{ margin: "10px"}}
+                    style={{ margin: "10px" }}
                   >
                     Thêm câu hỏi mới
                   </Button>
@@ -500,4 +503,3 @@ export const SubjectDetail = () => {
     </div>
   );
 };
-  

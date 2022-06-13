@@ -1,10 +1,23 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal, Select, Upload } from "antd";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { SelectComp } from "../../../Components/Select";
+import {
+  getClass,
+  getClasses,
+  IClass,
+} from "../../../redux/reducers/classes.reducer";
+import { createLesson } from "../../../redux/reducers/lesson.reducer";
+import {
+  getSubject,
+  getSubjects,
+  ISubject,
+} from "../../../redux/reducers/subject.reducer";
+import { ITopic } from "../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../redux/store";
+import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 
 const { Option } = Select;
 
@@ -16,6 +29,27 @@ export const ModalUpload: React.FC<{
   const [form] = Form.useForm();
   const [linkVideo, setLinkVideo] = useState<string>("");
   const dispatch: AppDispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const dataSub = useSelector(
+    (state: any) => state.subject.listSubject.results
+  );
+  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([]);
+  const [classSelect, setClassSelect] = useState<ISubjectSelect[]>();
+  const [topicSelect, setTopicSelect] = useState<ISubjectSelect[]>();
+
+  useEffect(() => {
+    dispatch(getSubjects({ limit: 999, user: user.id }));
+  }, []);
+
+  useEffect(() => {
+    if (dataSub) {
+      let option: any[] = [];
+      dataSub.forEach((value: ISubject) => {
+        option.push({ name: value.subName, value: value.id });
+      });
+      setSubjectSelect(option);
+    }
+  }, [dataSub]);
 
   const handleChange = (fileList: any) => {
     console.debug(fileList);
@@ -23,44 +57,38 @@ export const ModalUpload: React.FC<{
     setLinkVideo(URL.createObjectURL(fileList.file));
   };
 
-  const classSelect = [
-    {
-      name: "Lớp học nâng cao",
-      value: "hightClass",
-    },
-    {
-      name: "Lớp học cơ bản",
-      value: "basicClass",
-    },
-    {
-      name: "Lớp học bổ túc văn hóa",
-      value: "subClass",
-    },
-  ];
-
-  const topicSelect = [
-    {
-      name: "Chủ đề tự chọn",
-      value: "CDTC",
-    },
-    {
-      name: "Chủ đề nâng cao",
-      value: "CDNC",
-    },
-    {
-      name: "Chủ đề bổ túc nâng cao",
-      value: "CDBCNC",
-    },
-  ];
-
   const onFinish = async (values: any) => {
     console.debug(values);
     await dispatch(uploadFilesToFirebase(values.video.fileList, "Video")).then(
       (rs) => {
         console.debug(rs);
         values.video = rs;
+        props.setVisible(false);
       }
     );
+    dispatch(createLesson({ ...values, user: user.id }))
+      .unwrap()
+      .then((rs) => {
+        console.debug(rs);
+      });
+  };
+
+  const handleSelect = (e: any) => {
+    dispatch(getSubject(e))
+      .unwrap()
+      .then((rs: ISubject) => {
+        let option: any[] = [];
+        rs.classes.forEach((vl: IClass) => {
+          option.push({ name: vl.classCode, value: vl.id });
+        });
+        setClassSelect(option);
+
+        let topic: any[] = [];
+        rs.topic.forEach((vl: ITopic) => {
+          topic.push({ name: vl.title, value: vl.id });
+        });
+        setTopicSelect(topic);
+      });
   };
 
   return (
@@ -73,6 +101,8 @@ export const ModalUpload: React.FC<{
         props.setVisible(false);
         form.resetFields();
         setLinkVideo("");
+        setClassSelect(undefined);
+        setTopicSelect(undefined);
       }}
       okText="Lưu"
       cancelText="Huỷ"
@@ -87,13 +117,27 @@ export const ModalUpload: React.FC<{
         onFinish={onFinish}
       >
         <Form.Item label="Chọn môn học" name="subject">
-          <SelectComp style={{ display: "block" }} dataString={props.data} />
+          <SelectComp
+            onChange={(e: any) => handleSelect(e)}
+            style={{ display: "block" }}
+            dataString={subjectSelect}
+          />
         </Form.Item>
         <Form.Item label="Chọn lớp học" name="classes">
-          <SelectComp style={{ display: "block" }} dataString={classSelect} />
+          <SelectComp
+            mode="multiple"
+            allowClear={true}
+            disabled={classSelect === undefined}
+            style={{ display: "block" }}
+            dataString={classSelect}
+          />
         </Form.Item>
         <Form.Item label="Chọn chủ đề" name="topic">
-          <SelectComp style={{ display: "block" }} dataString={topicSelect} />
+          <SelectComp
+            disabled={topicSelect === undefined}
+            style={{ display: "block" }}
+            dataString={topicSelect}
+          />
         </Form.Item>
         <Form.Item label="Tiêu đề bài giảng" name="title">
           <Input />

@@ -4,14 +4,16 @@ import { RootState } from "../store";
 import { setLoading } from "./loading.reducer";
 import { UserState } from "./user.reducer";
 import { ISubject } from "./subject.reducer";
-import Classes from "../../Apis/Classes.api";
+import Lesson from "../../Apis/Lesson.api";
+import { IClass } from "./classes.reducer";
+import { ITopic } from "./topic.reducer";
 
-export const createClass = createAsyncThunk(
-  "classes/createClass",
+export const createLesson = createAsyncThunk(
+  "Lesson/createClass",
   async (body: IClass, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Classes.createClass(body);
+      const data = await Lesson.createLesson(body);
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -29,12 +31,12 @@ export const createClass = createAsyncThunk(
   }
 );
 
-export const getClasses = createAsyncThunk(
-  "classes/getClasses",
-  async ({ limit, teacher, subject }: any, thunkAPI) => {
+export const getLessons = createAsyncThunk(
+  "Lesson/getLessons",
+  async ({ limit }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Classes.getClasses({ limit, teacher, subject });
+      const data = await Lesson.getLessons({ limit });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -52,12 +54,12 @@ export const getClasses = createAsyncThunk(
   }
 );
 
-export const getClass = createAsyncThunk(
-  "classes/getClass",
+export const getLesson = createAsyncThunk(
+  "Lesson/getLesson",
   async (id: string, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Classes.getClass(id);
+      const data = await Lesson.getLesson(id);
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -75,54 +77,54 @@ export const getClass = createAsyncThunk(
   }
 );
 
-export interface IClass {
+export interface ILesson {
   id: string;
   key?: number;
-  classCode: string;
-  className: string;
-  teacher: UserState;
-  student: UserState[];
+  classes: [];
+  video: string;
+  file: [];
   subject: ISubject;
+  topic: ITopic;
   createdAt: string;
   updatedAt: string;
 }
 
-interface ClassState {
-  listClass: IClass[];
+interface LessonState {
+  listLesson: ILesson[];
 }
 
-const initialState: ClassState = {
-  listClass: [],
+const initialState: LessonState = {
+  listLesson: [],
 };
 
-export const classesReducer = createSlice({
-  name: "classes",
+export const LessonReducer = createSlice({
+  name: "Lesson",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(createClass.fulfilled, (state, action) => {
-      state.listClass = action.payload;
+    builder.addCase(createLesson.fulfilled, (state, action) => {
+      state.listLesson = action.payload;
     });
-    builder.addCase(createClass.rejected, (state) => {
-      state.listClass = [];
+    builder.addCase(createLesson.rejected, (state) => {
+      state.listLesson = [];
     });
-    builder.addCase(getClasses.fulfilled, (state, action) => {
-      state.listClass = action.payload;
+    builder.addCase(getLessons.fulfilled, (state, action) => {
+      state.listLesson = action.payload;
     });
-    builder.addCase(getClasses.rejected, (state) => {
-      state.listClass = [];
+    builder.addCase(getLessons.rejected, (state) => {
+      state.listLesson = [];
     });
-    builder.addCase(getClass.fulfilled, (state, action) => {
-      state.listClass = action.payload;
+    builder.addCase(getLesson.fulfilled, (state, action) => {
+      state.listLesson = action.payload;
     });
-    builder.addCase(getClass.rejected, (state) => {
-      state.listClass = [];
+    builder.addCase(getLesson.rejected, (state) => {
+      state.listLesson = [];
     });
   },
 });
 
-const { reducer } = classesReducer;
+const { reducer } = LessonReducer;
 
-export const listClass = (state: RootState) => state.classes.listClass;
+export const listLesson = (state: RootState) => state.lesson.listLesson;
 
 export default reducer;
