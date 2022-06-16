@@ -77,16 +77,42 @@ export const getLesson = createAsyncThunk(
   }
 );
 
+export const updateLesson = createAsyncThunk(
+  "user/updateLesson",
+  async ({ id, payload }: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Lesson.updateLesson(id, payload);
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export interface ILesson {
   id: string;
   key?: number;
   classes: [];
+  title: string;
+  user: UserState;
   video: string;
   file: [];
   subject: ISubject;
   topic: ITopic;
   createdAt: string;
   updatedAt: string;
+  status: number;
 }
 
 interface LessonState {
@@ -118,6 +144,12 @@ export const LessonReducer = createSlice({
       state.listLesson = action.payload;
     });
     builder.addCase(getLesson.rejected, (state) => {
+      state.listLesson = [];
+    });
+    builder.addCase(updateLesson.fulfilled, (state, action) => {
+      state.listLesson = action.payload;
+    });
+    builder.addCase(updateLesson.rejected, (state) => {
       state.listLesson = [];
     });
   },

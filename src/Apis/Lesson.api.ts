@@ -22,6 +22,12 @@ const getLesson = (id: string) => {
   });
 };
 
-const Lesson = { getLessons, getLesson, createLesson };
+const updateLesson = (id: string, payload: any) => {
+  return axiosClient.patch(url + `/${id}`, payload).then((rs: any) => {
+    return rs;
+  });
+};
+
+const Lesson = { getLessons, getLesson, createLesson, updateLesson };
 
 export default Lesson;

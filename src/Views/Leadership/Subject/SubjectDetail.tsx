@@ -27,7 +27,6 @@ export const SubjectDetail = () => {
         .unwrap()
         .then((rs: ISubject) => {
           setData(rs);
-          console.debug("sub: ", rs);
         });
     }
   }, []);
@@ -66,51 +65,28 @@ export const SubjectDetail = () => {
           {data?.topic.map((vl: ITopic, index: number) => (
             <Panel
               header={vl.title}
-              key={index.toString()}
+              key={index}
               className="site-collapse-custom-panel"
             >
-              <div className="accor-video">
-                <Tooltip title="Play">
-                  <Button
-                    size="large"
-                    shape="circle"
-                    icon={<CaretRightOutlined />}
-                    onClick={() =>
-                      navigate(`/subjects/viewsubject/${params.idSub}`)
-                    }
-                  />
-                </Tooltip>
-              </div>
-              <h4>Tài nguyên</h4>
-              <hr />
-              <div className="download-file">
-                <div className="file-name">
-                  <LinkOutlined />
-                  HTKL_KT4SP_10A1.doc
+              {vl.lesson.length !== 0 && (
+                <div className="accor-video">
+                  <Tooltip title="Play">
+                    <Button
+                      size="large"
+                      shape="circle"
+                      icon={<CaretRightOutlined />}
+                      onClick={() => navigate(`/subjects/viewsubject/${vl.id}`)}
+                    />
+                  </Tooltip>
                 </div>
-                <Button>
-                  <DownloadOutlined />
-                  Tải xuống
-                </Button>
-              </div>
-              <div className="download-file">
-                <div className="file-name">
-                  <LinkOutlined />
-                  HTKL_KT4SP_10A1.doc
-                </div>
-                <Button>
-                  <DownloadOutlined />
-                  Tải xuống
-                </Button>
-              </div>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+              )}
               <hr />
               <Collapse
                 bordered={false}
                 className="site-collapse-custom-collapse"
               >
                 <Panel
-                  header="Thương mại điện tử đã thay đổi sự phát triển của nền kinh tế thế giới"
+                  header="Giới thiệu về thương mại điện tử trong những năm gần đây"
                   key="1"
                   className="site-collapse-custom-panel scrollbar"
                 >

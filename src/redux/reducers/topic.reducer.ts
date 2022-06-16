@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Topic from "../../Apis/Topic.api";
 import { RootState } from "../store";
+import { ILesson } from "./lesson.reducer";
 import { setLoading } from "./loading.reducer";
 import { setMessage } from "./message.reducer";
 import { ISubject } from "./subject.reducer";
@@ -80,7 +81,7 @@ export interface ITopic {
   subjectId: ISubject;
   title: string;
   description: string;
-  lesson: [];
+  lesson: ILesson[];
   image: string;
   QA: [];
   noti: [];

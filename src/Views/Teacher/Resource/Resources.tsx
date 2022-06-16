@@ -15,23 +15,53 @@ import {
   Tooltip,
 } from "antd";
 import modal from "antd/lib/modal";
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
-import { ReactComponent as Powerpoint } from "../../../shared/img/icon/pptw_file.svg";
-import { ReactComponent as Excel } from "../../../shared/img/icon/excel_file.svg";
-import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
+import { getLessons, ILesson } from "../../../redux/reducers/lesson.reducer";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
+import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
+import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
+
+import { ModalUpload } from "./modalUpload";
+import { ModalUploadFiles } from "./modalUploadFiles";
 
 export const Resources = () => {
   const navigate = useNavigate();
-  const params = useParams<{ idSub: string }>();
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const [data, setData] = useState<ILesson[]>([]);
+
+  useEffect(() => {
+    dispatch(getLessons({ limit: 999, user: user.id }))
+      .unwrap()
+      .then((rs) => {
+        let arr: any[] = [];
+        rs.results.forEach((value: ILesson) => {
+          value.file.forEach((item: string) => {
+            arr.push({
+              title: value.title,
+              file: item,
+              subject: value.subject.subName,
+              user: value.user.userName,
+              updatedAt: value.updatedAt,
+            });
+          });
+        });
+        console.debug(arr);
+        setData(arr);
+      });
+  }, []);
 
   const onSelectChange = (selectedRowKeys: any) => {
     setSelectedRowKeys(selectedRowKeys);
@@ -87,57 +117,21 @@ export const Resources = () => {
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      fileType: 3,
-      fileName: "GTTTMDT01.mp4",
-      subject: "Văn học",
-      editor: "Nguyễn Văn A",
-      lastEdit: "12/02/2020 - 14:08",
-      size: "20.5 MB",
-    },
-    {
-      key: "2",
-      fileType: 1,
-      fileName: "GTTTMDT01.doc",
-      subject: "Toán đại số",
-      editor: "Phạm Thị C",
-      lastEdit: "12/02/2020 - 14:08",
-      size: "20.5 MB",
-    },
-    {
-      key: "3",
-      fileType: 0,
-      fileName: "GTTTMDT01.pptx",
-      subject: "Toán hình họcc",
-      editor: "Nguyễn Văn A",
-      lastEdit: "12/02/2020 - 14:08",
-      size: "20.5 MB",
-    },
-  ];
   const columnsTable = [
     {
       title: "Tên file",
-      dataIndex: "nameType",
-      key: "nameType",
+      dataIndex: "title",
+      key: "title",
     },
     {
       title: "Thể loại",
-      dataIndex: "fileType",
-      key: "fileType",
-      render: (fileType: number) => {
-        return (
-          <>
-            {fileType === 0
-              ? "Powerpoint"
-              : fileType === 1
-              ? "Word"
-              : fileType === 2
-              ? "Excel"
-              : "Mp4"}
-          </>
-        );
+      dataIndex: "file",
+      key: "file",
+      render: (file: string) => {
+        let vid = file.split("/");
+        let vidName = vid[vid.length - 1];
+        console.debug(vidName);
+        return <>test</>;
       },
     },
     {
@@ -145,15 +139,15 @@ export const Resources = () => {
       dataIndex: "size",
       key: "size",
     },
-    { 
+    {
       title: "",
       key: "action",
       render: (text: any, record: any) => (
         <Delete
-        style={{
-          fontSize: "24px",
-        }}
-      />
+          style={{
+            fontSize: "24px",
+          }}
+        />
       ),
     },
   ];
@@ -225,47 +219,6 @@ export const Resources = () => {
     cancelText: "Huỷ",
   };
 
-  const modalUpload = {
-    title: "Thêm bài giảng",
-    width: "40%",
-    className: "modal-add-role",
-    content: (
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-        name="profile-form"
-        layout="horizontal"
-        form={form}
-      >
-        <Form.Item label="Chọn môn học" name="userName">
-          <SelectComp
-            style={{ display: "block" }}
-            defaultValue="Tùy chọn môn học"
-            dataString={subjectSelect}
-          />
-          <div className="upload-file">
-            <Button
-              icon={<UploadOutlined style={{ color: "#f17f21" }} />}
-              style={{ float: "left" }}
-            >
-              Tải lên
-            </Button>
-          </div>
-        </Form.Item>
-        <div className="subject">
-          <Table
-            columns={columnsTable}
-            dataSource={dataTable}
-            pagination={false}
-          />
-        </div>
-      </Form>
-    ),
-    okText: "Lưu",
-    cancelText: "Huỷ",
-    onOk: () => form.submit(),
-  };
-
   const modalAddSubject = {
     title: "Thêm bài giảng vào môn học",
     width: "40%",
@@ -286,25 +239,13 @@ export const Resources = () => {
           />
         </div>
         <Form.Item label="Chọn môn học">
-          <SelectComp
-            style={{ display: "block" }}
-            defaultValue="Tùy chọn môn học"
-            dataString={subjectSelect}
-          />
+          <SelectComp style={{ display: "block" }} dataString={subjectSelect} />
         </Form.Item>
         <Form.Item label="Chọn lớp học">
-          <SelectComp
-            style={{ display: "block" }}
-            defaultValue="Tùy chọn môn học"
-            dataString={classSelect}
-          />
+          <SelectComp style={{ display: "block" }} dataString={classSelect} />
         </Form.Item>
         <Form.Item label="Chọn chủ đề">
-          <SelectComp
-            style={{ display: "block" }}
-            defaultValue="Tùy chọn môn học"
-            dataString={topicSelect}
-          />
+          <SelectComp style={{ display: "block" }} dataString={topicSelect} />
         </Form.Item>
         <Form.Item label="Tiêu đề bài giảng">
           <Input />
@@ -319,28 +260,29 @@ export const Resources = () => {
   const columns = [
     {
       title: "Thể loại",
-      dataIndex: "fileType",
-      key: "fileType",
-      render: (fileType: number) => {
+      dataIndex: "file",
+      key: "file",
+      render: (file: string) => {
+        const vid = file.split("/");
+        const fileType = vid[vid.length - 1].split("?")[0];
         return (
           <>
-            {fileType === 0 ? (
-              <Powerpoint />
-            ) : fileType === 1 ? (
-              <Word />
-            ) : fileType === 2 ? (
-              <Excel />
-            ) : (
-              <Mp4 />
-            )}
+            {fileType.endsWith("doc") ||
+              (fileType.endsWith("docx") && <Word />)}
           </>
         );
       },
     },
     {
       title: "Tên",
-      dataIndex: "fileName",
-      key: "fileName",
+      dataIndex: "file",
+      key: "file",
+      render: (file: string) => {
+        const vid = file.split("/");
+        const fileType = vid[vid.length - 1].split("?")[0];
+        const fileName = fileType.split("%2F")[1];
+        return <>{fileName}</>;
+      },
     },
     {
       title: "Môn học",
@@ -349,18 +291,16 @@ export const Resources = () => {
     },
     {
       title: "Người chỉnh sửa",
-      dataIndex: "editor",
-      key: "editor",
+      dataIndex: "user",
+      key: "user",
     },
     {
       title: "Ngày sửa lần cuối",
-      dataIndex: "lastEdit",
-      key: "lastEdit",
-    },
-    {
-      title: "Kích thước",
-      dataIndex: "size",
-      key: "size",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (updatedAt: any) => {
+        return moment(updatedAt).format("DD/MM/YYYY");
+      },
     },
     {
       title: "",
@@ -401,11 +341,7 @@ export const Resources = () => {
 
   return (
     <div className="subject sub-manage teacher-subject">
-      <BreadcrumbComp
-        title="Tất cả tài nguyên"
-        prevPageTitle="Danh sách môn giảng dạy"
-        prevPage="teacher/subject"
-      />
+      <BreadcrumbComp title="Tất cả Tài nguyên" />
       <div className="top-head">
         <h1>Danh sách tài nguyên</h1>
         <div style={{ display: "flex" }}>
@@ -424,17 +360,10 @@ export const Resources = () => {
           <div className="line"></div>
           <Button
             icon={<UploadOutlined />}
-            onClick={() => modal.confirm(modalUpload)}
+            onClick={() => setIsModalVisible(true)}
             className="default-btn icon-custom"
           >
             Tải lên
-          </Button>
-          <Button
-            onClick={() => modal.confirm(modalAddSubject)}
-            style={{ marginLeft: "1rem" }}
-            type="primary"
-          >
-            Thêm vào môn học
           </Button>
         </div>
       </div>
@@ -451,6 +380,11 @@ export const Resources = () => {
         </Col>
       </Row>
       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      <ModalUploadFiles
+        visible={isModalVisible}
+        setVisible={setIsModalVisible}
+        data={subjectSelect}
+      />
     </div>
   );
 };

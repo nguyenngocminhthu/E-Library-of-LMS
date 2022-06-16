@@ -15,16 +15,19 @@ import {
   Tooltip,
 } from "antd";
 import modal from "antd/lib/modal";
-import { useState } from "react";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { ReactComponent as Excel } from "../../../shared/img/icon/excel_file.svg";
+import { getLessons } from "../../../redux/reducers/lesson.reducer";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
 import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
-import { ReactComponent as Powerpoint } from "../../../shared/img/icon/pptw_file.svg";
-import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import { ModalUpload } from "./modalUpload";
 
 export const Lessons = () => {
@@ -32,6 +35,17 @@ export const Lessons = () => {
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    dispatch(getLessons({ limit: 999, user: user.id }))
+      .unwrap()
+      .then((rs) => {
+        setData(rs.results);
+      });
+  }, []);
 
   const onSelectChange = (selectedRowKeys: any) => {
     setSelectedRowKeys(selectedRowKeys);
@@ -87,57 +101,21 @@ export const Lessons = () => {
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      fileType: 3,
-      fileName: "GTTTMDT01.mp4",
-      subject: "Văn học",
-      editor: "Nguyễn Văn A",
-      lastEdit: "12/02/2020 - 14:08",
-      size: "20.5 MB",
-    },
-    {
-      key: "2",
-      fileType: 1,
-      fileName: "GTTTMDT01.doc",
-      subject: "Toán đại số",
-      editor: "Phạm Thị C",
-      lastEdit: "12/02/2020 - 14:08",
-      size: "20.5 MB",
-    },
-    {
-      key: "3",
-      fileType: 0,
-      fileName: "GTTTMDT01.pptx",
-      subject: "Toán hình họcc",
-      editor: "Nguyễn Văn A",
-      lastEdit: "12/02/2020 - 14:08",
-      size: "20.5 MB",
-    },
-  ];
   const columnsTable = [
     {
       title: "Tên file",
-      dataIndex: "nameType",
-      key: "nameType",
+      dataIndex: "title",
+      key: "title",
     },
     {
       title: "Thể loại",
-      dataIndex: "fileType",
-      key: "fileType",
-      render: (fileType: number) => {
-        return (
-          <>
-            {fileType === 0
-              ? "Powerpoint"
-              : fileType === 1
-              ? "Word"
-              : fileType === 2
-              ? "Excel"
-              : "Mp4"}
-          </>
-        );
+      dataIndex: "video",
+      key: "video",
+      render: (video: string) => {
+        let vid = video.split("/");
+        let vidName = vid[vid.length - 1];
+        console.debug(vidName);
+        return <>test</>;
       },
     },
     {
@@ -266,48 +244,42 @@ export const Lessons = () => {
   const columns = [
     {
       title: "Thể loại",
-      dataIndex: "fileType",
-      key: "fileType",
-      render: (fileType: number) => {
-        return (
-          <>
-            {fileType === 0 ? (
-              <Powerpoint />
-            ) : fileType === 1 ? (
-              <Word />
-            ) : fileType === 2 ? (
-              <Excel />
-            ) : (
-              <Mp4 />
-            )}
-          </>
-        );
+      dataIndex: "video",
+      key: "video",
+      render: (video: string) => {
+        const vid = video.split("/");
+        const fileType = vid[vid.length - 1].split("?")[0];
+        return <>{fileType.endsWith("mp4") && <Mp4 />}</>;
       },
     },
     {
       title: "Tên",
-      dataIndex: "fileName",
-      key: "fileName",
+      dataIndex: "title",
+      key: "title",
     },
     {
       title: "Môn học",
       dataIndex: "subject",
       key: "subject",
+      render: (subject: ISubject) => {
+        return subject.subName;
+      },
     },
     {
       title: "Người chỉnh sửa",
-      dataIndex: "editor",
-      key: "editor",
+      dataIndex: "user",
+      key: "user",
+      render: (user: UserState) => {
+        return user.userName;
+      },
     },
     {
       title: "Ngày sửa lần cuối",
-      dataIndex: "lastEdit",
-      key: "lastEdit",
-    },
-    {
-      title: "Kích thước",
-      dataIndex: "size",
-      key: "size",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (updatedAt: any) => {
+        return moment(updatedAt).format("DD/MM/YYYY");
+      },
     },
     {
       title: "",
@@ -348,11 +320,7 @@ export const Lessons = () => {
 
   return (
     <div className="subject sub-manage teacher-subject">
-      <BreadcrumbComp
-        title="Tất cả bài giảng"
-        prevPageTitle="Danh sách môn giảng dạy"
-        prevPage="teacher/subject"
-      />
+      <BreadcrumbComp title="Tất cả bài giảng" />
       <div className="top-head">
         <h1>Danh sách tài nguyên</h1>
         <div style={{ display: "flex" }}>

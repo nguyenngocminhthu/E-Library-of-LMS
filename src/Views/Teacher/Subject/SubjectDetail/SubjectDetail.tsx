@@ -248,40 +248,13 @@ export const SubjectDetail = () => {
                                 icon={<CaretRightOutlined />}
                                 onClick={() =>
                                   navigate(
-                                    `/teacher/subject/viewsubject/${params.id}`
+                                    `/teacher/subject/viewsubject/${vl.id}`
                                   )
                                 }
                               />
                             </Tooltip>
                           </div>
                         )}
-
-                        <h4>Tài nguyên</h4>
-                        <hr />
-                        <div className="download-file">
-                          <div className="file-name">
-                            <LinkOutlined />
-                            HTKL_KT4SP_10A1.doc
-                          </div>
-                          <Button>
-                            <DownloadOutlined />
-                            Tải xuống
-                          </Button>
-                        </div>
-                        <div className="download-file">
-                          <div className="file-name">
-                            <LinkOutlined />
-                            HTKL_KT4SP_10A1.doc
-                          </div>
-                          <Button>
-                            <DownloadOutlined />
-                            Tải xuống
-                          </Button>
-                        </div>
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit
-                        </p>
                         <hr />
                         <Collapse
                           bordered={false}

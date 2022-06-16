@@ -1,10 +1,4 @@
-import { useParams } from "react-router-dom";
-import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
-import ReactPlayer from "react-player";
-import { Row, Col, Tabs, Collapse, Button, Avatar } from "antd";
-import { useState } from "react";
 import {
-  DoubleRightOutlined,
   DownloadOutlined,
   FileFilled,
   HeartFilled,
@@ -12,27 +6,37 @@ import {
   PlayCircleFilled,
   UserOutlined,
 } from "@ant-design/icons";
-import { SelectComp } from "../../../../Components/Select";
+import { Avatar, Button, Col, Collapse, Row, Tabs } from "antd";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import { InputLabel } from "../../../../Components/InputLabel";
+import { SelectComp } from "../../../../Components/Select";
+import { ILesson } from "../../../../redux/reducers/lesson.reducer";
+import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
+import { AppDispatch } from "../../../../redux/store";
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
 
 export const ViewSubject = () => {
-  const params = useParams<{ idSub: string }>();
-  const [viewMore, setViewMore] = useState(false);
+  const params = useParams<{ id: string }>();
   const [question, setQuestion] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
+  const [data, setData] = useState<ITopic>();
+  const [video, setVideo] = useState<any>();
 
-  const Header = () => {
-    return (
-      <Row>
-        <Col span={18}>Bài 1: Giới thiệu về thương mại điện tử</Col>
-        <Col span={6} className="time">
-          1/2|45 phút
-        </Col>
-      </Row>
-    );
-  };
+  useEffect(() => {
+    if (params.id) {
+      dispatch(getTopic(params.id))
+        .unwrap()
+        .then((rs: ITopic) => {
+          setData(rs);
+          setVideo(rs.lesson[0].video);
+        });
+    }
+  }, [params.id]);
 
   const subject = [
     {
@@ -56,13 +60,13 @@ export const ViewSubject = () => {
       value: "NG",
     },
   ];
-  
+
   const sorta = [
     { name: "Sắp xếp theo mới nhất", value: "Newest" },
     { name: "Sắp xếp theo cũ nhất", value: "Oldest" },
     { name: "Nhiều tương tác nhất", value: "Interactive" },
   ];
-  
+
   const sortb = [
     { name: "Lọc những câu hỏi theo", value: "question" },
     { name: "Câu hỏi mới nhất", value: "NewestQues" },
@@ -73,58 +77,28 @@ export const ViewSubject = () => {
   return (
     <div className="viewSub">
       <BreadcrumbComp
-        title={params.idSub}
+        title="Xem bài giảng"
         prevPageTitle="Danh sách môn học"
         prevPage="teacher/subject"
       />
       <Row>
         <Col span={16}>
-          <ReactPlayer
-            width="100%"
-            url="https://www.youtube.com/watch?v=QWgKKoq_r_0"
-          />
+          <video
+            src={video}
+            style={{ width: "100%", height: "50vh" }}
+            controls
+          ></video>
           <Tabs defaultActiveKey="1">
             <TabPane tab="Tổng quan" key="1">
               <Row>
                 <Col span={3}>Giảng viên:</Col>
-                <Col span={21}>Hoa Hoa</Col>
+                <Col span={21}>{data?.subjectId.teacher.userName}</Col>
                 <Col span={3}>Mô tả:</Col>
                 <Col
                   span={21}
-                  className={viewMore === true ? "scroll-box" : ""}
+                  className={data?.description !== "" ? "scroll-box" : ""}
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-                  et vestibulum ante, id malesuada libero. In hac habitasse
-                  platea dictumst. Maecenas est erat, volutpat ut hendrerit
-                  efficitur, pulvinar vitae nisi. Nam vulputate molestie erat,
-                  non vehicula magna dapibus at. Nunc turpis eros, molestie ac
-                  augue eu, euismod dignissim massa. Pellentesque purus lacus,
-                  gravida eget magna at, fringilla elementum magna.
-                  <div
-                    hidden={viewMore}
-                    className="view-more"
-                    onClick={() => setViewMore(true)}
-                  >
-                    Xem thêm <DoubleRightOutlined />
-                  </div>
-                  {viewMore && (
-                    <div>
-                      Contrary to popular belief, Lorem Ipsum is not simply
-                      random text. It has roots in a piece of classical Latin
-                      literature from 45 BC, making it over 2000 years old.
-                      Richard McClintock, a Latin professor at Hampden-Sydney
-                      College in Virginia, looked up one of the more obscure
-                      Latin words, consectetur, from a Lorem Ipsum passage, and
-                      going through the cites of the word in classical
-                      literature, discovered the undoubtable source. Lorem Ipsum
-                      comes from sections 1.10.32 and 1.10.33 of "de Finibus
-                      Bonorum et Malorum" (The Extremes of Good and Evil) by
-                      Cicero, written in 45 BC. This book is a treatise on the
-                      theory of ethics, very popular during the Renaissance. The
-                      first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..",
-                      comes from a line in section 1.10.32.
-                    </div>
-                  )}
+                  {data?.description}
                 </Col>
               </Row>
             </TabPane>
@@ -258,40 +232,67 @@ export const ViewSubject = () => {
         <Col span={8}>
           <h1>Nội dung môn học</h1>
           <hr />
-          <Collapse bordered={false} className="site-collapse-custom-collapse">
-            <Panel
-              header={<Header />}
-              key="1"
-              className="site-collapse-custom-panel scrollbar"
+          {data?.lesson.map((value: ILesson, index: number) => (
+            <Collapse
+              bordered={false}
+              className="site-collapse-custom-collapse"
             >
-              <Row className="sub-content">
-                <Col span={4}>
-                  <PlayCircleFilled />
-                </Col>
-                <Col span={19} offset={1}>
-                  <h4>
-                    1. Giới thiệu về thương mại điện tử trong những năm gần đây
-                  </h4>
-                  <span>30 phút</span>
-                </Col>
-              </Row>
-              <br />
-              <Row className="sub-content">
-                <Col span={4}>
-                  <FileFilled />
-                </Col>
-                <Col span={19} offset={1}>
-                  <h4>
-                    1. Thương Mại Điện tử đã thay đổi nền kinh tế của thế giới
-                  </h4>
-                </Col>
-              </Row>
-              <Button>
-                <DownloadOutlined />
-                Tải xuống
-              </Button>
-            </Panel>
-          </Collapse>
+              <Panel
+                header={
+                  <Row>
+                    <Col span={18}>
+                      Bài {index + 1}: {value.title}
+                    </Col>
+                    <Col span={6} className="time">
+                      1/2|45 phút
+                    </Col>
+                  </Row>
+                }
+                key={value.id}
+                className="site-collapse-custom-panel scrollbar"
+              >
+                <Row
+                  className="sub-content"
+                  onClick={() => setVideo(value.video)}
+                >
+                  <Col span={4}>
+                    <PlayCircleFilled />
+                  </Col>
+                  <Col span={19} offset={1}>
+                    <h4>{value.title}</h4>
+                    <span>30 phút</span>
+                  </Col>
+                </Row>
+                <br />
+                {value.file.map((item: string, index: number) => {
+                  const vid = item.split("/");
+                  const fileType = vid[vid.length - 1].split("?")[0];
+                  const fileName = fileType.split("%2F")[1];
+                 
+                  return (
+                    <a href={item} target='_blank'>
+                      <Row className="sub-content">
+                        <Col span={4}>
+                          <FileFilled />
+                        </Col>
+                        <Col span={19} offset={1}>
+                          <h4>
+                            {index + 1}. {fileName}
+                          </h4>
+                        </Col>
+                      </Row>
+                      <br />
+                    </a>
+                  );
+                })}
+
+                <Button>
+                  <DownloadOutlined />
+                  Tải xuống
+                </Button>
+              </Panel>
+            </Collapse>
+          ))}
         </Col>
       </Row>
     </div>

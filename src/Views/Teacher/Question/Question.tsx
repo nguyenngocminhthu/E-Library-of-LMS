@@ -228,7 +228,7 @@ export const Question = () => {
   };
 
   return (
-    <div className="exam-bank sub-exam-bank question-page subDetail">
+    <div className="exam-bank sub-exam-bank question-page">
       <BreadcrumbComp title="Ngân hàng câu hỏi trắc nghiệm" />
       <div className="top-head" style={{ justifyContent: "right" }}>
         <div style={{ display: "flex" }}>
