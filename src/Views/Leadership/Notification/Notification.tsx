@@ -198,6 +198,13 @@ export const Notification = () => {
                 defaultTag: "div",
                 minHeight: "250px",
                 showPathLabel: false,
+                buttonList: [
+                  ["undo", "redo"],
+                  ["fontSize", "bold", "underline", "italic"],
+                  ["align", "image"],
+                  ["list", "outdent", "indent"],
+                  ["fullScreen"],
+                ],
               }}
             />
           </Modal>

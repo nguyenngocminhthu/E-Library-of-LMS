@@ -1,7 +1,9 @@
 import {
   CaretRightOutlined,
-  DownloadOutlined,
-  LinkOutlined,
+  DislikeFilled,
+  DislikeOutlined,
+  LikeFilled,
+  LikeOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -19,9 +21,11 @@ import {
   Skeleton,
   Tabs,
   Tooltip,
+  Comment,
 } from "antd";
+import moment from "moment";
+import React, { useEffect, createElement, useState } from "react";
 import modal from "antd/lib/modal";
-import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -49,18 +53,9 @@ export const SubjectDetail = () => {
   const [dataNotification, setDataNotification] = useState<any>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [action, setAction] = useState<string | null>(null);
 
   useEffect(() => {
     if (params.id) {
@@ -109,6 +104,48 @@ export const SubjectDetail = () => {
     },
   ];
 
+  const like = () => {
+    setLikes(1);
+    setDislikes(0);
+    setAction("liked");
+  };
+
+  const dislike = () => {
+    setLikes(0);
+    setDislikes(1);
+    setAction("disliked");
+  };
+
+  const actions = [
+    <Tooltip key="comment-basic-like" title="Like">
+      <span onClick={like}>
+        {createElement(action === "liked" ? LikeFilled : LikeOutlined)}
+        <span className="comment-action">{likes}</span>
+      </span>
+    </Tooltip>,
+    <Tooltip key="comment-basic-dislike" title="Dislike">
+      <span onClick={dislike}>
+        {React.createElement(
+          action === "disliked" ? DislikeFilled : DislikeOutlined
+        )}
+        <span className="comment-action">{dislikes}</span>
+      </span>
+    </Tooltip>,
+    <span key="comment-basic-reply-to">Reply to</span>,
+  ];
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   const modalAddQuestion = {
     title: "Tạo câu hỏi cho học viên",
     width: "50%",
@@ -131,10 +168,10 @@ export const SubjectDetail = () => {
               minHeight: "150px",
               showPathLabel: false,
               buttonList: [
-                // default
                 ["undo", "redo"],
-                ["bold", "underline", "italic", "list"],
-                ["table", "link", "image"],
+                ["fontSize", "bold", "underline", "italic"],
+                ["align", "image"],
+                ["list", "outdent", "indent"],
                 ["fullScreen"],
               ],
             }}
@@ -359,7 +396,7 @@ export const SubjectDetail = () => {
                     <Option value={1}>Câu hỏi tôi thích</Option>
                   </Select>
                 </div>
-                <div className="header-question-control">
+                <div className="question-and-answer-container">
                   <div className="subject" style={{ width: "450px" }}>
                     <SearchComponent placeholder="Tìm kiếm" />
                   </div>
@@ -372,6 +409,56 @@ export const SubjectDetail = () => {
                   >
                     Thêm câu hỏi mới
                   </Button>
+                </div>
+                <div className="question-and-answer-container">
+                  <Comment
+                    actions={actions}
+                    author={<a>Han Solo</a>}
+                    avatar={
+                      <Avatar
+                        src="https://joeschmoe.io/api/v1/random"
+                        alt="Han Solo"
+                      />
+                    }
+                    content={
+                      <p>
+                        We supply a series of design principles, practical
+                        patterns and high quality design resources (Sketch and
+                        Axure), to help people create their product prototypes
+                        beautifully and efficiently.
+                      </p>
+                    }
+                    datetime={
+                      <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
+                        <span>{moment().fromNow()}</span>
+                      </Tooltip>
+                    }
+                  />
+                </div>
+                <div className="question-and-answer-container">
+                  <Comment
+                    actions={actions}
+                    author={<a>Han Solo</a>}
+                    avatar={
+                      <Avatar
+                        src="https://joeschmoe.io/api/v1/random"
+                        alt="Han Solo"
+                      />
+                    }
+                    content={
+                      <p>
+                        We supply a series of design principles, practical
+                        patterns and high quality design resources (Sketch and
+                        Axure), to help people create their product prototypes
+                        beautifully and efficiently.
+                      </p>
+                    }
+                    datetime={
+                      <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
+                        <span>{moment().fromNow()}</span>
+                      </Tooltip>
+                    }
+                  />
                 </div>
               </div>
             </TabPane>
@@ -428,6 +515,13 @@ export const SubjectDetail = () => {
                         defaultTag: "div",
                         minHeight: "250px",
                         showPathLabel: false,
+                        buttonList: [
+                          ["undo", "redo"],
+                          ["fontSize", "bold", "underline", "italic"],
+                          ["align", "image"],
+                          ["list", "outdent", "indent"],
+                          ["fullScreen"],
+                        ],
                       }}
                     />
                   </Modal>

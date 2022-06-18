@@ -91,3 +91,10 @@
     font-size: 18px;
   }
 }
+.span-download-file{
+  color: $color-primary;
+  font-style: italic;
+  .anticon svg{
+    font-size: 20px;
+  }
+}

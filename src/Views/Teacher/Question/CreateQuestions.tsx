@@ -1,5 +1,5 @@
-import SunEditor from "suneditor-react";
-import "suneditor/dist/css/suneditor.min.css";
+import SunEditor from 'suneditor-react';
+import 'suneditor/dist/css/suneditor.min.css';
 import { MinusCircleOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Col, Form, Input, Radio, Row, Select } from "antd";
 import TextArea from "antd/lib/input/TextArea";
@@ -18,7 +18,7 @@ import "./style.scss";
 
 const { Option } = Select;
 
-export const CreateExam = () => {
+export const CreateQuestions = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [select, setSelect] = useState(0);
@@ -48,9 +48,9 @@ export const CreateExam = () => {
   return (
     <div className="sub-exam-bank">
       <BreadcrumbComp
-        title="Tạo đề thi với câu hỏi mới"
-        prevPageTitle="Ngân hàng đề thi"
-        prevPage="teacher/exams"
+        title="Thêm câu hỏi"
+        prevPageTitle="Ngân hàng câu hỏi"
+        prevPage="teacher/questions"
       />
       <Form
         className="new-exam-form"
@@ -61,12 +61,9 @@ export const CreateExam = () => {
       >
         <Row>
           <h3>
-            <b>Phần thông tin:</b>
+            <b>Chọn tổ bộ môn - môn học:</b>
           </h3>
           <Col span={10}>
-            <Form.Item name="examName" label="Tên">
-              <Input />
-            </Form.Item>
             <Form.Item name="subjectGroup" label="Tổ bộ môn">
               <Select>
                 {dataSubGroup?.map((vl: ISubjectGroup) => (
@@ -76,23 +73,15 @@ export const CreateExam = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item name="examType" label="Hình thức">
-              <Radio.Group onChange={(e) => setExamType(e.target.value)}>
-                <Radio value={0}>Trắc nghiệm</Radio>
-                <Radio value={1}>Tự luận</Radio>
+            <Form.Item name="level" label="Độ khó">
+              <Radio.Group defaultValue={0} onChange={(e) => setExamType(e.target.value)}>
+                <Radio value={0}>Dễ</Radio>
+                <Radio value={1}>Trung bình</Radio>
+                <Radio value={2}>Khó</Radio>
               </Radio.Group>
             </Form.Item>
           </Col>
           <Col span={10} offset={4}>
-            <Form.Item name="time" label="Thời lượng">
-              <Select style={{ width: "100px" }}>
-                <Option value={15}>15</Option>
-                <Option value={30}>30</Option>
-                <Option value={45}>45</Option>
-                <Option value={45}>60</Option>
-              </Select>{" "}
-              phút
-            </Form.Item>
             <Form.Item name="subject" label="Môn học">
               <Select>
                 {dataSub?.map((vl: ISubject) => (
@@ -203,19 +192,19 @@ export const CreateExam = () => {
                 label={`Câu hỏi ${select + 1}:`}
               >
                 <SunEditor
-                  setOptions={{
-                    defaultTag: "div",
-                    minHeight: "100px",
-                    showPathLabel: false,
-                    buttonList: [
-                      ["undo", "redo"],
-                      ["fontSize", "bold", "underline", "italic"],
-                      ["align", "image"],
-                      ["list", "outdent", "indent"],
-                      ["fullScreen"],
-                    ],
-                  }}
-                />
+                setOptions={{
+                  defaultTag: "div",
+                  minHeight: "100px",
+                  showPathLabel: false,
+                  buttonList: [
+                    ["undo", "redo"],
+                    ["fontSize", "bold", "underline", "italic"],
+                    ["align", "image"],
+                    ["list", "outdent", "indent"],
+                    ["fullScreen"],
+                  ],
+                }}
+              />
               </Form.Item>
               {examType === 0 ? (
                 <>
@@ -352,13 +341,13 @@ export const CreateExam = () => {
       </div>
       <div className="footer-btn" style={{ justifyContent: "center" }}>
         <Button
-          onClick={() => navigate("/teacher/exams")}
+        onClick={() => navigate("/teacher/questions")}
           className="default-btn"
         >
           Huỷ
         </Button>
         <Button style={{ marginLeft: "1rem" }} type="primary">
-          Lưu và gửi phê duyệt
+          Lưu
         </Button>
       </div>
     </div>

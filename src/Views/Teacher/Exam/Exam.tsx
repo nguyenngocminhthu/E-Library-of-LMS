@@ -127,7 +127,9 @@ export const Exam = () => {
       okText: "Tiếp tục",
       cancelText: "Huỷ",
       onOk: () => {
-        if (test === 1) {
+        if (test === 0) {
+          navigate("/teacher/exams/createExamFromQuestions");
+        } else if (test === 1){
           navigate("/teacher/exams/createExam");
         }
       },

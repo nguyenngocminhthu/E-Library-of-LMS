@@ -64,8 +64,9 @@ export const AddSubject = () => {
                   showPathLabel: false,
                   buttonList: [
                     ["undo", "redo"],
-                    ["bold", "underline", "italic", "list"],
-                    ["table", "link", "image"],
+                    ["fontSize", "bold", "underline", "italic"],
+                    ["align", "image"],
+                    ["list", "outdent", "indent"],
                     ["fullScreen"],
                   ],
                 }}

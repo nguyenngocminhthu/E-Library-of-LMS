@@ -6,9 +6,11 @@ import { Help } from "../Views/Help/Help";
 import { Notification } from "../Views/Leadership/Notification/Notification";
 import NotiSetting from "../Views/Leadership/Notification/NotiSetting";
 import { CreateExam } from "../Views/Teacher/Exam/CreateExam";
+import { CreateExamFromQuestions } from "../Views/Teacher/Exam/CreateExamFromQuestions";
 import { Exam } from "../Views/Teacher/Exam/Exam";
 import { ExamDetails } from "../Views/Teacher/Exam/ExamDetails";
 import { Home } from "../Views/Teacher/Home/Home";
+import { CreateQuestions } from "../Views/Teacher/Question/CreateQuestions";
 import { Question } from "../Views/Teacher/Question/Question";
 import { Lessons } from "../Views/Teacher/Resource/Lessons";
 import { Resources } from "../Views/Teacher/Resource/Resources";
@@ -57,6 +59,10 @@ export const Teacher = () => {
           <Route path="/teacher/exams" element={<Exam />} />
 
           <Route path="/teacher/exams/createExam" element={<CreateExam />} />
+
+          <Route path="/teacher/exams/createExamFromQuestions" element={<CreateExamFromQuestions />} />
+
+          <Route path="teacher/questions/createQuestions" element={<CreateQuestions />} />
 
           <Route path="teacher/exams/examdetail/:id" element={<ExamDetails />} />
 

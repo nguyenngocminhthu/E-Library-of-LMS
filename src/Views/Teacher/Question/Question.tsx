@@ -1,6 +1,6 @@
 import {
   DownloadOutlined,
-  MoreOutlined,
+  LinkOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
 import {
@@ -9,12 +9,11 @@ import {
   Col,
   Collapse,
   Form,
-  Popover,
   Radio,
   Row,
+  Select,
   Space,
   Table,
-  Tooltip,
   Typography,
 } from "antd";
 import modal from "antd/lib/modal";
@@ -34,10 +33,13 @@ import {
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
+import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
+import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
+import { EyeOutlined } from "@ant-design/icons";
 import "./style.scss";
 
 const { Panel } = Collapse;
-
+const { Option } = Select;
 const { Title } = Typography;
 
 export const Question = () => {
@@ -59,6 +61,9 @@ export const Question = () => {
   const [data, setData] = useState<IBanks[]>([]);
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
+
+  const [collapseShow, setCollapseShow] = useState<any>(false)
+  const [collapseContent, setCollapseContent] = useState<number>(0)
 
   useEffect(() => {
     dispatch(getQuestions(filter))
@@ -98,39 +103,61 @@ export const Question = () => {
     setSubjectGroupSelect(option);
   }, [dataSubGroup]);
 
-  const handleModal = () => {
-    let test = 0;
-    const config = {
-      title: "Tạo đề thi mới",
-      width: "40%",
-      className: "cancel-form file-modal",
-      content: (
-        <Row>
-          <Col span={6}>
-            <b>Cách tạo đề thi</b>
-          </Col>
-          <Col span={18}>
-            <Radio.Group
-              defaultValue={0}
-              onChange={(e) => {
-                test = e.target.value;
-              }}
-            >
-              <Radio value={0}>Tạo đề thi từ ngân hàng câu hỏi</Radio>
-              <Radio value={1}>Tạo đề thi với câu hỏi mới</Radio>
-            </Radio.Group>
-          </Col>
-        </Row>
-      ),
-      okText: "Tiếp tục",
-      cancelText: "Huỷ",
-      onOk: () => {
-        if (test === 1) {
-          navigate("/teacher/exams/createExam");
-        }
-      },
-    };
-    modal.confirm(config);
+  const modalUploadFile = {
+    title: "Tải lên file",
+    width: "50%",
+    content: (
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        className="modal-add-role"
+        layout="horizontal"
+        form={form}
+        style={{ textAlign: "left" }}
+      >
+        <Form.Item name="fileName" label="Tệp đính kèm">
+          <div className="download-file">
+            <div className="file-name">
+              <LinkOutlined />
+              HTKL_KT4SP_10A1.doc
+            </div>
+            <Button>Chọn tệp tải lên</Button>
+          </div>
+          <span className="note-span">Chỉ hỗ trợ tệp excel (.xlsx)</span>
+        </Form.Item>
+        <Form.Item name="fileName" label="Tải file mẫu">
+          <div className="span-download-file">
+            <DownloadOutlined /> [Tải xuống file mẫu]
+          </div>
+        </Form.Item>
+        <Form.Item name="chooseTopic" label="Chọn tổ - bộ môn">
+          <Select defaultValue="Chọn tổ - bộ môn">
+            <Option value={0}>Văn hóa - xã hội</Option>
+            <Option value={1}>Khoa học - Tự nhiên</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="ChooseLeason" label="Chọn môn học">
+          <Select defaultValue="Chọn môn học">
+            <Option value={0}>Thương mai điện tử</Option>
+            <Option value={1}>Sinh học</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="createBy" label="Được tạo bởi">
+          <div>Gv. Thanh Tâm</div>
+        </Form.Item>
+      </Form>
+    ),
+    okText: "Tải lên",
+    cancelText: "Huỷ",
+  };
+
+  const removeQuestion = {
+    title: "Xóa câu hỏi",
+    className: "modal-common-style",
+    content:
+      "Xác nhận muốn xoá câu hỏi này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
   };
 
   const downloadFile = {
@@ -141,7 +168,7 @@ export const Question = () => {
     okText: "Xác nhận",
     cancelText: "Huỷ",
   };
-  
+
   const columns = [
     {
       title: "STT",
@@ -180,30 +207,36 @@ export const Question = () => {
       key: "action",
       render: (text: any, record: IBanks) => (
         <Space size="middle">
-          <Tooltip title="More">
-            <Popover
-              content={
-                <div className="popover">
-                  <p
-                    onClick={() =>
-                      navigate(`/teacher/exams/examdetail/${record.id}`)
-                    }
-                  >
-                    Xem chi tiết
-                  </p>
-                  <p>Đổi tên</p>
-                  <p>Tải xuống</p>
-                  <p>Gửi phê duyệt</p>
-                  <p>Xoá file</p>
-                </div>
-              }
-              trigger="click"
-            >
-              <Button icon={<MoreOutlined  style={{
-                fontSize: "24px",
-              }}/>}/>
-            </Popover>
-          </Tooltip>
+          <Button
+                icon={
+                  <EyeOutlined
+                    style={{
+                      fontSize: "24px",
+                    }}
+                  />
+                }
+                onClick={handleShowQuestion}
+              />
+              <Button
+                icon={
+                  <Edit
+                    style={{
+                      fontSize: "24px",
+                    }}
+                  />
+                }
+                onClick={handleChangeQuestion}
+              />
+              <Button
+                icon={
+                  <Trash
+                    onClick={() => modal.confirm(removeQuestion)}
+                    style={{
+                      fontSize: "24px",
+                    }}
+                  />
+                }
+              />
         </Space>
       ),
     },
@@ -227,29 +260,39 @@ export const Question = () => {
     }
   };
 
+  const handleShowQuestion = ()=>{
+    if(!collapseShow){
+      setCollapseShow(true);
+    }
+    if(collapseContent===1){
+      setCollapseContent(0);
+    }
+  }
+
+  const handleChangeQuestion = ()=>{
+    if(!collapseShow){
+      setCollapseShow(true);
+    }
+    if(collapseContent===0){
+      setCollapseContent(1);
+    }
+    
+  }
+
   return (
     <div className="exam-bank sub-exam-bank question-page">
       <BreadcrumbComp title="Ngân hàng câu hỏi trắc nghiệm" />
       <div className="top-head" style={{ justifyContent: "right" }}>
         <div style={{ display: "flex" }}>
-          <Space className="" size="middle">
-            <Tooltip title="Download">
-              <Button
-                type="link"
-                icon={
-                  <DownloadOutlined
-                    onClick={() => modal.confirm(downloadFile)}
-                  />
-                }
-              />
-            </Tooltip>
-          </Space>
-          <div className="line"></div>
-          <Button icon={<UploadOutlined />} className="default-btn icon-custom">
+          <Button
+            icon={<UploadOutlined />}
+            className="default-btn icon-custom"
+            onClick={() => modal.confirm(modalUploadFile)}
+          >
             Tải lên
           </Button>
           <Button
-            onClick={handleModal}
+            onClick={() => navigate("/teacher/questions/createQuestions")}
             style={{ marginLeft: "1rem" }}
             type="primary"
           >
@@ -284,6 +327,12 @@ export const Question = () => {
               <Radio value={1}>Trung bình</Radio>
               <Radio value={2}>Cao</Radio>
             </Radio.Group>
+            <div className="button-group-filter">
+              <Button className="default-btn icon-custom">Hoàn tác</Button>
+              <Button style={{ marginLeft: "1rem" }} type="primary">
+                Lọc
+              </Button>
+            </div>
           </Card>
         </Col>
         <Col span={15} offset={1}>
@@ -294,7 +343,7 @@ export const Question = () => {
               </Title>
             </Col>
             <Col className="table-header" span={12}>
-              <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
+              <SearchComponent placeholder="Tìm kiếm" />
             </Col>
           </Row>
           <Table
@@ -302,15 +351,21 @@ export const Question = () => {
             columns={columns}
             dataSource={data}
           />
-          <Collapse bordered={false} className="site-collapse-custom-collapse">
+          {collapseShow ? <Collapse bordered={false} className="site-collapse-custom-collapse">
             <Panel
               header="Nội dung câu hỏi"
               key="3"
               className="site-collapse-custom-panel"
             >
-              hehe
+              {collapseShow && collapseContent=== 0 ? <div>hehe</div> : collapseShow  && collapseContent=== 1 ? <div>hihi</div> : <></>}
+              <div className="button-group-filter">
+              <Button className="default-btn icon-custom">Hủy</Button>
+              <Button style={{ marginLeft: "1rem" }} type="primary">
+                Lưu
+              </Button>
+              </div>
             </Panel>
-          </Collapse>
+          </Collapse> : <></>}
         </Col>
       </Row>
     </div>

@@ -3,7 +3,6 @@ import { ReactComponent as Book } from "../../shared/img/icon/u_book-open.svg";
 import { ReactComponent as File } from "../../shared/img/icon/u_file-edit-alt.svg";
 import { ReactComponent as Bag } from "../../shared/img/icon/u_bag.svg";
 import { ReactComponent as Bell } from "../../shared/img/icon/fi_bell.svg";
-import { ReactComponent as Setting } from "../../shared/img/icon/fi_settings.svg";
 import { ReactComponent as Question } from "../../shared/img/icon/u_comment-question.svg";
 import { useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
