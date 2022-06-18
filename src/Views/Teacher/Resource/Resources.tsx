@@ -12,6 +12,7 @@ import {
   Row,
   Space,
   Table,
+  Tag,
   Tooltip,
 } from "antd";
 import modal from "antd/lib/modal";
@@ -22,6 +23,7 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
+import { getFiles, IFile } from "../../../redux/reducers/file.reducer";
 import { getLessons, ILesson } from "../../../redux/reducers/lesson.reducer";
 import { ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
@@ -43,23 +45,10 @@ export const Resources = () => {
   const [data, setData] = useState<ILesson[]>([]);
 
   useEffect(() => {
-    dispatch(getLessons({ limit: 999, user: user.id }))
+    dispatch(getFiles({ limit: 999, user: user.id }))
       .unwrap()
       .then((rs) => {
-        let arr: any[] = [];
-        rs.results.forEach((value: ILesson) => {
-          value.file.forEach((item: string) => {
-            arr.push({
-              title: value.title,
-              file: item,
-              subject: value.subject.subName,
-              user: value.user.userName,
-              updatedAt: value.updatedAt,
-            });
-          });
-        });
-        console.debug(arr);
-        setData(arr);
+        setData(rs.results);
       });
   }, []);
 
@@ -260,8 +249,8 @@ export const Resources = () => {
   const columns = [
     {
       title: "Thể loại",
-      dataIndex: "file",
-      key: "file",
+      dataIndex: "url",
+      key: "url",
       render: (file: string) => {
         const vid = file.split("/");
         const fileType = vid[vid.length - 1].split("?")[0];
@@ -275,8 +264,8 @@ export const Resources = () => {
     },
     {
       title: "Tên",
-      dataIndex: "file",
-      key: "file",
+      dataIndex: "url",
+      key: "url",
       render: (file: string) => {
         const vid = file.split("/");
         const fileType = vid[vid.length - 1].split("?")[0];
@@ -288,11 +277,31 @@ export const Resources = () => {
       title: "Môn học",
       dataIndex: "subject",
       key: "subject",
+      render: (subject: ISubject) => {
+        return subject.subName;
+      },
     },
     {
       title: "Người chỉnh sửa",
       dataIndex: "user",
       key: "user",
+      render: (user: UserState) => {
+        return user.userName;
+      },
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (status: number) => {
+        if (status === 0) {
+          return <Tag color="default">Chưa phê duyệt</Tag>;
+        } else if (status === 1) {
+          return <Tag color="green">Đã phê duyệt</Tag>;
+        } else {
+          return <Tag color="red">Đã hủy</Tag>;
+        }
+      },
     },
     {
       title: "Ngày sửa lần cuối",
