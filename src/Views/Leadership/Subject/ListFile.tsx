@@ -14,11 +14,29 @@ import {
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
-import { useState } from "react";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
+import {
+  getFiles,
+  IFile,
+  updateFile,
+} from "../../../redux/reducers/file.reducer";
+import {
+  getLessons,
+  ILesson,
+  updateLesson,
+} from "../../../redux/reducers/lesson.reducer";
+import { getSubject, ISubject } from "../../../redux/reducers/subject.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
+import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
+import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
+
 import "./style.scss";
 
 export const ListFile = () => {
@@ -35,22 +53,48 @@ export const ListFile = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-  // const dispatch: AppDispatch = useDispatch();
-  // const [data, setData] = useState<ISubject>();
+  const dispatch: AppDispatch = useDispatch();
+  const [data, setData] = useState<ILesson[]>([]);
+  const [resourceData, setResourceData] = useState<IFile[]>([]);
+  const [fileType, setFileType] = useState<number>(0);
+  const [subData, setSubdata] = useState<ISubject>();
 
-  // useEffect(() => {
-  //   if (params.idSub) {
-  //     dispatch(getSubject(params.idSub))
-  //       .unwrap()
-  //       .then((rs: ISubject) => {
-  //         setData(rs);
-  //         console.debug('teacher: ', rs)
-  //       })
-  //       .catch((e: any) => {
-  //         console.debug("e: ", e);
-  //       });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (params.idSub) {
+      dispatch(getSubject(params.idSub))
+        .unwrap()
+        .then((rs) => {
+          setSubdata(rs);
+        });
+
+      dispatch(getLessons({ limit: 999, subject: params.idSub }))
+        .unwrap()
+        .then((rs) => {
+          setData(rs.results);
+        });
+
+      dispatch(getFiles({ limit: 999, subject: params.idSub }))
+        .unwrap()
+        .then((rs) => {
+          setResourceData(rs.results);
+        });
+    }
+  }, []);
+
+  const handleRefresh = () => {
+    dispatch(getLessons({ limit: 999, subject: params.idSub }))
+      .unwrap()
+      .then((rs) => {
+        setData(rs.results);
+      });
+
+    dispatch(getFiles({ limit: 999, subject: params.idSub }))
+      .unwrap()
+      .then((rs) => {
+        setResourceData(rs.results);
+      });
+  };
+
   const status = [
     {
       name: "Đã phê duyệt",
@@ -61,15 +105,42 @@ export const ListFile = () => {
       value: "CPD",
     },
   ];
-  
 
-  const config = {
-    title: "Phê duyệt",
-    className: "file-modal",
-    content:
-      "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
+  const type = [
+    {
+      name: "Bài giảng",
+      value: 0,
+    },
+    {
+      name: "Tài nguyên",
+      value: 1,
+    },
+  ];
+
+  const ModalConFirm = (id: string, type: number) => {
+    const config = {
+      title: "Phê duyệt",
+      className: "file-modal",
+      content:
+        type === 0
+          ? "Xác nhận muốn phê duyệt bài giảng này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác."
+          : "Xác nhận muốn phê duyệt tài nguyên này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
+      okText: "Xác nhận",
+      cancelText: "Huỷ",
+      onOk: () =>
+        type === 0
+          ? dispatch(updateLesson({ id: id, payload: { status: 1 } })).then(
+              () => {
+                handleRefresh();
+              }
+            )
+          : dispatch(updateFile({ id: id, payload: { status: 1 } })).then(
+              () => {
+                handleRefresh();
+              }
+            ),
+    };
+    modal.confirm(config);
   };
 
   const config1 = {
@@ -96,7 +167,7 @@ export const ListFile = () => {
         </Form.Item>
         <Form.Item name="note" label="Ghi chú">
           <TextArea rows={4} />
-        </Form.Item >
+        </Form.Item>
         <Form.Item name="cbnotification" label=" ">
           <Checkbox className="cb-style">Gửi thông báo cho người tạo</Checkbox>
         </Form.Item>
@@ -123,25 +194,43 @@ export const ListFile = () => {
 
   const columns = [
     {
-      title: "Tên tài liệu",
-      dataIndex: "fileName",
-      key: "fileName",
-      sorter: (a: any, b: any) => a.fileName.length - b.fileName.length,
+      title: "Thể loại",
+      dataIndex: "video",
+      key: "video",
+      render: (video: string) => {
+        const vid = video.split("/");
+        const fileType = vid[vid.length - 1].split("?")[0];
+        return <>{fileType.endsWith("mp4") && <Mp4 />}</>;
+      },
     },
     {
-      title: "Phân loại",
-      dataIndex: "fileType",
-      key: "fileType",
+      title: "Tên",
+      dataIndex: "title",
+      key: "title",
     },
     {
-      title: "Giảng viên",
-      dataIndex: "teacher",
-      key: "teacher",
+      title: "Môn học",
+      dataIndex: "subject",
+      key: "subject",
+      render: (subject: ISubject) => {
+        return subject.subName;
+      },
     },
     {
-      title: "Ngày gửi",
-      dataIndex: "createdAt",
-      key: "createdAt",
+      title: "Người chỉnh sửa",
+      dataIndex: "user",
+      key: "user",
+      render: (user: UserState) => {
+        return user.userName;
+      },
+    },
+    {
+      title: "Ngày sửa lần cuối",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (updatedAt: any) => {
+        return moment(updatedAt).format("DD/MM/YYYY");
+      },
     },
     {
       title: "Tình trạng tài liệu môn học",
@@ -164,11 +253,11 @@ export const ListFile = () => {
       title: "Phê duyệt tài liệu",
       dataIndex: "verify",
       key: "verify",
-      render: (stt: any, record: any) => (
+      render: (stt: any, record: ILesson) => (
         <div>
           {record.status === 0 ? (
             <div style={{ display: "flex" }}>
-              <Button onClick={() => modal.confirm(config)} type="primary">
+              <Button onClick={() => ModalConFirm(record.id, 0)} type="primary">
                 Phê duyệt
               </Button>
               <Button
@@ -204,30 +293,107 @@ export const ListFile = () => {
     },
   ];
 
-  const data = [
+  const resourceColumns = [
     {
-      key: "1",
-      fileName: "2020-6B",
-      fileType: "Bài giảng",
-      teacher: "Nguyễn Văn A",
-      status: 0,
-      createdAt: "12/02/2021",
+      title: "Thể loại",
+      dataIndex: "url",
+      key: "url",
+      render: (file: string) => {
+        const vid = file.split("/");
+        const fileType = vid[vid.length - 1].split("?")[0];
+        return (
+          <>
+            {fileType.endsWith("doc") ||
+              (fileType.endsWith("docx") && <Word />)}
+          </>
+        );
+      },
     },
     {
-      key: "2",
-      fileName: "2020-6C",
-      fileType: "Tài nguyên",
-      teacher: "Nguyễn Văn A",
-      status: 1,
-      createdAt: "12/02/2021",
+      title: "Tên",
+      dataIndex: "url",
+      key: "url",
+      render: (file: string) => {
+        const vid = file.split("/");
+        const fileType = vid[vid.length - 1].split("?")[0];
+        const fileName = fileType.split("%2F")[1];
+        return <>{fileName}</>;
+      },
     },
     {
-      key: "3",
-      fileName: "2020-6A",
-      fileType: "Bài giảng",
-      teacher: "Nguyễn Văn A",
-      status: 2,
-      createdAt: "12/02/2021",
+      title: "Môn học",
+      dataIndex: "subject",
+      key: "subject",
+      render: (subject: ISubject) => {
+        return subject.subName;
+      },
+    },
+    {
+      title: "Người chỉnh sửa",
+      dataIndex: "user",
+      key: "user",
+      render: (user: UserState) => {
+        return user.userName;
+      },
+    },
+    {
+      title: "Tình trạng tài liệu môn học",
+      dataIndex: "status",
+      key: "status",
+      render: (status: number) => (
+        <Tag
+          color={status === 0 ? "green" : status === 1 ? "blue" : "red"}
+          key={status}
+        >
+          {status === 0
+            ? "Chờ phê duyệt"
+            : status === 1
+            ? "Đã phê duyệt"
+            : "Đã huỷ"}
+        </Tag>
+      ),
+    },
+    {
+      title: "Phê duyệt tài liệu",
+      dataIndex: "verify",
+      key: "verify",
+      render: (stt: any, record: IFile) => (
+        <div>
+          {record.status === 0 ? (
+            <div style={{ display: "flex" }}>
+              <Button onClick={() => ModalConFirm(record.id, 1)} type="primary">
+                Phê duyệt
+              </Button>
+              <Button
+                onClick={() => modal.confirm(config1)}
+                className="cancel-btn"
+              >
+                Huỷ
+              </Button>
+            </div>
+          ) : record.status === 1 ? (
+            <span className="gray">Đã phê duyệt</span>
+          ) : (
+            <span className="gray">Đã huỷ</span>
+          )}
+        </div>
+      ),
+    },
+
+    {
+      title: "",
+      key: "action",
+      render: (text: any, record: any) => (
+        <Space size="middle">
+          <Tooltip title="Detail">
+            <Button
+              onClick={() => modal.confirm(seeDetails)}
+              // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
+              icon={<EyeOutlined />}
+            />
+          </Tooltip>
+        </Space>
+      ),
     },
   ];
 
@@ -239,7 +405,7 @@ export const ListFile = () => {
         prevPage="subjects"
       />
       <div className="top-head">
-        <h1>{params.idSub}</h1>
+        <h1>{subData?.subName}</h1>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
             <Tooltip title="Download">
@@ -279,12 +445,31 @@ export const ListFile = () => {
             defaultValue="Tất cả tình trạng"
             dataString={status}
           />
+          <SelectComp
+            style={{ display: "block" }}
+            textLabel="Loại file"
+            defaultValue={fileType}
+            dataString={type}
+            onChange={(e: number) => setFileType(e)}
+          />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..."/>
+          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
         </Col>
       </Row>
-      <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      {fileType === 0 ? (
+        <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={data}
+        />
+      ) : (
+        <Table
+          rowSelection={rowSelection}
+          columns={resourceColumns}
+          dataSource={resourceData}
+        />
+      )}
     </div>
   );
 };

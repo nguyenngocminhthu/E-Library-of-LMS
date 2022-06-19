@@ -33,10 +33,10 @@ export const createFile = createAsyncThunk(
 
 export const getFiles = createAsyncThunk(
   "File/getFiles",
-  async ({ limit }: any, thunkAPI) => {
+  async ({ limit, user, subject }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await File.getFiles({ limit });
+      const data = await File.getFiles({ limit, user, subject });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }

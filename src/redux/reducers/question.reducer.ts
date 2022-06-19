@@ -6,6 +6,29 @@ import { IBanks } from "./banks.reducer";
 import { ISubject } from "./subject.reducer";
 import Question from "../../Apis/Question.api";
 
+export const createQuestion = createAsyncThunk(
+  "Question/createQuestion",
+  async (body: IQuestion, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Question.createQuestion(body);
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export const getQuestions = createAsyncThunk(
   "Questions/getQuestions",
   async ({ limit, subjectGroup, subject, level }: any, thunkAPI) => {
@@ -85,6 +108,12 @@ export const questionReducer = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(createQuestion.fulfilled, (state, action) => {
+      state.listQuestion = action.payload;
+    });
+    builder.addCase(createQuestion.rejected, (state, action) => {
+      state.listQuestion = [];
+    });
     builder.addCase(getQuestions.fulfilled, (state, action) => {
       state.listQuestion = action.payload;
     });

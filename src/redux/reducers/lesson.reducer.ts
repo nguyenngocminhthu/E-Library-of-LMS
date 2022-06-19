@@ -33,10 +33,10 @@ export const createLesson = createAsyncThunk(
 
 export const getLessons = createAsyncThunk(
   "Lesson/getLessons",
-  async ({ limit }: any, thunkAPI) => {
+  async ({ limit, user, subject }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Lesson.getLessons({ limit });
+      const data = await Lesson.getLessons({ limit, user, subject });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
