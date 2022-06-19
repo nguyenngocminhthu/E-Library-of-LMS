@@ -9,6 +9,7 @@ import {
   getClasses,
   IClass,
 } from "../../../redux/reducers/classes.reducer";
+import { createFile } from "../../../redux/reducers/file.reducer";
 import {
   createLesson,
   ILesson,
@@ -20,6 +21,7 @@ import {
   ISubject,
 } from "../../../redux/reducers/subject.reducer";
 import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 
@@ -29,10 +31,11 @@ export const ModalUploadFiles: React.FC<{
   visible: boolean;
   setVisible: any;
   data: any;
+  handleRefresh: any;
 }> = (props) => {
   const [form] = Form.useForm();
   const dispatch: AppDispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const dataSub = useSelector(
     (state: any) => state.subject.listSubject.results
   );
@@ -57,20 +60,20 @@ export const ModalUploadFiles: React.FC<{
 
   const onFinish = async (values: any) => {
     console.debug(values);
+    delete values.topic;
 
-    await dispatch(uploadFilesToFirebase(values.file.fileList, "File")).then(
+    await dispatch(uploadFilesToFirebase(values.url.fileList, "File")).then(
       (rs) => {
         console.debug(rs);
-        values.file = rs;
+        values.url = rs;
         props.setVisible(false);
       }
     );
-    dispatch(
-      updateLesson({ id: values.lesson, payload: { file: values.file } })
-    )
+    dispatch(createFile({ ...values, user: user.id }))
       .unwrap()
       .then((rs) => {
         console.debug(rs);
+        props.handleRefresh();
       });
   };
 
@@ -160,7 +163,7 @@ export const ModalUploadFiles: React.FC<{
             dataString={lessonSelect}
           />
         </Form.Item>
-        <Form.Item name="file" label="File" className="upload-file">
+        <Form.Item name="url" label="File" className="upload-file">
           <Upload beforeUpload={() => false}>
             <Button icon={<UploadOutlined style={{ color: "#f17f21" }} />}>
               Tải lên

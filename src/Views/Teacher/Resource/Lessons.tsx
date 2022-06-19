@@ -47,6 +47,14 @@ export const Lessons = () => {
       });
   }, []);
 
+  const handleRefresh = () => {
+    dispatch(getLessons({ limit: 999, user: user.id }))
+      .unwrap()
+      .then((rs) => {
+        setData(rs.results);
+      });
+  };
+
   const onSelectChange = (selectedRowKeys: any) => {
     setSelectedRowKeys(selectedRowKeys);
   };
@@ -363,6 +371,7 @@ export const Lessons = () => {
         visible={isModalVisible}
         setVisible={setIsModalVisible}
         data={subjectSelect}
+        handleRefresh={handleRefresh}
       />
     </div>
   );

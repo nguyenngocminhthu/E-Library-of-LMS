@@ -1,14 +1,10 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Modal, Select, Upload } from "antd";
+import { Button, Form, Input, Modal, Upload } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { SelectComp } from "../../../Components/Select";
-import {
-  getClass,
-  getClasses,
-  IClass,
-} from "../../../redux/reducers/classes.reducer";
+import { IClass } from "../../../redux/reducers/classes.reducer";
 import { createLesson } from "../../../redux/reducers/lesson.reducer";
 import {
   getSubject,
@@ -19,12 +15,11 @@ import { ITopic } from "../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 
-const { Option } = Select;
-
 export const ModalUpload: React.FC<{
   visible: boolean;
   setVisible: any;
   data: any;
+  handleRefresh: any;
 }> = (props) => {
   const [form] = Form.useForm();
   const [linkVideo, setLinkVideo] = useState<string>("");
@@ -52,8 +47,6 @@ export const ModalUpload: React.FC<{
   }, [dataSub]);
 
   const handleChange = (fileList: any) => {
-    console.debug(fileList);
-    console.debug(URL.createObjectURL(fileList.file));
     setLinkVideo(URL.createObjectURL(fileList.file));
   };
 
@@ -61,7 +54,6 @@ export const ModalUpload: React.FC<{
     console.debug(values);
     await dispatch(uploadFilesToFirebase(values.video.fileList, "Video")).then(
       (rs) => {
-        console.debug(rs);
         values.video = rs;
         props.setVisible(false);
       }
@@ -69,7 +61,7 @@ export const ModalUpload: React.FC<{
     dispatch(createLesson({ ...values, user: user.id }))
       .unwrap()
       .then((rs) => {
-        console.debug(rs);
+        props.handleRefresh();
       });
   };
 

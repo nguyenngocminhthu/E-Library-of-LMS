@@ -1,4 +1,9 @@
-import { AppstoreOutlined, FilterOutlined, MoreOutlined, StarOutlined } from "@ant-design/icons";
+import {
+  AppstoreOutlined,
+  FilterOutlined,
+  MoreOutlined,
+  StarOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -20,7 +25,9 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
+import { IClass } from "../../../redux/reducers/classes.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import {
   getUser,
@@ -49,18 +56,16 @@ export const Subject = () => {
       <Menu.Item key="2">Không được gắn sao</Menu.Item>
     </Menu>
   );
-  
+
   useEffect(() => {
-    dispatch(getSubjects(999))
-      .unwrap()
-      .then((rs: any) => {
-        let list: ISubject[] = [];
-        rs.results.forEach((vl: ISubject, idx: number) => {
-          list.push({ key: idx, ...vl });
-        });
-        setData(list);
-      })
-      .catch((e: any) => {});
+    if (user) {
+      let arr: ISubject[] = [];
+      user.classes.forEach((value: IClass, index: number) => {
+        value.subject.teacher = value.teacher;
+        arr.push({ ...value.subject, key: index });
+      });
+      setData(arr);
+    }
   }, []);
 
   const handleClick = (id: string) => {
@@ -159,12 +164,16 @@ export const Subject = () => {
       title: "Giảng viên",
       dataIndex: "teacher",
       key: "teacher",
+      render: (teacher: UserState) => {
+        return teacher.userName;
+      },
     },
     {
       title: "",
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
+<<<<<<< HEAD
         <Tooltip title="More">
           <Popover
             content={
@@ -185,6 +194,34 @@ export const Subject = () => {
           </Popover>
         </Tooltip>
       </Space>
+=======
+          <Tooltip title="More">
+            <Popover
+              content={
+                <div className="popover">
+                  <p onClick={() => navigate(`/student/subjects/viewsubject`)}>
+                    Chi tiết
+                  </p>
+                  <p onClick={() => modal.confirm(downloadFile)}>
+                    Tải xuống tài nguyên
+                  </p>
+                </div>
+              }
+              trigger="click"
+            >
+              <Button
+                icon={
+                  <MoreOutlined
+                    style={{
+                      fontSize: "24px",
+                    }}
+                  />
+                }
+              />
+            </Popover>
+          </Tooltip>
+        </Space>
+>>>>>>> bd3df5898bdc5fb87a2e6361c7f2351883945caf
       ),
     },
   ];
@@ -197,19 +234,16 @@ export const Subject = () => {
           Danh sách môn học
         </Title>
         <div style={{ display: "flex" }}>
-        <Dropdown.Button
-            placement="bottomLeft" 
+          <Dropdown.Button
+            placement="bottomLeft"
             overlay={userMenu}
-            icon={
-              <FilterOutlined/>
-            }
+            icon={<FilterOutlined />}
           ></Dropdown.Button>
           <Space style={{ marginLeft: "24px" }} size="middle">
             <Tooltip title="All subject">
               <Button icon={<AppstoreOutlined />} />
             </Tooltip>
           </Space>
-
         </div>
       </div>
       <Row>

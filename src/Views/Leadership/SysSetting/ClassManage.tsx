@@ -16,7 +16,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { getClasses } from "../../../redux/reducers/classes.reducer";
+import {
+  createClass,
+  getClasses,
+} from "../../../redux/reducers/classes.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import { getUsers, UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
@@ -43,14 +46,19 @@ export const ClassManage = () => {
   );
   const [filter, setFilter] = useState<any>({ limit: 999 });
   const [student, setStudent] = useState<UserState[]>([]);
+  const [teacher, setTeacher] = useState<UserState[]>([]);
 
-  const teacher = useSelector((state: any) => state.user.listUser.results);
+  // const teacher = useSelector((state: any) => state.user.listUser.results);
   const classes = useSelector((state: any) => state.classes.listClass.results);
 
   useEffect(() => {
     dispatch(getClasses({ limit: 999 }));
     dispatch(getSubjects({ limit: 999 }));
-    dispatch(getUsers({ limit: 999, role: "teacher" }));
+    dispatch(getUsers({ limit: 999, role: "teacher" }))
+      .unwrap()
+      .then((rs) => {
+        setTeacher(rs.results);
+      });
     dispatch(getUsers({ limit: 999, role: "student" }))
       .unwrap()
       .then((rs: any) => {
@@ -80,10 +88,16 @@ export const ClassManage = () => {
     setTeacherSelect(option);
   }, [teacher]);
 
-  const onFinish = (values: any) => {
-    console.debug(values);
+  const handleRefresh = () => {
+    dispatch(getClasses({ limit: 999 }));
   };
 
+  const onFinish = (values: any) => {
+    console.debug(values);
+    dispatch(createClass(values)).then(() => {
+      handleRefresh();
+    });
+  };
 
   const deleteRow = {
     title: "Xóa Lớp học",
@@ -92,7 +106,7 @@ export const ClassManage = () => {
     okText: "Xác nhận",
     cancelText: "Huỷ",
   };
-  
+
   const modalAddRole = {
     title: "Thiết lập lớp học",
     width: "50%",
@@ -177,13 +191,12 @@ export const ClassManage = () => {
     },
   ];
 
-
   return (
     <div className="role-manage-page">
       <BreadcrumbComp title="Quản lý lớp học" />
       <div className="title-page">
         <Title ellipsis level={5}>
-          Danh sách các nhóm người dùng
+          Danh sách các lớp học
         </Title>
 
         <Button
