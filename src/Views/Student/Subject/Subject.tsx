@@ -27,7 +27,6 @@ import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
-import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import {
   getUser,
@@ -173,7 +172,6 @@ export const Subject = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-<<<<<<< HEAD
         <Tooltip title="More">
           <Popover
             content={
@@ -194,34 +192,6 @@ export const Subject = () => {
           </Popover>
         </Tooltip>
       </Space>
-=======
-          <Tooltip title="More">
-            <Popover
-              content={
-                <div className="popover">
-                  <p onClick={() => navigate(`/student/subjects/viewsubject`)}>
-                    Chi tiết
-                  </p>
-                  <p onClick={() => modal.confirm(downloadFile)}>
-                    Tải xuống tài nguyên
-                  </p>
-                </div>
-              }
-              trigger="click"
-            >
-              <Button
-                icon={
-                  <MoreOutlined
-                    style={{
-                      fontSize: "24px",
-                    }}
-                  />
-                }
-              />
-            </Popover>
-          </Tooltip>
-        </Space>
->>>>>>> bd3df5898bdc5fb87a2e6361c7f2351883945caf
       ),
     },
   ];
