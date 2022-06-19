@@ -13,6 +13,7 @@ import {
   Popover,
   Radio,
   Row,
+  Select,
   Space,
   Table,
   Tag,
@@ -39,6 +40,7 @@ import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 import "./style.scss";
 
 const { Title } = Typography;
+const { Option } = Select;
 
 export const Exam = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -128,7 +130,7 @@ export const Exam = () => {
       cancelText: "Huỷ",
       onOk: () => {
         if (test === 0) {
-          navigate("/teacher/exams/createExamFromQuestions");
+          modal.confirm(modalCreateExamFromQuestions)
         } else if (test === 1){
           navigate("/teacher/exams/createExam");
         }
@@ -227,6 +229,76 @@ export const Exam = () => {
     okText: "Lưu",
     cancelText: "Huỷ",
     onOk: () => form.submit(),
+  };
+
+  const modalCreateExamFromQuestions = {
+    title: "Tạo mới đề thi từ ngân hàng câu hỏi",
+    width: "50%",
+    content: (
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        className="modal-add-role create-exam-question"
+        layout="horizontal"
+        form={form}
+        style={{ textAlign: "left" }}
+      >
+        <Form.Item name="class" label="Chọn lớp học">
+          <Select defaultValue="Chọn lớp học">
+            <Option value={0}>Công nghệ thông tin</Option>
+            <Option value={1}>Công nghệ thực phẩm</Option>
+            <Option value={2}>Hóa học nông nghiệp</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="topic" label="Chọn chủ đề">
+          <Select defaultValue="Chọn chủ đề">
+            <Option value={0}>Chủ nghĩa Mác - Lênin</Option>
+            <Option value={1}>Kinh tế căng bản</Option>
+            <Option value={2}>Hóa học nâng cao</Option>
+          </Select>
+        </Form.Item>
+        <div className="line"></div>
+        <Form.Item name="nameExam" label="Tên đề thi">
+          <Input />
+        </Form.Item>
+        <Form.Item name="amountExam" label="Số lượng đề thi">
+          <div className="display-flex">
+          <Input className="small-input" />
+          <div className="span-detail">Đề</div>
+          </div>
+        </Form.Item>
+        <Form.Item name="amountQuestion" label="Số lượng câu hỏi">
+          <div className="display-flex">
+            <Input className="small-input" />
+            <div className="span-detail">Câu</div>
+          </div>
+        </Form.Item>
+        <Form.Item name="scope" label="Thang điểm">
+          <div className="display-flex">
+            <Input className="small-input" />
+            <div className="span-detail">Điểm</div>
+          </div>
+        </Form.Item>
+        <Form.Item name="amountQuestionLevel" label="Số câu hỏi theo độ khó">
+          <Row>
+            <Col span={8} className="display-flex">
+              <Input className="small-input"/>
+              <div className="span-detail">Khó</div>
+            </Col>
+            <Col span={8} className="display-flex">
+              <Input className="small-input"/>
+              <div className="span-detail">Trung Bình</div>
+            </Col>
+            <Col span={8} className="display-flex">
+              <Input className="small-input"/>
+              <div className="span-detail">Dễ</div>
+            </Col>
+          </Row>
+        </Form.Item>
+      </Form>
+    ),
+    okText: "Lưu và gửi phê duyệt",
+    cancelText: "Huỷ",
   };
 
 

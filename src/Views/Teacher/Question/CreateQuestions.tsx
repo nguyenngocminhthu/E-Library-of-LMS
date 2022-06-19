@@ -1,5 +1,5 @@
-import SunEditor from 'suneditor-react';
-import 'suneditor/dist/css/suneditor.min.css';
+import SunEditor from "suneditor-react";
+import "suneditor/dist/css/suneditor.min.css";
 import { MinusCircleOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Col, Form, Input, Radio, Row, Select } from "antd";
 import TextArea from "antd/lib/input/TextArea";
@@ -74,7 +74,10 @@ export const CreateQuestions = () => {
               </Select>
             </Form.Item>
             <Form.Item name="level" label="Độ khó">
-              <Radio.Group defaultValue={0} onChange={(e) => setExamType(e.target.value)}>
+              <Radio.Group
+                defaultValue={0}
+                onChange={(e) => setExamType(e.target.value)}
+              >
                 <Radio value={0}>Dễ</Radio>
                 <Radio value={1}>Trung bình</Radio>
                 <Radio value={2}>Khó</Radio>
@@ -103,95 +106,13 @@ export const CreateQuestions = () => {
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
         >
-          <Row>
-            <Col span={6} className="question-number">
-              <div style={{ marginBottom: "1rem" }}>Phần câu hỏi - đáp án:</div>
-              <Form.List
-                name="question"
-                rules={[
-                  {
-                    validator: async (_, names) => {
-                      if (!names || names.length < 2) {
-                        return Promise.reject(new Error("Ít nhất 2 câu hỏi"));
-                      }
-                    },
-                  },
-                ]}
-              >
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map((field, index) => (
-                      <Form.Item required={false} key={field.key}>
-                        <div
-                          className={
-                            select === index ? "answer true" : "answer"
-                          }
-                          onClick={() => {
-                            setSelect(index);
-                            if (question[index] !== undefined) {
-                              delete question[index].question;
-                              form.setFieldsValue(question[index]);
-                              switch (question[index].answers.length) {
-                                case 1:
-                                  return setAnswerNum([0]);
-                                case 2:
-                                  return setAnswerNum([0, 1]);
-                                case 3:
-                                  return setAnswerNum([0, 1, 2]);
-                                case 4:
-                                  return setAnswerNum([0, 1, 2, 3]);
-                                default:
-                                  return setAnswerNum([]);
-                              }
-                            } else
-                              form.resetFields([
-                                "quesName",
-                                "quesType",
-                                "answers",
-                                "correct",
-                              ]);
-                            setAnswerNum([]);
-                          }}
-                        >
-                          <Form.Item {...field}>Câu {index + 1}</Form.Item>
-                          {fields.length > 1 ? (
-                            <MinusCircleOutlined
-                              className="dynamic-delete-button"
-                              onClick={() => {
-                                remove(field.name);
-                                setSelect(0);
-                              }}
-                            />
-                          ) : null}
-                        </div>
-                      </Form.Item>
-                    ))}
-                    <Form.Item>
-                      <Button
-                        className="default-btn"
-                        type="default"
-                        onClick={() => {
-                          add();
-                          form.submit();
-                          setSelect(fields.length);
-                          setAnswerNum([]);
-                        }}
-                        style={{ width: "100%" }}
-                      >
-                        Thêm câu hỏi
-                      </Button>
-                    </Form.Item>
-                  </>
-                )}
-              </Form.List>
-            </Col>
-            <Col span={18} className="question-detail">
-              <Form.Item
-                labelCol={{ span: 4 }}
-                name="quesName"
-                label={`Câu hỏi ${select + 1}:`}
-              >
-                <SunEditor
+          <div className="question-detail">
+            <Form.Item
+              labelCol={{ span: 4 }}
+              name="quesName"
+              label={`Câu hỏi ${select + 1}:`}
+            >
+              <SunEditor
                 setOptions={{
                   defaultTag: "div",
                   minHeight: "100px",
@@ -205,143 +126,140 @@ export const CreateQuestions = () => {
                   ],
                 }}
               />
-              </Form.Item>
-              {examType === 0 ? (
-                <>
-                  <Form.Item
-                    labelCol={{ span: 4 }}
-                    name="quesType"
-                    label="Câu trả lời"
-                  >
-                    <Radio.Group onChange={(e) => setQuesType(e.target.value)}>
-                      <Radio value={0}>Một đáp án</Radio>
-                      <Radio value={1}>Nhiều đáp án</Radio>
-                    </Radio.Group>
-                  </Form.Item>
-                  <Form.List
-                    name="answers"
-                    rules={[
-                      {
-                        validator: async (_, names) => {
-                          if (!names || names.length < 2) {
-                            return Promise.reject(
-                              new Error("Ít nhất 2 đáp án")
-                            );
-                          }
-                        },
+            </Form.Item>
+            {examType === 0 ? (
+              <>
+                <Form.Item
+                  labelCol={{ span: 4 }}
+                  name="quesType"
+                  label="Câu trả lời"
+                >
+                  <Radio.Group onChange={(e) => setQuesType(e.target.value)}>
+                    <Radio value={0}>Một đáp án</Radio>
+                    <Radio value={1}>Nhiều đáp án</Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.List
+                  name="answers"
+                  rules={[
+                    {
+                      validator: async (_, names) => {
+                        if (!names || names.length < 2) {
+                          return Promise.reject(new Error("Ít nhất 2 đáp án"));
+                        }
                       },
-                    ]}
-                  >
-                    {(fields, { add, remove }) => (
-                      <>
-                        {fields.map((field, index) => (
-                          <Form.Item
-                            labelCol={{ span: 4 }}
-                            label={`Đáp án ${
-                              index === 0
-                                ? "A"
-                                : index === 1
-                                ? "B"
-                                : index === 2
-                                ? "C"
-                                : "D"
-                            }`}
-                            required={false}
-                            key={field.key}
-                            className="answer-input"
-                          >
-                            <Form.Item
-                              {...field}
-                              validateTrigger={["onChange", "onBlur"]}
-                            >
-                              <Input />
-                            </Form.Item>
-                            {fields.length > 1 ? (
-                              <CloseOutlined
-                                className="dynamic-delete-button"
-                                onClick={() => {
-                                  let count = answerNum;
-                                  count.pop();
-                                  remove(field.name);
-                                  setAnswerNum([...count]);
-                                }}
-                              />
-                            ) : null}
-                          </Form.Item>
-                        ))}
+                    },
+                  ]}
+                >
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map((field, index) => (
                         <Form.Item
-                          wrapperCol={{ span: 22 }}
-                          className="answer-form"
+                          labelCol={{ span: 4 }}
+                          label={`Đáp án ${
+                            index === 0
+                              ? "A"
+                              : index === 1
+                              ? "B"
+                              : index === 2
+                              ? "C"
+                              : "D"
+                          }`}
+                          required={false}
+                          key={field.key}
+                          className="answer-input"
                         >
-                          <Button
-                            className="default-btn"
-                            type="default"
-                            onClick={() => {
-                              add();
-                              setAnswerNum([...answerNum, fields.length]);
-                            }}
-                            disabled={fields.length === 4}
+                          <Form.Item
+                            {...field}
+                            validateTrigger={["onChange", "onBlur"]}
                           >
-                            Thêm đáp án
-                          </Button>
+                            <Input />
+                          </Form.Item>
+                          {fields.length > 1 ? (
+                            <CloseOutlined
+                              className="dynamic-delete-button"
+                              onClick={() => {
+                                let count = answerNum;
+                                count.pop();
+                                remove(field.name);
+                                setAnswerNum([...count]);
+                              }}
+                            />
+                          ) : null}
                         </Form.Item>
-                      </>
-                    )}
-                  </Form.List>
-                  <Form.Item
-                    labelCol={{ span: 4 }}
-                    name="correct"
-                    label="Đáp án đúng"
-                  >
-                    {quesType === 0 ? (
-                      <Radio.Group>
-                        {answerNum.map((vl, idx) => (
-                          <Radio key={vl} value={idx}>
-                            {idx === 0
-                              ? "A"
-                              : idx === 1
-                              ? "B"
-                              : idx === 2
-                              ? "C"
-                              : "D"}
-                          </Radio>
-                        ))}
-                      </Radio.Group>
-                    ) : (
-                      <Checkbox.Group>
-                        {answerNum.map((vl, idx) => (
-                          <Checkbox key={vl} value={idx}>
-                            {idx === 0
-                              ? "A"
-                              : idx === 1
-                              ? "B"
-                              : idx === 2
-                              ? "C"
-                              : "D"}
-                          </Checkbox>
-                        ))}
-                      </Checkbox.Group>
-                    )}
-                  </Form.Item>
-                </>
-              ) : (
-                <div>
-                  <Form.Item
-                    labelCol={{ span: 4 }}
-                    name="correctEssay"
-                    label="Đáp án đúng"
-                  >
-                    <TextArea rows={16} />
-                  </Form.Item>
-                </div>
-              )}
-            </Col>
-          </Row>
+                      ))}
+                      <Form.Item
+                        wrapperCol={{ span: 22 }}
+                        className="answer-form"
+                      >
+                        <Button
+                          className="default-btn"
+                          type="default"
+                          onClick={() => {
+                            add();
+                            setAnswerNum([...answerNum, fields.length]);
+                          }}
+                          disabled={fields.length === 4}
+                        >
+                          Thêm đáp án
+                        </Button>
+                      </Form.Item>
+                    </>
+                  )}
+                </Form.List>
+                <Form.Item
+                  labelCol={{ span: 4 }}
+                  name="correct"
+                  label="Đáp án đúng"
+                >
+                  {quesType === 0 ? (
+                    <Radio.Group>
+                      {answerNum.map((vl, idx) => (
+                        <Radio key={vl} value={idx}>
+                          {idx === 0
+                            ? "A"
+                            : idx === 1
+                            ? "B"
+                            : idx === 2
+                            ? "C"
+                            : "D"}
+                        </Radio>
+                      ))}
+                    </Radio.Group>
+                  ) : (
+                    <Checkbox.Group>
+                      {answerNum.map((vl, idx) => (
+                        <Checkbox key={vl} value={idx}>
+                          {idx === 0
+                            ? "A"
+                            : idx === 1
+                            ? "B"
+                            : idx === 2
+                            ? "C"
+                            : "D"}
+                        </Checkbox>
+                      ))}
+                    </Checkbox.Group>
+                  )}
+                </Form.Item>
+              </>
+            ) : (
+              <div>
+                <Form.Item
+                  labelCol={{ span: 4 }}
+                  name="correctEssay"
+                  label="Đáp án đúng"
+                >
+                  <TextArea rows={16} />
+                </Form.Item>
+              </div>
+            )}
+          </div>
         </Form>
       </div>
       <div className="footer-btn" style={{ justifyContent: "center" }}>
         <Button
-        onClick={() => navigate("/teacher/questions")}
+          onClick={() => navigate("/teacher/questions")}
           className="default-btn"
         >
           Huỷ

@@ -22,6 +22,12 @@ import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import { AppDispatch } from "../../../redux/store";
+import {
+  getUser,
+  getUsers,
+  updateProfile,
+  UserState,
+} from "../../../redux/reducers/user.reducer";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -32,6 +38,7 @@ export const Subject = () => {
   const dispatch: AppDispatch = useDispatch();
   const [disable, setDisable] = useState(false);
   const [data, setData] = useState<ISubject[]>([]);
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
 
   const userMenu = (
     <Menu>
@@ -55,6 +62,48 @@ export const Subject = () => {
       })
       .catch((e: any) => {});
   }, []);
+
+  const handleClick = (id: string) => {
+    navigate(`/subjects/subjectdetails/${id}`);
+    const subjectIds = user.recentSubjectId;
+    if (subjectIds.length === 10) {
+      subjectIds.pop();
+    }
+    if (subjectIds.includes(id)) {
+      const newSubjectIds = subjectIds.filter(function (e: any) {
+        return e !== id;
+      });
+      dispatch(
+        updateProfile({
+          id: user.id,
+          payload: { recentSubjectId: [id, ...newSubjectIds] },
+        })
+      )
+        .unwrap()
+        .then(() => {
+          dispatch(getUser(user.id))
+            .unwrap()
+            .then((rs: UserState) => {
+              localStorage.setItem("user", JSON.stringify(rs));
+            });
+        });
+    } else {
+      dispatch(
+        updateProfile({
+          id: user.id,
+          payload: { recentSubjectId: [id, ...subjectIds] },
+        })
+      )
+        .unwrap()
+        .then(() => {
+          dispatch(getUser(user.id))
+            .unwrap()
+            .then((rs: UserState) => {
+              localStorage.setItem("user", JSON.stringify(rs));
+            });
+        });
+    }
+  };
 
   const mySubjec = [
     {
@@ -121,9 +170,7 @@ export const Subject = () => {
             content={
               <div className="popover">
                 <p
-                   onClick={() =>
-                    navigate(`/student/subjects/viewsubject`)
-                  }
+                   onClick={() =>handleClick(record.id)}
                 >
                   Chi tiết
                 </p>

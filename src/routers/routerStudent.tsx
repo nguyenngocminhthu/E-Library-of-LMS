@@ -7,6 +7,7 @@ import { Notification } from "../Views/Leadership/Notification/Notification";
 import NotiSetting from "../Views/Leadership/Notification/NotiSetting";
 import { Home } from "../Views/Student/Home/Home";
 import { Subject } from "../Views/Student/Subject/Subject";
+import { SubjectDetail } from "../Views/Student/Subject/SubjectDetail";
 import { ViewSubject } from "../Views/Student/Subject/ViewSubject";
 import { Exam } from "../Views/Teacher/Exam/Exam";
 
@@ -18,6 +19,11 @@ export const Student = () => {
           <Route path="/student/home" element={<Home />} />
 
           <Route path="/student/subject" element={<Subject />} />
+
+          <Route
+            path="/student/subject/subjectdetails/:idSub"
+            element={<SubjectDetail />}
+          />
 
           <Route
             path="/student/subjects/viewsubject"
