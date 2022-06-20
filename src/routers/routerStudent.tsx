@@ -21,12 +21,12 @@ export const Student = () => {
           <Route path="/student/subject" element={<Subject />} />
 
           <Route
-            path="/student/subject/subjectdetails/:idSub"
+            path="/student/subjects/subjectdetails/:idSub"
             element={<SubjectDetail />}
           />
 
           <Route
-            path="/student/subjects/viewsubject"
+            path="/student/subjects/viewsubject/:idSub"
             element={<ViewSubject />}
           />
 

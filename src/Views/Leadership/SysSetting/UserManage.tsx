@@ -162,6 +162,9 @@ export const UserManage = () => {
         <Form.Item label="Email" name="email">
           <Input />
         </Form.Item>
+        <Form.Item label="MSSV" name="userCode">
+          <Input />
+        </Form.Item>
         <Form.Item label="Mật khẩu" name="password">
           <Input.Password />
         </Form.Item>

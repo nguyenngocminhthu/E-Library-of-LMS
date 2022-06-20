@@ -1,16 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import User from "../../Apis/User.api";
+import QA from "../../Apis/QA.api";
 import { RootState } from "../store";
-import { IClass } from "./classes.reducer";
+import { ILesson } from "./lesson.reducer";
 import { setLoading } from "./loading.reducer";
 import { setMessage } from "./message.reducer";
+import { UserState } from "./user.reducer";
 
-export const getUsers = createAsyncThunk(
-  "user/getUsers",
+export const getQAs = createAsyncThunk(
+  "QA/getQAs",
   async ({ limit, role }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await User.getUsers({ limit, role });
+      const data = await QA.getQAs({ limit, role });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -28,11 +29,11 @@ export const getUsers = createAsyncThunk(
   }
 );
 
-export const getUser = createAsyncThunk(
-  "user/getUser",
+export const getQA = createAsyncThunk(
+  "QA/getQA",
   async (id: string, thunkAPI) => {
     try {
-      const data = await User.getUser(id);
+      const data = await QA.getQA(id);
       return data;
     } catch (error: any) {
       const message =
@@ -47,12 +48,12 @@ export const getUser = createAsyncThunk(
   }
 );
 
-export const updateProfile = createAsyncThunk(
-  "user/updateProfile",
+export const updateQA = createAsyncThunk(
+  "QA/updateQA",
   async ({ id, payload }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await User.updateProfile(id, payload);
+      const data = await QA.updateQA(id, payload);
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -70,12 +71,12 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
-export const createUser = createAsyncThunk(
-  "user/createUser",
+export const createQA = createAsyncThunk(
+  "QA/createQA",
   async (payload: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await User.createUser(payload);
+      const data = await QA.createQA(payload);
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -93,12 +94,12 @@ export const createUser = createAsyncThunk(
   }
 );
 
-export const deleteUser = createAsyncThunk(
-  "user/deleteUser",
+export const deleteQA = createAsyncThunk(
+  "QA/deleteQA",
   async (id: string, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await User.deleteUser(id);
+      const data = await QA.deleteQA(id);
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -117,71 +118,68 @@ export const deleteUser = createAsyncThunk(
 );
 
 // Define a type for the slice state
-export interface UserState {
+export interface IQA {
   id: string;
-  userCode: string;
-  email: string;
-  role: string;
-  password: string;
-  gender: number;
-  userName: string;
-  phone: string;
-  address: string;
-  recentSubject: any[];
-  recentSubjectId: string[];
-  avt: string;
-  classes: IClass[];
+  key?: number;
+  title: string;
+  content: string;
+  lesson: ILesson;
+  user: UserState;
+  likes: string[];
+  answers: [];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-interface IUser {
-  listUser: UserState[];
+interface QAState {
+  listQA: IQA[];
 }
 
 // Define the initial state using that type
-const initialState: IUser = {
-  listUser: [],
+const initialState: QAState = {
+  listQA: [],
 };
 
-export const userReducer = createSlice({
-  name: "user",
+export const QAReducer = createSlice({
+  name: "QA",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(updateProfile.fulfilled, (state, action) => {
-      state.listUser = action.payload;
+    builder.addCase(updateQA.fulfilled, (state, action) => {
+      state.listQA = action.payload;
     });
-    builder.addCase(updateProfile.rejected, (state, action) => {
-      state.listUser = [];
+    builder.addCase(updateQA.rejected, (state, action) => {
+      state.listQA = [];
     });
-    builder.addCase(getUsers.fulfilled, (state, action) => {
-      state.listUser = action.payload;
+    builder.addCase(getQAs.fulfilled, (state, action) => {
+      state.listQA = action.payload;
     });
-    builder.addCase(getUsers.rejected, (state, action) => {
-      state.listUser = [];
+    builder.addCase(getQAs.rejected, (state, action) => {
+      state.listQA = [];
     });
-    builder.addCase(createUser.fulfilled, (state, action) => {
-      state.listUser = action.payload;
+    builder.addCase(createQA.fulfilled, (state, action) => {
+      state.listQA = action.payload;
     });
-    builder.addCase(createUser.rejected, (state, action) => {
-      state.listUser = [];
+    builder.addCase(createQA.rejected, (state, action) => {
+      state.listQA = [];
     });
-    builder.addCase(deleteUser.fulfilled, (state, action) => {
-      state.listUser = action.payload;
+    builder.addCase(deleteQA.fulfilled, (state, action) => {
+      state.listQA = action.payload;
     });
-    builder.addCase(deleteUser.rejected, (state, action) => {
-      state.listUser = [];
+    builder.addCase(deleteQA.rejected, (state, action) => {
+      state.listQA = [];
     });
-    builder.addCase(getUser.fulfilled, (state, action) => {
-      state.listUser = action.payload;
+    builder.addCase(getQA.fulfilled, (state, action) => {
+      state.listQA = action.payload;
     });
-    builder.addCase(getUser.rejected, (state, action) => {
-      state.listUser = [];
+    builder.addCase(getQA.rejected, (state, action) => {
+      state.listQA = [];
     });
   },
 });
 
-export const listUser = (state: RootState) => state.user.listUser;
+export const listQA = (state: RootState) => state.QA.listQA;
 
-const { reducer } = userReducer;
+const { reducer } = QAReducer;
 
 export default reducer;

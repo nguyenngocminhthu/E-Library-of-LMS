@@ -68,7 +68,7 @@ export const Subject = () => {
   }, []);
 
   const handleClick = (id: string) => {
-    navigate(`/subjects/subjectdetails/${id}`);
+    navigate(`/student/subjects/subjectdetails/${id}`);
     const subjectIds = user.recentSubjectId;
     if (subjectIds.length === 10) {
       subjectIds.pop();

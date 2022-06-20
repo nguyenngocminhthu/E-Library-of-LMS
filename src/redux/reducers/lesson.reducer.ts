@@ -7,6 +7,7 @@ import { ISubject } from "./subject.reducer";
 import Lesson from "../../Apis/Lesson.api";
 import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
+import { IQA } from "./QA.reducer";
 
 export const createLesson = createAsyncThunk(
   "Lesson/createClass",
@@ -113,6 +114,7 @@ export interface ILesson {
   createdAt: string;
   updatedAt: string;
   status: number;
+  QA: IQA[];
 }
 
 interface LessonState {
