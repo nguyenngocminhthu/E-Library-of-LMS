@@ -1,5 +1,5 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Modal, Upload } from "antd";
+import { Button, Form, Input, message, Modal, Upload } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
@@ -61,6 +61,7 @@ export const ModalUpload: React.FC<{
     dispatch(createLesson({ ...values, user: user.id }))
       .unwrap()
       .then((rs) => {
+        message.success("Thêm bài giảng thành công.");
         props.handleRefresh();
       });
   };

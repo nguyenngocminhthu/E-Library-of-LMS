@@ -240,30 +240,31 @@ export const Notification = () => {
               </Button>,
             ]}
           >
-            <Form layout="vertical" form={form} onFinish={onFinish}>
-              <Form.Item name="subject">
+            <Form layout="vertical" form={form} onFinish={onFinish} className="header-notification">
+              <Form.Item name="subject" >
                 <SelectComp
                   textLabel="Chọn môn giảng dạy"
+                  className="label-style-item"
                   dataString={dataClass}
                   onChange={(e: any) => handleSelect(e)}
                 />
                 <Form.Item name="topic">
                   <SelectComp
                     textLabel="Chọn chủ đề"
+                    className="label-style-item"
                     dataString={topic}
                     disabled={topic.length === 0}
                     onChange={(e: any) => handleSelect(e)}
                   />
                 </Form.Item>
               </Form.Item>
-              <Form.Item name="title" label="Tiêu đề">
+              <Form.Item name="title" className="label-style-item" label="Tiêu đề">
                 <Input
-                  style={{ margin: "10px 0px 10px 0px" }}
                   placeholder="Tiêu đề"
                 />
               </Form.Item>
 
-              <Form.Item name="content" label="Nội dung">
+              <Form.Item name="content" className="label-style-item" label="Nội dung">
                 <SunEditor
                   placeholder="Nội dung"
                   setOptions={{

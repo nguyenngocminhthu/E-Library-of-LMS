@@ -24,11 +24,7 @@
                 margin: 0px 10px 0px 10px;
             }
         }
-        
-
     }
-
-
 
     .ant-tabs-tab:hover {
         color: $color-primary;
@@ -137,21 +133,43 @@
     background: $color-secondary-dark-light;
     border-radius: 8px 8px 0px 0px;
 }
+
 .ant-modal-content {
     .anticon svg {
         color: $color-white;
     }
 }
+
 .ant-modal-title {
     color: $color-white;
 }
-.selectcomp{
+
+.selectcomp {
     display: block !important;
     margin-bottom: 12px;
-    .select{
+
+    .select {
         width: 100% !important;
     }
 }
-.ant-checkbox-wrapper{
+
+.ant-checkbox-wrapper {
     margin-bottom: 6px;
+}
+.header-notification{
+    .ant-form-item {
+        margin-bottom: 0;
+    }
+    .selectcomp{
+        margin-bottom: 0 !important;
+    }
+    .select-label{
+        margin-top: 8px;
+        margin-bottom: 13px !important; 
+    }
+    .label-style-item{
+        margin-top: 8px;
+        font-weight: 700;
+    }
+
 }

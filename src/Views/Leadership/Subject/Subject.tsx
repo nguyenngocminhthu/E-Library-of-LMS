@@ -4,6 +4,7 @@ import {
   Col,
   Form,
   Input,
+  message,
   Row,
   Select,
   Space,
@@ -150,6 +151,7 @@ export const Subject = () => {
       (rs: any) => {
         values.image = rs;
         dispatch(createSubject(values)).then((rs) => {
+          message.success("Tạo môn học mới thành công.");
           handleRefresh();
         });
       }

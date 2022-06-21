@@ -1,5 +1,5 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
-import { Button, Col, Radio, Row, Space } from "antd";
+import { Button, Col, message, Radio, Row, Space } from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -53,6 +53,7 @@ export const ExamDetails = () => {
               .unwrap()
               .then((rs: IBanks) => {
                 setData(rs);
+                message.success("Đề thi đã được phê duyệt và sẵn sàng sử dụng.");
                 setSelect(0);
               });
           }

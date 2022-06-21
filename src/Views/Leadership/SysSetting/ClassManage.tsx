@@ -4,6 +4,7 @@ import {
   Col,
   Form,
   Input,
+  message,
   Row,
   Select,
   Space,
@@ -96,6 +97,7 @@ export const ClassManage = () => {
     console.debug(values);
     dispatch(createClass(values)).then(() => {
       handleRefresh();
+      message.success("Tạo mới lớp học thành công.");
     });
   };
 

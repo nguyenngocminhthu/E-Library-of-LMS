@@ -9,10 +9,6 @@ import { useAppDispatch } from "../../redux/hooks";
 import { logIn, logout } from "../../redux/reducers/auth.reducer";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "../../redux";
-// import { setError, signin } from "../../redux/users/actions/authActions";
-// import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");

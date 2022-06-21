@@ -139,7 +139,6 @@ export const ListFile = () => {
           : dispatch(updateFile({ id: id, payload: { status: 1 } })).then(
               () => {
                 message.success("Phê duyệt tài liệu thành công");
-
                 handleRefresh();
               }
             ),

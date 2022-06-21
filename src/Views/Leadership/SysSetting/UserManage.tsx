@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, Row, Select, Space, Table, Tooltip, Typography } from "antd";
+import { Button, Col, Form, Input, message, Row, Select, Space, Table, Tooltip, Typography } from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -116,9 +116,11 @@ export const UserManage = () => {
       dispatch(getUsers(filter))
         .unwrap()
         .then((rs: any) => {
-          setData(rs.results);
+          message.success("Tạo người dùng thành công.");
+          setData(rs.results);       
         })
         .catch((e: any) => {
+          message.error("Tạo người dùng thất bại.");
           console.debug("e: ", e);
         });
     });
@@ -135,9 +137,11 @@ export const UserManage = () => {
         dispatch(getUsers(filter))
           .unwrap()
           .then((rs: any) => {
+            message.success("Xóa người dùng thành công.");
             setData(rs.results);
           })
           .catch((e: any) => {
+            message.error("Xóa người dùng thất bại.");
             console.debug("e: ", e);
           });
       }),
