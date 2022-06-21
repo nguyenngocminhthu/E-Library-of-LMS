@@ -3,8 +3,6 @@ import { Route, Routes } from "react-router";
 import { Loader } from "../Components/Loader";
 import { MainLayout } from "../Layout/Layout";
 import { Help } from "../Views/Help/Help";
-import { Notification } from "../Views/Leadership/Notification/Notification";
-import NotiSetting from "../Views/Leadership/Notification/NotiSetting";
 import { CreateExam } from "../Views/Teacher/Exam/CreateExam";
 import { Exam } from "../Views/Teacher/Exam/Exam";
 import { ExamDetails } from "../Views/Teacher/Exam/ExamDetails";
@@ -19,6 +17,8 @@ import { EditSubject } from "../Views/Teacher/Subject/SubjectDetail/EditSubject"
 import { SubjectDetail } from "../Views/Teacher/Subject/SubjectDetail/SubjectDetail";
 import { ViewSubject } from "../Views/Teacher/Subject/SubjectDetail/ViewSubject";
 import { ListFile } from "../Views/Teacher/Subject/SubjectList/ListFile";
+import { Notification } from "../Views/Teacher/Notification/Notification";
+import NotiSetting from "../Views/Teacher/Notification/NotiSetting";
 
 export const Teacher = () => {
   return (

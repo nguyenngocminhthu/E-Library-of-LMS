@@ -6,6 +6,7 @@ import fileReducer from "./reducers/file.reducer";
 import lessonReducer from "./reducers/lesson.reducer";
 import loadingReducer from "./reducers/loading.reducer";
 import messageReducer from "./reducers/message.reducer";
+import notiReducer from "./reducers/noti.reducer";
 import QAReducer from "./reducers/QA.reducer";
 import questionReducer from "./reducers/question.reducer";
 import subjectReducer from "./reducers/subject.reducer";
@@ -28,6 +29,7 @@ const reducer = {
   lesson: lessonReducer,
   file: fileReducer,
   QA: QAReducer,
+  noti: notiReducer,
 };
 
 export const store = configureStore({

@@ -3,13 +3,13 @@ import { Route, Routes } from "react-router";
 import { Loader } from "../Components/Loader";
 import { MainLayout } from "../Layout/Layout";
 import { Help } from "../Views/Help/Help";
-import { Notification } from "../Views/Leadership/Notification/Notification";
-import NotiSetting from "../Views/Leadership/Notification/NotiSetting";
 import { Home } from "../Views/Student/Home/Home";
+import NotiSetting from "../Views/Student/Notification/NotiSetting";
 import { Subject } from "../Views/Student/Subject/Subject";
 import { SubjectDetail } from "../Views/Student/Subject/SubjectDetail";
 import { ViewSubject } from "../Views/Student/Subject/ViewSubject";
 import { Exam } from "../Views/Teacher/Exam/Exam";
+import { Notification } from "../Views/Student/Notification/Notification";
 
 export const Student = () => {
   return (
