@@ -2,20 +2,36 @@ import {
   DownloadOutlined,
   FileFilled,
   HeartFilled,
+  HeartOutlined,
   MessageOutlined,
   PlayCircleFilled,
   UserOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Col, Collapse, Row, Tabs } from "antd";
+import {
+  Avatar,
+  Button,
+  Col,
+  Collapse,
+  Form,
+  Input,
+  message,
+  Row,
+  Tabs,
+} from "antd";
+import TextArea from "antd/lib/input/TextArea";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import { InputLabel } from "../../../Components/InputLabel";
 import { SelectComp } from "../../../Components/Select";
-import { ILesson } from "../../../redux/reducers/lesson.reducer";
+import { getLesson, ILesson } from "../../../redux/reducers/lesson.reducer";
+import { createQA, IQA, updateQA } from "../../../redux/reducers/QA.reducer";
 import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
+import { ModalReply } from "../../Student/Subject/ModalReply";
+import "./style.scss";
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
@@ -26,6 +42,13 @@ export const ViewSubject = () => {
   const dispatch: AppDispatch = useDispatch();
   const [data, setData] = useState<ITopic>();
   const [video, setVideo] = useState<any>();
+  const [form] = Form.useForm();
+  const [lesson, setLesson] = useState<ILesson>();
+  const [qa, setQa] = useState<IQA[]>([]);
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const [idQA, setIdQA] = useState<string>("");
+  const [visible, setVisible] = useState<boolean>(false);
+  const [idx, setIdx] = useState<number>(0);
 
   useEffect(() => {
     if (params.idSub) {
@@ -34,9 +57,34 @@ export const ViewSubject = () => {
         .then((rs: ITopic) => {
           setData(rs);
           setVideo(rs.lesson[0].video);
+          dispatch(getLesson(rs.lesson[0].id))
+            .unwrap()
+            .then((rs) => {
+              setLesson(rs);
+              setQa(rs.QA);
+            });
+          setLesson(rs.lesson[0]);
         });
     }
   }, [params.idSub]);
+
+  const handleRefresh = () => {
+    if (params.idSub) {
+      dispatch(getTopic(params?.idSub))
+        .unwrap()
+        .then((rs: ITopic) => {
+          setData(rs);
+          setVideo(rs.lesson[idx].video);
+          dispatch(getLesson(rs.lesson[idx].id))
+            .unwrap()
+            .then((rs) => {
+              setLesson(rs);
+              setQa(rs.QA);
+            });
+          setLesson(rs.lesson[idx]);
+        });
+    }
+  };
 
   const subject = [
     {
@@ -74,8 +122,21 @@ export const ViewSubject = () => {
     { name: "Câu hỏi được quan tâm nhất", value: "Carest" },
   ];
 
+  const onFinish = (values: any) => {
+    dispatch(createQA({ ...values, lesson: lesson?.id, user: user.id }))
+      .unwrap()
+      .then(() => {
+        setQuestion(false);
+        message.success("Đặt câu hỏi thành công");
+        handleRefresh();
+      })
+      .catch(() => {
+        message.error("Đặt câu hỏi thất bại");
+      });
+  };
+
   return (
-    <div className="viewSub">
+    <div className="viewSub viewSub-student">
       <BreadcrumbComp
         title="Xem bài giảng"
         prevPageTitle="Danh sách môn học"
@@ -104,10 +165,18 @@ export const ViewSubject = () => {
             </TabPane>
             <TabPane tab="Hỏi đáp" key="2">
               {question ? (
-                <div>
-                  <InputLabel label="Tiêu đề câu hỏi" />
-                  <br />
-                  <InputLabel labelTextarea="Nội dung" />
+                <Form
+                  labelCol={{ span: 4 }}
+                  wrapperCol={{ span: 20 }}
+                  form={form}
+                  onFinish={onFinish}
+                >
+                  <Form.Item label="Tiêu đề câu hỏi" name="title">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item label="Nội dung" name="content">
+                    <TextArea rows={4} />
+                  </Form.Item>
                   <div className="footer-btn">
                     <Button
                       className="default-btn"
@@ -115,11 +184,15 @@ export const ViewSubject = () => {
                     >
                       Huỷ
                     </Button>
-                    <Button style={{ marginLeft: "1rem" }} type="primary">
+                    <Button
+                      onClick={() => form.submit()}
+                      style={{ marginLeft: "1rem" }}
+                      type="primary"
+                    >
                       Gửi
                     </Button>
                   </div>
-                </div>
+                </Form>
               ) : (
                 <>
                   <Row>
@@ -144,14 +217,19 @@ export const ViewSubject = () => {
                     </Col>
                   </Row>
                   <div className="scroll-box question">
-                    <div className="sub-content">
-                      <Row>
+                    {qa.map((value: IQA) => (
+                      <Row className="sub-content">
                         <Col span={2}>
-                          <Avatar icon={<UserOutlined />} />
+                          <Avatar
+                            src={
+                              value.user.avt ||
+                              "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
+                            }
+                          />
                         </Col>
                         <Col span={21} offset={1}>
                           <div className="flex-row">
-                            <h4>Lor</h4>
+                            <h4>{value.user.userName}</h4>
                             <span
                               style={{
                                 marginLeft: "1rem",
@@ -159,7 +237,7 @@ export const ViewSubject = () => {
                                 fontSize: "12px",
                               }}
                             >
-                              Bài 5
+                              {value.title}
                             </span>
                             <span
                               style={{
@@ -169,20 +247,53 @@ export const ViewSubject = () => {
                                 fontSize: "12px",
                               }}
                             >
-                              6 ngày trước
+                              {moment(value.createdAt).fromNow()}
                             </span>
                           </div>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit.
+                          {value.content}
                           <div className="flex-row">
-                            <HeartFilled style={{ color: "red" }} />{" "}
-                            <span className="gray">10</span>
-                            <MessageOutlined style={{ marginLeft: "2rem" }} />
-                            <span className="gray">10</span>
+                            {value.likes.includes(user.id) ? (
+                              <HeartFilled
+                                onClick={() =>
+                                  dispatch(
+                                    updateQA({
+                                      id: value.id,
+                                      payload: { likes: [user.id] },
+                                    })
+                                  )
+                                    .unwrap()
+                                    .then((rs) => handleRefresh())
+                                }
+                                style={{ color: "red" }}
+                              />
+                            ) : (
+                              <HeartOutlined
+                                onClick={() =>
+                                  dispatch(
+                                    updateQA({
+                                      id: value.id,
+                                      payload: { likes: [user.id] },
+                                    })
+                                  )
+                                    .unwrap()
+                                    .then((rs) => handleRefresh())
+                                }
+                              />
+                            )}
+
+                            <span className="gray">{value.likes.length}</span>
+                            <MessageOutlined
+                              onClick={() => {
+                                setIdQA(value.id);
+                                setVisible(true);
+                              }}
+                              style={{ marginLeft: "2rem" }}
+                            />
+                            <span className="gray">{value.answers.length}</span>
                           </div>
                         </Col>
                       </Row>
-                    </div>
+                    ))}
                   </div>
                 </>
               )}
@@ -254,7 +365,16 @@ export const ViewSubject = () => {
               >
                 <Row
                   className="sub-content"
-                  onClick={() => setVideo(value.video)}
+                  onClick={() => {
+                    setVideo(value.video);
+                    setIdx(index);
+                    dispatch(getLesson(value.id))
+                      .unwrap()
+                      .then((rs) => {
+                        setLesson(rs);
+                        setQa(rs.QA);
+                      });
+                  }}
                 >
                   <Col span={4}>
                     <PlayCircleFilled />
@@ -286,16 +406,17 @@ export const ViewSubject = () => {
                     </a>
                   );
                 })}
-
-                <Button>
-                  <DownloadOutlined />
-                  Tải xuống
-                </Button>
               </Panel>
             </Collapse>
           ))}
         </Col>
       </Row>
+      <ModalReply
+        visible={visible}
+        setVisible={setVisible}
+        data={idQA}
+        handleRefresh={handleRefresh}
+      />
     </div>
   );
 };

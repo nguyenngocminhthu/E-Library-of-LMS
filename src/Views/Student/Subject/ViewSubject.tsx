@@ -30,6 +30,7 @@ import { createQA, IQA, updateQA } from "../../../redux/reducers/QA.reducer";
 import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
+import { ModalReply } from "./ModalReply";
 import "./style.scss";
 
 const { Panel } = Collapse;
@@ -44,8 +45,10 @@ export const ViewSubject = () => {
   const [form] = Form.useForm();
   const [lesson, setLesson] = useState<ILesson>();
   const [qa, setQa] = useState<IQA[]>([]);
-  const [like, setLike] = useState<boolean>(false);
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const [idQA, setIdQA] = useState<string>("");
+  const [visible, setVisible] = useState<boolean>(false);
+  const [idx, setIdx] = useState<number>(0);
 
   useEffect(() => {
     if (params.idSub) {
@@ -71,14 +74,14 @@ export const ViewSubject = () => {
         .unwrap()
         .then((rs: ITopic) => {
           setData(rs);
-          setVideo(rs.lesson[0].video);
-          dispatch(getLesson(rs.lesson[0].id))
+          setVideo(rs.lesson[idx].video);
+          dispatch(getLesson(rs.lesson[idx].id))
             .unwrap()
             .then((rs) => {
               setLesson(rs);
               setQa(rs.QA);
             });
-          setLesson(rs.lesson[0]);
+          setLesson(rs.lesson[idx]);
         });
     }
   };
@@ -279,7 +282,13 @@ export const ViewSubject = () => {
                             )}
 
                             <span className="gray">{value.likes.length}</span>
-                            <MessageOutlined style={{ marginLeft: "2rem" }} />
+                            <MessageOutlined
+                              onClick={() => {
+                                setIdQA(value.id);
+                                setVisible(true);
+                              }}
+                              style={{ marginLeft: "2rem" }}
+                            />
                             <span className="gray">{value.answers.length}</span>
                           </div>
                         </Col>
@@ -358,6 +367,7 @@ export const ViewSubject = () => {
                   className="sub-content"
                   onClick={() => {
                     setVideo(value.video);
+                    setIdx(index);
                     dispatch(getLesson(value.id))
                       .unwrap()
                       .then((rs) => {
@@ -396,16 +406,17 @@ export const ViewSubject = () => {
                     </a>
                   );
                 })}
-
-                <Button>
-                  <DownloadOutlined />
-                  Tải xuống
-                </Button>
               </Panel>
             </Collapse>
           ))}
         </Col>
       </Row>
+      <ModalReply
+        visible={visible}
+        setVisible={setVisible}
+        data={idQA}
+        handleRefresh={handleRefresh}
+      />
     </div>
   );
 };

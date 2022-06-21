@@ -35,9 +35,6 @@ export const Subject = () => {
           list.push({ key: idx, ...vl });
         });
         setData(list);
-      })
-      .catch((e: any) => {
-        console.debug("e: ", e);
       });
   }, []);
 
