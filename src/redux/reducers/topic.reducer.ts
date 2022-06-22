@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { message } from "antd";
 import Topic from "../../Apis/Topic.api";
 import { RootState } from "../store";
 import { ILesson } from "./lesson.reducer";
@@ -12,8 +13,12 @@ export const createTopic = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Topic.createTopic(body);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo chủ đề thành công");
       }
       return data;
     } catch (error: any) {

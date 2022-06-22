@@ -73,7 +73,6 @@ export const ModalUploadFiles: React.FC<{
       .unwrap()
       .then((rs) => {
         console.debug(rs);
-        message.success("Thêm bài giảng thành công.");
         props.handleRefresh();
       });
   };

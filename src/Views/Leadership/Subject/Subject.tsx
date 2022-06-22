@@ -151,7 +151,6 @@ export const Subject = () => {
       (rs: any) => {
         values.image = rs;
         dispatch(createSubject(values)).then((rs) => {
-          message.success("Tạo môn học mới thành công.");
           handleRefresh();
         });
       }

@@ -1,14 +1,14 @@
 import { CameraOutlined, FormOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, Row, Select, Upload } from "antd";
+import { Button, Col, Form, Input, message, Row, Select, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
 import { useEffect, useState } from "react";
-import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import cloudinaryUpload from "../../../Apis/Cloudinary";
-import { updateProfile, UserState } from "../../../redux/reducers/user.reducer";
-import { AppDispatch } from "../../../redux/store";
-import './style.scss';
 import { useDispatch } from "react-redux";
-import Toast from "../../../Components/Toast";
+import cloudinaryUpload from "../../../Apis/Cloudinary";
+import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { setLoading } from "../../../redux/reducers/loading.reducer";
+import { updateProfile } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
+import "./style.scss";
 
 const { Option } = Select;
 
@@ -39,8 +39,8 @@ export const Information = () => {
   }, []);
 
   useEffect(() => {
-    form.setFieldsValue(user)
-  },[])
+    form.setFieldsValue(user);
+  }, []);
 
   const onPreview = async (file: any) => {
     let src = file.url;
@@ -60,12 +60,14 @@ export const Information = () => {
   const handleFileUpload = (e: any) => {
     const uploadData = new FormData();
     uploadData.append("file", e, "file");
+    dispatch(setLoading(true));
     cloudinaryUpload(uploadData).then((rs: any) => {
+      dispatch(setLoading(false));
+
       dispatch(updateProfile({ id: user.id, payload: { avt: rs.url } })).then(
         (rs: any) => {
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(rs.payload));
-          Toast("Cập nhật ảnh đại diện thành công");
         }
       );
     });

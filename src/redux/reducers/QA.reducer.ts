@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { message } from "antd";
 import QA from "../../Apis/QA.api";
 import { RootState } from "../store";
 import { ILesson } from "./lesson.reducer";
@@ -54,8 +55,12 @@ export const updateQA = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await QA.updateQA(id, payload);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Cập nhật QA thành công");
       }
       return data;
     } catch (error: any) {
@@ -77,8 +82,12 @@ export const createQA = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await QA.createQA(payload);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo QA thành công");
       }
       return data;
     } catch (error: any) {
@@ -100,8 +109,12 @@ export const deleteQA = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await QA.deleteQA(id);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Xóa QA thành công");
       }
       return data;
     } catch (error: any) {

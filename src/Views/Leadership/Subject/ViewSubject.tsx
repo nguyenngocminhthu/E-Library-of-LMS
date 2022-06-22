@@ -127,12 +127,9 @@ export const ViewSubject = () => {
       .unwrap()
       .then(() => {
         setQuestion(false);
-        message.success("Đặt câu hỏi thành công");
         handleRefresh();
-      })
-      .catch(() => {
-        message.error("Đặt câu hỏi thất bại");
       });
+     
   };
 
   return (

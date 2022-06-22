@@ -125,7 +125,6 @@ export const EditSubject = () => {
       .unwrap()
       .then((rs) => {
         handleRefresh();
-        message.success("Thêm chủ đề mới thành công.");
         formTopic.resetFields();
       });
   };

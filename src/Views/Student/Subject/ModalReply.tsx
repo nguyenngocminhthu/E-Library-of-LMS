@@ -50,7 +50,6 @@ export const ModalReply: React.FC<{
         props.handleRefresh();
         form.resetFields();
         handleRefresh();
-        message.success("Trả lời câu hỏi thành công");
       });
   };
 

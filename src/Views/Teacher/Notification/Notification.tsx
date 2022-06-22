@@ -122,7 +122,6 @@ export const Notification = () => {
       .unwrap()
       .then(() => {
         handleRefresh();
-        message.success("Gửi thông báo thành công");
       });
   };
 

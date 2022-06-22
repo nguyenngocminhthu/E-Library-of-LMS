@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { message } from "antd";
 import Noti from "../../Apis/Noti.api";
 import { RootState } from "../store";
 import { ILesson } from "./lesson.reducer";
@@ -55,8 +56,12 @@ export const updateNoti = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Noti.updateNoti(id, payload);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Cập nhật thông báo thành công");
       }
       return data;
     } catch (error: any) {
@@ -78,8 +83,12 @@ export const createNoti = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Noti.createNoti(payload);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo thông báo thành công");
       }
       return data;
     } catch (error: any) {
@@ -101,8 +110,12 @@ export const deleteNoti = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Noti.deleteNoti(id);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Xóa thông báo thành công");
       }
       return data;
     } catch (error: any) {

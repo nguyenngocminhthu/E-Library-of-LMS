@@ -53,7 +53,6 @@ export const ExamDetails = () => {
               .unwrap()
               .then((rs: IBanks) => {
                 setData(rs);
-                message.success("Đề thi đã được phê duyệt và sẵn sàng sử dụng.");
                 setSelect(0);
               });
           }

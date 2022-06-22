@@ -132,13 +132,11 @@ export const ListFile = () => {
         type === 0
           ? dispatch(updateLesson({ id: id, payload: { status: 1 } })).then(
               () => {
-                message.success("Phê duyệt bài giảng thành công");
                 handleRefresh();
               }
             )
           : dispatch(updateFile({ id: id, payload: { status: 1 } })).then(
               () => {
-                message.success("Phê duyệt tài liệu thành công");
                 handleRefresh();
               }
             ),

@@ -5,6 +5,7 @@ import { setLoading } from "./loading.reducer";
 import { UserState } from "./user.reducer";
 import { ISubject } from "./subject.reducer";
 import Classes from "../../Apis/Classes.api";
+import { message } from "antd";
 
 export const createClass = createAsyncThunk(
   "classes/createClass",
@@ -12,8 +13,12 @@ export const createClass = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Classes.createClass(body);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo lớp học thành công");
       }
       return data;
     } catch (error: any) {

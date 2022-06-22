@@ -5,6 +5,7 @@ import { UserState } from "./user.reducer";
 import { IBanks } from "./banks.reducer";
 import { ISubject } from "./subject.reducer";
 import Question from "../../Apis/Question.api";
+import { message } from "antd";
 
 export const createQuestion = createAsyncThunk(
   "Question/createQuestion",
@@ -12,8 +13,12 @@ export const createQuestion = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Question.createQuestion(body);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo câu hỏi thành công");
       }
       return data;
     } catch (error: any) {

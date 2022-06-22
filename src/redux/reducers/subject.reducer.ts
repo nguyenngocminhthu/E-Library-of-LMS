@@ -6,6 +6,7 @@ import { setLoading } from "./loading.reducer";
 import { UserState } from "./user.reducer";
 import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
+import { message } from "antd";
 
 export const createSubject = createAsyncThunk(
   "subject/createSubject",
@@ -13,8 +14,12 @@ export const createSubject = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Subject.createSubject(body);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo môn học thành công");
       }
       return data;
     } catch (error: any) {

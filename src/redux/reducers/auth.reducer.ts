@@ -3,6 +3,7 @@ import { UserState } from "./user.reducer";
 import Auth from "../../Apis/Auth.api";
 import { setMessage } from "./message.reducer";
 import { setLoading } from "./loading.reducer";
+import { message } from "antd";
 
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -12,8 +13,12 @@ export const logIn = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Auth.login(email, password);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Đăng nhập thành công");
       }
       return data;
     } catch (error: any) {
@@ -24,12 +29,14 @@ export const logIn = createAsyncThunk(
         error.message ||
         error.toString();
       thunkAPI.dispatch(setMessage(message));
+      message.error(message);
       return thunkAPI.rejectWithValue(error.response);
     }
   }
 );
 export const logout = createAsyncThunk("auth/logout", async () => {
   await Auth.logout();
+  message.success("Đăng xuất thành công");
 });
 
 // Define a type for the slice state

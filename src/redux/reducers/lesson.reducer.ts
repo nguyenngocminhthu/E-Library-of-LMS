@@ -8,6 +8,7 @@ import Lesson from "../../Apis/Lesson.api";
 import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
 import { IQA } from "./QA.reducer";
+import { message } from "antd";
 
 export const createLesson = createAsyncThunk(
   "Lesson/createClass",
@@ -15,8 +16,12 @@ export const createLesson = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Lesson.createLesson(body);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Đăng tải bài giảng thành công");
       }
       return data;
     } catch (error: any) {
@@ -84,8 +89,12 @@ export const updateLesson = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Lesson.updateLesson(id, payload);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Cập nhật bài giảng thành công");
       }
       return data;
     } catch (error: any) {

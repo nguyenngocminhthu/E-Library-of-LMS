@@ -54,12 +54,9 @@ export const CreateQuestions = () => {
     dispatch(createQuestion({ ...values, user: user.id }))
       .unwrap()
       .then(() => {
-        message.success("Tạo câu hỏi thành công");
         form.resetFields();
-      })
-      .catch((error) => {
-        message.error("Tạo câu hỏi thất bại");
       });
+     
   };
 
   const handleSelect = (e: any) => {

@@ -1,22 +1,18 @@
-import {
-  CameraOutlined,
-  InfoCircleOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
+import { CameraOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Select, Tabs, Upload } from "antd";
+import ImgCrop from "antd-img-crop";
 import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import cloudinaryUpload from "../../Apis/Cloudinary";
 import { BreadcrumbComp } from "../../Components/Breadcrumb";
-import { InputLabel } from "../../Components/InputLabel";
 import Toast from "../../Components/Toast";
+import { setLoading } from "../../redux/reducers/loading.reducer";
 import { updateProfile, UserState } from "../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../redux/store";
 import "./style.scss";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
-import cloudinaryUpload from "../../Apis/Cloudinary";
-import ImgCrop from "antd-img-crop";
 
 const { Option } = Select;
 
@@ -65,12 +61,14 @@ export const Profile = () => {
   const handleFileUpload = (e: any) => {
     const uploadData = new FormData();
     uploadData.append("file", e, "file");
+    dispatch(setLoading(true));
     cloudinaryUpload(uploadData).then((rs: any) => {
+      dispatch(setLoading(false));
+
       dispatch(updateProfile({ id: user.id, payload: { avt: rs.url } })).then(
         (rs: any) => {
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(rs.payload));
-          Toast("Cập nhật ảnh đại diện thành công");
         }
       );
     });
@@ -89,7 +87,6 @@ export const Profile = () => {
         localStorage.removeItem("user");
         localStorage.setItem("user", JSON.stringify(rs.payload));
         setDisable(true);
-        Toast("Cập nhật hồ sơ thành công");
       }
     );
   };

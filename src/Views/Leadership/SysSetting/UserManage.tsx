@@ -116,12 +116,7 @@ export const UserManage = () => {
       dispatch(getUsers(filter))
         .unwrap()
         .then((rs: any) => {
-          message.success("Tạo người dùng thành công.");
-          setData(rs.results);       
-        })
-        .catch((e: any) => {
-          message.error("Tạo người dùng thất bại.");
-          console.debug("e: ", e);
+          setData(rs.results);
         });
     });
   };
@@ -137,12 +132,7 @@ export const UserManage = () => {
         dispatch(getUsers(filter))
           .unwrap()
           .then((rs: any) => {
-            message.success("Xóa người dùng thành công.");
             setData(rs.results);
-          })
-          .catch((e: any) => {
-            message.error("Xóa người dùng thất bại.");
-            console.debug("e: ", e);
           });
       }),
   };

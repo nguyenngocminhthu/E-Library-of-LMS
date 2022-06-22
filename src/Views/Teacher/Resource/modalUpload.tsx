@@ -61,7 +61,6 @@ export const ModalUpload: React.FC<{
     dispatch(createLesson({ ...values, user: user.id }))
       .unwrap()
       .then((rs) => {
-        message.success("Thêm bài giảng thành công.");
         props.handleRefresh();
       });
   };

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { message } from "antd";
 import User from "../../Apis/User.api";
 import { RootState } from "../store";
 import { IClass } from "./classes.reducer";
@@ -53,8 +54,12 @@ export const updateProfile = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await User.updateProfile(id, payload);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else if (!payload.recentSubjectId) {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Cập nhật thông tin thành công");
       }
       return data;
     } catch (error: any) {
@@ -76,8 +81,12 @@ export const createUser = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await User.createUser(payload);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo tài khoản thành công");
       }
       return data;
     } catch (error: any) {
@@ -99,8 +108,12 @@ export const deleteUser = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await User.deleteUser(id);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Xóa tài khoản thành công");
       }
       return data;
     } catch (error: any) {

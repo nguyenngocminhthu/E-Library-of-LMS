@@ -7,6 +7,7 @@ import { ISubject } from "./subject.reducer";
 import File from "../../Apis/File.api";
 import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
+import { message } from "antd";
 
 export const createFile = createAsyncThunk(
   "File/createClass",
@@ -14,8 +15,12 @@ export const createFile = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await File.createFile(body);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Đăng tải tài nguyên thành công");
       }
       return data;
     } catch (error: any) {
@@ -83,8 +88,12 @@ export const updateFile = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await File.updateFile(id, payload);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Cập nhật tài nguyên thành công");
       }
       return data;
     } catch (error: any) {

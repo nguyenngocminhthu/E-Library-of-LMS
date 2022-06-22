@@ -5,6 +5,7 @@ import { setLoading } from "./loading.reducer";
 import { ISubject } from "./subject.reducer";
 import { UserState } from "./user.reducer";
 import { IQuestion } from "./question.reducer";
+import { message } from "antd";
 
 export const getBanks = createAsyncThunk(
   "Banks/getBanks",
@@ -12,7 +13,7 @@ export const getBanks = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Banks.getBanks({ limit, subjectGroup, subject, user });
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
       }
       return data;
@@ -58,8 +59,12 @@ export const updateBank = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Banks.updateBank(id, payload);
-      if (data) {
+      if (data.code) {
         thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Cập nhật đề thi thành công");
       }
       return data;
     } catch (error: any) {
