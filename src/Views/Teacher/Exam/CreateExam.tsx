@@ -10,11 +10,13 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
+  getSubjectGroup,
   getSubjectGroups,
   ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
+import { ISelect } from "../../../Components/Select";
 
 const { Option } = Select;
 
@@ -23,21 +25,37 @@ export const CreateExam = () => {
   const navigate = useNavigate();
   const [select, setSelect] = useState(0);
   const [form] = Form.useForm();
-  const dataSubGroup = useSelector(
-    (state: any) => state.subjectgroup.listSubjectGroup.results
-  );
-  const dataSub = useSelector(
-    (state: any) => state.subject.listSubject.results
-  );
+  const [dataSubGroup, setDataSubGroup] = useState<ISelect[]>([]);
+
   const [answerNum, setAnswerNum] = useState<any[]>([]);
   const [question, setQuestion] = useState<any[]>([]);
   const [quesType, setQuesType] = useState<number>(0);
   const [examType, setExamType] = useState<number>(0);
+  const [dataSub, setDataSub] = useState<ISelect[]>([]);
 
   useEffect(() => {
-    dispatch(getSubjectGroups(999));
-    dispatch(getSubjects(999));
+    dispatch(getSubjectGroups(999))
+      .unwrap()
+      .then((rs) => {
+        let arr: ISelect[] = [];
+        rs.results.forEach((vl: ISubjectGroup) => {
+          arr.push({ name: vl.groupName, value: vl.id });
+        });
+        setDataSubGroup(arr);
+      });
   }, []);
+
+  const handleSelect = (e: any) => {
+    dispatch(getSubjectGroup(e))
+      .unwrap()
+      .then((rs: ISubjectGroup) => {
+        let arr: ISelect[] = [];
+        rs.subject.forEach((vl: ISubject) => {
+          arr.push({ name: vl.subName, value: vl.id });
+        });
+        setDataSub(arr);
+      });
+  };
 
   const questionFinish = (values: IQuestion) => {
     console.debug(values);
@@ -68,11 +86,9 @@ export const CreateExam = () => {
               <Input />
             </Form.Item>
             <Form.Item name="subjectGroup" label="Tổ bộ môn">
-              <Select>
-                {dataSubGroup?.map((vl: ISubjectGroup) => (
-                  <Option key={vl.id} value={vl.id}>
-                    {vl.groupName}
-                  </Option>
+              <Select onChange={(e: any) => handleSelect(e)}>
+                {dataSubGroup.map((vl: ISelect) => (
+                  <Option value={vl.value}>{vl.name}</Option>
                 ))}
               </Select>
             </Form.Item>
@@ -94,11 +110,9 @@ export const CreateExam = () => {
               phút
             </Form.Item>
             <Form.Item name="subject" label="Môn học">
-              <Select>
-                {dataSub?.map((vl: ISubject) => (
-                  <Option key={vl.id} value={vl.id}>
-                    {vl.subName}
-                  </Option>
+              <Select disabled={dataSub.length === 0}>
+                {dataSub.map((vl: ISelect) => (
+                  <Option value={vl.value}>{vl.name}</Option>
                 ))}
               </Select>
             </Form.Item>

@@ -26,6 +26,7 @@ import { useParams } from "react-router-dom";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { SelectComp } from "../../../Components/Select";
 import { getLesson, ILesson } from "../../../redux/reducers/lesson.reducer";
+import { INoti } from "../../../redux/reducers/noti.reducer";
 import { createQA, IQA, updateQA } from "../../../redux/reducers/QA.reducer";
 import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
@@ -129,7 +130,6 @@ export const ViewSubject = () => {
         setQuestion(false);
         handleRefresh();
       });
-     
   };
 
   return (
@@ -297,42 +297,48 @@ export const ViewSubject = () => {
             </TabPane>
             <TabPane tab="Thông báo môn học" key="3">
               <div className="scroll-box sub-noti">
-                <Row className="noti-detail">
-                  <Col span={7}>
-                    <Row>
-                      <Col span={3}>
-                        <Avatar icon={<UserOutlined />} />
+                {data?.noti.map((value: INoti) => {
+                  return (
+                    <Row className="noti-detail">
+                      <Col span={7}>
+                        <Row>
+                          <Col span={3}>
+                            <Avatar
+                              src={
+                                value.from.avt ||
+                                "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
+                              }
+                            />
+                          </Col>
+                          <Col
+                            span={20}
+                            offset={1}
+                            style={{ lineHeight: "normal" }}
+                          >
+                            <h4 style={{ marginBottom: "0" }}>
+                              {value.from.userName}
+                            </h4>
+                            <div className="flex-row">
+                              <span className="time">Giáo viên</span>
+                              <span
+                                style={{ marginLeft: "2rem" }}
+                                className="time"
+                              >
+                                {moment(value.createdAt).fromNow()}
+                              </span>
+                            </div>
+                          </Col>
+                        </Row>
                       </Col>
-                      <Col
-                        span={20}
-                        offset={1}
-                        style={{ lineHeight: "normal" }}
-                      >
-                        <h4 style={{ marginBottom: "0" }}>
-                          Trần Nguyễn Phú Phong
-                        </h4>
-                        <div className="flex-row">
-                          <span className="time">Giáo viên</span>
-                          <span style={{ marginLeft: "2rem" }} className="time">
-                            6 giờ trước
-                          </span>
-                        </div>
+                      <Col span={17}>
+                        <h3>{value.title}</h3>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: value.content }}
+                        />
                       </Col>
                     </Row>
-                  </Col>
-                  <Col span={17}>
-                    <h3>LỊCH KIỂM TRA 1 TIẾT</h3>
-                    <div style={{ lineHeight: "2rem" }}>
-                      <b>Thời gian: </b> Thứ 5 ngày 20 tháng 01 năm 2021
-                      <span style={{ marginLeft: "1rem" }}>
-                        <b>Hình thức: </b> Tự luận
-                      </span>
-                      <br />
-                      <b>Nội dung: </b> Nội dung kiểm tra tổng hợp từ bài đầu
-                      tiên đến bài ở tiết sau cùng
-                    </div>
-                  </Col>
-                </Row>
+                  );
+                })}
               </div>
             </TabPane>
           </Tabs>

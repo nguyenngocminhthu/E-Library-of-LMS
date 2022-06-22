@@ -29,13 +29,36 @@ export const getSubjectGroups = createAsyncThunk(
   }
 );
 
+export const getSubjectGroup = createAsyncThunk(
+  "subject/getSubjectGroup",
+  async (id: string, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await SubjectGroup.getSubjectGroup(id);
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export interface ISubjectGroup {
   id: string;
   key?: number;
   groupCode: string;
   groupName: string;
   bank: IBanks;
-  subject: ISubject;
+  subject: ISubject[];
   createdAt: string;
   updatedAt: string;
 }
@@ -57,6 +80,12 @@ export const subjectgroupReducer = createSlice({
       state.listSubjectGroup = action.payload;
     });
     builder.addCase(getSubjectGroups.rejected, (state, action) => {
+      state.listSubjectGroup = [];
+    });
+    builder.addCase(getSubjectGroup.fulfilled, (state, action) => {
+      state.listSubjectGroup = action.payload;
+    });
+    builder.addCase(getSubjectGroup.rejected, (state, action) => {
       state.listSubjectGroup = [];
     });
   },

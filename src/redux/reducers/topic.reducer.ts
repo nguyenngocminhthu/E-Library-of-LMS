@@ -5,7 +5,10 @@ import { RootState } from "../store";
 import { ILesson } from "./lesson.reducer";
 import { setLoading } from "./loading.reducer";
 import { setMessage } from "./message.reducer";
+import { INoti } from "./noti.reducer";
+import { IQA } from "./QA.reducer";
 import { ISubject } from "./subject.reducer";
+import { UserState } from "./user.reducer";
 
 export const createTopic = createAsyncThunk(
   "topic/createTopic",
@@ -88,8 +91,8 @@ export interface ITopic {
   description: string;
   lesson: ILesson[];
   image: string;
-  QA: [];
-  noti: [];
+  QA: IQA[];
+  noti: INoti[];
   createdAt: string;
   updatedAt: string;
 }

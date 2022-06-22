@@ -1,12 +1,34 @@
 import { SettingOutlined } from "@ant-design/icons";
-import { Avatar, Button, Checkbox, Divider, Input, List, Modal, Skeleton, Space, Tabs, Tooltip } from "antd";
+import {
+  Avatar,
+  Button,
+  Checkbox,
+  Divider,
+  Form,
+  Input,
+  List,
+  Modal,
+  Skeleton,
+  Space,
+  Tabs,
+  Tooltip,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import SunEditor from "suneditor-react";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
-import SunEditor from 'suneditor-react';
+import { ISelect, SelectComp } from "../../../Components/Select";
+import { createNoti } from "../../../redux/reducers/noti.reducer";
+import {
+  getSubject,
+  getSubjects,
+  ISubject,
+} from "../../../redux/reducers/subject.reducer";
+import { ITopic } from "../../../redux/reducers/topic.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
 const { TabPane } = Tabs;
@@ -14,8 +36,38 @@ export const Notification = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editorState, setEditorState] = useState();
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const [dataClass, setDataClass] = useState<ISelect[]>([]);
+  const [form] = Form.useForm();
+  const [topic, setTopic] = useState<ISelect[]>([]);
+
+  useEffect(() => {
+    loadMoreData();
+
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+      .unwrap()
+      .then((rs: any) => {
+        let arr: ISelect[] = [];
+        rs.results.forEach((vl: ISubject) => {
+          arr.push({ name: vl.subName, value: vl.id });
+        });
+        setDataClass(arr);
+      });
+  }, []);
+
+  const handleRefresh = () => {
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+      .unwrap()
+      .then((rs: any) => {
+        let arr: ISelect[] = [];
+        rs.results.forEach((vl: ISubject) => {
+          arr.push({ name: vl.subName, value: vl.id });
+        });
+        setDataClass(arr);
+      });
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -27,10 +79,10 @@ export const Notification = () => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setTopic([]);
+    form.resetFields();
   };
-  const onEditorStateChange = (editorState: any) => {
-    setEditorState(editorState);
-  };
+
   const loadMoreData = () => {
     if (loading) {
       return;
@@ -49,23 +101,33 @@ export const Notification = () => {
       });
   };
 
-  useEffect(() => {
-    loadMoreData();
-  }, []);
-  const classTeach = [
-    {
-      name: "Tất cả các lớp",
-      value: "all",
-    },
-    {
-      name: "Lớp nâng cao",
-      value: "advancedClass",
-    },
-    {
-      name: "Lớp cơ bản",
-      value: "basicClass",
-    },
-  ];
+  const handleSelect = (e: any) => {
+    dispatch(getSubject(e))
+      .unwrap()
+      .then((rs: ISubject) => {
+        console.debug(rs);
+
+        let arr: ISelect[] = [];
+        rs.topic.forEach((vl: ITopic) => {
+          arr.push({ name: vl.title, value: vl.id });
+        });
+        setTopic(arr);
+      });
+  };
+
+  const onFinish = (values: any) => {
+    dispatch(
+      createNoti({
+        ...values,
+        from: user.id,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        handleRefresh();
+        handleCancel();
+      });
+  };
 
   return (
     <div className="Noti-Page">
@@ -172,41 +234,67 @@ export const Notification = () => {
             title="Gửi thông báo mới"
             visible={isModalVisible}
             onOk={handleOk}
-            onCancel={handleCancel}
+            onCancel={() => {
+              handleCancel();
+            }}
             footer={[
-              <Button key="submit" type="primary">
+              <Button onClick={() => form.submit()} type="primary">
                 Gửi
               </Button>,
             ]}
           >
-            <SelectComp
-              textLabel="Chọn lớp giảng dạy"
-              defaultValue="Tất cả các lớp"
-              dataString={classTeach}
-            />
-            <Checkbox className="cb-style" style={{ fontWeight: 700 }}>
-              Chọn học viên
-            </Checkbox>
-            <SearchComponent placeholder="Tìm kiếm" />
-            <Input
-              style={{ margin: "10px 0px 10px 0px" }}
-              placeholder="Chủ đề"
-            />
-            <SunEditor
-              placeholder="Để lại lời nhắn của bạn tại đây..."
-              setOptions={{
-                defaultTag: "div",
-                minHeight: "250px",
-                showPathLabel: false,
-                buttonList: [
-                  ["undo", "redo"],
-                  ["fontSize", "bold", "underline", "italic"],
-                  ["align", "image"],
-                  ["list", "outdent", "indent"],
-                  ["fullScreen"],
-                ],
-              }}
-            />
+            <Form
+              layout="vertical"
+              form={form}
+              onFinish={onFinish}
+              className="header-notification"
+            >
+              <Form.Item name="subject">
+                <SelectComp
+                  textLabel="Chọn môn giảng dạy"
+                  className="label-style-item"
+                  dataString={dataClass}
+                  onChange={(e: any) => handleSelect(e)}
+                />
+                <Form.Item name="topic">
+                  <SelectComp
+                    textLabel="Chọn chủ đề"
+                    className="label-style-item"
+                    dataString={topic}
+                    disabled={topic.length === 0}
+                  />
+                </Form.Item>
+              </Form.Item>
+              <Form.Item
+                name="title"
+                className="label-style-item"
+                label="Tiêu đề"
+              >
+                <Input placeholder="Tiêu đề" />
+              </Form.Item>
+
+              <Form.Item
+                name="content"
+                label="Nội dung"
+                className="label-style-item"
+              >
+                <SunEditor
+                  placeholder="Nội dung"
+                  setOptions={{
+                    defaultTag: "div",
+                    minHeight: "250px",
+                    showPathLabel: false,
+                    buttonList: [
+                      ["undo", "redo"],
+                      ["fontSize", "bold", "underline", "italic"],
+                      ["align", "image"],
+                      ["list", "outdent", "indent"],
+                      ["fullScreen"],
+                    ],
+                  }}
+                />
+              </Form.Item>
+            </Form>
           </Modal>
         </div>
       </div>

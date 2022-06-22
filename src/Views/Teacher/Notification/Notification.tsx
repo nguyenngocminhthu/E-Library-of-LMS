@@ -7,7 +7,6 @@ import {
   Form,
   Input,
   List,
-  message,
   Modal,
   Skeleton,
   Space,
@@ -117,11 +116,16 @@ export const Notification = () => {
   };
 
   const onFinish = (values: any) => {
-    console.debug(values);
-    dispatch(createNoti({ ...values, from: user.id }))
+    dispatch(
+      createNoti({
+        ...values,
+        from: user.id,
+      })
+    )
       .unwrap()
       .then(() => {
         handleRefresh();
+        handleCancel();
       });
   };
 
@@ -239,8 +243,13 @@ export const Notification = () => {
               </Button>,
             ]}
           >
-            <Form layout="vertical" form={form} onFinish={onFinish} className="header-notification">
-              <Form.Item name="subject" >
+            <Form
+              layout="vertical"
+              form={form}
+              onFinish={onFinish}
+              className="header-notification"
+            >
+              <Form.Item name="subject">
                 <SelectComp
                   textLabel="Chọn môn giảng dạy"
                   className="label-style-item"
@@ -253,17 +262,22 @@ export const Notification = () => {
                     className="label-style-item"
                     dataString={topic}
                     disabled={topic.length === 0}
-                    onChange={(e: any) => handleSelect(e)}
                   />
                 </Form.Item>
               </Form.Item>
-              <Form.Item name="title" className="label-style-item" label="Tiêu đề">
-                <Input
-                  placeholder="Tiêu đề"
-                />
+              <Form.Item
+                name="title"
+                className="label-style-item"
+                label="Tiêu đề"
+              >
+                <Input placeholder="Tiêu đề" />
               </Form.Item>
 
-              <Form.Item name="content" className="label-style-item" label="Nội dung">
+              <Form.Item
+                name="content"
+                label="Nội dung"
+                className="label-style-item"
+              >
                 <SunEditor
                   placeholder="Nội dung"
                   setOptions={{
