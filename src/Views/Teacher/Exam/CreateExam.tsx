@@ -82,17 +82,17 @@ export const CreateExam = () => {
             <b>Phần thông tin:</b>
           </h3>
           <Col span={10}>
-            <Form.Item name="examName" label="Tên">
+            <Form.Item name="examName" label="Tên" rules={[{ required: true }]}>
               <Input />
             </Form.Item>
-            <Form.Item name="subjectGroup" label="Tổ bộ môn">
+            <Form.Item name="subjectGroup" label="Tổ bộ môn" rules={[{ required: true }]}>
               <Select onChange={(e: any) => handleSelect(e)}>
                 {dataSubGroup.map((vl: ISelect) => (
                   <Option value={vl.value}>{vl.name}</Option>
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item name="examType" label="Hình thức">
+            <Form.Item name="examType" label="Hình thức" rules={[{ required: true }]}>
               <Radio.Group onChange={(e) => setExamType(e.target.value)}>
                 <Radio value={0}>Trắc nghiệm</Radio>
                 <Radio value={1}>Tự luận</Radio>
@@ -100,7 +100,7 @@ export const CreateExam = () => {
             </Form.Item>
           </Col>
           <Col span={10} offset={4}>
-            <Form.Item name="time" label="Thời lượng">
+            <Form.Item name="time" label="Thời lượng" rules={[{ required: true }]}>
               <Select style={{ width: "100px" }}>
                 <Option value={15}>15</Option>
                 <Option value={30}>30</Option>
@@ -109,7 +109,7 @@ export const CreateExam = () => {
               </Select>{" "}
               phút
             </Form.Item>
-            <Form.Item name="subject" label="Môn học">
+            <Form.Item name="subject" label="Môn học" rules={[{ required: true }]}>
               <Select disabled={dataSub.length === 0}>
                 {dataSub.map((vl: ISelect) => (
                   <Option value={vl.value}>{vl.name}</Option>

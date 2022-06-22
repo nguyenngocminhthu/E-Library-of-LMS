@@ -112,7 +112,7 @@ export const ModalAdd: React.FC<{
         >
           <div>Thương mại điện tử</div>
         </Form.Item>
-        <Form.Item name="topic" label="Chọn chủ đề">
+        <Form.Item name="topic" label="Chọn chủ đề" rules={[{ required: true }]}>
           <Select defaultValue="Chọn chủ đề" className="select">
             <Option value={0}>Văn hóa xã hội</Option>
             <Option value={1}>Sample</Option>
@@ -128,7 +128,7 @@ export const ModalAdd: React.FC<{
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Chọn tệp">
+        <Form.Item label="Chọn tệp" rules={[{ required: true }]}>
           <Radio.Group
             onChange={(e) => {
               setTest(e.target.value);

@@ -1,18 +1,15 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Login.scss";
 import logoLogin from "../../shared/img/icon/logo-second.svg";
 import { ReactComponent as Account } from "../../shared/img/icon/account.svg";
 import { ReactComponent as Password } from "../../shared/img/icon/shield-keyhole-line.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { Row, Col, Button, Form } from "antd";
-import { useAppDispatch } from "../../redux/hooks";
-import { logIn, logout } from "../../redux/reducers/auth.reducer";
+import { Row, Col, Button, Form, Input } from "antd";
+import { logIn } from "../../redux/reducers/auth.reducer";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const dispatch: AppDispatch = useDispatch();
@@ -45,30 +42,27 @@ const Login = () => {
             <h1>Đăng nhập</h1>
             <label htmlFor="username">Tên đăng nhập</label>
             <div className="input-icons">
-              <Account className="test" />
-              <Form.Item name="email">
-                <input
-                  className="input-field"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.currentTarget.value)}
-                  placeholder="Email address"
-                  id="username"
+              <Form.Item
+                name="email"
+                rules={[{ required: true, message: "Vui lòng nhập tên đăng nhập!" }]}>
+                <Input
+                  className="input-style"
+                  prefix={<Account className="site-form-item-icon" />}
+                  placeholder="Username"
                 />
               </Form.Item>
             </div>
             <label htmlFor="password">Mật khẩu</label>
             <div className="input-icons">
-              <Password className="test" />
-
-              <Form.Item name="password">
-                <input
-                  className="input-field"
+              <Form.Item
+                name="password"
+                rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
+              >
+                <Input
+                  className="input-style"
+                  prefix={<Password className="site-form-item-icon" />}
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.currentTarget.value)}
                   placeholder="Password"
-                  id="password"
                 />
               </Form.Item>
             </div>

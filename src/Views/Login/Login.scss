@@ -33,80 +33,6 @@
   }
 }
 
-.row {
-  margin: 0px !important;
-}
-
-.inputLogin {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  background-color: #f2f2f2;
-  border-radius: 8px;
-  padding: 8px 16px 8px 16px;
-}
-
-.textLogin {
-  margin-left: 8px;
-  background-color: #f2f2f2;
-  border: none;
-  width: 80%;
-}
-
-.textLogin:focus {
-  background-color: white;
-  outline: none;
-}
-
-.clikedInput {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  background-color: white;
-  border-radius: 8px;
-  padding: 8px 16px 8px 16px;
-}
-
-.test {
-  position: absolute;
-  margin: 11px;
-}
-
-.input-icons {
-  width: 100%;
-  background-color: #f2f2f2;
-  margin-bottom: 10px;
-  border-radius: 8px;
-}
-
-.input-field {
-  width: 100%;
-  padding: 10px;
-  padding-left: 40px;
-  background-color: #f2f2f2;
-  border: none;
-  border-radius: 8px;
-}
-
-.input-field:focus {
-  outline: 1px solid #3738397c;
-  background-color: white;
-}
-
-.input-code {
-  width: 100%;
-  padding: 10px;
-  padding-left: 15px;
-  background-color: #f2f2f2;
-  border: none;
-  border-radius: 8px;
-}
-
-.input-code:focus {
-  outline: 1px solid #3738397c;
-  background-color: white;
-}
-
 .forgotPass {
   display: block;
   color: #ff7506;
@@ -130,4 +56,7 @@
 .btn-success:hover {
   background-color: white;
   background-image: linear-gradient(to right, #f17f21e3, #ff5500de);
+}
+.input-style{
+  border-radius: 8px;
 }

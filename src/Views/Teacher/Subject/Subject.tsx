@@ -102,19 +102,19 @@ export const Subject = () => {
           <div>Hoa Hoa</div>
         </Form.Item>
         <p style={{ fontWeight: "700", marginBottom: "16px"}}>Phân công vào các lớp giảng dạy</p>
-        <Form.Item name="chooseTopic" label="Tất cả lớp học">
+        <Form.Item name="chooseTopic" label="Tất cả lớp học" rules={[{ required: true }]}>
           <Select disabled={disable} defaultValue="Tùy chọn lớp học">
             <Option value={0}>Văn hóa xã hội</Option>
             <Option value={1}>Sample</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="chooseTopic" label="Chọn chủ đề">
+        <Form.Item name="chooseTopic" label="Chọn chủ đề" rules={[{ required: true }]}>
           <Select disabled={disable} defaultValue="Chọn chủ đề">
             <Option value={0}>Văn hóa xã hội</Option>
             <Option value={1}>Sample</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="fileNameTitle" label="Chọn bài giảng">
+        <Form.Item name="fileNameTitle" label="Chọn bài giảng" rules={[{ required: true }]}>
         <Select disabled={disable} defaultValue="Chọn bài giảng">
             <Option value={0}>Văn hóa xã hội</Option>
             <Option value={1}>Sample</Option>

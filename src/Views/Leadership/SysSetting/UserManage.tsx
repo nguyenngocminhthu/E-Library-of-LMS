@@ -150,19 +150,19 @@ export const UserManage = () => {
         form={form}
         onFinish={onFinish}
       >
-        <Form.Item label="Tên" name="userName">
+        <Form.Item label="Tên" name="userName" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Email" name="email">
+        <Form.Item label="Email" name="email" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item label="MSSV" name="userCode">
+        <Form.Item label="MSSV" name="userCode" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Mật khẩu" name="password">
+        <Form.Item label="Mật khẩu" name="password" rules={[{ required: true }]}>
           <Input.Password />
         </Form.Item>
-        <Form.Item label="Tên vai trò" name="role">
+        <Form.Item label="Tên vai trò" name="role" rules={[{ required: true }]}>
           <Select>
             <Option value={"leadership"}>Quản trị viên</Option>
             <Option value={"teacher"}>Giáo viên</Option>

@@ -169,10 +169,10 @@ export const ViewSubject = () => {
                   form={form}
                   onFinish={onFinish}
                 >
-                  <Form.Item label="Tiêu đề câu hỏi" name="title">
+                  <Form.Item label="Tiêu đề câu hỏi" name="title" rules={[{ required: true }]}>
                     <Input />
                   </Form.Item>
-                  <Form.Item label="Nội dung" name="content">
+                  <Form.Item label="Nội dung" name="content" rules={[{ required: true }]}>
                     <TextArea rows={4} />
                   </Form.Item>
                   <div className="footer-btn">

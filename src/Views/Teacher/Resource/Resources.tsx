@@ -186,7 +186,7 @@ export const Resources = () => {
         layout="horizontal"
         form={form}
       >
-        <Form.Item label="Tên mới" name="userName">
+        <Form.Item label="Tên mới" name="userName" rules={[{ required: true }]}>
           <div className="input-layout">
             <Input />
             .file
@@ -233,16 +233,16 @@ export const Resources = () => {
             pagination={false}
           />
         </div>
-        <Form.Item label="Chọn môn học">
+        <Form.Item label="Chọn môn học" rules={[{ required: true }]}>
           <SelectComp style={{ display: "block" }} dataString={subjectSelect} />
         </Form.Item>
-        <Form.Item label="Chọn lớp học">
+        <Form.Item label="Chọn lớp học" rules={[{ required: true }]}>
           <SelectComp style={{ display: "block" }} dataString={classSelect} />
         </Form.Item>
-        <Form.Item label="Chọn chủ đề">
+        <Form.Item label="Chọn chủ đề" rules={[{ required: true }]}>
           <SelectComp style={{ display: "block" }} dataString={topicSelect} />
         </Form.Item>
-        <Form.Item label="Tiêu đề bài giảng">
+        <Form.Item label="Tiêu đề bài giảng" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
       </Form>

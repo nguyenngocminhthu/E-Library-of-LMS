@@ -132,14 +132,14 @@ export const ModalUploadFiles: React.FC<{
         form={form}
         onFinish={onFinish}
       >
-        <Form.Item label="Chọn môn học" name="subject">
+        <Form.Item label="Chọn môn học" name="subject" rules={[{ required: true }]}>
           <SelectComp
             onChange={(e: any) => handleSelect(e)}
             style={{ display: "block" }}
             dataString={subjectSelect}
           />
         </Form.Item>
-        <Form.Item label="Chọn lớp học" name="classes">
+        <Form.Item label="Chọn lớp học" name="classes" rules={[{ required: true }]}>
           <SelectComp
             mode="multiple"
             allowClear={true}
@@ -148,7 +148,7 @@ export const ModalUploadFiles: React.FC<{
             dataString={classSelect}
           />
         </Form.Item>
-        <Form.Item label="Chọn chủ đề" name="topic">
+        <Form.Item label="Chọn chủ đề" name="topic" rules={[{ required: true }]}>
           <SelectComp
             disabled={topicSelect === undefined}
             style={{ display: "block" }}
@@ -156,14 +156,14 @@ export const ModalUploadFiles: React.FC<{
             onChange={(e: any) => handleSelectLesson(e)}
           />
         </Form.Item>
-        <Form.Item label="Chọn bài giảng" name="lesson">
+        <Form.Item label="Chọn bài giảng" name="lesson" rules={[{ required: true }]}>
           <SelectComp
             disabled={lessonSelect === undefined}
             style={{ display: "block" }}
             dataString={lessonSelect}
           />
         </Form.Item>
-        <Form.Item name="url" label="File" className="upload-file">
+        <Form.Item name="url" label="File" className="upload-file" rules={[{ required: true }]}>
           <Upload beforeUpload={() => false}>
             <Button icon={<UploadOutlined style={{ color: "#f17f21" }} />}>
               Tải lên

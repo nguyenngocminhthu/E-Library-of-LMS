@@ -108,14 +108,14 @@ export const ModalUpload: React.FC<{
         form={form}
         onFinish={onFinish}
       >
-        <Form.Item label="Chọn môn học" name="subject">
+        <Form.Item label="Chọn môn học" name="subject"> rules={[{ required: true }]}
           <SelectComp
             onChange={(e: any) => handleSelect(e)}
             style={{ display: "block" }}
             dataString={subjectSelect}
           />
         </Form.Item>
-        <Form.Item label="Chọn lớp học" name="classes">
+        <Form.Item label="Chọn lớp học" name="classes" rules={[{ required: true }]}>
           <SelectComp
             mode="multiple"
             allowClear={true}
@@ -124,17 +124,17 @@ export const ModalUpload: React.FC<{
             dataString={classSelect}
           />
         </Form.Item>
-        <Form.Item label="Chọn chủ đề" name="topic">
+        <Form.Item label="Chọn chủ đề" name="topic" rules={[{ required: true }]}>
           <SelectComp
             disabled={topicSelect === undefined}
             style={{ display: "block" }}
             dataString={topicSelect}
           />
         </Form.Item>
-        <Form.Item label="Tiêu đề bài giảng" name="title">
+        <Form.Item label="Tiêu đề bài giảng" name="title" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item name="video" label="Video" className="upload-file">
+        <Form.Item name="video" label="Video" className="upload-file" rules={[{ required: true }]}>
           <Upload
             maxCount={1}
             beforeUpload={() => false}

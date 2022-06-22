@@ -151,7 +151,7 @@ export const Exam = () => {
         layout="horizontal"
         form={form}
       >
-        <Form.Item label="Tên mới" name="userName">
+        <Form.Item label="Tên mới" name="userName" rules={[{ required: true }]}>
           <div className="input-layout">
             <Input />
             .file
@@ -201,7 +201,7 @@ export const Exam = () => {
         layout="horizontal"
         form={form}
       >
-        <Form.Item label="Chọn môn học">
+        <Form.Item label="Chọn môn học" rules={[{ required: true }]}>
           <div className="upload-file">
             <Button icon={<UploadOutlined style={{color: "#f17f21"}}/>} style={{ float: "left" }}>
               Tải tệp lên
@@ -209,19 +209,16 @@ export const Exam = () => {
           </div>
           Chọn tệp để tải lên
         </Form.Item>
-        <Form.Item label="Lưu thành">
+        <Form.Item label="Lưu thành" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Lưu thành">
+        <Form.Item label="Chọn tổ bộ môn" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Chọn tổ bộ môn">
+        <Form.Item label="Chọn môn học" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Chọn môn học">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Được tạo bởi">
+        <Form.Item label="Được tạo bởi" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
       </Form>
@@ -243,14 +240,14 @@ export const Exam = () => {
         form={form}
         style={{ textAlign: "left" }}
       >
-        <Form.Item name="class" label="Chọn lớp học">
+        <Form.Item name="class" label="Chọn lớp học" rules={[{ required: true }]}>
           <Select defaultValue="Chọn lớp học">
             <Option value={0}>Công nghệ thông tin</Option>
             <Option value={1}>Công nghệ thực phẩm</Option>
             <Option value={2}>Hóa học nông nghiệp</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="topic" label="Chọn chủ đề">
+        <Form.Item name="topic" label="Chọn chủ đề" rules={[{ required: true }]}>
           <Select defaultValue="Chọn chủ đề">
             <Option value={0}>Chủ nghĩa Mác - Lênin</Option>
             <Option value={1}>Kinh tế căng bản</Option>
@@ -258,28 +255,28 @@ export const Exam = () => {
           </Select>
         </Form.Item>
         <div className="line"></div>
-        <Form.Item name="nameExam" label="Tên đề thi">
+        <Form.Item name="nameExam" label="Tên đề thi" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item name="amountExam" label="Số lượng đề thi">
+        <Form.Item name="amountExam" label="Số lượng đề thi" rules={[{ required: true }]}>
           <div className="display-flex">
           <Input className="small-input" />
           <div className="span-detail">Đề</div>
           </div>
         </Form.Item>
-        <Form.Item name="amountQuestion" label="Số lượng câu hỏi">
+        <Form.Item name="amountQuestion" label="Số lượng câu hỏi" rules={[{ required: true }]}>
           <div className="display-flex">
             <Input className="small-input" />
             <div className="span-detail">Câu</div>
           </div>
         </Form.Item>
-        <Form.Item name="scope" label="Thang điểm">
+        <Form.Item name="scope" label="Thang điểm" rules={[{ required: true }]}>
           <div className="display-flex">
             <Input className="small-input" />
             <div className="span-detail">Điểm</div>
           </div>
         </Form.Item>
-        <Form.Item name="amountQuestionLevel" label="Số câu hỏi theo độ khó">
+        <Form.Item name="amountQuestionLevel" label="Số câu hỏi theo độ khó" rules={[{ required: true }]}>
           <Row>
             <Col span={8} className="display-flex">
               <Input className="small-input"/>

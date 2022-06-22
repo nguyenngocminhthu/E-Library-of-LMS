@@ -169,20 +169,20 @@ export const Subject = () => {
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
         >
-          <Form.Item name="subCode" label="Mã môn học">
+          <Form.Item name="subCode" label="Mã môn học" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="subName" label="Tên môn học">
+          <Form.Item name="subName" label="Tên môn học" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="subGroup" label="Tổ bộ môn">
+          <Form.Item name="subGroup" label="Tổ bộ môn" rules={[{ required: true }]}>
             <Select>
               {dataSubGroup.map((vl: ISubjectGroup) => (
                 <Option value={vl.id}>{vl.groupName}</Option>
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="teacher" label="Giảng viên">
+          <Form.Item name="teacher" label="Giảng viên" rules={[{ required: true }]}>
             <Select>
               <Option value="">Tất cả</Option>
               {teacher.map((vl: UserState) => (
@@ -190,7 +190,7 @@ export const Subject = () => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="image" label="Hình ảnh">
+          <Form.Item name="image" label="Hình ảnh" rules={[{ required: true }]}>
             <Upload
               beforeUpload={() => false}
               maxCount={1}

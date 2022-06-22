@@ -121,20 +121,20 @@ export const ClassManage = () => {
         form={form}
         onFinish={onFinish}
       >
-        <Form.Item label="Mã lớp học" name="classCode">
+        <Form.Item label="Mã lớp học" name="classCode" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Tên lớp học" name="className">
+        <Form.Item label="Tên lớp học" name="className" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item name="subject" label="Môn học">
+        <Form.Item name="subject" label="Môn học" rules={[{ required: true }]}>
           <Select>
             {dataSub?.map((vl: ISubject) => (
               <Option value={vl.id}>{vl.subName}</Option>
             ))}
           </Select>
         </Form.Item>
-        <Form.Item name="teacher" label="Giảng viên">
+        <Form.Item name="teacher" label="Giảng viên" rules={[{ required: true }]}>
           <Select>
             <Option value="">Tất cả</Option>
             {teacher?.map((vl: UserState) => (
@@ -142,7 +142,7 @@ export const ClassManage = () => {
             ))}
           </Select>
         </Form.Item>
-        <Form.Item name="student" label="Sinh viên">
+        <Form.Item name="student" label="Sinh viên" rules={[{ required: true }]}>
           <Select mode="multiple" allowClear placeholder="Nhập hoặc select">
             {student?.map((vl: UserState) => (
               <Option key={vl.userCode || vl.id}>{vl.userCode}</Option>

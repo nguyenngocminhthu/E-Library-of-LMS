@@ -249,14 +249,14 @@ export const Notification = () => {
               onFinish={onFinish}
               className="header-notification"
             >
-              <Form.Item name="subject">
+              <Form.Item name="subject" rules={[{ required: true }]}>
                 <SelectComp
                   textLabel="Chọn môn giảng dạy"
                   className="label-style-item"
                   dataString={dataClass}
                   onChange={(e: any) => handleSelect(e)}
                 />
-                <Form.Item name="topic">
+                <Form.Item name="topic" rules={[{ required: true }]}>
                   <SelectComp
                     textLabel="Chọn chủ đề"
                     className="label-style-item"
@@ -269,6 +269,7 @@ export const Notification = () => {
                 name="title"
                 className="label-style-item"
                 label="Tiêu đề"
+                rules={[{ required: true }]}
               >
                 <Input placeholder="Tiêu đề" />
               </Form.Item>
@@ -277,6 +278,7 @@ export const Notification = () => {
                 name="content"
                 label="Nội dung"
                 className="label-style-item"
+                rules={[{ required: true }]}
               >
                 <SunEditor
                   placeholder="Nội dung"

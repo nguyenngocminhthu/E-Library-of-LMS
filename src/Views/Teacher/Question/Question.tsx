@@ -115,7 +115,7 @@ export const Question = () => {
         form={form}
         style={{ textAlign: "left" }}
       >
-        <Form.Item name="fileName" label="Tệp đính kèm">
+        <Form.Item name="fileName" label="Tệp đính kèm" rules={[{ required: true }]}>
           <div className="download-file">
             <div className="file-name">
               <LinkOutlined />
@@ -130,13 +130,13 @@ export const Question = () => {
             <DownloadOutlined /> [Tải xuống file mẫu]
           </div>
         </Form.Item>
-        <Form.Item name="chooseTopic" label="Chọn tổ - bộ môn">
+        <Form.Item name="chooseTopic" label="Chọn tổ - bộ môn" rules={[{ required: true }]}>
           <Select defaultValue="Chọn tổ - bộ môn">
             <Option value={0}>Văn hóa - xã hội</Option>
             <Option value={1}>Khoa học - Tự nhiên</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="ChooseLeason" label="Chọn môn học">
+        <Form.Item name="ChooseLeason" label="Chọn môn học" rules={[{ required: true }]}>
           <Select defaultValue="Chọn môn học">
             <Option value={0}>Thương mai điện tử</Option>
             <Option value={1}>Sinh học</Option>

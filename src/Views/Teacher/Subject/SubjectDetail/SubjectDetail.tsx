@@ -158,10 +158,10 @@ export const SubjectDetail = () => {
         layout="horizontal"
         form={form}
       >
-        <Form.Item name="fileName" label="Tiêu đề (tóm tắt)">
+        <Form.Item name="fileName" label="Tiêu đề (tóm tắt)" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item name="chooseTopic" label="Chi tiết (tuỳ chọn)">
+        <Form.Item name="chooseTopic" label="Chi tiết (tuỳ chọn)" rules={[{ required: true }]}>
           <SunEditor
             setOptions={{
               defaultTag: "div",
@@ -177,7 +177,7 @@ export const SubjectDetail = () => {
             }}
           />
         </Form.Item>
-        <Form.Item name="fileNameTitle" label="Lớp giảng dạy">
+        <Form.Item name="fileNameTitle" label="Lớp giảng dạy" rules={[{ required: true }]}>
           <div className="selectcomp">
             <Select className="select" defaultValue={0}>
               <Option value={0}>Tất cả các lớp</Option>
@@ -186,7 +186,7 @@ export const SubjectDetail = () => {
             </Select>
           </div>
         </Form.Item>
-        <Form.Item name="fileNameTitle" label="Chủ đề">
+        <Form.Item name="fileNameTitle" label="Chủ đề" rules={[{ required: true }]}>
           <div className="selectcomp">
             <Select className="select" defaultValue="Tuỳ chọn chủ đề">
               <Option value={0}>Giới thiệu chung về Thương mại Điện tử</Option>
@@ -194,9 +194,9 @@ export const SubjectDetail = () => {
             </Select>
           </div>
         </Form.Item>
-        <Form.Item name="fileNameTitle" label="Bài giảng">
+        <Form.Item name="fileNameTitle" label="Bài giảng" rules={[{ required: true }]}>
           <div className="selectcomp">
-            <Select className="select" defaultValue="Tuỳ chọn bài giảng">
+            <Select className="select" defaultValue="Tuỳ chọn bài giảng" >
               <Option value={0}>
                 Giới thiệu về thương mại điện tử trong những năm gần đây
               </Option>

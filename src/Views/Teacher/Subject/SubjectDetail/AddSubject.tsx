@@ -53,7 +53,7 @@ export const AddSubject = () => {
             className="modal-add-role"
             form={form}
           >
-            <Form.Item name="subcode" label="Tiêu đề" required>
+            <Form.Item name="subcode" label="Tiêu đề" rules={[{ required: true }]}>
               <Input placeholder="Admin" />
             </Form.Item>
             <Form.Item name="codesuject" label="Ghi chú">
@@ -85,7 +85,7 @@ export const AddSubject = () => {
             className="modal-add-role"
             form={form}
           >
-            <Form.Item name="subcode" label="Bài giảng" required>
+            <Form.Item name="subcode" label="Bài giảng" rules={[{ required: true }]}>
               <div className="download-file">
                 <div className="file-name">
                   <LinkOutlined />
@@ -97,7 +97,7 @@ export const AddSubject = () => {
                 Kiểu file .pdf .jpeg .png .jpg với dung lượng tối đa là 100 MB.
               </span>
             </Form.Item>
-            <Form.Item label="Upload">
+            <Form.Item label="Upload" rules={[{ required: true }]}>
               <Dragger {...props}>
                 <p className="ant-upload-drag-icon">
                   <ColoudUp />
@@ -123,7 +123,7 @@ export const AddSubject = () => {
             className="modal-add-role"
             form={form}
           >
-            <Form.Item name="subcode" label="Lớp học" required>
+            <Form.Item name="subcode" label="Lớp học" rules={[{ required: true }]}>
               <div className="selectcomp">
                 <Select defaultValue={0}>
                   <Option value={0}>

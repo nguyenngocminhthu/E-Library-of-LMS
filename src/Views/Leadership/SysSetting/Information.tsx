@@ -122,24 +122,24 @@ export const Information = () => {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label="Mã trường học" name="schoolCode">
+                <Form.Item label="Mã trường học" name="schoolCode" rules={[{ required: true }]}>
                   <Input disabled={disable} />
                 </Form.Item>
-                <Form.Item label="Tên trường học" name="schoolName">
+                <Form.Item label="Tên trường học" name="schoolName" rules={[{ required: true }]}>
                   <Input disabled={disable} />
                 </Form.Item>
-                <Form.Item label="Website" name="website">
+                <Form.Item label="Website" name="website" rules={[{ required: true }]}>
                   <Input disabled={disable} />
                 </Form.Item>
               </Col>
               <Col span={8} offset={1}>
-                <Form.Item label="Loại trường" name="schoolType">
+                <Form.Item label="Loại trường" name="schoolType" rules={[{ required: true }]}>
                   <Select disabled={disable}>
                     <Option value={0}>Dân lập</Option>
                     <Option value={1}>Công lập</Option>
                   </Select>
                 </Form.Item>
-                <Form.Item label="Hiệu trưởng" name="headmaster">
+                <Form.Item label="Hiệu trưởng" name="headmaster" rules={[{ required: true }]}>
                   <Input disabled={disable} />
                 </Form.Item>
               </Col>
@@ -147,18 +147,18 @@ export const Information = () => {
             <Row style={{ padding: "16px" }}>
               <Col span={6}></Col>
               <Col span={8} offset={1}>
-                <Form.Item label="Tên hệ thống thư viện" name="libraryName">
+                <Form.Item label="Tên hệ thống thư viện" name="libraryName" rules={[{ required: true }]}>
                   <Input disabled={disable} />
                 </Form.Item>
-                <Form.Item label="Địa chỉ truy cập" name="adressConect">
+                <Form.Item label="Địa chỉ truy cập" name="adressConect" rules={[{ required: true }]}>
                   <Input disabled={disable} />
                 </Form.Item>
               </Col>
               <Col span={8} offset={1}>
-                <Form.Item label="Số điện thoại" name="phone">
+                <Form.Item label="Số điện thoại" name="phone" rules={[{ required: true }]}>
                   <Input disabled={disable} />
                 </Form.Item>
-                <Form.Item label="Email" name="email">
+                <Form.Item label="Email" name="email" rules={[{ required: true }]}>
                   <Input disabled={disable} />
                 </Form.Item>
               </Col>
@@ -166,7 +166,7 @@ export const Information = () => {
             <Row style={{ padding: "16px" }}>
               <Col span={6}></Col>
               <Col span={8} offset={1}>
-                <Form.Item label="Ngôn ngữ xác định" name="language">
+                <Form.Item label="Ngôn ngữ xác định" name="language" rules={[{ required: true }]}>
                   <Select disabled={disable}>
                     <Option value={0}>Tiếng Việt</Option>
                     <Option value={1}>Tiếng Anh</Option>
@@ -174,7 +174,7 @@ export const Information = () => {
                     <Option value={3}>Tiếng Pháp</Option>
                   </Select>
                 </Form.Item>
-                <Form.Item label="Niên khóa mặc định" name="schoolYear">
+                <Form.Item label="Niên khóa mặc định" name="schoolYear" rules={[{ required: true }]}>
                   <Select disabled={disable}>
                     <Option value={0}>2019-2020</Option>
                     <Option value={1}>2020-2021</Option>

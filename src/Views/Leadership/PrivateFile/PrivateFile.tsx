@@ -78,7 +78,7 @@ export const PrivateFile = () => {
         layout="horizontal"
         form={form}
       >
-        <Form.Item label="Tên mới" name="userName">
+        <Form.Item label="Tên mới" name="userName" rules={[{ required: true }]}>
           <div className="input-layout">
             <Input />
             .file
