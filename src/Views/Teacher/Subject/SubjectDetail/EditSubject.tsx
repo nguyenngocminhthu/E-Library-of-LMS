@@ -30,10 +30,9 @@ import { createTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
 import { EditTopic } from "./EditTopic";
 
-const { TabPane } = Tabs;
-const { Panel } = Collapse;
-
 export const EditSubject = () => {
+  const { TabPane } = Tabs;
+  const { Panel } = Collapse;
   const params = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();

@@ -10,9 +10,8 @@ import { getSubject, ISubject } from "../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../redux/store";
 
-const { Panel } = Collapse;
-
 export const SubjectDetail = () => {
+  const { Panel } = Collapse;
   const params = useParams<{ idSub: string }>();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();

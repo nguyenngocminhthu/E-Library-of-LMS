@@ -39,10 +39,9 @@ import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 import "./style.scss";
 
-const { Title } = Typography;
-const { Option } = Select;
-
 export const Exam = () => {
+  const { Title } = Typography;
+  const { Option } = Select;
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);

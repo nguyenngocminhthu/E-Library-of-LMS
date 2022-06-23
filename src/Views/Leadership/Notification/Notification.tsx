@@ -31,8 +31,8 @@ import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
-const { TabPane } = Tabs;
 export const Notification = () => {
+  const { TabPane } = Tabs;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);

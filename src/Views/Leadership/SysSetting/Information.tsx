@@ -1,5 +1,5 @@
 import { CameraOutlined, FormOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, message, Row, Select, Upload } from "antd";
+import { Button, Col, Form, Input, Row, Select, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -10,9 +10,8 @@ import { updateProfile } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
-const { Option } = Select;
-
 export const Information = () => {
+  const { Option } = Select;
   const [form] = Form.useForm();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [disable, setDisable] = useState(false);

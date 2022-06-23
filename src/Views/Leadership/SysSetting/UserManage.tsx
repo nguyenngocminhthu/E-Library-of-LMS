@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { getSubjects } from "../../../redux/reducers/subject.reducer";
 import {
   createUser,
   deleteUser,
@@ -16,13 +15,11 @@ import {
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
 import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
-
 import "./style.scss";
 
-const { Option } = Select;
-const { Title } = Typography;
-
 export const UserManage = () => {
+  const { Option } = Select;
+  const { Title } = Typography;
   const dispatch: AppDispatch = useDispatch();
   const [data, setData] = useState<UserState[]>([]);
   const [form] = Form.useForm();

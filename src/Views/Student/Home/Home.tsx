@@ -1,14 +1,10 @@
 import { Card, Col, List, Progress, Row, Typography } from "antd";
-import React from "react";
-import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import ppt from "../../../shared/img/ppt.png";
 import math from "../../../shared/img/math.png";
 import { Column } from "@ant-design/plots";
 import "./style.scss";
-
-const { Title } = Typography;
 
 interface IFile {
   learn: string;
@@ -25,8 +21,8 @@ interface ILearnTime {
 }
 
 export const Home = () => {
+  const { Title } = Typography;
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
-  const navigate = useNavigate();
 
   const listFile: any[] | undefined = [];
   for (let i = 0; i < 10; i++) {

@@ -4,45 +4,23 @@ import {
   Button,
   Checkbox,
   Divider,
-  Input,
   List,
-  Modal,
   Skeleton,
   Space,
   Tabs,
   Tooltip,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
-import SunEditor from "suneditor-react";
 import "./style.scss";
 
-const { TabPane } = Tabs;
 export const Notification = () => {
+  const { TabPane } = Tabs;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editorState, setEditorState] = useState();
   const navigate = useNavigate();
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-  const onEditorStateChange = (editorState: any) => {
-    setEditorState(editorState);
-  };
   const loadMoreData = () => {
     if (loading) {
       return;

@@ -1,11 +1,9 @@
 import {
-  DownloadOutlined,
   FileFilled,
   HeartFilled,
   HeartOutlined,
   MessageOutlined,
   PlayCircleFilled,
-  UserOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -14,13 +12,12 @@ import {
   Collapse,
   Form,
   Input,
-  message,
   Row,
   Tabs,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
-import { LegacyRef, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
@@ -34,10 +31,9 @@ import { AppDispatch } from "../../../../redux/store";
 import { ModalReply } from "../../../Student/Subject/ModalReply";
 import "../style.scss";
 
-const { Panel } = Collapse;
-const { TabPane } = Tabs;
-
 export const ViewSubject = () => {
+  const { Panel } = Collapse;
+  const { TabPane } = Tabs;
   const params = useParams<{ id: string }>();
   const [question, setQuestion] = useState(false);
   const dispatch: AppDispatch = useDispatch();

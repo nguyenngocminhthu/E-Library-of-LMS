@@ -1,13 +1,12 @@
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
-import { MinusCircleOutlined, CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import {
   Button,
   Checkbox,
   Col,
   Form,
   Input,
-  message,
   Radio,
   Row,
   Select,
@@ -19,7 +18,6 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import {
   createQuestion,
-  IQuestion,
 } from "../../../redux/reducers/question.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
@@ -27,12 +25,11 @@ import {
   ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
 import { UserState } from "../../../redux/reducers/user.reducer";
-
-const { Option } = Select;
+import "./style.scss";
 
 export const CreateQuestions = () => {
+  const { Option } = Select;
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();

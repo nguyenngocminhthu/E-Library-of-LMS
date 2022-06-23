@@ -38,11 +38,10 @@ import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
 import { EyeOutlined } from "@ant-design/icons";
 import "./style.scss";
 
-const { Panel } = Collapse;
-const { Option } = Select;
-const { Title } = Typography;
-
 export const Question = () => {
+  const { Panel } = Collapse;
+  const { Option } = Select;
+  const { Title } = Typography;
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([

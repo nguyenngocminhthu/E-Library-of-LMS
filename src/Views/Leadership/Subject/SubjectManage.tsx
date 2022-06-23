@@ -15,15 +15,12 @@ import {
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import "./style.scss";
 
 export const SubjectManage = () => {
-  const navigate = useNavigate();
-  const params = useParams<{ idSub: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
 
@@ -210,7 +207,6 @@ const downloadFile = {
           <Tooltip title="Detail">
             <Button
               onClick={() => modal.confirm(seeDetails)}
-              //   onClick={() => navigate(`/subjectManage/${record.subCode}`)}
               icon={<EyeOutlined />}
             />
           </Tooltip>

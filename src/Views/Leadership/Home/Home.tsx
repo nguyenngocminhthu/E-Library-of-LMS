@@ -10,8 +10,6 @@ import ppt from "../../../shared/img/ppt.png";
 import WEB23 from "../../../shared/img/WEB23.png";
 import "./style.scss"; // Alt Shift O
 
-const { Title } = Typography;
-
 interface IFile {
   fileName: string;
   createdAt: string;
@@ -21,6 +19,7 @@ interface IFile {
 }
 
 export const Home = () => {
+  const { Title } = Typography;
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
 

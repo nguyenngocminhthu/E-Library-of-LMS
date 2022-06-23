@@ -6,6 +6,7 @@ import { ReactComponent as Home } from "../../shared/img/icon/home.svg";
 import logosecond from "../../shared/img/icon/logo-second.svg";
 import { ReactComponent as Book } from "../../shared/img/icon/u_book-open.svg";
 import { ReactComponent as Question } from "../../shared/img/icon/u_comment-question.svg";
+import { ReactComponent as File } from "../../shared/img/icon/u_file-edit-alt.svg";
 import "../../shared/styles/layout-style/sidebar.scss";
 const { Sider } = Layout;
 
@@ -42,6 +43,11 @@ export const StudentSidebar: React.FC = () => {
             icon={<Book />}
           ></Menu.Item>
           <Menu.Item
+            onClick={() => handleSelect(["exams"])}
+            key="exams"
+            icon={<File />}
+          ></Menu.Item>
+          <Menu.Item
             onClick={() => handleSelect(["notification"])}
             key="notification"
             icon={<Bell />}
@@ -65,6 +71,9 @@ export const StudentSidebar: React.FC = () => {
           </Menu.Item>
           <Menu.Item onClick={() => handleSelect(["subject"])} key="subject">
             Môn học
+          </Menu.Item>
+          <Menu.Item onClick={() => handleSelect(["exams"])} key="exams">
+            Đề thi và kiểm tra
           </Menu.Item>
           <Menu.Item
             onClick={() => handleSelect(["notification"])}

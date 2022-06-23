@@ -1,8 +1,8 @@
 import React from "react";
-import { Row, Col, Card } from "antd";
+import { Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
-import "./style.scss";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import "./style.scss";
 
 export const System = () => {
   const navigate = useNavigate();

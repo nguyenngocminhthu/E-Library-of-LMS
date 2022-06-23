@@ -1,5 +1,5 @@
-import { CaretRightFilled, DoubleRightOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card, Col, List, Row, Typography } from "antd";
+import { DoubleRightOutlined } from "@ant-design/icons";
+import { Avatar, Card, Col, List, Row, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
@@ -8,9 +8,6 @@ import { ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import ppt from "../../../shared/img/ppt.png";
 import WEB23 from "../../../shared/img/WEB23.png";
-
-const { Title } = Typography;
-
 interface IData {
   fileName: string;
   subject: string;
@@ -28,6 +25,7 @@ interface IFile {
 }
 
 export const Home = () => {
+  const { Title } = Typography;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");

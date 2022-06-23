@@ -8,11 +8,9 @@ import {
   Button,
   Col,
   Dropdown,
-  Form,
   Menu,
   Popover,
   Row,
-  Select,
   Space,
   Table,
   Tooltip,
@@ -26,25 +24,20 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
-import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
 import { AppDispatch } from "../../../redux/store";
 import {
   getUser,
-  getUsers,
   updateProfile,
   UserState,
 } from "../../../redux/reducers/user.reducer";
 
-const { Title } = Typography;
-const { Option } = Select;
-
 export const Subject = () => {
-  const navigate = useNavigate();
-  const [form] = Form.useForm();
-  const dispatch: AppDispatch = useDispatch();
-  const [disable, setDisable] = useState(false);
-  const [data, setData] = useState<ISubject[]>([]);
+  const { Title } = Typography;
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+  const [data, setData] = useState<ISubject[]>([]);
 
   const userMenu = (
     <Menu>

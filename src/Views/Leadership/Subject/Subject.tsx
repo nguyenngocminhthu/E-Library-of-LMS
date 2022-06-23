@@ -4,7 +4,6 @@ import {
   Col,
   Form,
   Input,
-  message,
   Row,
   Select,
   Space,
@@ -38,13 +37,13 @@ import {
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
-const { Option } = Select;
 export interface ISubjectSelect {
   name: string;
   value: string;
 }
 
 export const Subject = () => {
+  const { Option } = Select;
   const navigate = useNavigate();
   const data = useSelector((state: any) => state.subject.listSubject.results);
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([

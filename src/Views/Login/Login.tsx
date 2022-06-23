@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Login.scss";
 import logoLogin from "../../shared/img/icon/logo-second.svg";
 import { ReactComponent as Account } from "../../shared/img/icon/account.svg";
 import { ReactComponent as Password } from "../../shared/img/icon/shield-keyhole-line.svg";
@@ -8,6 +7,7 @@ import { Row, Col, Button, Form, Input } from "antd";
 import { logIn } from "../../redux/reducers/auth.reducer";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
+import "./Login.scss";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);

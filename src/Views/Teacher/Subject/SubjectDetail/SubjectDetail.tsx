@@ -40,11 +40,10 @@ import {
 import { ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
 
-const { Option } = Select;
-const { TabPane } = Tabs;
-const { Panel } = Collapse;
-
 export const SubjectDetail = () => {
+  const { Option } = Select;
+  const { TabPane } = Tabs;
+  const { Panel } = Collapse;
   const params = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();

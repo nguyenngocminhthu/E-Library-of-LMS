@@ -12,12 +12,11 @@ import {
 } from "antd";
 import modal from "antd/lib/modal";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import SearchComponent from "../../../../Components/SearchComponent";
 import { SelectComp } from "../../../../Components/Select";
-import "../style.scss";
 import { ModalAdd } from "./ModalAdd";
+import "../style.scss";
 
 const status = [
   {
@@ -31,8 +30,6 @@ const status = [
 ];
 
 export const ListFile = () => {
-  const navigate = useNavigate();
-  const params = useParams<{ idSub: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalType, setModalType] = useState<string>("lesson");
@@ -101,7 +98,6 @@ export const ListFile = () => {
           <Tooltip title="Detail">
             <Button
               onClick={() => modal.confirm(seeDetails)}
-              // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
               icon={<EyeOutlined />}
             />
           </Tooltip>

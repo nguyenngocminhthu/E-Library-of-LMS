@@ -6,7 +6,6 @@ import {
   DatePicker,
   Form,
   Input,
-  message,
   Row,
   Space,
   Table,
@@ -18,7 +17,7 @@ import modal from "antd/lib/modal";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
@@ -37,11 +36,9 @@ import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
-
 import "./style.scss";
 
 export const ListFile = () => {
-  const navigate = useNavigate();
   const params = useParams<{ idSub: string }>();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
@@ -285,7 +282,6 @@ export const ListFile = () => {
           <Tooltip title="Detail">
             <Button
               onClick={() => modal.confirm(seeDetails)}
-              // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
               icon={<EyeOutlined />}
             />
           </Tooltip>
@@ -389,7 +385,6 @@ export const ListFile = () => {
           <Tooltip title="Detail">
             <Button
               onClick={() => modal.confirm(seeDetails)}
-              // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
               icon={<EyeOutlined />}
             />
           </Tooltip>

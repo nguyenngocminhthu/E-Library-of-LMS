@@ -1,11 +1,9 @@
 import {
-  DownloadOutlined,
   FileFilled,
   HeartFilled,
   HeartOutlined,
   MessageOutlined,
   PlayCircleFilled,
-  UserOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -14,7 +12,6 @@ import {
   Collapse,
   Form,
   Input,
-  message,
   Row,
   Tabs,
 } from "antd";
@@ -34,10 +31,9 @@ import { AppDispatch } from "../../../redux/store";
 import { ModalReply } from "./ModalReply";
 import "./style.scss";
 
-const { Panel } = Collapse;
-const { TabPane } = Tabs;
-
 export const ViewSubject = () => {
+  const { Panel } = Collapse;
+  const { TabPane } = Tabs;
   const params = useParams<{ idSub: string }>();
   const [question, setQuestion] = useState(false);
   const dispatch: AppDispatch = useDispatch();

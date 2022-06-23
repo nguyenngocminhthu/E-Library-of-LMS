@@ -1,10 +1,9 @@
-import { CaretRightOutlined } from '@ant-design/icons';
-import { Button, Collapse, Tooltip, Switch  } from 'antd';
-import React, { useState } from 'react';
+import { Collapse, Switch  } from 'antd';
+import { useState } from 'react';
 import "./style.scss"
-const { Panel } = Collapse;
 
 function NotiSetting() {
+  const { Panel } = Collapse;
   const [ checked, setChecked ] = useState(false);
 
   return (

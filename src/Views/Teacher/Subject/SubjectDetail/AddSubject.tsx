@@ -2,13 +2,9 @@ import {
   LinkOutlined,
 } from "@ant-design/icons";
 import { Button, Input, Form, Upload, message, Select, Checkbox } from "antd";
-import { useNavigate } from "react-router-dom";
 import SunEditor from "suneditor-react";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import { ReactComponent as ColoudUp } from "../../../../shared/img/icon/cloud_up.svg";
-
-const { Dragger } = Upload;
-const { Option } = Select;
 
 const props = {
   name: "file",
@@ -31,7 +27,8 @@ const props = {
 };
 
 export const AddSubject = () => {
-  const navigate = useNavigate();
+  const { Dragger } = Upload;
+  const { Option } = Select;
   const [form] = Form.useForm();
 
   return (

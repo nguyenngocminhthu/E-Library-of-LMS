@@ -5,19 +5,16 @@ import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import cloudinaryUpload from "../../Apis/Cloudinary";
 import { BreadcrumbComp } from "../../Components/Breadcrumb";
-import Toast from "../../Components/Toast";
 import { setLoading } from "../../redux/reducers/loading.reducer";
 import { updateProfile, UserState } from "../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../redux/store";
 import "./style.scss";
 
-const { Option } = Select;
-
-const { TabPane } = Tabs;
 export const Profile = () => {
+  const { Option } = Select;
+  const { TabPane } = Tabs;
   const [form] = Form.useForm();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [disable, setDisable] = useState(true);

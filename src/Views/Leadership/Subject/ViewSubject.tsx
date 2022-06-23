@@ -34,10 +34,9 @@ import { AppDispatch } from "../../../redux/store";
 import { ModalReply } from "../../Student/Subject/ModalReply";
 import "./style.scss";
 
-const { Panel } = Collapse;
-const { TabPane } = Tabs;
-
 export const ViewSubject = () => {
+  const { Panel } = Collapse;
+  const { TabPane } = Tabs;
   const params = useParams<{ idSub: string }>();
   const [question, setQuestion] = useState(false);
   const dispatch: AppDispatch = useDispatch();

@@ -7,13 +7,12 @@ import { ReactComponent as Powerpoint } from "../../../../shared/img/icon/pptw_f
 import { ReactComponent as Excel } from "../../../../shared/img/icon/excel_file.svg";
 import { ReactComponent as Mp4 } from "../../../../shared/img/icon/mp4_file.svg";
 
-const { Option } = Select;
-
 export const ModalAdd: React.FC<{
   visible: boolean;
   setVisible: any;
   modalType: string;
 }> = (props) => {
+  const { Option } = Select;
   const [form] = Form.useForm();
   const [test, setTest] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);

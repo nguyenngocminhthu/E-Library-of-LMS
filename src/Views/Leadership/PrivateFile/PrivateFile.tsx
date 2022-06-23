@@ -1,14 +1,12 @@
 import { DownloadOutlined, MoreOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Popover, Row, Space, Table, Tooltip } from "antd";
 import modal from "antd/lib/modal";
-import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import "./style.scss";
 
 export const PrivateFile = () => {
-  const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const data = [
@@ -119,12 +117,6 @@ export const PrivateFile = () => {
       dataIndex: "nameFile",
       key: "nameFile",
       sorter: true,
-      // sorter: (a: any, b: any) => a.subName.length - b.subName.length,
-      // render: (subName: string, record: any) => (
-      //   <div onClick={() => navigate(`/subjects/${record.subCode}`)}>
-      //     {subName}
-      //   </div>
-      // ),
     },
     {
       title: "Người chỉnh sửa",

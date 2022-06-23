@@ -8,8 +8,9 @@ import NotiSetting from "../Views/Student/Notification/NotiSetting";
 import { Subject } from "../Views/Student/Subject/Subject";
 import { SubjectDetail } from "../Views/Student/Subject/SubjectDetail";
 import { ViewSubject } from "../Views/Student/Subject/ViewSubject";
-import { Exam } from "../Views/Teacher/Exam/Exam";
 import { Notification } from "../Views/Student/Notification/Notification";
+import { ExamDetails } from "../Views/Student/Exam/ExamDetails";
+import { Exam } from "../Views/Student/Exam/Exam";
 
 export const Student = () => {
   return (
@@ -31,6 +32,8 @@ export const Student = () => {
           />
 
           <Route path="/student/exams" element={<Exam />} />
+
+          <Route path="student/exams/examdetail/:id" element={<ExamDetails />} />
 
           <Route path="/student/help" element={<Help />} />
 

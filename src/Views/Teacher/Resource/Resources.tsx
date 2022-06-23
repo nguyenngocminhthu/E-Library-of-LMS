@@ -30,7 +30,6 @@ import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
-
 import { ModalUploadFiles } from "./modalUploadFiles";
 
 export const Resources = () => {

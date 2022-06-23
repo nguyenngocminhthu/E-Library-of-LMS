@@ -25,14 +25,11 @@ import {
   ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
 import { ISelect } from "../../../Components/Select";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { createBank } from "../../../redux/reducers/banks.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
-
-const { Option } = Select;
-
+import "./style.scss";
 interface IQues {
   quesName: string;
   answers: string[];
@@ -45,6 +42,7 @@ interface IQues {
 }
 
 export const CreateExam = () => {
+  const { Option } = Select;
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [select, setSelect] = useState(0);

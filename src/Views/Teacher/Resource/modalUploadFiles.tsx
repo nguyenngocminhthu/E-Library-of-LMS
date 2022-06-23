@@ -1,19 +1,15 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal, Select, Upload } from "antd";
+import { Button, Form, Modal, Upload } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { SelectComp } from "../../../Components/Select";
 import {
-  getClass,
-  getClasses,
   IClass,
 } from "../../../redux/reducers/classes.reducer";
 import { createFile } from "../../../redux/reducers/file.reducer";
 import {
-  createLesson,
-  ILesson,
-  updateLesson,
+  ILesson
 } from "../../../redux/reducers/lesson.reducer";
 import {
   getSubject,
@@ -24,8 +20,6 @@ import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
-
-const { Option } = Select;
 
 export const ModalUploadFiles: React.FC<{
   visible: boolean;

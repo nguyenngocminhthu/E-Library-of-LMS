@@ -4,7 +4,6 @@ import {
   Col,
   Form,
   Input,
-  message,
   Row,
   Select,
   Space,
@@ -29,10 +28,9 @@ import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
 import { ISubjectSelect } from "../Subject/Subject";
 import "./style.scss";
 
-const { Title } = Typography;
-const { Option } = Select;
-
 export const ClassManage = () => {
+  const { Title } = Typography;
+  const { Option } = Select;
   const data = useSelector((state: any) => state.subject.listSubject.results);
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
     { name: "Tất cả bộ môn", value: "" },
@@ -45,7 +43,6 @@ export const ClassManage = () => {
   const dataSub = useSelector(
     (state: any) => state.subject.listSubject.results
   );
-  const [filter, setFilter] = useState<any>({ limit: 999 });
   const [student, setStudent] = useState<UserState[]>([]);
   const [teacher, setTeacher] = useState<UserState[]>([]);
 

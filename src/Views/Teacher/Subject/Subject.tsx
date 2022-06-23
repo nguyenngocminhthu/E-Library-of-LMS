@@ -1,5 +1,5 @@
 import { EyeOutlined, MoreOutlined } from "@ant-design/icons";
-import { Button, Col, Dropdown, Form, Input, Menu, Popover, Row, Select, Space, Table, Tooltip } from "antd";
+import { Button, Col, Form, Popover, Row, Select, Space, Table, Tooltip } from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -16,9 +16,8 @@ import {
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
-const { Option } = Select;
-
 export const Subject = () => {
+  const { Option } = Select;
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const [form] = Form.useForm();
@@ -124,11 +123,6 @@ export const Subject = () => {
     ),
     okText: "Lưu",
     cancelText: "Huỷ",
-  };
-  const seeDetails = {
-    title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
-    width: "90%",
-    content: <div></div>,
   };
 
   const expandedRowRender = (record: ISubject) => {
