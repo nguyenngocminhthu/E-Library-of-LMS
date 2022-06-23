@@ -1,0 +1,49 @@
+.error-page {
+    background-image: url("../../img/404error.jpg");
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    .text-label {
+        display: inline-grid;
+        font-size: 24px;
+        margin-top: 370px;
+        margin-left: 120px;
+        font-family: Mulish;
+        color: #7c795d;
+        font-family: 'Trocchi', serif;
+        font-size: 24px;
+        font-weight: normal;
+        line-height: 48px;
+    }
+
+    .coverButton {
+        background-image: linear-gradient(to right, #f17f21, #ff5400);
+        width: fit-content;
+        height: fit-content;
+        font-weight: 800;
+        color: white;
+        border: none;
+        font-size: 36px;
+        border-radius: 20px;
+        font-family: Mulish;
+        margin-top: 30px;
+    }
+
+    .ant-btn:hover,
+    .ant-btn:focus,
+    .ant-btn:active {
+        text-decoration: none;
+        background: none;
+    }
+
+    .ant-btn:hover,
+    .ant-btn:focus {
+        color: none;
+        border-color: none;
+        background: none;
+        cursor: pointer;
+        background-image: linear-gradient(to right, #f17f21e3, #ff5500de);
+    }
+
+}
