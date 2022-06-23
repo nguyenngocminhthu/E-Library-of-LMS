@@ -87,17 +87,18 @@ export const getQuestion = createAsyncThunk(
 
 export interface IQuestion {
   id: string;
-  quesCode: string;
+  quesCode?: string;
   quesName: string;
-  user: UserState;
+  user?: UserState;
   answers: string[];
   correct: number[];
-  bank: IBanks;
-  subject: ISubject;
+  correctEssay: string;
+  bank?: IBanks;
+  subject?: ISubject;
   quesType: number;
   level: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface QuestionState {

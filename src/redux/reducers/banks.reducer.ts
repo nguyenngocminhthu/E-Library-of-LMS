@@ -7,6 +7,33 @@ import { UserState } from "./user.reducer";
 import { IQuestion } from "./question.reducer";
 import { message } from "antd";
 
+export const createBank = createAsyncThunk(
+  "Banks/createBank",
+  async (body: IQuestion, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Banks.createBank(body);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo đề thi thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export const getBanks = createAsyncThunk(
   "Banks/getBanks",
   async ({ limit, subjectGroup, subject, user }: any, thunkAPI) => {
@@ -88,8 +115,8 @@ export interface IBanks {
   examName: string;
   subject: ISubject;
   subjectGroup: string;
-  examType: number;
   user: UserState;
+  questions: IQuestion[];
   question: IQuestion[];
   createdAt: string;
   updatedAt: string;
@@ -125,6 +152,12 @@ export const banksReducer = createSlice({
       state.listBanks = action.payload;
     });
     builder.addCase(updateBank.rejected, (state, action) => {
+      state.listBanks = [];
+    });
+    builder.addCase(createBank.fulfilled, (state, action) => {
+      state.listBanks = action.payload;
+    });
+    builder.addCase(createBank.rejected, (state, action) => {
       state.listBanks = [];
     });
   },

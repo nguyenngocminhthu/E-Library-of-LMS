@@ -26,37 +26,12 @@ export const ExamDetails = () => {
         .then((rs: IBanks) => {
           setData(rs);
           setSelect(0);
-        })
-        .catch((e: any) => {
-          console.debug("bank: ", e);
         });
     }
   }, []);
 
   const handleSelect = (idx: number) => {
     setSelect(idx);
-  };
-
-  const config = {
-    title: "Phê duyệt",
-    className: "file-modal",
-    content:
-      "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-    onOk: () =>
-      dispatch(updateBank({ id: params.id, payload: { status: 1 } }))
-        .unwrap()
-        .then(() => {
-          if (params.id) {
-            dispatch(getBank(params.id))
-              .unwrap()
-              .then((rs: IBanks) => {
-                setData(rs);
-                setSelect(0);
-              });
-          }
-        }),
   };
 
   return (
@@ -88,13 +63,13 @@ export const ExamDetails = () => {
             </div>
             <div>
               <div>Kiểm tra {data?.time} phút</div>
-              <div>
+              {/* <div>
                 {data?.examType === 0 ? (
                   <div>Trắc nghiệm</div>
                 ) : (
                   <div>Tự luận</div>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="d-flex">
@@ -113,35 +88,73 @@ export const ExamDetails = () => {
         <Row>
           <Col span={6}>
             <div>Phần câu hỏi - đáp án:</div>
-            {data?.question.map((vl, idx) => (
-              <div
-                className={select === idx ? "answer true" : "answer"}
-                key={vl.id}
-                onClick={() => handleSelect(idx)}
-              >
-                Câu {idx + 1}.
-                {vl.correct[0] === 0
-                  ? "A"
-                  : vl.correct[0] === 1
-                  ? "B"
-                  : vl.correct[0] === 2
-                  ? "C"
-                  : "D"}
-                <div hidden={!(select === idx)} className="icon-true">
-                  <CheckCircleOutlined />
-                </div>
-              </div>
-            ))}
+            {data?.question.length !== 0
+              ? data?.question.map((vl, idx) => (
+                  <div
+                    className={select === idx ? "answer true" : "answer"}
+                    key={vl.id}
+                    onClick={() => handleSelect(idx)}
+                  >
+                    Câu {idx + 1}.
+                    {vl.correct[0] === 0
+                      ? "A"
+                      : vl.correct[0] === 1
+                      ? "B"
+                      : vl.correct[0] === 2
+                      ? "C"
+                      : "D"}
+                    <div hidden={!(select === idx)} className="icon-true">
+                      <CheckCircleOutlined />
+                    </div>
+                  </div>
+                ))
+              : data?.questions.map((vl, idx) => (
+                  <div
+                    className={select === idx ? "answer true" : "answer"}
+                    key={vl.id}
+                    onClick={() => handleSelect(idx)}
+                  >
+                    Câu {idx + 1}.
+                    {vl.correct[0] === 0
+                      ? "A"
+                      : vl.correct[0] === 1
+                      ? "B"
+                      : vl.correct[0] === 2
+                      ? "C"
+                      : "D"}
+                    <div hidden={!(select === idx)} className="icon-true">
+                      <CheckCircleOutlined />
+                    </div>
+                  </div>
+                ))}
           </Col>
           <Col style={{ padding: "2rem" }} span={18}>
             <h3>
-              Câu {select + 1}: {data?.question[select]?.quesName}
+              Câu {select + 1}:{" "}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    data?.question.length !== 0
+                      ? data?.question[select].quesName
+                      : data?.questions[select].quesName,
+                }}
+              ></div>
             </h3>
-            <Radio.Group value={data?.question[select]?.correct[0]}>
+            <Radio.Group
+              value={
+                data?.question.length !== 0
+                  ? data?.question[select]?.correct[0]
+                  : data?.questions[select]?.correct[0]
+              }
+            >
               <Space direction="vertical">
-                {data?.question[select]?.answers.map((vl, idx) => (
-                  <Radio value={idx}>{vl}</Radio>
-                ))}
+                {data?.question.length !== 0
+                  ? data?.question[select]?.answers.map((vl, idx) => (
+                      <Radio value={idx}>{vl}</Radio>
+                    ))
+                  : data?.questions[select]?.answers.map((vl, idx) => (
+                      <Radio value={idx}>{vl}</Radio>
+                    ))}
               </Space>
             </Radio.Group>
           </Col>
