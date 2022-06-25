@@ -83,11 +83,7 @@ export const CreateQuestions = () => {
             <b>Chọn tổ bộ môn - môn học:</b>
           </h3>
           <Col span={10}>
-            <Form.Item
-              name="subjectgroup"
-              label="Tổ bộ môn"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="subjectgroup" label="Tổ bộ môn" rules={[{ required: true }]}>
               <Select onChange={(e: any) => handleSelect(e)}>
                 {dataSubGroup?.map((vl: ISubjectGroup) => (
                   <Option key={vl.id} value={vl.id}>
@@ -96,11 +92,7 @@ export const CreateQuestions = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
-              name="examType"
-              label="Hình thức"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="quesType" label="Hình thức" rules={[{ required: true }]}>
               <Radio.Group
                 defaultValue={0}
                 onChange={(e) => setExamType(e.target.value)}
@@ -109,14 +101,9 @@ export const CreateQuestions = () => {
                 <Radio value={1}>Tự luận</Radio>
               </Radio.Group>
             </Form.Item>
-           
           </Col>
           <Col span={10} offset={4}>
-            <Form.Item
-              name="subject"
-              label="Môn học"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="subject" label="Môn học" rules={[{ required: true }]}>
               <Select disabled={dataSub.length === 0}>
                 {dataSub?.map((vl: ISubject) => (
                   <Option key={vl.id} value={vl.id}>

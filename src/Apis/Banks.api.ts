@@ -3,12 +3,6 @@ import queryString from "query-string";
 
 const url = "/v1/banks";
 
-const createBank = (body: any) => {
-  return axiosClient.post(url, body).then((rs: any) => {
-    return rs;
-  });
-};
-
 const getBanks = (params: any) => {
   const query = queryString.stringify(params);
   return axiosClient.get(url + `?${query}`).then((rs: any) => {
@@ -28,6 +22,6 @@ const updateBank = (id: string, payload: any) => {
   });
 };
 
-const Banks = { getBanks, getBank, updateBank, createBank };
+const Banks = { getBanks, getBank, updateBank };
 
 export default Banks;

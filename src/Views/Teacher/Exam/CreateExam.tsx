@@ -1,17 +1,7 @@
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import { MinusCircleOutlined, CloseOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  Modal,
-  Radio,
-  Row,
-  Select,
-} from "antd";
+import { Button, Checkbox, Col, Form, Input, Radio, Row, Select } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,36 +37,13 @@ export const CreateExam = () => {
   const navigate = useNavigate();
   const [select, setSelect] = useState(0);
   const [form] = Form.useForm();
-  const [formQues] = Form.useForm();
-  const [formQuesNum] = Form.useForm();
   const [dataSubGroup, setDataSubGroup] = useState<ISelect[]>([]);
 
   const [answerNum, setAnswerNum] = useState<any[]>([]);
+  const [question, setQuestion] = useState<any[]>([]);
   const [quesType, setQuesType] = useState<number>(0);
   const [examType, setExamType] = useState<number>(0);
   const [dataSub, setDataSub] = useState<ISelect[]>([]);
-  const [quesNum, setQuesNum] = useState<number>(1);
-  const [isModalVisible, setIsModalVisible] = useState(true);
-  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
-  let arr: IQues[] = [];
-  const [questions, setQuestions] = useState<IQues[]>(arr);
-  const [question, setQuestion] = useState<string>("");
-
-  useEffect(() => {
-    for (let i = 0; i < quesNum; i++) {
-      arr.push({
-        quesName: "",
-        answers: [],
-        correct: [],
-        level: 0,
-        key: i,
-        quesType: 0,
-        examType: 0,
-        correctEssay: "",
-      });
-    }
-    setQuestions(arr);
-  }, [quesNum]);
 
   useEffect(() => {
     dispatch(getSubjectGroups(999))
@@ -90,23 +57,6 @@ export const CreateExam = () => {
       });
   }, []);
 
-  useEffect(() => {
-    formQues.setFieldsValue(questions[select]);
-    setQuestion(questions[select].quesName);
-    setQuesType(questions[select].quesType);
-    if (questions[select].correct.length === 1) {
-      formQues.setFieldsValue({ correct: questions[select].correct[0] });
-    } else {
-      formQues.setFieldsValue({ correct: questions[select].correct });
-    }
-
-    let arr: any[] = [];
-    questions[select].answers.forEach((vl) => {
-      arr.push(vl);
-    });
-    setAnswerNum(arr);
-  }, [select]);
-
   const handleSelect = (e: any) => {
     dispatch(getSubjectGroup(e))
       .unwrap()
@@ -119,48 +69,10 @@ export const CreateExam = () => {
       });
   };
 
-  const quesNumFinish = (value: any) => {
-    setQuesNum(value.quesNum);
-    setIsModalVisible(false);
-  };
-
-  const questionFinish = (values: {
-    quesName: string;
-    answers: string[];
-    correct: number;
-    level: number;
-    key: number;
-    quesType: number;
-    examType: number;
-    correctEssay?: string;
-  }) => {
+  const questionFinish = (values: IQuestion) => {
     console.debug(values);
-    setQuestions((item) =>
-      item.map((vl) => {
-        if (vl.key === select) {
-          vl.quesName = values.quesName;
-          vl.correct = [values.correct];
-          vl.answers = values.answers;
-          vl.level = values.level;
-          vl.quesType = values.quesType;
-          vl.examType = values.examType;
-          vl.correctEssay = values.correctEssay;
-        }
-        return vl;
-      })
-    );
-  };
-
-  const onFinish = (values: any) => {
-    console.debug(values);
-    dispatch(
-      createBank({
-        ...values,
-        questions: questions,
-        user: user.id,
-        fileType: 0,
-      })
-    );
+    setQuestion([...question, values]);
+    form.resetFields(["quesName", "quesType", "answers", "correct"]);
   };
 
   return (
@@ -173,7 +85,7 @@ export const CreateExam = () => {
       <Form
         className="new-exam-form"
         form={form}
-        onFinish={onFinish}
+        onFinish={questionFinish}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
       >
@@ -185,36 +97,31 @@ export const CreateExam = () => {
             <Form.Item name="examName" label="Tên" rules={[{ required: true }]}>
               <Input />
             </Form.Item>
-            <Form.Item
-              name="subjectGroup"
-              label="Tổ bộ môn"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="subjectGroup" label="Tổ bộ môn" rules={[{ required: true }]}>
               <Select onChange={(e: any) => handleSelect(e)}>
                 {dataSubGroup.map((vl: ISelect) => (
                   <Option value={vl.value}>{vl.name}</Option>
                 ))}
               </Select>
             </Form.Item>
+            <Form.Item name="examType" label="Hình thức" rules={[{ required: true }]}>
+              <Radio.Group onChange={(e) => setExamType(e.target.value)}>
+                <Radio value={0}>Trắc nghiệm</Radio>
+                <Radio value={1}>Tự luận</Radio>
+              </Radio.Group>
+            </Form.Item>
           </Col>
           <Col span={10} offset={4}>
-            <Form.Item
-              name="time"
-              label="Thời lượng"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="time" label="Thời lượng" rules={[{ required: true }]}>
               <Select style={{ width: "100px" }}>
                 <Option value={15}>15</Option>
                 <Option value={30}>30</Option>
                 <Option value={45}>45</Option>
-                <Option value={60}>60</Option>
-              </Select>
+                <Option value={45}>60</Option>
+              </Select>{" "}
+              phút
             </Form.Item>
-            <Form.Item
-              name="subject"
-              label="Môn học"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="subject" label="Môn học" rules={[{ required: true }]}>
               <Select disabled={dataSub.length === 0}>
                 {dataSub.map((vl: ISelect) => (
                   <Option value={vl.value}>{vl.name}</Option>
@@ -224,43 +131,96 @@ export const CreateExam = () => {
           </Col>
         </Row>
       </Form>
-      <div style={{ textAlign: "right", marginTop: "1rem" }}>
-        <Button
-          onClick={() => {
-            formQues.submit();
-          }}
-          type="primary"
-        >
-          Lưu câu hỏi
-        </Button>
-      </div>
-
       <div className="body-bank">
         <Form
           className="new-exam-form"
           name="question-form"
           onFinish={questionFinish}
-          form={formQues}
+          form={form}
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
         >
           <Row>
             <Col span={6} className="question-number">
               <div style={{ marginBottom: "1rem" }}>Phần câu hỏi - đáp án:</div>
-              {questions.map((vl, idx) => (
-                <div
-                  className={select === idx ? "answer true" : "answer"}
-                  key={vl.key}
-                  onClick={() => {
-                    setSelect(idx);
-                  }}
-                >
-                  Câu {idx + 1}
-                  <div hidden={!(select === idx)} className="icon-true">
-                    <CheckCircleOutlined />
-                  </div>
-                </div>
-              ))}
+              <Form.List
+                name="question"
+                rules={[
+                  {
+                    validator: async (_, names) => {
+                      if (!names || names.length < 2) {
+                        return Promise.reject(new Error("Ít nhất 2 câu hỏi"));
+                      }
+                    },
+                  },
+                ]}
+              >
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map((field, index) => (
+                      <Form.Item required={false} key={field.key}>
+                        <div
+                          className={
+                            select === index ? "answer true" : "answer"
+                          }
+                          onClick={() => {
+                            setSelect(index);
+                            if (question[index] !== undefined) {
+                              delete question[index].question;
+                              form.setFieldsValue(question[index]);
+                              switch (question[index].answers.length) {
+                                case 1:
+                                  return setAnswerNum([0]);
+                                case 2:
+                                  return setAnswerNum([0, 1]);
+                                case 3:
+                                  return setAnswerNum([0, 1, 2]);
+                                case 4:
+                                  return setAnswerNum([0, 1, 2, 3]);
+                                default:
+                                  return setAnswerNum([]);
+                              }
+                            } else
+                              form.resetFields([
+                                "quesName",
+                                "quesType",
+                                "answers",
+                                "correct",
+                              ]);
+                            setAnswerNum([]);
+                          }}
+                        >
+                          <Form.Item {...field}>Câu {index + 1}</Form.Item>
+                          {fields.length > 1 ? (
+                            <MinusCircleOutlined
+                              className="dynamic-delete-button"
+                              onClick={() => {
+                                remove(field.name);
+                                setSelect(0);
+                              }}
+                            />
+                          ) : null}
+                        </div>
+                      </Form.Item>
+                    ))}
+                    <Form.Item>
+                      <Button
+                        className="default-btn"
+                        type="default"
+                        onClick={() => {
+                          add();
+                          form.submit();
+                          setSelect(fields.length);
+                          setAnswerNum([]);
+                        }}
+                        style={{ width: "100%" }}
+                      >
+                        Thêm câu hỏi
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
+              </Form.List>
             </Col>
             <Col span={18} className="question-detail">
               <Form.Item
@@ -281,55 +241,20 @@ export const CreateExam = () => {
                       ["fullScreen"],
                     ],
                   }}
-                  onChange={(e) => {
-                    setQuestion(e);
-                  }}
-                  setContents={question}
                 />
               </Form.Item>
-              <Form.Item
-                labelCol={{ span: 4 }}
-                name="examType"
-                label="Hình thức"
-                rules={[{ required: true }]}
-              >
-                <Radio.Group onChange={(e) => setExamType(e.target.value)}>
-                  <Radio value={0}>Trắc nghiệm</Radio>
-                  <Radio value={1}>Tự luận</Radio>
-                </Radio.Group>
-              </Form.Item>
               {examType === 0 ? (
-                <div>
-                  <Row>
-                    <Col style={{ paddingLeft: "1.8rem" }} span={12}>
-                      <Form.Item
-                        name="quesType"
-                        labelCol={{ span: 4 }}
-                        label="Câu trả lời"
-                      >
-                        <Radio.Group
-                          onChange={(e) => setQuesType(e.target.value)}
-                        >
-                          <Radio value={0}>Một đáp án</Radio>
-                          <Radio value={1}>Nhiều đáp án</Radio>
-                        </Radio.Group>
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        labelCol={{ span: 4 }}
-                        name="level"
-                        label="Độ khó"
-                      >
-                        <Radio.Group>
-                          <Radio value={0}>Dễ</Radio>
-                          <Radio value={1}>Trung bình</Radio>
-                          <Radio value={2}>Khó</Radio>
-                        </Radio.Group>
-                      </Form.Item>
-                    </Col>
-                  </Row>
-
+                <>
+                  <Form.Item
+                    labelCol={{ span: 4 }}
+                    name="quesType"
+                    label="Câu trả lời"
+                  >
+                    <Radio.Group onChange={(e) => setQuesType(e.target.value)}>
+                      <Radio value={0}>Một đáp án</Radio>
+                      <Radio value={1}>Nhiều đáp án</Radio>
+                    </Radio.Group>
+                  </Form.Item>
                   <Form.List
                     name="answers"
                     rules={[
@@ -435,7 +360,7 @@ export const CreateExam = () => {
                       </Checkbox.Group>
                     )}
                   </Form.Item>
-                </div>
+                </>
               ) : (
                 <div>
                   <Form.Item
@@ -458,33 +383,10 @@ export const CreateExam = () => {
         >
           Huỷ
         </Button>
-        <Button
-          onClick={() => {
-            form.submit();
-          }}
-          style={{ marginLeft: "1rem" }}
-          type="primary"
-        >
+        <Button style={{ marginLeft: "1rem" }} type="primary">
           Lưu và gửi phê duyệt
         </Button>
       </div>
-      <Modal
-        title="Nhập số câu hỏi"
-        visible={isModalVisible}
-        onOk={() => formQuesNum.submit()}
-        closable={false}
-        footer={[
-          <Button onClick={() => formQuesNum.submit()} type="primary">
-            Gửi
-          </Button>,
-        ]}
-      >
-        <Form onFinish={quesNumFinish} form={formQuesNum}>
-          <Form.Item name="quesNum" label="Số câu">
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 };
