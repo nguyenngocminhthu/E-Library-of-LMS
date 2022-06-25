@@ -87,7 +87,10 @@ export const ExamDetails = () => {
             <div>
               <div>Kiểm tra {data?.time} phút</div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 0493243 (upload exam)
               <div>
                 {data?.examType === 0 ? (
                   <div>Trắc nghiệm</div>
@@ -95,6 +98,9 @@ export const ExamDetails = () => {
                   <div>Tự luận</div>
                 )}
               </div>
+<<<<<<< HEAD
+>>>>>>> parent of 0493243 (upload exam)
+=======
 >>>>>>> parent of 0493243 (upload exam)
             </div>
           </div>

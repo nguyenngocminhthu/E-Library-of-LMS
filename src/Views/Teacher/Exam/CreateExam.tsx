@@ -17,7 +17,6 @@ import {
 import { AppDispatch } from "../../../redux/store";
 import { ISelect } from "../../../Components/Select";
 import { CheckCircleOutlined } from "@ant-design/icons";
-import { createBank } from "../../../redux/reducers/banks.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import "./style.scss";
 interface IQues {
