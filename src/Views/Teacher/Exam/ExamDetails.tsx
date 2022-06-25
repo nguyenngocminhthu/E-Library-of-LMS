@@ -120,8 +120,8 @@ export const ExamDetails = () => {
             <h3>
               Câu {select + 1}:{" "}
               {data?.question.length !== 0
-                ? data?.question[select].quesName
-                : data?.questions[select].quesName}
+                ? data?.question[select]?.quesName
+                : data?.questions[select]?.quesName}
             </h3>
             <Radio.Group
               value={

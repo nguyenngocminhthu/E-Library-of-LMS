@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
-import "../shared/styles/main_styles/error404.scss";
+import "./style.scss";
 
-const Error404 = () => {
+const PageNotFound = () => {
   const navigate = useNavigate();
 
   return (
@@ -20,4 +20,4 @@ const Error404 = () => {
   );
 };
 
-export default Error404;
+export default PageNotFound;

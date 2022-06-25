@@ -75,7 +75,6 @@ export const Teacher = () => {
           />
         </Route>
       </Routes>
-
       <Loader />
     </Suspense>
   );

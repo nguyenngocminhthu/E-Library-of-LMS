@@ -7,6 +7,7 @@ import { Student } from "./routers/routerStudent";
 import { Teacher } from "./routers/routerTeacher";
 import Cover from "./Views/Cover/Cover";
 import Login from "./Views/Login/Login";
+import PageNotFound from "./Views/PageNotFound/PageNotFound";
 import { Profile } from "./Views/Profile/Profile";
 import "./App.scss";
 import "antd/dist/antd.css";

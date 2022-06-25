@@ -33,7 +33,10 @@ export const Student = () => {
 
           <Route path="/student/exams" element={<Exam />} />
 
-          <Route path="student/exams/examdetail/:id" element={<ExamDetails />} />
+          <Route
+            path="student/exams/examdetail/:id"
+            element={<ExamDetails />}
+          />
 
           <Route path="/student/help" element={<Help />} />
 

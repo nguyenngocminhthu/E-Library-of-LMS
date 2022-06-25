@@ -12,7 +12,7 @@ import Information from "../Views/Leadership/SysSetting/Information";
 import { System } from "../Views/Leadership/SysSetting/System";
 import UserManage from "../Views/Leadership/SysSetting/UserManage";
 import { PrivateFile } from "../Views/Leadership/PrivateFile/PrivateFile";
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import { Loader } from "../Components/Loader";
 import { ClassManage } from "../Views/Leadership/SysSetting/ClassManage";
 import { SubjectManage } from "../Views/Leadership/Subject/SubjectManage";

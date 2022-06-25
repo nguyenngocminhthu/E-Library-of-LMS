@@ -130,18 +130,16 @@
 }
 
 .ant-modal-header {
-    background: $color-secondary-dark-light;
-    border-radius: 8px 8px 0px 0px;
+    background: $color-secondary-dark-light !important;
+    border-radius: 8px 8px 0px 0px !important;
 }
-
 .ant-modal-content {
     .anticon svg {
         color: $color-white;
     }
 }
-
 .ant-modal-title {
-    color: $color-white;
+    color: $color-white !important;
 }
 
 .selectcomp {

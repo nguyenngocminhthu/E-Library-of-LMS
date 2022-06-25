@@ -138,20 +138,7 @@ export const CreateQuestions = () => {
         <div className="body-bank">
           <div className="question-detail">
             <Form.Item labelCol={{ span: 4 }} name="quesName" label="Câu hỏi :">
-              <SunEditor
-                setOptions={{
-                  defaultTag: "div",
-                  minHeight: "100px",
-                  showPathLabel: false,
-                  buttonList: [
-                    ["undo", "redo"],
-                    ["fontSize", "bold", "underline", "italic"],
-                    ["align", "image"],
-                    ["list", "outdent", "indent"],
-                    ["fullScreen"],
-                  ],
-                }}
-              />
+              <TextArea rows={4}/>
             </Form.Item>
             {examType === 0 ? (
               <>

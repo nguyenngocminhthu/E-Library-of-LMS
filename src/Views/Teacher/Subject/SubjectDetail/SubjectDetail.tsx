@@ -39,6 +39,7 @@ import {
 } from "../../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
+import TextArea from "antd/lib/input/TextArea";
 
 export const SubjectDetail = () => {
   const { Option } = Select;
@@ -161,20 +162,7 @@ export const SubjectDetail = () => {
           <Input />
         </Form.Item>
         <Form.Item name="chooseTopic" label="Chi tiết (tuỳ chọn)" rules={[{ required: true }]}>
-          <SunEditor
-            setOptions={{
-              defaultTag: "div",
-              minHeight: "150px",
-              showPathLabel: false,
-              buttonList: [
-                ["undo", "redo"],
-                ["fontSize", "bold", "underline", "italic"],
-                ["align", "image"],
-                ["list", "outdent", "indent"],
-                ["fullScreen"],
-              ],
-            }}
-          />
+          <TextArea rows={4}/>
         </Form.Item>
         <Form.Item name="fileNameTitle" label="Lớp giảng dạy" rules={[{ required: true }]}>
           <div className="selectcomp">
