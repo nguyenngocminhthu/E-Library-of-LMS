@@ -88,13 +88,13 @@ export const ExamDetails = () => {
             </div>
             <div>
               <div>Kiểm tra {data?.time} phút</div>
-              <div>
+              {/* <div>
                 {data?.examType === 0 ? (
                   <div>Trắc nghiệm</div>
                 ) : (
                   <div>Tự luận</div>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="d-flex">

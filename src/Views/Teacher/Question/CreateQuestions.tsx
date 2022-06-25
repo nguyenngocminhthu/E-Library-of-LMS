@@ -1,13 +1,12 @@
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
-import { MinusCircleOutlined, CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import {
   Button,
   Checkbox,
   Col,
   Form,
   Input,
-  message,
   Radio,
   Row,
   Select,
@@ -19,7 +18,6 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import {
   createQuestion,
-  IQuestion,
 } from "../../../redux/reducers/question.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
@@ -27,12 +25,11 @@ import {
   ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
 import { UserState } from "../../../redux/reducers/user.reducer";
-
-const { Option } = Select;
+import "./style.scss";
 
 export const CreateQuestions = () => {
+  const { Option } = Select;
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -86,7 +83,11 @@ export const CreateQuestions = () => {
             <b>Chọn tổ bộ môn - môn học:</b>
           </h3>
           <Col span={10}>
-            <Form.Item name="subjectgroup" label="Tổ bộ môn" rules={[{ required: true }]}>
+            <Form.Item
+              name="subjectgroup"
+              label="Tổ bộ môn"
+              rules={[{ required: true }]}
+            >
               <Select onChange={(e: any) => handleSelect(e)}>
                 {dataSubGroup?.map((vl: ISubjectGroup) => (
                   <Option key={vl.id} value={vl.id}>
@@ -95,7 +96,11 @@ export const CreateQuestions = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item name="quesType" label="Hình thức" rules={[{ required: true }]}>
+            <Form.Item
+              name="examType"
+              label="Hình thức"
+              rules={[{ required: true }]}
+            >
               <Radio.Group
                 defaultValue={0}
                 onChange={(e) => setExamType(e.target.value)}
@@ -104,9 +109,14 @@ export const CreateQuestions = () => {
                 <Radio value={1}>Tự luận</Radio>
               </Radio.Group>
             </Form.Item>
+           
           </Col>
           <Col span={10} offset={4}>
-            <Form.Item name="subject" label="Môn học" rules={[{ required: true }]}>
+            <Form.Item
+              name="subject"
+              label="Môn học"
+              rules={[{ required: true }]}
+            >
               <Select disabled={dataSub.length === 0}>
                 {dataSub?.map((vl: ISubject) => (
                   <Option key={vl.id} value={vl.id}>
