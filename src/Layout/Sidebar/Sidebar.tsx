@@ -31,6 +31,7 @@ export const Sidebar: React.FC = () => {
     navigate(`/${key[0]}`);
     setKey(key);
   };
+
   return (
     <>
       <Sider
@@ -103,7 +104,10 @@ export const Sidebar: React.FC = () => {
               Phê duyệt tài liệu môn học
             </Menu.Item>
           </SubMenu>
-          <Menu.Item onClick={() => handleSelect(["privatefile"])} key="privatefile">
+          <Menu.Item
+            onClick={() => handleSelect(["privatefile"])}
+            key="privatefile"
+          >
             Tệp riêng tư
           </Menu.Item>
           <Menu.Item onClick={() => handleSelect(["exambank"])} key="exambank">

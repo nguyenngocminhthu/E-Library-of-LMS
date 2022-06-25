@@ -162,11 +162,16 @@ export const Home = () => {
                         <img src={math} alt="file" />
                       </Col>
                       <Col span={17} offset={1}>
-                        <div style={{ display: "flex", placeContent: "space-between", height: "20px" }}>
-                          <Title ellipsis level={5}>
-                            {item.subject}
-                          </Title>
-                          <p style={{ float: "right"}}>{item.time}</p>
+                        <div
+                          style={{
+                            display: "flex",
+                            placeContent: "space-between",
+                            height: "20px",
+                          }}
+                        >
+                          <h5>{item.subject}</h5>
+
+                          <p style={{ float: "right" }}>{item.time}</p>
                         </div>
                         <Progress percent={item.progress} showInfo={false} />
                       </Col>

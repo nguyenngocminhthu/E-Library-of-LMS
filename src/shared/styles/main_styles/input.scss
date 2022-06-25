@@ -1,6 +1,7 @@
 @import "../variable";
 
-.input-label {}
+.input-label {
+}
 
 .ant-input {
   // background: #f0f3f6;
@@ -13,4 +14,8 @@
     box-shadow: none;
     // border: 1px solid gray;
   }
+}
+
+.ant-input-affix-wrapper {
+  border-radius: 10px;
 }

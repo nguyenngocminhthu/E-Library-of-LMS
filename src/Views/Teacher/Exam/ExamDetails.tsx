@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import {
-  getBank,
-  IBanks,
-} from "../../../redux/reducers/banks.reducer";
+import { getBank, IBanks } from "../../../redux/reducers/banks.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
 
@@ -122,14 +119,9 @@ export const ExamDetails = () => {
           <Col style={{ padding: "2rem" }} span={18}>
             <h3>
               Câu {select + 1}:{" "}
-              <div
-                dangerouslySetInnerHTML={{
-                  __html:
-                    data?.question.length !== 0
-                      ? data?.question[select].quesName
-                      : data?.questions[select].quesName,
-                }}
-              ></div>
+              {data?.question.length !== 0
+                ? data?.question[select].quesName
+                : data?.questions[select].quesName}
             </h3>
             <Radio.Group
               value={

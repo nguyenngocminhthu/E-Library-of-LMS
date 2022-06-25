@@ -2,6 +2,11 @@
 
 .ant-layout-sider {
   z-index: 99;
+  background: $color-primary !important;
+}
+
+.ant-menu {
+  line-height: 3rem !important;
 }
 
 .sidebar {
@@ -19,9 +24,10 @@
     background-color: $color-primary;
   }
 
-  .ant-menu.ant-menu-inline-collapsed>.ant-menu-item {
+  .ant-menu.ant-menu-inline-collapsed > .ant-menu-item {
     padding: 0 0.5rem 0 1.2rem;
     margin: 0 0 0 0.3rem;
+    height: 4rem;
   }
 
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
@@ -30,12 +36,13 @@
     padding: 0 0.5rem 0 1.2rem;
     margin: 0 0 0 0.3rem;
     width: 69.2px;
+    height: 4rem;
   }
 }
 
 .sidebar-expand {
   background-color: $color-primary-light;
-  position: absolute;
+  position: absolute !important;
   left: 80px;
   height: 100%;
 
@@ -56,9 +63,9 @@
     font-weight: 700;
   }
 
-  .ant-menu.ant-menu-inline>.ant-menu-item {
+  .ant-menu.ant-menu-inline > .ant-menu-item {
     padding: 0 0.5rem 0 1.2rem;
-    margin: 0 0 0 0;
+    margin: 0 0 8px 0;
   }
 
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
