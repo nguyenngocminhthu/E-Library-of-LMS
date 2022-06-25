@@ -86,6 +86,16 @@ export const ExamDetails = () => {
             </div>
             <div>
               <div>Kiểm tra {data?.time} phút</div>
+<<<<<<< HEAD
+=======
+              <div>
+                {data?.examType === 0 ? (
+                  <div>Trắc nghiệm</div>
+                ) : (
+                  <div>Tự luận</div>
+                )}
+              </div>
+>>>>>>> parent of 0493243 (upload exam)
             </div>
           </div>
           <div className="d-flex">
