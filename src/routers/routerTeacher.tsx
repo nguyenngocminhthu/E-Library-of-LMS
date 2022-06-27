@@ -62,9 +62,16 @@ export const Teacher: React.FC = () => {
           element={<CreateQuestions />}
         />
 
+        <Route
+          path="teacher/questions/editQuestions"
+          element={<CreateQuestions />}
+        />
+
         <Route path="teacher/exams/examdetail/:id" element={<ExamDetails />} />
 
         <Route path="/teacher/questions" element={<Question />} />
+
+        <Route path="teacher/exams/examdetail/:id" element={<ExamDetails />} />
 
         <Route path="/teacher/help" element={<Help />} />
 

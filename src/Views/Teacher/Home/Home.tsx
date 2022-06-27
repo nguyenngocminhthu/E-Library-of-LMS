@@ -1,6 +1,16 @@
 import { DoubleRightOutlined } from "@ant-design/icons";
-import { Avatar, Card, Col, List, Row, Typography } from "antd";
+import {
+  Avatar,
+  Card,
+  Col,
+  Divider,
+  List,
+  Row,
+  Skeleton,
+  Typography,
+} from "antd";
 import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector, useDispatch } from "react-redux";
 import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
@@ -139,7 +149,11 @@ export const Home = () => {
               />
             </Col>
             <Col span={5} offset={1}>
-              <AnaCard number={files} content="Tài nguyên" classname="anacard" />
+              <AnaCard
+                number={files}
+                content="Tài nguyên"
+                classname="anacard"
+              />
             </Col>
             <Col span={5} offset={1}>
               <AnaCard
@@ -232,20 +246,35 @@ export const Home = () => {
               </span>
             </div>
 
-            <Card className="inside">
-              <List
-                dataSource={data}
-                renderItem={(item: any) => (
-                  <List.Item key={item.id}>
-                    <List.Item.Meta
-                      avatar={<Avatar src={item.picture.large} />}
-                      title={<a href="https://ant.design">{item.name.last}</a>}
-                      description={item.email}
-                    />
-                    <div>5 phút trước</div>
-                  </List.Item>
-                )}
-              />
+            <Card className="inside"
+            style={{
+              height: 250,
+              overflow: 'auto',
+            }}>
+              <InfiniteScroll
+                dataLength={data.length}
+                next={loadMoreData}
+                hasMore={data.length < 50}
+                loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+                endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+                scrollableTarget="scrollableDiv"
+              >
+                <List
+                  dataSource={data}
+                  renderItem={(item: any) => (
+                    <List.Item key={item.id}>
+                      <List.Item.Meta
+                        avatar={<Avatar src={item.picture.large} />}
+                        title={
+                          <a href="https://ant.design">{item.name.last}</a>
+                        }
+                        description={item.email}
+                      />
+                      <div>5 phút trước</div>
+                    </List.Item>
+                  )}
+                />
+              </InfiniteScroll>
             </Card>
           </Card>
         </Col>

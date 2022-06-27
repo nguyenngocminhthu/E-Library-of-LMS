@@ -37,6 +37,7 @@ import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
 import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
 import { EyeOutlined } from "@ant-design/icons";
 import "./style.scss";
+import { addSyntheticTrailingComment } from "typescript";
 
 export const Question = () => {
   const { Panel } = Collapse;
@@ -59,7 +60,6 @@ export const Question = () => {
   const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
 
   const [collapseShow, setCollapseShow] = useState<any>(false);
-  const [collapseContent, setCollapseContent] = useState<number>(0);
 
   useEffect(() => {
     dispatch(getQuestions(filter))
@@ -88,6 +88,11 @@ export const Question = () => {
     }
     setSubjectGroupSelect(option);
   }, [dataSubGroup]);
+
+  const select = ["A.Get", "B.Open", "C.Extract", "D.Select"];
+  const ListItem = (props: any) => {
+    return <li>{props.value}</li>;
+  };
 
   const modalUploadFile = {
     title: "Tải lên file",
@@ -223,7 +228,7 @@ export const Question = () => {
                 }}
               />
             }
-            onClick={handleChangeQuestion}
+            onClick={() => navigate("/teacher/questions/editQuestions")}
           />
           <Button
             icon={
@@ -281,21 +286,12 @@ export const Question = () => {
   };
 
   const handleShowQuestion = () => {
-    if (!collapseShow) {
+    if(collapseShow === false){
       setCollapseShow(true);
+    }else{
+      setCollapseShow(false);
     }
-    if (collapseContent === 1) {
-      setCollapseContent(0);
-    }
-  };
-
-  const handleChangeQuestion = () => {
-    if (!collapseShow) {
-      setCollapseShow(true);
-    }
-    if (collapseContent === 0) {
-      setCollapseContent(1);
-    }
+      
   };
 
   return (
@@ -376,18 +372,22 @@ export const Question = () => {
                 key="3"
                 className="site-collapse-custom-panel"
               >
-                {collapseShow && collapseContent === 0 ? (
-                  <div>hehe</div>
-                ) : collapseShow && collapseContent === 1 ? (
-                  <div>hihi</div>
-                ) : (
-                  <></>
-                )}
+                <div>
+                  <h3>
+                    Câu 2: Câu lệnh SQL nào được dùng để trích xuất dữ liệu từ
+                    database
+                  </h3>
+                  <Space direction="vertical">
+                    {select.map((select) => (
+                      <ListItem key={select} value={select} />
+                    ))}
+                  </Space>
+                </div>
+                <h3>
+                    ĐÁP ÁN: A
+                  </h3>
                 <div className="button-group-filter">
-                  <Button className="default-btn icon-custom">Hủy</Button>
-                  <Button style={{ marginLeft: "1rem" }} type="primary">
-                    Lưu
-                  </Button>
+                  <Button className="default-btn icon-custom" onClick={handleShowQuestion}>Ẩn</Button>
                 </div>
               </Panel>
             </Collapse>

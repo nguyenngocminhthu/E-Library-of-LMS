@@ -143,7 +143,7 @@ export const Home = () => {
         <Col span={6}>
           <Card className="wrapper">
             <h5>Thống kê truy cập</h5>
-            <Card className="inside">
+            <Card className="inside" style={{height: 400}}>
               <Row>
                 <Col span={15} offset={1}>
                   <p>Đang truy cập:</p>
