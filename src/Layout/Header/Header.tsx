@@ -23,7 +23,13 @@ export const HeaderComp = () => {
       }}
     >
       <Button
-        onClick={() => navigate("/profile")}
+        onClick={() =>
+          user.role === "leadership"
+            ? navigate("/profile")
+            : user.role === "teacher"
+            ? navigate("/teacher/profile")
+            : navigate("/student/profile")
+        }
         style={{ background: "transparent", boxShadow: "none" }}
         className="btn-header"
       >

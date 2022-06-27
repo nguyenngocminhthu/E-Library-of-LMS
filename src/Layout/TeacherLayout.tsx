@@ -4,23 +4,15 @@ import { Navigate, Outlet } from "react-router";
 import { FooterComp } from "../Layout/Footer/Footer";
 import { HeaderComp } from "../Layout/Header/Header";
 import { Sidebar } from "../Layout/Sidebar/Sidebar";
-import { StudentSidebar } from "./Sidebar/StudentSidebar";
-import { TeacherSidebar } from "./Sidebar/TeacherSidebar";
 
-export const MainLayout = () => {
+export const TeacherLayout = () => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   return (
     <div>
-      {user !== null ? (
+      {user.role === "teacher" ? (
         <Layout style={{ minHeight: "100vh" }}>
-          {user.role === "teacher" ? (
-            <TeacherSidebar />
-          ) : user.role === "student" ? (
-            <StudentSidebar />
-          ) : (
-            <Sidebar />
-          )}
+          <Sidebar />
           <Layout className="site-layout">
             <HeaderComp />
             <Content style={{ margin: "16px 16px" }}>

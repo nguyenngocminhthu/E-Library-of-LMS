@@ -11,7 +11,18 @@ const Cover = () => {
     <div className="cover">
       <div className="coverContent">
         <h1 className="h1-content">LMS - Learning Management System</h1>
-        <button className="coverButton" onClick={() => navigate("/login")}>
+        <button
+          className="coverButton"
+          onClick={() =>
+            user.role === "leadership"
+              ? navigate("/home")
+              : user.role === "teacher"
+              ? navigate("/teacher/home")
+              : user.role === "student"
+              ? navigate("/student/home")
+              : navigate("/login")
+          }
+        >
           E-Library
         </button>
 
