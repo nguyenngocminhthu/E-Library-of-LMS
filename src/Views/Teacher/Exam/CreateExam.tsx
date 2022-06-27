@@ -30,6 +30,7 @@ import { CheckCircleOutlined } from "@ant-design/icons";
 import { createBank } from "../../../redux/reducers/banks.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import "./style.scss";
+import lodash from "lodash";
 interface IQues {
   quesName: string;
   answers: string[];
@@ -60,7 +61,6 @@ export const CreateExam = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   let arr: IQues[] = [];
   const [questions, setQuestions] = useState<IQues[]>(arr);
-  const [question, setQuestion] = useState<string>("");
 
   useEffect(() => {
     for (let i = 0; i < quesNum; i++) {
@@ -92,8 +92,8 @@ export const CreateExam = () => {
 
   useEffect(() => {
     formQues.setFieldsValue(questions[select]);
-    setQuestion(questions[select].quesName);
     setQuesType(questions[select].quesType);
+    setExamType(questions[select].examType);
     if (questions[select].correct.length === 1) {
       formQues.setFieldsValue({ correct: questions[select].correct[0] });
     } else {
@@ -101,10 +101,12 @@ export const CreateExam = () => {
     }
 
     let arr: any[] = [];
-    questions[select].answers.forEach((vl) => {
-      arr.push(vl);
-    });
-    setAnswerNum(arr);
+    if (questions[select].answers !== undefined) {
+      questions[select].answers.forEach((vl) => {
+        arr.push(vl);
+      });
+      setAnswerNum(arr);
+    }
   }, [select]);
 
   const handleSelect = (e: any) => {
@@ -134,12 +136,13 @@ export const CreateExam = () => {
     examType: number;
     correctEssay?: string;
   }) => {
-    console.debug(values);
     setQuestions((item) =>
       item.map((vl) => {
         if (vl.key === select) {
           vl.quesName = values.quesName;
-          vl.correct = [values.correct];
+          vl.correct = lodash.isArray(values.correct)
+            ? values.correct
+            : [values.correct];
           vl.answers = values.answers;
           vl.level = values.level;
           vl.quesType = values.quesType;
@@ -152,7 +155,6 @@ export const CreateExam = () => {
   };
 
   const onFinish = (values: any) => {
-    console.debug(values);
     dispatch(
       createBank({
         ...values,
@@ -160,7 +162,9 @@ export const CreateExam = () => {
         user: user.id,
         fileType: 0,
       })
-    );
+    ).then(() => {
+      navigate("/teacher/exams");
+    });
   };
 
   return (
@@ -268,24 +272,7 @@ export const CreateExam = () => {
                 name="quesName"
                 label={`Câu hỏi ${select + 1}:`}
               >
-                <SunEditor
-                  setOptions={{
-                    defaultTag: "div",
-                    minHeight: "100px",
-                    showPathLabel: false,
-                    buttonList: [
-                      ["undo", "redo"],
-                      ["fontSize", "bold", "underline", "italic"],
-                      ["align", "image"],
-                      ["list", "outdent", "indent"],
-                      ["fullScreen"],
-                    ],
-                  }}
-                  onChange={(e) => {
-                    setQuestion(e);
-                  }}
-                  setContents={question}
-                />
+                <TextArea rows={4} />
               </Form.Item>
               <Form.Item
                 labelCol={{ span: 4 }}

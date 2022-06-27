@@ -40,7 +40,7 @@ export const getBanks = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Banks.getBanks({ limit, subjectGroup, subject, user });
-      if (data.code) {
+      if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
       return data;

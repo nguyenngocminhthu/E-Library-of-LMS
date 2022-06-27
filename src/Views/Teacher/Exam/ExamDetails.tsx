@@ -1,5 +1,5 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
-import { Col, Radio, Row, Space } from "antd";
+import { Checkbox, Col, Radio, Row, Space } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
@@ -123,23 +123,61 @@ export const ExamDetails = () => {
                 ? data?.question[select]?.quesName
                 : data?.questions[select]?.quesName}
             </h3>
-            <Radio.Group
-              value={
-                data?.question.length !== 0
-                  ? data?.question[select]?.correct[0]
-                  : data?.questions[select]?.correct[0]
-              }
-            >
-              <Space direction="vertical">
+            {data?.question.length !== 0 ? (
+              <div>{data?.question[select]?.correctEssay}</div>
+            ) : (
+              <div>{data?.questions[select]?.correctEssay}</div>
+            )}
+            {data?.questions[select]?.correct.length === 1 ||
+            data?.question[select]?.correct.length === 1 ? (
+              <Radio.Group
+                value={
+                  data?.question.length !== 0
+                    ? data?.question[select]?.correct[0]
+                    : data?.questions[select]?.correct[0]
+                }
+              >
+                <Space direction="vertical">
+                  {data?.question.length !== 0
+                    ? data?.question[select]?.answers.map((vl, idx) => (
+                        <Radio key={vl} value={idx}>
+                          {vl}
+                        </Radio>
+                      ))
+                    : data?.questions[select]?.answers.map((vl, idx) => (
+                        <Radio key={vl} value={idx}>
+                          {vl}
+                        </Radio>
+                      ))}
+                </Space>
+              </Radio.Group>
+            ) : (
+              <Checkbox.Group
+                value={
+                  data?.question.length !== 0
+                    ? data?.question[select]?.correct
+                    : data?.questions[select]?.correct
+                }
+              >
                 {data?.question.length !== 0
                   ? data?.question[select]?.answers.map((vl, idx) => (
-                      <Radio value={idx}>{vl}</Radio>
+                      <>
+                        <Checkbox key={vl} value={idx}>
+                          {vl}
+                        </Checkbox>
+                        <br />
+                      </>
                     ))
                   : data?.questions[select]?.answers.map((vl, idx) => (
-                      <Radio value={idx}>{vl}</Radio>
+                      <>
+                        <Checkbox key={vl} value={idx}>
+                          {vl}
+                        </Checkbox>
+                        <br />
+                      </>
                     ))}
-              </Space>
-            </Radio.Group>
+              </Checkbox.Group>
+            )}
           </Col>
         </Row>
       </div>

@@ -243,7 +243,7 @@ export const Question = () => {
 
   const handleFilter = (e: any) => {
     if (e !== "") {
-      setFilter({ ...filter, subjectGroup: e });
+      setFilter({ ...filter, subjectgroup: e });
     } else {
       delete filter.subjectGroup;
       setFilter({ ...filter });

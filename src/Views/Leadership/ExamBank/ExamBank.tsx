@@ -25,7 +25,11 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { getBanks, IBanks } from "../../../redux/reducers/banks.reducer";
+import {
+  getBanks,
+  IBanks,
+  updateBank,
+} from "../../../redux/reducers/banks.reducer";
 import { ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
@@ -50,11 +54,20 @@ export const ExamBank = () => {
           list.push({ key: idx, ...vl });
         });
         setData(list);
-      })
-      .catch((e: any) => {
-        console.debug("e: ", e);
       });
   }, []);
+
+  const handleRefresh = () => {
+    dispatch(getBanks(filter))
+      .unwrap()
+      .then((rs: any) => {
+        let list: IBanks[] = [];
+        rs.results.forEach((vl: IBanks, idx: number) => {
+          list.push({ key: idx, ...vl });
+        });
+        setData(list);
+      });
+  };
 
   const status = [
     {
@@ -112,7 +125,7 @@ export const ExamBank = () => {
       value: "NVC",
     },
   ];
-  
+
   const downloadFile = {
     title: "Tải xuống tệp",
     className: "modal-common-style",
@@ -129,6 +142,22 @@ export const ExamBank = () => {
       "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
     okText: "Xác nhận",
     cancelText: "Huỷ",
+  };
+
+  const ModalConFirm = (id: string) => {
+    const config = {
+      title: "Phê duyệt",
+      className: "file-modal",
+      content:
+        "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
+      okText: "Xác nhận",
+      cancelText: "Huỷ",
+      onOk: () =>
+        dispatch(updateBank({ id: id, payload: { status: 1 } })).then(() => {
+          handleRefresh();
+        }),
+    };
+    modal.confirm(config);
   };
 
   const config1 = {
@@ -247,7 +276,7 @@ export const ExamBank = () => {
         <div>
           {record.status === 0 ? (
             <div style={{ display: "flex" }}>
-              <Button onClick={() => modal.confirm(config)} type="primary">
+              <Button onClick={() => ModalConFirm(record.id)} type="primary">
                 Phê duyệt
               </Button>
               <Button

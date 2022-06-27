@@ -38,7 +38,7 @@ export const MainLayout = () => {
           </Layout>
         </Layout>
       ) : (
-        <Navigate to="/" />
+        <Navigate to="/404" />
       )}
     </div>
   );
