@@ -1,13 +1,19 @@
 import { CaretRightFilled } from "@ant-design/icons";
 import { Button, Card, Col, List, Row, Typography } from "antd";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { SelectComp } from "../../../Components/Select";
-import { ISubject } from "../../../redux/reducers/subject.reducer";
-import { UserState } from "../../../redux/reducers/user.reducer";
+import { totalBank } from "../../../redux/reducers/banks.reducer";
+import {
+  ISubject,
+  totalSubject,
+} from "../../../redux/reducers/subject.reducer";
+import { getUsers, UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
-import WEB23 from "../../../shared/img/WEB23.png";
 import "./style.scss"; // Alt Shift O
 
 interface IFile {
@@ -21,7 +27,17 @@ interface IFile {
 export const Home = () => {
   const { Title } = Typography;
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const subjects: any = useSelector(totalSubject);
+  const teachers = useSelector(
+    (state: any) => state.user.listUser.totalResults
+  );
+  const exams = useSelector(totalBank);
+
+  useEffect(() => {
+    dispatch(getUsers({ limit: 999, role: "teacher" }));
+  }, [subjects, exams]);
 
   const year = [
     {
@@ -33,7 +49,7 @@ export const Home = () => {
       name: "2021-2022",
     },
   ];
-  
+
   const listFile: any[] | undefined = [];
   for (let i = 0; i < 10; i++) {
     listFile.push({
@@ -59,20 +75,28 @@ export const Home = () => {
         <Col span={20}>
           <Row>
             <Col span={5} offset={1}>
-              <AnaCard number={12} content="Môn học" classname="anacard" />
+              <AnaCard
+                number={subjects}
+                content="Môn học"
+                classname="anacard"
+              />
             </Col>
             <Col span={5} offset={1}>
               <AnaCard
-                number={12}
+                number={teachers}
                 content="Giảng viên"
                 classname="anacard-blue"
               />
             </Col>
             <Col span={5} offset={1}>
-              <AnaCard number={12} content="Tệp riêng tư" classname="anacard" />
+              <AnaCard number={0} content="Tệp riêng tư" classname="anacard" />
             </Col>
             <Col span={5} offset={1}>
-              <AnaCard number={12} content="Đề thi" classname="anacard-blue" />
+              <AnaCard
+                number={exams}
+                content="Đề thi"
+                classname="anacard-blue"
+              />
             </Col>
           </Row>
         </Col>

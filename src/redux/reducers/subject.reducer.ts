@@ -7,6 +7,7 @@ import { UserState } from "./user.reducer";
 import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
 import { message } from "antd";
+import { IList } from "./interface";
 
 export const createSubject = createAsyncThunk(
   "subject/createSubject",
@@ -98,11 +99,17 @@ export interface ISubject {
 }
 
 interface SubjectState {
-  listSubject: ISubject[];
+  listSubject: IList;
 }
 
 const initialState: SubjectState = {
-  listSubject: [],
+  listSubject: {
+    limit: 0,
+    page: 0,
+    results: [],
+    totalPages: 0,
+    totalResults: 0,
+  },
 };
 
 export const subjectReducer = createSlice({
@@ -114,19 +121,37 @@ export const subjectReducer = createSlice({
       state.listSubject = action.payload;
     });
     builder.addCase(createSubject.rejected, (state) => {
-      state.listSubject = [];
+      state.listSubject = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(getSubjects.fulfilled, (state, action) => {
       state.listSubject = action.payload;
     });
     builder.addCase(getSubjects.rejected, (state) => {
-      state.listSubject = [];
+      state.listSubject = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(getSubject.fulfilled, (state, action) => {
       state.listSubject = action.payload;
     });
     builder.addCase(getSubject.rejected, (state) => {
-      state.listSubject = [];
+      state.listSubject = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
   },
 });
@@ -134,5 +159,8 @@ export const subjectReducer = createSlice({
 const { reducer } = subjectReducer;
 
 export const listSubject = (state: RootState) => state.subject.listSubject;
+
+export const totalSubject = (state: RootState) =>
+  state.subject.listSubject.totalResults;
 
 export default reducer;

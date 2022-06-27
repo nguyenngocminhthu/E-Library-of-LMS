@@ -6,6 +6,8 @@ import { ISubject } from "./subject.reducer";
 import { UserState } from "./user.reducer";
 import { IQuestion } from "./question.reducer";
 import { message } from "antd";
+import { RootState } from "../store";
+import { IList } from "./interface";
 
 export const createBank = createAsyncThunk(
   "Banks/createBank",
@@ -124,11 +126,17 @@ export interface IBanks {
 }
 
 interface banksState {
-  listBanks: IBanks[];
+  listBanks: IList;
 }
 
 const initialState: banksState = {
-  listBanks: [],
+  listBanks: {
+    limit: 0,
+    page: 0,
+    results: [],
+    totalPages: 0,
+    totalResults: 0,
+  },
 };
 
 export const banksReducer = createSlice({
@@ -140,28 +148,56 @@ export const banksReducer = createSlice({
       state.listBanks = action.payload;
     });
     builder.addCase(getBanks.rejected, (state, action) => {
-      state.listBanks = [];
+      state.listBanks = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(getBank.fulfilled, (state, action) => {
       state.listBanks = action.payload;
     });
     builder.addCase(getBank.rejected, (state, action) => {
-      state.listBanks = [];
+      state.listBanks = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(updateBank.fulfilled, (state, action) => {
       state.listBanks = action.payload;
     });
     builder.addCase(updateBank.rejected, (state, action) => {
-      state.listBanks = [];
+      state.listBanks = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(createBank.fulfilled, (state, action) => {
       state.listBanks = action.payload;
     });
     builder.addCase(createBank.rejected, (state, action) => {
-      state.listBanks = [];
+      state.listBanks = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
   },
 });
+
+export const listBank = (state: RootState) => state.bank.listBanks.results;
+export const totalBank = (state: RootState) =>
+  state.bank.listBanks.totalResults;
 
 const { reducer } = banksReducer;
 

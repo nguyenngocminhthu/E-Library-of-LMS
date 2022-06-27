@@ -22,8 +22,12 @@ export const TeacherSidebar: React.FC = () => {
   useEffect(() => {
     if (fakeKey[2] === "lessons") {
       setKey(["lessons", "resource"]);
+    } else if (fakeKey[2] === "resources") {
+      setKey(["resources", "resource"]);
     } else if (fakeKey[2] === "exams") {
       setKey(["exams", "exam"]);
+    } else if (fakeKey[2] === "questions") {
+      setKey(["questions", "exam"]);
     }
   }, []);
 

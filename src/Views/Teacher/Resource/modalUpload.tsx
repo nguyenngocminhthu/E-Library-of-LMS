@@ -10,6 +10,7 @@ import {
   getSubject,
   getSubjects,
   ISubject,
+  listSubject,
 } from "../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../redux/store";
@@ -25,21 +26,15 @@ export const ModalUpload: React.FC<{
   const [linkVideo, setLinkVideo] = useState<string>("");
   const dispatch: AppDispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const dataSub = useSelector(
-    (state: any) => state.subject.listSubject.results
-  );
+  const dataSub = useSelector(listSubject);
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([]);
   const [classSelect, setClassSelect] = useState<ISubjectSelect[]>();
   const [topicSelect, setTopicSelect] = useState<ISubjectSelect[]>();
 
   useEffect(() => {
-    dispatch(getSubjects({ limit: 999, user: user.id }));
-  }, []);
-
-  useEffect(() => {
     if (dataSub) {
       let option: any[] = [];
-      dataSub.forEach((value: ISubject) => {
+      dataSub.results.forEach((value: ISubject) => {
         option.push({ name: value.subName, value: value.id });
       });
       setSubjectSelect(option);
@@ -108,14 +103,20 @@ export const ModalUpload: React.FC<{
         form={form}
         onFinish={onFinish}
       >
-        <Form.Item label="Chọn môn học" name="subject"> rules={[{ required: true }]}
+        <Form.Item label="Chọn môn học" name="subject">
+          {" "}
+          rules={[{ required: true }]}
           <SelectComp
             onChange={(e: any) => handleSelect(e)}
             style={{ display: "block" }}
             dataString={subjectSelect}
           />
         </Form.Item>
-        <Form.Item label="Chọn lớp học" name="classes" rules={[{ required: true }]}>
+        <Form.Item
+          label="Chọn lớp học"
+          name="classes"
+          rules={[{ required: true }]}
+        >
           <SelectComp
             mode="multiple"
             allowClear={true}
@@ -124,17 +125,30 @@ export const ModalUpload: React.FC<{
             dataString={classSelect}
           />
         </Form.Item>
-        <Form.Item label="Chọn chủ đề" name="topic" rules={[{ required: true }]}>
+        <Form.Item
+          label="Chọn chủ đề"
+          name="topic"
+          rules={[{ required: true }]}
+        >
           <SelectComp
             disabled={topicSelect === undefined}
             style={{ display: "block" }}
             dataString={topicSelect}
           />
         </Form.Item>
-        <Form.Item label="Tiêu đề bài giảng" name="title" rules={[{ required: true }]}>
+        <Form.Item
+          label="Tiêu đề bài giảng"
+          name="title"
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item name="video" label="Video" className="upload-file" rules={[{ required: true }]}>
+        <Form.Item
+          name="video"
+          label="Video"
+          className="upload-file"
+          rules={[{ required: true }]}
+        >
           <Upload
             maxCount={1}
             beforeUpload={() => false}

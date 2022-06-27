@@ -36,12 +36,12 @@ export const createQuestion = createAsyncThunk(
 
 export const getQuestions = createAsyncThunk(
   "Questions/getQuestions",
-  async ({ limit, subjectGroup, subject, level }: any, thunkAPI) => {
+  async ({ limit, subjectgroup, subject, level }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Question.getQuestions({
         limit,
-        subjectGroup,
+        subjectgroup,
         subject,
         level,
       });

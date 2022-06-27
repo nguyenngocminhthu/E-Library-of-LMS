@@ -26,7 +26,7 @@ export const Subject = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
 
   useEffect(() => {
-    dispatch(getSubjects(999))
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
       .unwrap()
       .then((rs: any) => {
         let list: ISubject[] = [];

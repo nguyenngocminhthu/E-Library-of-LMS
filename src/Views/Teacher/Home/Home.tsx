@@ -1,11 +1,23 @@
 import { DoubleRightOutlined } from "@ant-design/icons";
 import { Avatar, Card, Col, List, Row, Typography } from "antd";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { SelectComp } from "../../../Components/Select";
-import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { getBanks, totalBank } from "../../../redux/reducers/banks.reducer";
+import { getFiles, totalFile } from "../../../redux/reducers/file.reducer";
+import {
+  getLessons,
+  totalLesson,
+} from "../../../redux/reducers/lesson.reducer";
+import {
+  getSubjects,
+  ISubject,
+  totalSubject,
+} from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
 import WEB23 from "../../../shared/img/WEB23.png";
 interface IData {
@@ -29,6 +41,21 @@ export const Home = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const subjects: any = useSelector(totalSubject);
+  const lessons: any = useSelector(totalLesson);
+  const files: any = useSelector(totalFile);
+  const exams = useSelector(totalBank);
+
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    Promise.all([
+      dispatch(getFiles({ limit: 999, user: user.id })),
+      dispatch(getLessons({ limit: 999, user: user.id })),
+      dispatch(getBanks({ limit: 999, user: user.id })),
+      dispatch(getSubjects({ limit: 999, teacher: user.id })),
+    ]);
+  }, []);
 
   const loadMoreData = () => {
     if (loading) {
@@ -62,7 +89,7 @@ export const Home = () => {
       name: "2021-2022",
     },
   ];
-  
+
   const listData: any[] | undefined = [];
   for (let i = 0; i < 23; i++) {
     listData.push({
@@ -73,7 +100,7 @@ export const Home = () => {
       avt: `${WEB23}`,
     });
   }
-  
+
   const listFile: any[] | undefined = [];
   for (let i = 0; i < 10; i++) {
     listFile.push({
@@ -99,24 +126,24 @@ export const Home = () => {
           <Row>
             <Col span={5} offset={1}>
               <AnaCard
-                number={12}
+                number={subjects}
                 content="Môn giảng dạy"
                 classname="anacard"
               />
             </Col>
             <Col span={5} offset={1}>
               <AnaCard
-                number={12}
+                number={lessons}
                 content="Bài giảng"
                 classname="anacard-blue"
               />
             </Col>
             <Col span={5} offset={1}>
-              <AnaCard number={12} content="Tài nguyên" classname="anacard" />
+              <AnaCard number={files} content="Tài nguyên" classname="anacard" />
             </Col>
             <Col span={5} offset={1}>
               <AnaCard
-                number={12}
+                number={exams}
                 content="Đề thi và kiểm tra"
                 classname="anacard-blue"
               />

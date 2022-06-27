@@ -29,7 +29,7 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { getBanks, IBanks } from "../../../redux/reducers/banks.reducer";
-import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import { ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
   ISubjectGroup,
@@ -52,9 +52,8 @@ export const Exam = () => {
     ISubjectSelect[]
   >([{ name: "Tất cả tổ bộ môn", value: "" }]);
   const [form] = Form.useForm();
-  const dataSub = useSelector(
-    (state: any) => state.subject.listSubject.results
-  );
+  const dataSub = useSelector(listSubject);
+
   const dataSubGroup = useSelector(
     (state: any) => state.subjectgroup.listSubjectGroup.results
   );
@@ -76,14 +75,13 @@ export const Exam = () => {
         console.debug("e: ", e);
       });
 
-    dispatch(getSubjects(999));
     dispatch(getSubjectGroups(999));
   }, [filter]);
 
   useEffect(() => {
     const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
     if (dataSub) {
-      dataSub.forEach((it: ISubject) => {
+      dataSub.results.forEach((it: ISubject) => {
         option.push({ name: it.subName, value: it.id });
       });
     }
@@ -117,7 +115,7 @@ export const Exam = () => {
               onChange={(e) => {
                 test = e.target.value;
               }}
-              style={{ textAlign: "left", marginLeft: "36px"}}
+              style={{ textAlign: "left", marginLeft: "36px" }}
             >
               <Radio value={0}>Tạo đề thi từ ngân hàng câu hỏi</Radio>
               <Radio value={1}>Tạo đề thi với câu hỏi mới</Radio>
@@ -129,8 +127,8 @@ export const Exam = () => {
       cancelText: "Huỷ",
       onOk: () => {
         if (test === 0) {
-          modal.confirm(modalCreateExamFromQuestions)
-        } else if (test === 1){
+          modal.confirm(modalCreateExamFromQuestions);
+        } else if (test === 1) {
           navigate("/teacher/exams/createExam");
         }
       },
@@ -202,7 +200,10 @@ export const Exam = () => {
       >
         <Form.Item label="Chọn môn học" rules={[{ required: true }]}>
           <div className="upload-file">
-            <Button icon={<UploadOutlined style={{color: "#f17f21"}}/>} style={{ float: "left" }}>
+            <Button
+              icon={<UploadOutlined style={{ color: "#f17f21" }} />}
+              style={{ float: "left" }}
+            >
               Tải tệp lên
             </Button>
           </div>
@@ -239,14 +240,22 @@ export const Exam = () => {
         form={form}
         style={{ textAlign: "left" }}
       >
-        <Form.Item name="class" label="Chọn lớp học" rules={[{ required: true }]}>
+        <Form.Item
+          name="class"
+          label="Chọn lớp học"
+          rules={[{ required: true }]}
+        >
           <Select defaultValue="Chọn lớp học">
             <Option value={0}>Công nghệ thông tin</Option>
             <Option value={1}>Công nghệ thực phẩm</Option>
             <Option value={2}>Hóa học nông nghiệp</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="topic" label="Chọn chủ đề" rules={[{ required: true }]}>
+        <Form.Item
+          name="topic"
+          label="Chọn chủ đề"
+          rules={[{ required: true }]}
+        >
           <Select defaultValue="Chọn chủ đề">
             <Option value={0}>Chủ nghĩa Mác - Lênin</Option>
             <Option value={1}>Kinh tế căng bản</Option>
@@ -254,16 +263,28 @@ export const Exam = () => {
           </Select>
         </Form.Item>
         <div className="line"></div>
-        <Form.Item name="nameExam" label="Tên đề thi" rules={[{ required: true }]}>
+        <Form.Item
+          name="nameExam"
+          label="Tên đề thi"
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item name="amountExam" label="Số lượng đề thi" rules={[{ required: true }]}>
+        <Form.Item
+          name="amountExam"
+          label="Số lượng đề thi"
+          rules={[{ required: true }]}
+        >
           <div className="display-flex">
-          <Input className="small-input" />
-          <div className="span-detail">Đề</div>
+            <Input className="small-input" />
+            <div className="span-detail">Đề</div>
           </div>
         </Form.Item>
-        <Form.Item name="amountQuestion" label="Số lượng câu hỏi" rules={[{ required: true }]}>
+        <Form.Item
+          name="amountQuestion"
+          label="Số lượng câu hỏi"
+          rules={[{ required: true }]}
+        >
           <div className="display-flex">
             <Input className="small-input" />
             <div className="span-detail">Câu</div>
@@ -275,18 +296,22 @@ export const Exam = () => {
             <div className="span-detail">Điểm</div>
           </div>
         </Form.Item>
-        <Form.Item name="amountQuestionLevel" label="Số câu hỏi theo độ khó" rules={[{ required: true }]}>
+        <Form.Item
+          name="amountQuestionLevel"
+          label="Số câu hỏi theo độ khó"
+          rules={[{ required: true }]}
+        >
           <Row>
             <Col span={8} className="display-flex">
-              <Input className="small-input"/>
+              <Input className="small-input" />
               <div className="span-detail">Khó</div>
             </Col>
             <Col span={8} className="display-flex">
-              <Input className="small-input"/>
+              <Input className="small-input" />
               <div className="span-detail">Trung Bình</div>
             </Col>
             <Col span={8} className="display-flex">
-              <Input className="small-input"/>
+              <Input className="small-input" />
               <div className="span-detail">Dễ</div>
             </Col>
           </Row>
@@ -296,7 +321,6 @@ export const Exam = () => {
     okText: "Lưu và gửi phê duyệt",
     cancelText: "Huỷ",
   };
-
 
   const columns = [
     {
@@ -383,7 +407,9 @@ export const Exam = () => {
                   </p>
                   <p onClick={() => modal.confirm(modalChangeName)}>Đổi tên</p>
                   <p onClick={() => modal.confirm(downloadFile)}>Tải xuống</p>
-                  <p onClick={() => modal.confirm(sendApprove)}>Gửi phê duyệt</p>
+                  <p onClick={() => modal.confirm(sendApprove)}>
+                    Gửi phê duyệt
+                  </p>
                   <p onClick={() => modal.confirm(removeRow)}>Xoá file</p>
                 </div>
               }
@@ -454,7 +480,11 @@ export const Exam = () => {
             </Tooltip>
           </Space>
           <div className="line"></div>
-          <Button onClick={() => modal.confirm(modalUpload)} icon={<UploadOutlined />} className="default-btn icon-custom">
+          <Button
+            onClick={() => modal.confirm(modalUpload)}
+            icon={<UploadOutlined />}
+            className="default-btn icon-custom"
+          >
             Tải lên
           </Button>
           <Button

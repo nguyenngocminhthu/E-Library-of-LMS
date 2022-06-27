@@ -9,6 +9,7 @@ import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
 import { IQA } from "./QA.reducer";
 import { message } from "antd";
+import { IList } from "./interface";
 
 export const createLesson = createAsyncThunk(
   "Lesson/createClass",
@@ -127,11 +128,17 @@ export interface ILesson {
 }
 
 interface LessonState {
-  listLesson: ILesson[];
+  listLesson: IList;
 }
 
 const initialState: LessonState = {
-  listLesson: [],
+  listLesson: {
+    limit: 0,
+    page: 0,
+    results: [],
+    totalPages: 0,
+    totalResults: 0,
+  },
 };
 
 export const LessonReducer = createSlice({
@@ -143,25 +150,49 @@ export const LessonReducer = createSlice({
       state.listLesson = action.payload;
     });
     builder.addCase(createLesson.rejected, (state) => {
-      state.listLesson = [];
+      state.listLesson = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(getLessons.fulfilled, (state, action) => {
       state.listLesson = action.payload;
     });
     builder.addCase(getLessons.rejected, (state) => {
-      state.listLesson = [];
+      state.listLesson = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(getLesson.fulfilled, (state, action) => {
       state.listLesson = action.payload;
     });
     builder.addCase(getLesson.rejected, (state) => {
-      state.listLesson = [];
+      state.listLesson = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(updateLesson.fulfilled, (state, action) => {
       state.listLesson = action.payload;
     });
     builder.addCase(updateLesson.rejected, (state) => {
-      state.listLesson = [];
+      state.listLesson = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
   },
 });
@@ -169,5 +200,9 @@ export const LessonReducer = createSlice({
 const { reducer } = LessonReducer;
 
 export const listLesson = (state: RootState) => state.lesson.listLesson;
+
+export const totalLesson = (state: RootState) =>
+  state.lesson.listLesson.totalResults;
+
 
 export default reducer;

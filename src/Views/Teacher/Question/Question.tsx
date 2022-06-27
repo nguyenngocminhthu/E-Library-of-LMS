@@ -22,17 +22,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
+import { ISelect, SelectComp } from "../../../Components/Select";
 import { IBanks } from "../../../redux/reducers/banks.reducer";
 import { getQuestions } from "../../../redux/reducers/question.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
+  getSubjectGroup,
   getSubjectGroups,
   ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
 import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
 import { EyeOutlined } from "@ant-design/icons";
@@ -44,16 +44,13 @@ export const Question = () => {
   const { Title } = Typography;
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
+  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
-  const [subjectGroupSelect, setSubjectGroupSelect] = useState<
-    ISubjectSelect[]
-  >([{ name: "Tất cả tổ bộ môn", value: "" }]);
+  const [subjectGroupSelect, setSubjectGroupSelect] = useState<ISelect[]>([
+    { name: "Tất cả tổ bộ môn", value: "" },
+  ]);
   const [form] = Form.useForm();
-  const dataSub = useSelector(
-    (state: any) => state.subject.listSubject.results
-  );
   const dataSubGroup = useSelector(
     (state: any) => state.subjectgroup.listSubjectGroup.results
   );
@@ -61,8 +58,8 @@ export const Question = () => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
 
-  const [collapseShow, setCollapseShow] = useState<any>(false)
-  const [collapseContent, setCollapseContent] = useState<number>(0)
+  const [collapseShow, setCollapseShow] = useState<any>(false);
+  const [collapseContent, setCollapseContent] = useState<number>(0);
 
   useEffect(() => {
     dispatch(getQuestions(filter))
@@ -83,17 +80,7 @@ export const Question = () => {
   }, [filter]);
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    if (dataSub) {
-      dataSub.forEach((it: ISubject) => {
-        option.push({ name: it.subName, value: it.id });
-      });
-    }
-    setSubjectSelect(option);
-  }, [dataSub]);
-
-  useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả tổ bộ môn", value: "" }];
+    const option: ISelect[] = [{ name: "Tất cả tổ bộ môn", value: "" }];
     if (dataSubGroup) {
       dataSubGroup.forEach((it: ISubjectGroup) => {
         option.push({ name: it.groupName, value: it.id });
@@ -114,7 +101,11 @@ export const Question = () => {
         form={form}
         style={{ textAlign: "left" }}
       >
-        <Form.Item name="fileName" label="Tệp đính kèm" rules={[{ required: true }]}>
+        <Form.Item
+          name="fileName"
+          label="Tệp đính kèm"
+          rules={[{ required: true }]}
+        >
           <div className="download-file">
             <div className="file-name">
               <LinkOutlined />
@@ -129,13 +120,21 @@ export const Question = () => {
             <DownloadOutlined /> [Tải xuống file mẫu]
           </div>
         </Form.Item>
-        <Form.Item name="chooseTopic" label="Chọn tổ - bộ môn" rules={[{ required: true }]}>
+        <Form.Item
+          name="chooseTopic"
+          label="Chọn tổ - bộ môn"
+          rules={[{ required: true }]}
+        >
           <Select defaultValue="Chọn tổ - bộ môn">
             <Option value={0}>Văn hóa - xã hội</Option>
             <Option value={1}>Khoa học - Tự nhiên</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="ChooseLeason" label="Chọn môn học" rules={[{ required: true }]}>
+        <Form.Item
+          name="ChooseLeason"
+          label="Chọn môn học"
+          rules={[{ required: true }]}
+        >
           <Select defaultValue="Chọn môn học">
             <Option value={0}>Thương mai điện tử</Option>
             <Option value={1}>Sinh học</Option>
@@ -207,35 +206,35 @@ export const Question = () => {
       render: (text: any, record: IBanks) => (
         <Space size="middle">
           <Button
-                icon={
-                  <EyeOutlined
-                    style={{
-                      fontSize: "24px",
-                    }}
-                  />
-                }
-                onClick={handleShowQuestion}
+            icon={
+              <EyeOutlined
+                style={{
+                  fontSize: "24px",
+                }}
               />
-              <Button
-                icon={
-                  <Edit
-                    style={{
-                      fontSize: "24px",
-                    }}
-                  />
-                }
-                onClick={handleChangeQuestion}
+            }
+            onClick={handleShowQuestion}
+          />
+          <Button
+            icon={
+              <Edit
+                style={{
+                  fontSize: "24px",
+                }}
               />
-              <Button
-                icon={
-                  <Trash
-                    onClick={() => modal.confirm(removeQuestion)}
-                    style={{
-                      fontSize: "24px",
-                    }}
-                  />
-                }
+            }
+            onClick={handleChangeQuestion}
+          />
+          <Button
+            icon={
+              <Trash
+                onClick={() => modal.confirm(removeQuestion)}
+                style={{
+                  fontSize: "24px",
+                }}
               />
+            }
+          />
         </Space>
       ),
     },
@@ -243,9 +242,22 @@ export const Question = () => {
 
   const handleFilter = (e: any) => {
     if (e !== "") {
+      delete filter.subject;
       setFilter({ ...filter, subjectgroup: e });
+      dispatch(getSubjectGroup(e))
+        .unwrap()
+        .then((rs: ISubjectGroup) => {
+          console.debug(rs);
+          const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+
+          rs.subject.forEach((it: ISubject) => {
+            option.push({ name: it.subName, value: it.id });
+          });
+
+          setSubjectSelect(option);
+        });
     } else {
-      delete filter.subjectGroup;
+      delete filter.subjectgroup;
       setFilter({ ...filter });
     }
   };
@@ -259,24 +271,32 @@ export const Question = () => {
     }
   };
 
-  const handleShowQuestion = ()=>{
-    if(!collapseShow){
+  const handleFilterLevel = (e: any) => {
+    if (e !== "") {
+      setFilter({ ...filter, level: e });
+    } else {
+      delete filter.level;
+      setFilter({ ...filter });
+    }
+  };
+
+  const handleShowQuestion = () => {
+    if (!collapseShow) {
       setCollapseShow(true);
     }
-    if(collapseContent===1){
+    if (collapseContent === 1) {
       setCollapseContent(0);
     }
-  }
+  };
 
-  const handleChangeQuestion = ()=>{
-    if(!collapseShow){
+  const handleChangeQuestion = () => {
+    if (!collapseShow) {
       setCollapseShow(true);
     }
-    if(collapseContent===0){
+    if (collapseContent === 0) {
       setCollapseContent(1);
     }
-    
-  }
+  };
 
   return (
     <div className="exam-bank sub-exam-bank question-page">
@@ -320,18 +340,14 @@ export const Question = () => {
               onChange={(e: any) => handleFilterSub(e)}
             />
             <div className="select-label">Độ khó</div>
-            <Radio.Group>
+            <Radio.Group
+              onChange={(e: any) => handleFilterLevel(e.target.value)}
+            >
               <Radio value="">Tất cả</Radio>
               <Radio value={0}>Thấp</Radio>
               <Radio value={1}>Trung bình</Radio>
               <Radio value={2}>Cao</Radio>
             </Radio.Group>
-            <div className="button-group-filter">
-              <Button className="default-btn icon-custom">Hoàn tác</Button>
-              <Button style={{ marginLeft: "1rem" }} type="primary">
-                Lọc
-              </Button>
-            </div>
           </Card>
         </Col>
         <Col span={15} offset={1}>
@@ -350,21 +366,34 @@ export const Question = () => {
             columns={columns}
             dataSource={data}
           />
-          {collapseShow ? <Collapse bordered={false} className="site-collapse-custom-collapse">
-            <Panel
-              header="Nội dung câu hỏi"
-              key="3"
-              className="site-collapse-custom-panel"
+          {collapseShow ? (
+            <Collapse
+              bordered={false}
+              className="site-collapse-custom-collapse"
             >
-              {collapseShow && collapseContent=== 0 ? <div>hehe</div> : collapseShow  && collapseContent=== 1 ? <div>hihi</div> : <></>}
-              <div className="button-group-filter">
-              <Button className="default-btn icon-custom">Hủy</Button>
-              <Button style={{ marginLeft: "1rem" }} type="primary">
-                Lưu
-              </Button>
-              </div>
-            </Panel>
-          </Collapse> : <></>}
+              <Panel
+                header="Nội dung câu hỏi"
+                key="3"
+                className="site-collapse-custom-panel"
+              >
+                {collapseShow && collapseContent === 0 ? (
+                  <div>hehe</div>
+                ) : collapseShow && collapseContent === 1 ? (
+                  <div>hihi</div>
+                ) : (
+                  <></>
+                )}
+                <div className="button-group-filter">
+                  <Button className="default-btn icon-custom">Hủy</Button>
+                  <Button style={{ marginLeft: "1rem" }} type="primary">
+                    Lưu
+                  </Button>
+                </div>
+              </Panel>
+            </Collapse>
+          ) : (
+            <></>
+          )}
         </Col>
       </Row>
     </div>

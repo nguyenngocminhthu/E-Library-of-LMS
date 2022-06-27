@@ -3,7 +3,6 @@ import { Content } from "antd/lib/layout/layout";
 import { Navigate, Outlet } from "react-router";
 import { FooterComp } from "../Layout/Footer/Footer";
 import { HeaderComp } from "../Layout/Header/Header";
-import { Sidebar } from "../Layout/Sidebar/Sidebar";
 import { TeacherSidebar } from "./Sidebar/TeacherSidebar";
 
 export const TeacherLayout = () => {

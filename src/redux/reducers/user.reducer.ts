@@ -3,6 +3,7 @@ import { message } from "antd";
 import User from "../../Apis/User.api";
 import { RootState } from "../store";
 import { IClass } from "./classes.reducer";
+import { IList } from "./interface";
 import { setLoading } from "./loading.reducer";
 import { setMessage } from "./message.reducer";
 
@@ -147,12 +148,18 @@ export interface UserState {
 }
 
 interface IUser {
-  listUser: UserState[];
+  listUser: IList;
 }
 
 // Define the initial state using that type
 const initialState: IUser = {
-  listUser: [],
+  listUser: {
+    limit: 0,
+    page: 0,
+    results: [],
+    totalPages: 0,
+    totalResults: 0,
+  },
 };
 
 export const userReducer = createSlice({
@@ -164,31 +171,61 @@ export const userReducer = createSlice({
       state.listUser = action.payload;
     });
     builder.addCase(updateProfile.rejected, (state, action) => {
-      state.listUser = [];
+      state.listUser = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.listUser = action.payload;
     });
     builder.addCase(getUsers.rejected, (state, action) => {
-      state.listUser = [];
+      state.listUser = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(createUser.fulfilled, (state, action) => {
       state.listUser = action.payload;
     });
     builder.addCase(createUser.rejected, (state, action) => {
-      state.listUser = [];
+      state.listUser = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.listUser = action.payload;
     });
     builder.addCase(deleteUser.rejected, (state, action) => {
-      state.listUser = [];
+      state.listUser = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(getUser.fulfilled, (state, action) => {
       state.listUser = action.payload;
     });
     builder.addCase(getUser.rejected, (state, action) => {
-      state.listUser = [];
+      state.listUser = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
   },
 });

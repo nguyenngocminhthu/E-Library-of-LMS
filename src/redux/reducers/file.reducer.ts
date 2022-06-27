@@ -8,6 +8,7 @@ import File from "../../Apis/File.api";
 import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
 import { message } from "antd";
+import { IList } from "./interface";
 
 export const createFile = createAsyncThunk(
   "File/createClass",
@@ -123,11 +124,17 @@ export interface IFile {
 }
 
 interface FileState {
-  listFile: IFile[];
+  listFile: IList;
 }
 
 const initialState: FileState = {
-  listFile: [],
+  listFile: {
+    limit: 0,
+    page: 0,
+    results: [],
+    totalPages: 0,
+    totalResults: 0,
+  },
 };
 
 export const fileReducer = createSlice({
@@ -139,25 +146,49 @@ export const fileReducer = createSlice({
       state.listFile = action.payload;
     });
     builder.addCase(createFile.rejected, (state) => {
-      state.listFile = [];
+      state.listFile = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(getFiles.fulfilled, (state, action) => {
       state.listFile = action.payload;
     });
     builder.addCase(getFiles.rejected, (state) => {
-      state.listFile = [];
+      state.listFile = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(getFile.fulfilled, (state, action) => {
       state.listFile = action.payload;
     });
     builder.addCase(getFile.rejected, (state) => {
-      state.listFile = [];
+      state.listFile = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
     builder.addCase(updateFile.fulfilled, (state, action) => {
       state.listFile = action.payload;
     });
     builder.addCase(updateFile.rejected, (state) => {
-      state.listFile = [];
+      state.listFile = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
     });
   },
 });
@@ -165,5 +196,8 @@ export const fileReducer = createSlice({
 const { reducer } = fileReducer;
 
 export const listFile = (state: RootState) => state.file.listFile;
+
+export const totalFile = (state: RootState) => state.file.listFile.totalResults;
+
 
 export default reducer;
