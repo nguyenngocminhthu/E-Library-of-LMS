@@ -7,6 +7,7 @@ import {
 import {
   Button,
   Col,
+  DatePicker,
   Form,
   Input,
   Modal,
@@ -27,8 +28,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
-import { getBanks, IBanks } from "../../../redux/reducers/banks.reducer";
+import { ISelect, SelectComp } from "../../../Components/Select";
+import {
+  getBanks,
+  IBanks,
+  updateBank,
+} from "../../../redux/reducers/banks.reducer";
 import { ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
@@ -52,6 +57,8 @@ export const Exam = () => {
     ISubjectSelect[]
   >([{ name: "Tất cả tổ bộ môn", value: "" }]);
   const [form] = Form.useForm();
+  const [formAssign] = Form.useForm();
+
   const dataSub = useSelector(listSubject);
 
   const dataSubGroup = useSelector(
@@ -136,30 +143,6 @@ export const Exam = () => {
     modal.confirm(config);
   };
 
-  const modalChangeName = {
-    title: "Đổi tên tệp",
-    width: "40%",
-    className: "modal-common-style",
-    content: (
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-        name="profile-form"
-        layout="horizontal"
-        form={form}
-      >
-        <Form.Item label="Tên mới" name="userName" rules={[{ required: true }]}>
-          <div className="input-layout">
-            <Input />
-            .file
-          </div>
-        </Form.Item>
-      </Form>
-    ),
-    okText: "Lưu",
-    cancelText: "Huỷ",
-  };
-
   const removeRow = {
     title: "Xác nhận xóa",
     className: "modal-common-style",
@@ -173,15 +156,6 @@ export const Exam = () => {
     className: "modal-common-style",
     content:
       "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
-
-  const sendApprove = {
-    title: "Gửi phê duyệt",
-    className: "modal-common-style",
-    content:
-      "Xác nhận muốn gửi đề thi, kiểm tra này và toàn bộ thông tin, các file chứa bên trong để được phê duyệt.",
     okText: "Xác nhận",
     cancelText: "Huỷ",
   };
@@ -226,6 +200,54 @@ export const Exam = () => {
     okText: "Lưu",
     cancelText: "Huỷ",
     onOk: () => form.submit(),
+  };
+
+  const modalAssign = (id: string) => {
+    const onFinish = (values: any) => {
+      console.debug(values);
+      dispatch(updateBank({ id: id, payload: values }));
+    };
+    const assign = {
+      title: "Phân bố đề thi",
+      width: "40%",
+      className: "modal-add-role",
+      content: (
+        <Form
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+          name="profile-form"
+          layout="horizontal"
+          form={formAssign}
+          onFinish={onFinish}
+        >
+          {/* <Form.Item
+            name="subject"
+            label="Chọn môn học"
+            rules={[{ required: true }]}
+          >
+            <Select>
+              {subjectSelect.map((vl: ISelect) => (
+                <Option value={vl.value}>{vl.name}</Option>
+              ))}
+            </Select>
+          </Form.Item> */}
+          <Form.Item
+            name="releaseTime"
+            label="Chọn thời gian"
+            rules={[{ required: true }]}
+          >
+            <DatePicker
+              format="DD-MM-YYYY HH:mm:ss"
+              showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}
+            />
+          </Form.Item>
+        </Form>
+      ),
+      okText: "Lưu",
+      cancelText: "Huỷ",
+      onOk: () => formAssign.submit(),
+    };
+    modal.confirm(assign);
   };
 
   const modalCreateExamFromQuestions = {
@@ -405,12 +427,12 @@ export const Exam = () => {
                   >
                     Xem chi tiết
                   </p>
-                  <p onClick={() => modal.confirm(modalChangeName)}>Đổi tên</p>
-                  <p onClick={() => modal.confirm(downloadFile)}>Tải xuống</p>
-                  <p onClick={() => modal.confirm(sendApprove)}>
-                    Gửi phê duyệt
+                  <p onClick={() => modalAssign(record.id)}>Phân bố đề thi</p>
+                  <p onClick={() => modal.confirm(downloadFile)}>
+                    Tải xuống đề thi
                   </p>
-                  <p onClick={() => modal.confirm(removeRow)}>Xoá file</p>
+
+                  <p onClick={() => modal.confirm(removeRow)}>Xoá đề thi</p>
                 </div>
               }
               trigger="click"

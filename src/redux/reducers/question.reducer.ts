@@ -85,7 +85,62 @@ export const getQuestion = createAsyncThunk(
   }
 );
 
+export const updateQuestion = createAsyncThunk(
+  "question/updateQuestion",
+  async ({ id, payload }: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Question.updateQuestion(id, payload);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else if (!payload.recentSubjectId) {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Cập nhật câu hỏi thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const deleteQuestion = createAsyncThunk(
+  "question/deleteQuestion",
+  async (id: string, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Question.deleteQuestion(id);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Xóa câu hỏi thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export interface IQuestion {
+  key?: number;
   id: string;
   quesCode?: string;
   quesName: string;
@@ -96,6 +151,7 @@ export interface IQuestion {
   bank?: IBanks;
   subject?: ISubject;
   quesType: number;
+  examType: number;
   level: number;
   createdAt?: string;
   updatedAt?: string;
@@ -130,6 +186,18 @@ export const questionReducer = createSlice({
       state.listQuestion = action.payload;
     });
     builder.addCase(getQuestion.rejected, (state, action) => {
+      state.listQuestion = [];
+    });
+    builder.addCase(updateQuestion.fulfilled, (state, action) => {
+      state.listQuestion = action.payload;
+    });
+    builder.addCase(updateQuestion.rejected, (state, action) => {
+      state.listQuestion = [];
+    });
+    builder.addCase(deleteQuestion.fulfilled, (state, action) => {
+      state.listQuestion = action.payload;
+    });
+    builder.addCase(deleteQuestion.rejected, (state, action) => {
       state.listQuestion = [];
     });
   },

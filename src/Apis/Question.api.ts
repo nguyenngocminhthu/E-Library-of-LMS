@@ -22,6 +22,24 @@ const getQuestion = (id: string) => {
   });
 };
 
-const Banks = { getQuestions, getQuestion, createQuestion };
+const updateQuestion = (id: string, payload: any) => {
+  return axiosClient.patch(url + `/${id}`, payload).then((rs: any) => {
+    return rs;
+  });
+};
+
+const deleteQuestion = (id: string) => {
+  return axiosClient.delete(url + `/${id}`).then((rs: any) => {
+    return rs;
+  });
+};
+
+const Banks = {
+  getQuestions,
+  getQuestion,
+  createQuestion,
+  updateQuestion,
+  deleteQuestion,
+};
 
 export default Banks;

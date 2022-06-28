@@ -14,10 +14,13 @@ import {
 import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import {
   createQuestion,
+  getQuestion,
+  IQuestion,
+  updateQuestion,
 } from "../../../redux/reducers/question.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
@@ -27,6 +30,7 @@ import {
 import { AppDispatch } from "../../../redux/store";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import "./style.scss";
+import lodash from "lodash";
 
 export const CreateQuestions = () => {
   const { Option } = Select;
@@ -41,19 +45,74 @@ export const CreateQuestions = () => {
   const [examType, setExamType] = useState<number>(0);
   const [dataSub, setDataSub] = useState<ISubject[]>([]);
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const params: any = useParams();
 
   useEffect(() => {
     dispatch(getSubjectGroups(999));
-  }, []);
+    if (params.id) {
+      dispatch(getSubjects({ limit: 999 }))
+        .unwrap()
+        .then((rs) => {
+          setDataSub(rs.results);
+        });
+      dispatch(getQuestion(params.id))
+        .unwrap()
+        .then((rs: IQuestion) => {
+          setExamType(rs.examType);
+          setQuesType(rs.quesType);
+          form.setFieldsValue(rs);
+          setAnswerNum(rs.answers);
+          if (rs.correct.length === 1) {
+            form.setFieldsValue({ correct: rs.correct[0] });
+          } else {
+            form.setFieldsValue({ correct: rs.correct });
+          }
+        });
+    }
+  }, [params.id]);
+
+  const handleRefresh = () => {
+    if (params.id) {
+      dispatch(getSubjects({ limit: 999 }))
+        .unwrap()
+        .then((rs) => {
+          setDataSub(rs.results);
+        });
+      dispatch(getQuestion(params.id))
+        .unwrap()
+        .then((rs: IQuestion) => {
+          setExamType(rs.examType);
+          setQuesType(rs.quesType);
+          form.setFieldsValue(rs);
+          setAnswerNum(rs.answers);
+          if (rs.correct.length === 1) {
+            form.setFieldsValue({ correct: rs.correct[0] });
+          } else {
+            form.setFieldsValue({ correct: rs.correct });
+          }
+        });
+    }
+  };
 
   const questionFinish = (values: any) => {
-    values.correct = [values.correct];
-    dispatch(createQuestion({ ...values, user: user.id }))
-      .unwrap()
-      .then(() => {
-        form.resetFields();
-      });
-     
+    values.correct = lodash.isArray(values.correct)
+      ? values.correct
+      : [values.correct];
+    if (params.id) {
+      dispatch(
+        updateQuestion({ id: params.id, payload: { ...values, user: user.id } })
+      )
+        .unwrap()
+        .then(() => {
+          handleRefresh();
+        });
+    } else {
+      dispatch(createQuestion({ ...values, user: user.id }))
+        .unwrap()
+        .then(() => {
+          form.resetFields();
+        });
+    }
   };
 
   const handleSelect = (e: any) => {
@@ -88,7 +147,10 @@ export const CreateQuestions = () => {
               label="Tổ bộ môn"
               rules={[{ required: true }]}
             >
-              <Select onChange={(e: any) => handleSelect(e)}>
+              <Select
+                // disabled={params.id}
+                onChange={(e: any) => handleSelect(e)}
+              >
                 {dataSubGroup?.map((vl: ISubjectGroup) => (
                   <Option key={vl.id} value={vl.id}>
                     {vl.groupName}
@@ -109,7 +171,6 @@ export const CreateQuestions = () => {
                 <Radio value={1}>Tự luận</Radio>
               </Radio.Group>
             </Form.Item>
-           
           </Col>
           <Col span={10} offset={4}>
             <Form.Item
@@ -117,7 +178,7 @@ export const CreateQuestions = () => {
               label="Môn học"
               rules={[{ required: true }]}
             >
-              <Select disabled={dataSub.length === 0}>
+              <Select disabled={dataSub.length === 0 || params.id}>
                 {dataSub?.map((vl: ISubject) => (
                   <Option key={vl.id} value={vl.id}>
                     {vl.subName}
@@ -138,7 +199,7 @@ export const CreateQuestions = () => {
         <div className="body-bank">
           <div className="question-detail">
             <Form.Item labelCol={{ span: 4 }} name="quesName" label="Câu hỏi :">
-              <TextArea rows={4}/>
+              <TextArea rows={4} />
             </Form.Item>
             {examType === 0 ? (
               <>

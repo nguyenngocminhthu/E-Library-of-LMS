@@ -2,11 +2,10 @@ import { Route, Routes } from "react-router";
 import { StudentLayout } from "../Layout/StudentLayout";
 import { Help } from "../Views/Help/Help";
 import { Profile } from "../Views/Profile/Profile";
-import { Exam } from "../Views/Student/Exam/Exam";
-import { ExamDetails } from "../Views/Student/Exam/ExamDetails";
 import { Home } from "../Views/Student/Home/Home";
 import { Notification } from "../Views/Student/Notification/Notification";
 import NotiSetting from "../Views/Student/Notification/NotiSetting";
+import { Exam } from "../Views/Student/Subject/Exams";
 import { Subject } from "../Views/Student/Subject/Subject";
 import { SubjectDetail } from "../Views/Student/Subject/SubjectDetail";
 import { ViewSubject } from "../Views/Student/Subject/ViewSubject";
@@ -29,9 +28,7 @@ export const Student = () => {
           element={<ViewSubject />}
         />
 
-        <Route path="/student/exams" element={<Exam />} />
-
-        <Route path="student/exams/examdetail/:id" element={<ExamDetails />} />
+        <Route path="/student/subjects/exams/:id" element={<Exam />} />
 
         <Route path="/student/help" element={<Help />} />
 

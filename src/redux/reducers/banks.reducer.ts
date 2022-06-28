@@ -123,6 +123,7 @@ export interface IBanks {
   createdAt: string;
   updatedAt: string;
   time: number;
+  releaseTime: Date;
 }
 
 interface banksState {

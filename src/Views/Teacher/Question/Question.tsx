@@ -1,5 +1,6 @@
 import {
   DownloadOutlined,
+  EyeOutlined,
   LinkOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
@@ -17,15 +18,19 @@ import {
   Typography,
 } from "antd";
 import modal from "antd/lib/modal";
+import lodash from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { ISelect, SelectComp } from "../../../Components/Select";
-import { IBanks } from "../../../redux/reducers/banks.reducer";
-import { getQuestions } from "../../../redux/reducers/question.reducer";
-import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import {
+  deleteQuestion,
+  getQuestions,
+  IQuestion,
+} from "../../../redux/reducers/question.reducer";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroup,
   getSubjectGroups,
@@ -33,11 +38,9 @@ import {
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
 import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
-import { EyeOutlined } from "@ant-design/icons";
+import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
 import "./style.scss";
-import { addSyntheticTrailingComment } from "typescript";
 
 export const Question = () => {
   const { Panel } = Collapse;
@@ -55,29 +58,38 @@ export const Question = () => {
   const dataSubGroup = useSelector(
     (state: any) => state.subjectgroup.listSubjectGroup.results
   );
-  const [data, setData] = useState<IBanks[]>([]);
+  const [data, setData] = useState<IQuestion[]>([]);
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
 
   const [collapseShow, setCollapseShow] = useState<any>(false);
+  const [question, setQuestion] = useState<IQuestion>();
 
   useEffect(() => {
     dispatch(getQuestions(filter))
       .unwrap()
       .then((rs: any) => {
-        let list: IBanks[] = [];
-        rs.results.forEach((vl: IBanks, idx: number) => {
+        let list: IQuestion[] = [];
+        rs.results.forEach((vl: IQuestion, idx: number) => {
           list.push({ key: idx, ...vl });
         });
         setData(list);
-      })
-      .catch((e: any) => {
-        console.debug("e: ", e);
       });
 
-    dispatch(getSubjects(999));
     dispatch(getSubjectGroups(999));
   }, [filter]);
+
+  const handleRefresh = () => {
+    dispatch(getQuestions(filter))
+      .unwrap()
+      .then((rs: any) => {
+        let list: IQuestion[] = [];
+        rs.results.forEach((vl: IQuestion, idx: number) => {
+          list.push({ key: idx, ...vl });
+        });
+        setData(list);
+      });
+  };
 
   useEffect(() => {
     const option: ISelect[] = [{ name: "Tất cả tổ bộ môn", value: "" }];
@@ -89,9 +101,16 @@ export const Question = () => {
     setSubjectGroupSelect(option);
   }, [dataSubGroup]);
 
-  const select = ["A.Get", "B.Open", "C.Extract", "D.Select"];
-  const ListItem = (props: any) => {
-    return <li>{props.value}</li>;
+  const convertAnswer = (num: number | undefined) => {
+    if (num === 0) {
+      return "A";
+    } else if (num === 1) {
+      return "B";
+    } else if (num === 2) {
+      return "C";
+    } else {
+      return "D";
+    }
   };
 
   const modalUploadFile = {
@@ -154,22 +173,20 @@ export const Question = () => {
     cancelText: "Huỷ",
   };
 
-  const removeQuestion = {
-    title: "Xóa câu hỏi",
-    className: "modal-common-style",
-    content:
-      "Xác nhận muốn xoá câu hỏi này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
-
-  const downloadFile = {
-    title: "Tải xuống tệp",
-    className: "modal-change-name",
-    content:
-      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
+  const modalRemove = (record: IQuestion) => {
+    const removeQuestion = {
+      title: "Xóa câu hỏi",
+      className: "modal-common-style",
+      content:
+        "Xác nhận muốn xoá câu hỏi này và toàn bộ thông tin bên trong? Sau khi xoá sẽ không thể hoàn tác.",
+      okText: "Xác nhận",
+      cancelText: "Huỷ",
+      onOk: () =>
+        dispatch(deleteQuestion(record.id)).then(() => {
+          handleRefresh();
+        }),
+    };
+    modal.confirm(removeQuestion);
   };
 
   const columns = [
@@ -208,7 +225,7 @@ export const Question = () => {
     {
       title: "",
       key: "action",
-      render: (text: any, record: IBanks) => (
+      render: (text: any, record: IQuestion) => (
         <Space size="middle">
           <Button
             icon={
@@ -218,7 +235,7 @@ export const Question = () => {
                 }}
               />
             }
-            onClick={handleShowQuestion}
+            onClick={() => handleShowQuestion(record)}
           />
           <Button
             icon={
@@ -228,12 +245,15 @@ export const Question = () => {
                 }}
               />
             }
-            onClick={() => navigate("/teacher/questions/editQuestions")}
+            onClick={() =>
+              navigate(`/teacher/questions/editQuestions/${record.id}`)
+            }
           />
           <Button
+            disabled={!lodash.isEmpty(record.bank)}
             icon={
               <Trash
-                onClick={() => modal.confirm(removeQuestion)}
+                onClick={() => modalRemove(record)}
                 style={{
                   fontSize: "24px",
                 }}
@@ -285,13 +305,9 @@ export const Question = () => {
     }
   };
 
-  const handleShowQuestion = () => {
-    if(collapseShow === false){
-      setCollapseShow(true);
-    }else{
-      setCollapseShow(false);
-    }
-      
+  const handleShowQuestion = (record?: IQuestion) => {
+    setCollapseShow(true);
+    setQuestion(record);
   };
 
   return (
@@ -362,7 +378,7 @@ export const Question = () => {
             columns={columns}
             dataSource={data}
           />
-          {collapseShow ? (
+          {collapseShow && (
             <Collapse
               bordered={false}
               className="site-collapse-custom-collapse"
@@ -373,26 +389,26 @@ export const Question = () => {
                 className="site-collapse-custom-panel"
               >
                 <div>
-                  <h3>
-                    Câu 2: Câu lệnh SQL nào được dùng để trích xuất dữ liệu từ
-                    database
-                  </h3>
+                  <h3>{question?.quesName}</h3>
                   <Space direction="vertical">
-                    {select.map((select) => (
-                      <ListItem key={select} value={select} />
+                    {question?.answers.map((value, index) => (
+                      <div key={value}>
+                        {convertAnswer(index)}. {value}
+                      </div>
                     ))}
                   </Space>
                 </div>
-                <h3>
-                    ĐÁP ÁN: A
-                  </h3>
+                <h3>ĐÁP ÁN: {convertAnswer(question?.correct[0])}</h3>
                 <div className="button-group-filter">
-                  <Button className="default-btn icon-custom" onClick={handleShowQuestion}>Ẩn</Button>
+                  <Button
+                    className="default-btn icon-custom"
+                    onClick={() => setCollapseShow(false)}
+                  >
+                    Ẩn
+                  </Button>
                 </div>
               </Panel>
             </Collapse>
-          ) : (
-            <></>
           )}
         </Col>
       </Row>

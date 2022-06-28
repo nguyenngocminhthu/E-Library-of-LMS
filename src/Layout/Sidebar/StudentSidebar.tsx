@@ -42,11 +42,7 @@ export const StudentSidebar: React.FC = () => {
             key="subject"
             icon={<Book />}
           ></Menu.Item>
-          <Menu.Item
-            onClick={() => handleSelect(["exams"])}
-            key="exams"
-            icon={<File />}
-          ></Menu.Item>
+
           <Menu.Item
             onClick={() => handleSelect(["notification"])}
             key="notification"
@@ -72,9 +68,7 @@ export const StudentSidebar: React.FC = () => {
           <Menu.Item onClick={() => handleSelect(["subject"])} key="subject">
             Môn học
           </Menu.Item>
-          <Menu.Item onClick={() => handleSelect(["exams"])} key="exams">
-            Đề thi và kiểm tra
-          </Menu.Item>
+
           <Menu.Item
             onClick={() => handleSelect(["notification"])}
             key="notification"
