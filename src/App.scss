@@ -41,4 +41,21 @@ $color-site-layout: #fafbfc;
 }
 .d-flex {
   display: flex;
+  flex-wrap: wrap;
+  }
+  
+  .a-baseline {
+    align-items: baseline;
+  }
+  
+  .j-space-around {
+    justify-content: space-around;
+  }
+  
+  .j-space-between {
+    justify-content: space-between;
+  }
+  
+  .mr {
+    margin-right: 1rem;
 }

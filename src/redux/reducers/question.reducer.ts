@@ -142,6 +142,7 @@ export const deleteQuestion = createAsyncThunk(
 export interface IQuestion {
   key?: number;
   id: string;
+  _id: string;
   quesCode?: string;
   quesName: string;
   user?: UserState;

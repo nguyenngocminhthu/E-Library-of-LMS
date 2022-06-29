@@ -139,16 +139,20 @@ export const ExamDetails = () => {
               >
                 <Space direction="vertical">
                   {data?.question.length !== 0
-                    ? data?.question[select]?.answers.map((vl, idx) => (
-                        <Radio key={vl} value={idx}>
-                          {vl}
-                        </Radio>
-                      ))
-                    : data?.questions[select]?.answers.map((vl, idx) => (
-                        <Radio key={vl} value={idx}>
-                          {vl}
-                        </Radio>
-                      ))}
+                    ? data?.question[select]?.answers.map(
+                        (vl: any, idx: any) => (
+                          <Radio key={vl} value={idx}>
+                            {vl}
+                          </Radio>
+                        )
+                      )
+                    : data?.questions[select]?.answers.map(
+                        (vl: any, idx: any) => (
+                          <Radio key={vl} value={idx}>
+                            {vl}
+                          </Radio>
+                        )
+                      )}
                 </Space>
               </Radio.Group>
             ) : (
@@ -160,7 +164,7 @@ export const ExamDetails = () => {
                 }
               >
                 {data?.question.length !== 0
-                  ? data?.question[select]?.answers.map((vl, idx) => (
+                  ? data?.question[select]?.answers.map((vl: any, idx: any) => (
                       <>
                         <Checkbox key={vl} value={idx}>
                           {vl}
@@ -168,14 +172,16 @@ export const ExamDetails = () => {
                         <br />
                       </>
                     ))
-                  : data?.questions[select]?.answers.map((vl, idx) => (
-                      <>
-                        <Checkbox key={vl} value={idx}>
-                          {vl}
-                        </Checkbox>
-                        <br />
-                      </>
-                    ))}
+                  : data?.questions[select]?.answers.map(
+                      (vl: any, idx: any) => (
+                        <>
+                          <Checkbox key={vl} value={idx}>
+                            {vl}
+                          </Checkbox>
+                          <br />
+                        </>
+                      )
+                    )}
               </Checkbox.Group>
             )}
           </Col>

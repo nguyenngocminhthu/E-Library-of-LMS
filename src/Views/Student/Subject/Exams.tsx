@@ -2,13 +2,14 @@ import {
   SettingOutlined,
   EditOutlined,
   EllipsisOutlined,
+  PlayCircleOutlined,
 } from "@ant-design/icons";
-import { Avatar, Card, Skeleton } from "antd";
+import { Avatar, Card, Col, Row, Skeleton } from "antd";
 import Meta from "antd/lib/card/Meta";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { IBanks } from "../../../redux/reducers/banks.reducer";
 import { getSubject } from "../../../redux/reducers/subject.reducer";
@@ -18,6 +19,7 @@ export const Exam = () => {
   const params: any = useParams();
   const dispatch: AppDispatch = useDispatch();
   const [banks, setBanks] = useState<IBanks[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (params.id) {
@@ -31,29 +33,45 @@ export const Exam = () => {
   }, [params.id]);
 
   return (
-    <div>
+    <div className="student-exams">
       <BreadcrumbComp
         title="Đề thi & kiểm tra"
         prevPageTitle="Danh sách môn học"
         prevPage="student/subject"
       />
-      {banks.map((value: IBanks) => (
-        <Card
-          style={{ width: 300, marginTop: 16 }}
-          actions={[
-            <SettingOutlined key="setting" />,
-            <EditOutlined key="edit" />,
-            <EllipsisOutlined key="ellipsis" />,
-          ]}
-        >
-          <Meta
-            title={value.examName}
-            description={moment(value.releaseTime).format(
-              "DD/MM/YYYY HH:mm:ss"
-            )}
-          />
-        </Card>
-      ))}
+      <div className="d-flex j-space-between">
+        {banks.map((value: IBanks) => (
+          <Card
+            style={{ marginTop: 16, width: "30%" }}
+            actions={[
+              <PlayCircleOutlined
+                onClick={() =>
+                  navigate(`/student/subjects/exams/detail/${value.id}`)
+                }
+                key="play"
+              />,
+            ]}
+          >
+            <Meta
+              title={value.examName}
+              description={
+                <div>
+                  <div className="d-flex a-baseline">
+                    <h3 className="mr">Thời gian bắt đầu: </h3>
+                    {moment(value.releaseTime).format("DD/MM/YYYY HH:mm:ss")}
+                  </div>
+                  <div className="d-flex a-baseline">
+                    <h3 className="mr">Thời gian kết thúc: </h3>
+                    {moment(value.releaseTime)
+                      .add(value.time, "minutes")
+                      .format("DD/MM/YYYY HH:mm:ss")}
+                  </div>
+                </div>
+              }
+            />
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };

@@ -10,3 +10,24 @@
 
 
 }
+.student-exams {
+    .ant-card-bordered {
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    }
+
+    .ant-card-body {
+        // background: #fdb478bb;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .ant-card-actions {
+        border-radius: 0 0 10px 10px;
+        background: #ff9945e0;
+
+        .anticon svg {
+            color: white;
+            font-size: 30px;
+        }
+    }
+}

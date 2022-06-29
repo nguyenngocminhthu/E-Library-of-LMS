@@ -118,12 +118,12 @@ export interface IBanks {
   subject: ISubject;
   subjectGroup: string;
   user: UserState;
-  questions: IQuestion[];
+  questions: any[];
   question: IQuestion[];
   createdAt: string;
   updatedAt: string;
   time: number;
-  releaseTime: Date;
+  releaseTime: string;
 }
 
 interface banksState {
