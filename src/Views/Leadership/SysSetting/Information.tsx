@@ -74,7 +74,11 @@ export const Information = () => {
 
   return (
     <div className="information-system-page">
-      <BreadcrumbComp title="Thông tin người dùng" />
+      <BreadcrumbComp
+        title="Thông tin người dùng"
+        prevFirstPageTitle="Cài đặt hệ thống"
+        prevFirstPage="setting"
+      />
       <div className="tab-control">
         <Button type="primary" onClick={() => setDisable(!disable)}>
           <FormOutlined />
@@ -121,24 +125,44 @@ export const Information = () => {
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label="Mã trường học" name="schoolCode" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Mã trường học"
+                  name="schoolCode"
+                  rules={[{ required: true }]}
+                >
                   <Input disabled={disable} />
                 </Form.Item>
-                <Form.Item label="Tên trường học" name="schoolName" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Tên trường học"
+                  name="schoolName"
+                  rules={[{ required: true }]}
+                >
                   <Input disabled={disable} />
                 </Form.Item>
-                <Form.Item label="Website" name="website" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Website"
+                  name="website"
+                  rules={[{ required: true }]}
+                >
                   <Input disabled={disable} />
                 </Form.Item>
               </Col>
               <Col span={8} offset={1}>
-                <Form.Item label="Loại trường" name="schoolType" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Loại trường"
+                  name="schoolType"
+                  rules={[{ required: true }]}
+                >
                   <Select disabled={disable}>
                     <Option value={0}>Dân lập</Option>
                     <Option value={1}>Công lập</Option>
                   </Select>
                 </Form.Item>
-                <Form.Item label="Hiệu trưởng" name="headmaster" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Hiệu trưởng"
+                  name="headmaster"
+                  rules={[{ required: true }]}
+                >
                   <Input disabled={disable} />
                 </Form.Item>
               </Col>
@@ -146,18 +170,34 @@ export const Information = () => {
             <Row style={{ padding: "16px" }}>
               <Col span={6}></Col>
               <Col span={8} offset={1}>
-                <Form.Item label="Tên hệ thống thư viện" name="libraryName" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Tên hệ thống thư viện"
+                  name="libraryName"
+                  rules={[{ required: true }]}
+                >
                   <Input disabled={disable} />
                 </Form.Item>
-                <Form.Item label="Địa chỉ truy cập" name="adressConect" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Địa chỉ truy cập"
+                  name="adressConect"
+                  rules={[{ required: true }]}
+                >
                   <Input disabled={disable} />
                 </Form.Item>
               </Col>
               <Col span={8} offset={1}>
-                <Form.Item label="Số điện thoại" name="phone" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Số điện thoại"
+                  name="phone"
+                  rules={[{ required: true }]}
+                >
                   <Input disabled={disable} />
                 </Form.Item>
-                <Form.Item label="Email" name="email" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[{ required: true }]}
+                >
                   <Input disabled={disable} />
                 </Form.Item>
               </Col>
@@ -165,7 +205,11 @@ export const Information = () => {
             <Row style={{ padding: "16px" }}>
               <Col span={6}></Col>
               <Col span={8} offset={1}>
-                <Form.Item label="Ngôn ngữ xác định" name="language" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Ngôn ngữ xác định"
+                  name="language"
+                  rules={[{ required: true }]}
+                >
                   <Select disabled={disable}>
                     <Option value={0}>Tiếng Việt</Option>
                     <Option value={1}>Tiếng Anh</Option>
@@ -173,7 +217,11 @@ export const Information = () => {
                     <Option value={3}>Tiếng Pháp</Option>
                   </Select>
                 </Form.Item>
-                <Form.Item label="Niên khóa mặc định" name="schoolYear" rules={[{ required: true }]}>
+                <Form.Item
+                  label="Niên khóa mặc định"
+                  name="schoolYear"
+                  rules={[{ required: true }]}
+                >
                   <Select disabled={disable}>
                     <Option value={0}>2019-2020</Option>
                     <Option value={1}>2020-2021</Option>

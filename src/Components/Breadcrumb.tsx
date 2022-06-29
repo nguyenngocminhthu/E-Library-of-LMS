@@ -3,16 +3,23 @@ import { Link } from "react-router-dom";
 
 interface IBread {
   title: string | undefined;
-  prevPage?: string;
-  prevPageTitle?: string;
+  prevFirstPage?: string;
+  prevSecondPage?: string;
+  prevFirstPageTitle?: string;
+  prevSecondPageTitle?: string;
 }
 
 export const BreadcrumbComp: React.FC<IBread> = (props) => {
   return (
     <Breadcrumb style={{ margin: "16px 0" }}>
-      {props.prevPageTitle && (
+       {props.prevFirstPageTitle && (
         <Breadcrumb.Item>
-          <Link to={`/${props.prevPage}`}>{props.prevPageTitle}</Link>
+          <Link to={`/${props.prevFirstPage}`}>{props.prevFirstPageTitle}</Link>
+        </Breadcrumb.Item>
+      )}
+      {props.prevSecondPageTitle && (
+        <Breadcrumb.Item>
+          <Link to={`/${props.prevSecondPage}`}>{props.prevSecondPageTitle}</Link>
         </Breadcrumb.Item>
       )}
       <Breadcrumb.Item>

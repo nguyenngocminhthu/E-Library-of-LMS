@@ -31,8 +31,8 @@ export const SubjectDetail = () => {
     <div className="subDetail">
       <BreadcrumbComp
         title={data?.subName}
-        prevPageTitle="Danh sách môn học"
-        prevPage="subjects"
+        prevFirstPageTitle="Danh sách môn học"
+        prevFirstPage="subjects"
       />
       <div className="overview">
         <h1>Tổng quan</h1>

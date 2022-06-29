@@ -64,6 +64,7 @@ export const ViewSubject = () => {
         });
     }
   }, [params.id]);
+  console.log("params.id", params.id)
 
 
   const handleRefresh = () => {
@@ -133,8 +134,10 @@ export const ViewSubject = () => {
     <div className="viewSub viewSub-student">
       <BreadcrumbComp
         title="Xem bài giảng"
-        prevPageTitle="Danh sách môn học"
-        prevPage="subjects"
+        prevFirstPageTitle="Danh sách môn học"
+        prevSecondPageTitle="Danh sách chủ đề"
+        prevFirstPage="teacher/subject"
+        prevSecondPage="teacher/subject"
       />
       <Row>
         <Col span={16}>

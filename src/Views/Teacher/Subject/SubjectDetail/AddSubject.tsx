@@ -36,8 +36,8 @@ export const AddSubject = () => {
     <div className="subDetail teacher-subject">
       <BreadcrumbComp
         title="Thương mại điện tử"
-        prevPageTitle="Danh sách môn giảng dạy"
-        prevPage="teacher/subject"
+        prevFirstPageTitle="Danh sách môn giảng dạy"
+        prevFirstPage="teacher/subject"
       />
       <div className="box-cover">
         <div className="header-box">

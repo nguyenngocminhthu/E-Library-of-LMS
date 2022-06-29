@@ -258,8 +258,8 @@ const downloadFile = {
     <div className="subject sub-manage">
       <BreadcrumbComp
         title="Phê duyệt tài liệu môn học"
-        prevPageTitle="Quản lý môn học"
-        prevPage="subjects"
+        prevFirstPageTitle="Quản lý môn học"
+        prevFirstPage="subjects"
       />
       <div className="top-head">
         <div></div>

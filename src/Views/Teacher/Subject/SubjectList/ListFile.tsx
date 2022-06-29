@@ -189,8 +189,8 @@ export const ListFile = () => {
     <div className="subject sub-manage teacher-subject">
       <BreadcrumbComp
         title="Danh sách tài liệu"
-        prevPageTitle="Danh sách môn giảng dạy"
-        prevPage="teacher/subject"
+        prevFirstPageTitle="Danh sách môn giảng dạy"
+        prevFirstPage="teacher/subject"
       />
       <div className="top-head">
         <h1>Thương mại điện tử</h1>

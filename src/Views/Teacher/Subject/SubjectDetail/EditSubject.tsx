@@ -132,8 +132,8 @@ export const EditSubject = () => {
     <div className="subDetail teacher-subject">
       <BreadcrumbComp
         title={data?.subName}
-        prevPageTitle="Danh sách môn giảng dạy"
-        prevPage="teacher/subject"
+        prevFirstPageTitle="Danh sách môn giảng dạy"
+        prevFirstPage="teacher/subject"
       />
       <div className="Noti-Page">
         <div className="tab-notilist">

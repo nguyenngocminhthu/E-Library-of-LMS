@@ -33,8 +33,8 @@ export const ExamDetails = () => {
     <div className="sub-exam-bank">
       <BreadcrumbComp
         title="Chi tiết đề thi"
-        prevPageTitle="Ngân hàng đề thi"
-        prevPage="exambank"
+        prevFirstPageTitle="Ngân hàng đề thi"
+        prevFirstPage="exambank"
       />
       <div className="top-head">
         <div

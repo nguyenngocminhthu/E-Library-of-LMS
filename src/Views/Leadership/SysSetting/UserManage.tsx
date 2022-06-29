@@ -184,7 +184,11 @@ export const UserManage = () => {
 
   return (
     <div className="role-manage-page">
-      <BreadcrumbComp title="Quản lý người dùng" />
+      <BreadcrumbComp
+        title="Quản lý người dùng"
+        prevFirstPageTitle="Cài đặt hệ thống"
+        prevFirstPage="setting"
+      />
       <div className="title-page">
         <Title ellipsis level={5}>
           Danh sách người dùng trên hệ thống

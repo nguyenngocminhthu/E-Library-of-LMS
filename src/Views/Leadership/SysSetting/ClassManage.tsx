@@ -191,7 +191,11 @@ export const ClassManage = () => {
 
   return (
     <div className="role-manage-page">
-      <BreadcrumbComp title="Quản lý lớp học" />
+      <BreadcrumbComp
+        title="Quản lý lớp học"
+        prevFirstPageTitle="Cài đặt hệ thống"
+        prevFirstPage="setting"
+      />
       <div className="title-page">
         <Title ellipsis level={5}>
           Danh sách các lớp học

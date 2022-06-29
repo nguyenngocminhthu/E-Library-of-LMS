@@ -171,8 +171,8 @@ export const CreateExam = () => {
     <div className="sub-exam-bank">
       <BreadcrumbComp
         title="Tạo đề thi với câu hỏi mới"
-        prevPageTitle="Ngân hàng đề thi"
-        prevPage="teacher/exams"
+        prevFirstPageTitle="Ngân hàng đề thi"
+        prevFirstPage="teacher/exams"
       />
       <Form
         className="new-exam-form"

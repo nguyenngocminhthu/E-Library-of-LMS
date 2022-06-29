@@ -36,8 +36,8 @@ export const Exam = () => {
     <div className="student-exams">
       <BreadcrumbComp
         title="Đề thi & kiểm tra"
-        prevPageTitle="Danh sách môn học"
-        prevPage="student/subject"
+        prevFirstPageTitle="Danh sách môn học"
+        prevFirstPage="student/subject"
       />
       <div className="d-flex j-space-between">
         {banks.map((value: IBanks) => (

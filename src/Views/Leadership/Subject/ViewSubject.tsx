@@ -135,8 +135,8 @@ export const ViewSubject = () => {
     <div className="viewSub viewSub-student">
       <BreadcrumbComp
         title="Xem bài giảng"
-        prevPageTitle="Danh sách môn học"
-        prevPage="subjects"
+        prevFirstPageTitle="Danh sách môn học"
+        prevFirstPage="subjects"
       />
       <Row>
         <Col span={16}>
