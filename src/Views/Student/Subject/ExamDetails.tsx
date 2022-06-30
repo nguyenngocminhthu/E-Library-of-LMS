@@ -10,6 +10,7 @@ import {
   Statistic,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import lodash from "lodash";
 import moment, { Moment } from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -23,7 +24,7 @@ const { Countdown } = Statistic;
 interface IAns {
   id: string;
   ans: any;
-  correct: number[];
+  correct: any;
 }
 
 export const ExamDetails = () => {
@@ -37,10 +38,8 @@ export const ExamDetails = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  let arr: IAns[] = [{ id: "", ans: [], correct: [] }];
-  const [questions, setQuestions] = useState<IAns[]>([
-    { id: "", ans: [], correct: [] },
-  ]);
+  let arr: IAns[] = [];
+  const [questions, setQuestions] = useState<IAns[]>(arr);
   console.debug(questions);
 
   useEffect(() => {
@@ -54,12 +53,28 @@ export const ExamDetails = () => {
           setReleaseTime(Date.parse(rs.releaseTime));
           if (rs.question.length !== 0) {
             rs.question.forEach((vl: IQuestion) => {
-              arr.push({ id: vl.id, ans: undefined, correct: vl.correct });
+              if (vl.correctEssay !== undefined) {
+                arr.push({
+                  id: vl.id,
+                  ans: undefined,
+                  correct: vl.correctEssay,
+                });
+              } else {
+                arr.push({ id: vl.id, ans: undefined, correct: vl.correct });
+              }
             });
             setQuestions(arr);
           } else {
             rs.questions.forEach((vl: any) => {
-              arr.push({ id: vl._id, ans: undefined, correct: vl.correct });
+              if (vl.correctEssay !== undefined) {
+                arr.push({
+                  id: vl._id,
+                  ans: undefined,
+                  correct: vl.correctEssay,
+                });
+              } else {
+                arr.push({ id: vl._id, ans: undefined, correct: vl.correct });
+              }
             });
             setQuestions(arr);
           }
@@ -78,7 +93,27 @@ export const ExamDetails = () => {
     );
   };
 
-  const onFinish = () => {};
+  const takeDecimalNumber = (num: number) => {
+    let base = 10 ** 3;
+    let result = Math.round(num * base) / base;
+    return result;
+  };
+
+  const onFinish = () => {
+    let submission: any[] = [];
+    let count: number = 0;
+    questions.forEach((item: IAns) => {
+      if (JSON.stringify(item.ans) === JSON.stringify(item.correct)) {
+        count = count + 1;
+      }
+      submission.push(
+        JSON.stringify(item.ans) === JSON.stringify(item.correct)
+      );
+    });
+    let score = (10 / submission.length) * count;
+    score = takeDecimalNumber(score);
+    console.debug(score);
+  };
 
   const handleSelect = (idx: number) => {
     setSelect(idx);
@@ -163,123 +198,134 @@ export const ExamDetails = () => {
                 ))}
           </Col>
           <Col style={{ padding: "2rem" }} span={18}>
-            <Form form={form}>
-              <h3>
-                Câu {select + 1}:{" "}
-                {data?.question.length !== 0
-                  ? data?.question[select]?.quesName
-                  : data?.questions[select]?.quesName}
-              </h3>
+            <h3>
+              Câu {select + 1}:{" "}
+              {data?.question.length !== 0
+                ? data?.question[select]?.quesName
+                : data?.questions[select]?.quesName}
+            </h3>
 
-              {data?.question.length !== 0 ? (
-                data?.question[select]?.correctEssay ? (
-                  <TextArea rows={10} />
-                ) : (
-                  ""
-                )
-              ) : data?.questions[select]?.correctEssay ? (
-                <TextArea rows={10} />
+            {data?.question.length !== 0 ? (
+              data?.question[select]?.correctEssay ? (
+                <TextArea
+                  rows={10}
+                  onChange={(e: any) =>
+                    handleSubmit(data?.question[select].id, e.target.value)
+                  }
+                />
               ) : (
                 ""
-              )}
+              )
+            ) : data?.questions[select]?.correctEssay ? (
+              <TextArea
+                rows={10}
+                onChange={(e: any) =>
+                  handleSubmit(data?.questions[select]._id, e.target.value)
+                }
+              />
+            ) : (
+              ""
+            )}
 
-              {data?.questions[select]?.correct.length === 1 ||
-              data?.question[select]?.correct.length === 1 ? (
-                <Radio.Group
-                // value={
-                //   questions[select].ans.length !== 0 &&
-                //   questions[select].ans[0]
-                // }
-                >
-                  <Space direction="vertical">
-                    {data?.question.length !== 0
-                      ? data?.question[select]?.answers.map(
-                          (vl: string, idx: number) => (
-                            <Radio
-                              onChange={(e) =>
-                                handleSubmit(data?.question[select].id, [
-                                  e.target.value,
-                                ])
-                              }
-                              key={idx}
-                              value={idx}
-                            >
-                              {vl}
-                            </Radio>
-                          )
-                        )
-                      : data?.questions[select]?.answers.map(
-                          (vl: string, idx: number) => (
-                            <Radio
-                              onChange={(e) =>
-                                handleSubmit(data?.questions[select]._id, [
-                                  e.target.value,
-                                ])
-                              }
-                              key={idx}
-                              value={idx}
-                            >
-                              {vl}
-                            </Radio>
-                          )
-                        )}
-                  </Space>
-                </Radio.Group>
-              ) : (
-                <Checkbox.Group
-                  // value={
-                  //   questions[select].ans.length !== 0 && questions[select].ans
-                  // }
-                  onChange={(e) =>
-                    data?.question.length !== 0
-                      ? handleSubmit(data?.question[select].id, e)
-                      : handleSubmit(data?.questions[select]._id, e)
-                  }
-                >
+            {data?.questions[select]?.correct.length === 1 ||
+            data?.question[select]?.correct.length === 1 ? (
+              <Radio.Group
+                value={
+                  !lodash.isEmpty(questions[select]) &&
+                  !lodash.isEmpty(questions[select].ans) &&
+                  questions[select].ans[0]
+                }
+              >
+                <Space direction="vertical">
                   {data?.question.length !== 0
                     ? data?.question[select]?.answers.map(
-                        (vl: any, idx: any) => (
-                          <>
-                            <Checkbox
-                              onChange={(e) =>
-                                handleSubmit(data?.question[select].id, [
-                                  e.target.value,
-                                ])
-                              }
-                              key={vl}
-                              value={idx}
-                            >
-                              {vl}
-                            </Checkbox>
-
-                            <br />
-                          </>
+                        (vl: string, idx: number) => (
+                          <Radio
+                            onChange={(e) =>
+                              handleSubmit(data?.question[select].id, [
+                                e.target.value,
+                              ])
+                            }
+                            key={idx}
+                            value={idx}
+                          >
+                            {vl}
+                          </Radio>
                         )
                       )
                     : data?.questions[select]?.answers.map(
-                        (vl: any, idx: any) => (
-                          <>
-                            <Checkbox
-                              onChange={(e) =>
-                                handleSubmit(data?.questions[select]._id, [
-                                  e.target.value,
-                                ])
-                              }
-                              key={vl}
-                              value={idx}
-                            >
-                              {vl}
-                            </Checkbox>
-
-                            <br />
-                          </>
+                        (vl: string, idx: number) => (
+                          <Radio
+                            onChange={(e) =>
+                              handleSubmit(data?.questions[select]._id, [
+                                e.target.value,
+                              ])
+                            }
+                            key={idx}
+                            value={idx}
+                          >
+                            {vl}
+                          </Radio>
                         )
                       )}
-                </Checkbox.Group>
-              )}
-            </Form>
+                </Space>
+              </Radio.Group>
+            ) : (
+              <Checkbox.Group
+                value={
+                  !lodash.isEmpty(questions[select]) &&
+                  !lodash.isEmpty(questions[select].ans) &&
+                  questions[select].ans
+                }
+                onChange={(e) =>
+                  data?.question.length !== 0
+                    ? handleSubmit(data?.question[select].id, e)
+                    : handleSubmit(data?.questions[select]._id, e)
+                }
+              >
+                {data?.question.length !== 0
+                  ? data?.question[select]?.answers.map((vl: any, idx: any) => (
+                      <>
+                        <Checkbox
+                          onChange={(e) =>
+                            handleSubmit(data?.question[select].id, [
+                              e.target.value,
+                            ])
+                          }
+                          key={vl}
+                          value={idx}
+                        >
+                          {vl}
+                        </Checkbox>
+
+                        <br />
+                      </>
+                    ))
+                  : data?.questions[select]?.answers.map(
+                      (vl: any, idx: any) => (
+                        <>
+                          <Checkbox
+                            onChange={(e) =>
+                              handleSubmit(data?.questions[select]._id, [
+                                e.target.value,
+                              ])
+                            }
+                            key={vl}
+                            value={idx}
+                          >
+                            {vl}
+                          </Checkbox>
+
+                          <br />
+                        </>
+                      )
+                    )}
+              </Checkbox.Group>
+            )}
           </Col>
-          <Button type="primary">Nộp bài</Button>
+          <Button onClick={onFinish} type="primary">
+            Nộp bài
+          </Button>
         </Row>
       </div>
     </div>

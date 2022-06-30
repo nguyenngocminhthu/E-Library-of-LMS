@@ -118,7 +118,7 @@ export interface IBanks {
   subject: ISubject;
   subjectGroup: string;
   user: UserState;
-  questions: any[];
+  questions: IQuestion[];
   question: IQuestion[];
   createdAt: string;
   updatedAt: string;
