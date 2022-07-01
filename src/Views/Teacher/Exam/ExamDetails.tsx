@@ -83,14 +83,7 @@ export const ExamDetails = () => {
                     key={vl.id}
                     onClick={() => handleSelect(idx)}
                   >
-                    Câu {idx + 1}.
-                    {vl.correct[0] === 0
-                      ? "A"
-                      : vl.correct[0] === 1
-                      ? "B"
-                      : vl.correct[0] === 2
-                      ? "C"
-                      : "D"}
+                    Câu {idx + 1}
                     <div hidden={!(select === idx)} className="icon-true">
                       <CheckCircleOutlined />
                     </div>
@@ -102,14 +95,7 @@ export const ExamDetails = () => {
                     key={vl.id}
                     onClick={() => handleSelect(idx)}
                   >
-                    Câu {idx + 1}.
-                    {vl.correct[0] === 0
-                      ? "A"
-                      : vl.correct[0] === 1
-                      ? "B"
-                      : vl.correct[0] === 2
-                      ? "C"
-                      : "D"}
+                    Câu {idx + 1}
                     <div hidden={!(select === idx)} className="icon-true">
                       <CheckCircleOutlined />
                     </div>
@@ -139,16 +125,20 @@ export const ExamDetails = () => {
               >
                 <Space direction="vertical">
                   {data?.question.length !== 0
-                    ? data?.question[select]?.answers.map((vl: any, idx: any) => (
-                        <Radio key={vl} value={idx}>
-                          {vl}
-                        </Radio>
-                      ))
-                    : data?.questions[select]?.answers.map((vl: any, idx: any) => (
-                        <Radio key={vl} value={idx}>
-                          {vl}
-                        </Radio>
-                      ))}
+                    ? data?.question[select]?.answers.map(
+                        (vl: any, idx: any) => (
+                          <Radio key={vl} value={idx}>
+                            {vl}
+                          </Radio>
+                        )
+                      )
+                    : data?.questions[select]?.answers.map(
+                        (vl: any, idx: any) => (
+                          <Radio key={vl} value={idx}>
+                            {vl}
+                          </Radio>
+                        )
+                      )}
                 </Space>
               </Radio.Group>
             ) : (

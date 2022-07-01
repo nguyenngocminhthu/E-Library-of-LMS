@@ -88,9 +88,13 @@ export const updateBank = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Banks.updateBank(id, payload);
+      console.debug(payload);
       if (data.code) {
         thunkAPI.dispatch(setLoading(false));
         message.error(data.message);
+      } else if (payload.submissions) {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Nộp bài thành công");
       } else {
         thunkAPI.dispatch(setLoading(false));
         message.success("Cập nhật đề thi thành công");
@@ -120,6 +124,7 @@ export interface IBanks {
   user: UserState;
   questions: IQuestion[];
   question: IQuestion[];
+  submissions: any[];
   createdAt: string;
   updatedAt: string;
   time: number;

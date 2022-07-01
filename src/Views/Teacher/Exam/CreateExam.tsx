@@ -228,7 +228,7 @@ export const CreateExam = () => {
           </Col>
         </Row>
       </Form>
-      <div style={{ textAlign: "right", marginTop: "1rem" }}>
+      <div className="t-right mt w-100">
         <Button
           onClick={() => {
             formQues.submit();

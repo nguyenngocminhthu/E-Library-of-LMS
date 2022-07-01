@@ -1,23 +1,18 @@
-import { CheckCircleOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Radio,
-  Row,
-  Space,
-  Statistic,
-} from "antd";
+import { Button, Checkbox, Col, Radio, Row, Space, Statistic } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import lodash from "lodash";
-import moment, { Moment } from "moment";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import { getBank, IBanks } from "../../../redux/reducers/banks.reducer";
+import {
+  getBank,
+  IBanks,
+  updateBank,
+} from "../../../redux/reducers/banks.reducer";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 const { Countdown } = Statistic;
 
@@ -35,8 +30,8 @@ export const ExamDetails = () => {
 
   const [time, setTime] = useState<number>(0);
   const [releaseTime, setReleaseTime] = useState<any>();
-  const [form] = Form.useForm();
   const navigate = useNavigate();
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
 
   let arr: IAns[] = [];
   const [questions, setQuestions] = useState<IAns[]>(arr);
@@ -51,7 +46,15 @@ export const ExamDetails = () => {
           setSelect(0);
           setTime(rs.time * 1000 * 60);
           setReleaseTime(Date.parse(rs.releaseTime));
-          if (rs.question.length !== 0) {
+          if (!lodash.isEmpty(rs.submissions)) {
+            rs.submissions.forEach((vl: any) => {
+              if (vl.user === user.id) {
+                console.debug(vl);
+
+                setQuestions(vl.submit);
+              }
+            });
+          } else if (rs.question.length !== 0) {
             rs.question.forEach((vl: IQuestion) => {
               if (vl.correctEssay !== undefined) {
                 arr.push({
@@ -112,7 +115,19 @@ export const ExamDetails = () => {
     });
     let score = (10 / submission.length) * count;
     score = takeDecimalNumber(score);
-    console.debug(score);
+
+    dispatch(
+      updateBank({
+        id: params.id,
+        payload: {
+          submissions: { user: user.id, score: score, submit: questions },
+        },
+      })
+    )
+      .unwrap()
+      .then(() => {
+        navigate(`/student/subjects/exams/${data?.subject.id}`);
+      });
   };
 
   const handleSelect = (idx: number) => {
@@ -168,10 +183,7 @@ export const ExamDetails = () => {
         </div>
       </div>
       <div style={{ textAlign: "right" }}>
-        <Countdown
-          value={releaseTime + time}
-          onFinish={() => navigate("/student/subjects")}
-        />
+        <Countdown value={releaseTime + time} onFinish={onFinish} />
       </div>
       <div className="body-bank">
         <Row>
@@ -208,6 +220,12 @@ export const ExamDetails = () => {
             {data?.question.length !== 0 ? (
               data?.question[select]?.correctEssay ? (
                 <TextArea
+                  value={
+                    !lodash.isEmpty(questions[select]) &&
+                    !lodash.isEmpty(questions[select].ans)
+                      ? questions[select].ans
+                      : ""
+                  }
                   rows={10}
                   onChange={(e: any) =>
                     handleSubmit(data?.question[select].id, e.target.value)
@@ -218,6 +236,12 @@ export const ExamDetails = () => {
               )
             ) : data?.questions[select]?.correctEssay ? (
               <TextArea
+                value={
+                  !lodash.isEmpty(questions[select]) &&
+                  !lodash.isEmpty(questions[select].ans)
+                    ? questions[select].ans
+                    : ""
+                }
                 rows={10}
                 onChange={(e: any) =>
                   handleSubmit(data?.questions[select]._id, e.target.value)
@@ -323,9 +347,11 @@ export const ExamDetails = () => {
               </Checkbox.Group>
             )}
           </Col>
-          <Button onClick={onFinish} type="primary">
-            Nộp bài
-          </Button>
+          <div className="t-right m1 w-100">
+            <Button onClick={onFinish} type="primary">
+              Nộp bài
+            </Button>
+          </div>
         </Row>
       </div>
     </div>

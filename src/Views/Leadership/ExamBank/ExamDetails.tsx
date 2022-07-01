@@ -83,14 +83,7 @@ export const ExamDetails = () => {
                     key={vl.id}
                     onClick={() => handleSelect(idx)}
                   >
-                    Câu {idx + 1}.
-                    {vl.correct[0] === 0
-                      ? "A"
-                      : vl.correct[0] === 1
-                      ? "B"
-                      : vl.correct[0] === 2
-                      ? "C"
-                      : "D"}
+                    Câu {idx + 1}
                     <div hidden={!(select === idx)} className="icon-true">
                       <CheckCircleOutlined />
                     </div>
@@ -102,14 +95,7 @@ export const ExamDetails = () => {
                     key={vl.id}
                     onClick={() => handleSelect(idx)}
                   >
-                    Câu {idx + 1}.
-                    {vl.correct[0] === 0
-                      ? "A"
-                      : vl.correct[0] === 1
-                      ? "B"
-                      : vl.correct[0] === 2
-                      ? "C"
-                      : "D"}
+                    Câu {idx + 1}
                     <div hidden={!(select === idx)} className="icon-true">
                       <CheckCircleOutlined />
                     </div>
