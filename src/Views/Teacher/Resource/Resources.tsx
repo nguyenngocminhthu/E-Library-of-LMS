@@ -22,24 +22,27 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
-import { getFiles } from "../../../redux/reducers/file.reducer";
-import { ILesson } from "../../../redux/reducers/lesson.reducer";
-import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { ISelect, SelectComp } from "../../../Components/Select";
+import { getFiles, IFile } from "../../../redux/reducers/file.reducer";
+import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import { ModalUploadFiles } from "./modalUploadFiles";
+import { saveAs } from "file-saver";
 
 export const Resources = () => {
-  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
-  const [data, setData] = useState<ILesson[]>([]);
+  const [data, setData] = useState<IFile[]>([]);
+  const [urls, setUrls] = useState<string[]>([]);
+  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([
+    { name: "Tất cả bộ môn", value: "" },
+  ]);
 
   useEffect(() => {
     dispatch(getFiles({ limit: 999, user: user.id }))
@@ -47,6 +50,12 @@ export const Resources = () => {
       .then((rs) => {
         setData(rs.results);
       });
+  }, []);
+
+  useEffect(() => {
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+      .unwrap()
+      .then((rs) => {});
   }, []);
 
   const handleRefresh = () => {
@@ -57,8 +66,13 @@ export const Resources = () => {
       });
   };
 
-  const onSelectChange = (selectedRowKeys: any) => {
+  const onSelectChange = (selectedRowKeys: any, selectedRows: IFile[]) => {
     setSelectedRowKeys(selectedRowKeys);
+    let files: string[] = [];
+    selectedRows.forEach((vl: IFile) => {
+      files.push(vl.url);
+    });
+    setUrls(files);
   };
 
   const rowSelection = {
@@ -66,20 +80,11 @@ export const Resources = () => {
     onChange: onSelectChange,
   };
 
-  const subjectSelect = [
-    {
-      name: "Công nghệ thông tin",
-      value: "CNTT",
-    },
-    {
-      name: "Tài chính kế toán",
-      value: "TCKT",
-    },
-    {
-      name: "Xã hội học",
-      value: "XHH",
-    },
-  ];
+  const handleDownload = () => {
+    urls.forEach((vl: string) => {
+      window.open(vl);
+    });
+  };
 
   const classSelect = [
     {
@@ -207,10 +212,10 @@ export const Resources = () => {
   const downloadFile = {
     title: "Tải xuống tệp",
     className: "modal-common-style",
-    content:
-      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+    content: `Xác nhận muốn tải xuống ${urls.length} tệp đã chọn.`,
     okText: "Xác nhận",
     cancelText: "Huỷ",
+    onOk: () => handleDownload(),
   };
 
   const modalAddSubject = {
@@ -319,7 +324,7 @@ export const Resources = () => {
     {
       title: "",
       key: "action",
-      render: (text: any, record: any) => (
+      render: (text: any, record: IFile) => (
         <Space size="middle">
           <Tooltip title="More">
             <Popover
@@ -327,7 +332,7 @@ export const Resources = () => {
                 <div className="popover">
                   <p onClick={() => modal.confirm(seeDetails)}>Xem chi tiết</p>
                   <p onClick={() => modal.confirm(modalChangeName)}>Đổi tên</p>
-                  <p onClick={() => modal.confirm(downloadFile)}>Tải xuống</p>
+                  <p onClick={() => window.open(record.url)}>Tải xuống</p>
                   <p onClick={() => modal.confirm(modalAddSubject)}>
                     Thêm vào môn học
                   </p>
@@ -393,7 +398,12 @@ export const Resources = () => {
           <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
         </Col>
       </Row>
-      <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={data}
+        rowKey={(record: IFile) => record.id}
+      />
       <ModalUploadFiles
         visible={isModalVisible}
         setVisible={setIsModalVisible}

@@ -113,7 +113,7 @@ export const updateLesson = createAsyncThunk(
 
 export interface ILesson {
   id: string;
-  key?: number;
+  key?: string;
   classes: [];
   title: string;
   user: UserState;

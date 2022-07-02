@@ -22,7 +22,7 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { getLessons } from "../../../redux/reducers/lesson.reducer";
+import { getLessons, ILesson } from "../../../redux/reducers/lesson.reducer";
 import { ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
@@ -366,7 +366,12 @@ export const Lessons = () => {
           <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
         </Col>
       </Row>
-      <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={data}
+        rowKey={(record: ILesson) => record.id}
+      />
       <ModalUpload
         visible={isModalVisible}
         setVisible={setIsModalVisible}

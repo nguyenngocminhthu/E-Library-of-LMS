@@ -112,7 +112,7 @@ export const updateFile = createAsyncThunk(
 
 export interface IFile {
   id: string;
-  key?: number;
+  key?: string;
   classes: [];
   fileName: string;
   user: UserState;
@@ -121,6 +121,7 @@ export interface IFile {
   createdAt: string;
   updatedAt: string;
   status: number;
+  url: string;
 }
 
 interface FileState {
