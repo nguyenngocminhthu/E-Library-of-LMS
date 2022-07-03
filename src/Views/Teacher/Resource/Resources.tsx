@@ -18,19 +18,20 @@ import {
 import modal from "antd/lib/modal";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { ISelect, SelectComp } from "../../../Components/Select";
 import { getFiles, IFile } from "../../../redux/reducers/file.reducer";
-import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import { getSubjects, ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import { ModalUploadFiles } from "./modalUploadFiles";
 import { saveAs } from "file-saver";
+import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 
 export const Resources = () => {
   const [form] = Form.useForm();
@@ -40,23 +41,29 @@ export const Resources = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const [data, setData] = useState<IFile[]>([]);
   const [urls, setUrls] = useState<string[]>([]);
-  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([
+  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
-
+  const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
+  const dataSub = useSelector(listSubject);
+  
   useEffect(() => {
-    dispatch(getFiles({ limit: 999, user: user.id }))
+    dispatch(getFiles(filter))
       .unwrap()
       .then((rs) => {
         setData(rs.results);
       });
-  }, []);
+  }, [filter]);
 
   useEffect(() => {
-    dispatch(getSubjects({ limit: 999, teacher: user.id }))
-      .unwrap()
-      .then((rs) => {});
-  }, []);
+    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    if (dataSub) {
+      dataSub.results.forEach((it: ISubject) => {
+        option.push({ name: it.subName, value: it.id });
+      });
+    }
+    setSubjectSelect(option);
+  }, [dataSub]);
 
   const handleRefresh = () => {
     dispatch(getFiles({ limit: 999, user: user.id }))
@@ -73,6 +80,15 @@ export const Resources = () => {
       files.push(vl.url);
     });
     setUrls(files);
+  };
+
+  const handleFilterSubject = (e: any) => {
+    if (e !== "") {
+      setFilter({ ...filter, subject: e });
+    } else {
+      delete filter.subject;
+      setFilter({ ...filter });
+    }
   };
 
   const rowSelection = {
@@ -388,10 +404,12 @@ export const Resources = () => {
       </div>
       <Row>
         <Col className="table-header" span={16}>
-          <SelectComp
+        <SelectComp
             style={{ display: "block" }}
-            defaultValue="Tùy chọn môn học"
+            textLabel="Bộ môn"
+            defaultValue=""
             dataString={subjectSelect}
+            onChange={(e: any) => handleFilterSubject(e)}
           />
         </Col>
         <Col className="table-header" span={8}>

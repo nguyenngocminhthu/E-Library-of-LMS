@@ -20,20 +20,21 @@ import {
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
+import {  SelectComp } from "../../../Components/Select";
 import {
   getBanks,
   IBanks,
   updateBank,
 } from "../../../redux/reducers/banks.reducer";
-import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
+import { ISubjectSelect } from "../Subject/Subject";
 import "./style.scss";
 
 export const ExamBank = () => {
@@ -42,9 +43,17 @@ export const ExamBank = () => {
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
+  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
+    { name: "Tất cả bộ môn", value: "" },
+  ]);
+  const [teacherSelect, setTeacherSelect] = useState<ISubjectSelect[]>([
+    { name: "Tất cả giảng viên", value: "" },
+  ]);
   const [filter, setFilter] = useState<any>({ limit: 999 });
-
   const [data, setData] = useState<IBanks[]>([]);
+  const dataSub = useSelector(listSubject);
+  const teacher = useSelector((state: any) => state.user.listUser.results);
+
   useEffect(() => {
     dispatch(getBanks(filter))
       .unwrap()
@@ -55,7 +64,28 @@ export const ExamBank = () => {
         });
         setData(list);
       });
-  }, []);
+  }, [filter]);
+
+  useEffect(() => {
+    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    if (dataSub) {
+      dataSub.results.forEach((it: ISubject) => {
+        option.push({ name: it.subName, value: it.id });
+      });
+    }
+    setSubjectSelect(option);
+  }, [dataSub]);
+
+  useEffect(() => {
+    const option: ISubjectSelect[] = [{ name: "Tất cả giảng viên", value: "" }];
+    if (teacher) {
+      teacher.forEach((it: UserState) => {
+        option.push({ name: it.userName, value: it.id });
+      });
+    }
+
+    setTeacherSelect(option);
+  }, [teacher]);
 
   const handleRefresh = () => {
     dispatch(getBanks(filter))
@@ -67,6 +97,24 @@ export const ExamBank = () => {
         });
         setData(list);
       });
+  };
+
+  const handleFilterSubject = (e: any) => {
+    if (e !== "") {
+      setFilter({ ...filter, subject: e });
+    } else {
+      delete filter.subject;
+      setFilter({ ...filter });
+    }
+  };
+
+  const handleFilterTeacher = (e: any) => {
+    if (e !== "") {
+      setFilter({ ...filter, teacher: e });
+    } else {
+      delete filter.teacher;
+      setFilter({ ...filter });
+    }
   };
 
   const status = [
@@ -93,38 +141,7 @@ export const ExamBank = () => {
       value: "2021",
     },
   ];
-  const allSubject = [
-    {
-      name: "Thương mại điện tử",
-      value: "TMDT",
-    },
-    {
-      name: "Nguyên lý kế toán",
-      value: "NLKT",
-    },
-    {
-      name: "Hệ thống thông tin",
-      value: "HTTT",
-    },
-    {
-      name: "Luật thương mại",
-      value: "LTM",
-    },
-    {
-      name: "Ngân hàng ",
-      value: "NG",
-    },
-  ];
-  const allTeacher = [
-    {
-      name: "Nguyễn Văn A",
-      value: "NVA",
-    },
-    {
-      name: "Nguyễn Văn C",
-      value: "NVC",
-    },
-  ];
+
 
   const downloadFile = {
     title: "Tải xuống tệp",
@@ -135,14 +152,6 @@ export const ExamBank = () => {
     cancelText: "Huỷ",
   };
 
-  const config = {
-    title: "Phê duyệt",
-    className: "file-modal",
-    content:
-      "Xác nhận muốn phê duyệt đề thi này và các thông tin bên trong? Sau khi phê duyệt sẽ không thể hoàn tác.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
 
   const ModalConFirm = (id: string) => {
     const config = {
@@ -373,15 +382,17 @@ export const ExamBank = () => {
           />
           <SelectComp
             style={{ display: "block" }}
-            textLabel="Tất cả môn học"
-            defaultValue="Tất cả môn học"
-            dataString={allSubject}
+            textLabel="Bộ môn"
+            defaultValue=""
+            dataString={subjectSelect}
+            onChange={(e: any) => handleFilterSubject(e)}
           />
           <SelectComp
             style={{ display: "block" }}
-            textLabel="Tất cả giảng viên"
-            defaultValue="Tất cả giảng viên"
-            dataString={allTeacher}
+            defaultValue=""
+            textLabel="Giảng viên"
+            dataString={teacherSelect}
+            onChange={(e: any) => handleFilterTeacher(e)}
           />
         </Col>
         <Col className="table-header" span={8}>

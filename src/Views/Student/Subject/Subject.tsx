@@ -18,26 +18,32 @@ import {
 } from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
-import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
 import { AppDispatch } from "../../../redux/store";
 import {
   getUser,
   updateProfile,
   UserState,
 } from "../../../redux/reducers/user.reducer";
+import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 
 export const Subject = () => {
   const { Title } = Typography;
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
+    { name: "Tất cả bộ môn", value: "" },
+  ]);
+  const [filter, setFilter] = useState<any>();
   const [data, setData] = useState<ISubject[]>([]);
+  const dataSub = useSelector(listSubject);
 
   const userMenu = (
     <Menu>
@@ -58,7 +64,17 @@ export const Subject = () => {
       });
       setData(arr);
     }
-  }, []);
+  }, [filter]);
+  
+  useEffect(() => {
+    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    if (dataSub) {
+      dataSub.results.forEach((it: ISubject) => {
+        option.push({ name: it.subName, value: it.id });
+      });
+    }
+    setSubjectSelect(option);
+  }, [dataSub]);
 
   const handleClick = (id: string) => {
     navigate(`/student/subjects/subjectdetails/${id}`);
@@ -102,20 +118,14 @@ export const Subject = () => {
     }
   };
 
-  const mySubjec = [
-    {
-      value: "Thương mại điện tử",
-      key: "TMDT",
-    },
-    {
-      value: "Kế toán",
-      key: "KT",
-    },
-    {
-      value: "Luật kinh doanh",
-      key: "LKD",
-    },
-  ];
+  const handleFilterSubject = (e: any) => {
+    if (e !== "") {
+      setFilter({ ...filter, subject: e });
+    } else {
+      delete filter.subject;
+      setFilter({ ...filter });
+    }
+  };
 
   const downloadFile = {
     title: "Tải xuống tệp",
@@ -222,10 +232,11 @@ export const Subject = () => {
       </div>
       <Row>
         <Col className="table-header" span={16}>
-          <SelectComp
+        <SelectComp
             style={{ display: "block" }}
-            defaultValue="Tên môn học"
-            dataString={mySubjec}
+            defaultValue=""
+            dataString={subjectSelect}
+            onChange={(e: any) => handleFilterSubject(e)}
           />
         </Col>
         <Col className="table-header" span={8}>

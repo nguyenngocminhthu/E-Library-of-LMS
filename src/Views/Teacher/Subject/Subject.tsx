@@ -36,6 +36,7 @@ export const Subject = () => {
         setData(list);
       });
   }, []);
+  
 
   const handleClick = (id: string) => {
     navigate(`subjectdetail/${id}`);

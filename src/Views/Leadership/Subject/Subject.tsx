@@ -23,6 +23,7 @@ import {
   createSubject,
   getSubjects,
   ISubject,
+  listSubject,
 } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
@@ -61,6 +62,7 @@ export const Subject = () => {
   const [filter, setFilter] = useState<any>({ limit: 999 });
 
   const teacher = useSelector((state: any) => state.user.listUser.results);
+  const dataSub = useSelector(listSubject);
 
   useEffect(() => {
     dispatch(getSubjects(filter));
@@ -69,26 +71,34 @@ export const Subject = () => {
   }, [filter]);
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    if (data) {
-      data.forEach((it: ISubject) => {
-        option.push({ name: it.subName, value: it.id });
-      });
-    }
-
-    setSubjectSelect(option);
-  }, [data]);
-
-  useEffect(() => {
     const option: ISubjectSelect[] = [{ name: "Tất cả giảng viên", value: "" }];
     if (teacher) {
       teacher.forEach((it: UserState) => {
         option.push({ name: it.userName, value: it.id });
       });
     }
-
+    
     setTeacherSelect(option);
   }, [teacher]);
+
+  useEffect(() => {
+    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    if (dataSub) {
+      dataSub.results.forEach((it: ISubject) => {
+        option.push({ name: it.subName, value: it.id });
+      });
+    }
+    setSubjectSelect(option);
+  }, [dataSub]);
+
+  const handleFilterSubject = (e: any) => {
+    if (e !== "") {
+      setFilter({ ...filter, subject: e });
+    } else {
+      delete filter.subject;
+      setFilter({ ...filter });
+    }
+  };
 
   const handleRefresh = () => {
     dispatch(getSubjects(filter));
@@ -136,7 +146,7 @@ export const Subject = () => {
     }
   };
 
-  const handleFilter = (e: any) => {
+  const handleFilterTeacher = (e: any) => {
     if (e !== "") {
       setFilter({ ...filter, teacher: e });
     } else {
@@ -285,18 +295,19 @@ export const Subject = () => {
 
       <Row>
         <Col className="table-header" span={14}>
-          <SelectComp
+        <SelectComp
             style={{ display: "block" }}
+            textLabel="Bộ môn"
             defaultValue=""
-            textLabel="Môn học"
-            dataString={subjectSelect}
+            dataString={subjectSelect}  
+            onChange={(e: any) => handleFilterSubject(e)}
           />
           <SelectComp
             style={{ display: "block" }}
             defaultValue=""
             textLabel="Giảng viên"
             dataString={teacherSelect}
-            onChange={(e: any) => handleFilter(e)}
+            onChange={(e: any) => handleFilterTeacher(e)}
           />
           <SelectComp
             style={{ display: "block" }}
