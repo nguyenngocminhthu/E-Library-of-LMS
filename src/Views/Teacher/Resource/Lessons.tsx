@@ -23,7 +23,11 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { getLessons, ILesson } from "../../../redux/reducers/lesson.reducer";
-import { ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
+import {
+  getSubjects,
+  ISubject,
+  listSubject,
+} from "../../../redux/reducers/subject.reducer";
 import { ISubjectGroup } from "../../../redux/reducers/subjectgroup.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
@@ -43,9 +47,7 @@ export const Lessons = () => {
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
-  const dataSub = useSelector(listSubject);
   const [filter, setFilte] = useState<any>({ limit: 999, user: user.id });
-
 
   useEffect(() => {
     dispatch(getLessons(filter))
@@ -54,16 +56,18 @@ export const Lessons = () => {
         setData(rs.results);
       });
   }, [filter]);
-  
+
   useEffect(() => {
     const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    if (dataSub) {
-      dataSub.results.forEach((it: ISubject) => {
-        option.push({ name: it.subName, value: it.id });
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+      .unwrap()
+      .then((rs: any) => {
+        rs.results.forEach((it: ISubject) => {
+          option.push({ name: it.subName, value: it.id });
+        });
+        setSubjectSelect(option);
       });
-    }
-    setSubjectSelect(option);
-  }, [dataSub]);
+  }, []);
 
   const handleRefresh = () => {
     dispatch(getLessons({ limit: 999, user: user.id }))
@@ -90,7 +94,6 @@ export const Lessons = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-
 
   const classSelect = [
     {

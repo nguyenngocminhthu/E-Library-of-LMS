@@ -4,13 +4,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { SelectComp } from "../../../Components/Select";
-import {
-  IClass,
-} from "../../../redux/reducers/classes.reducer";
+import { IClass } from "../../../redux/reducers/classes.reducer";
 import { createFile } from "../../../redux/reducers/file.reducer";
-import {
-  ILesson
-} from "../../../redux/reducers/lesson.reducer";
+import { ILesson } from "../../../redux/reducers/lesson.reducer";
+import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
   getSubject,
   getSubjects,
@@ -31,7 +28,6 @@ export const ModalUploadFiles: React.FC<{
   const [form] = Form.useForm();
   const dispatch: AppDispatch = useDispatch();
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
-  const dataSub = useSelector(listSubject);
 
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([]);
   const [classSelect, setClassSelect] = useState<ISubjectSelect[]>();
@@ -39,22 +35,26 @@ export const ModalUploadFiles: React.FC<{
   const [lessonSelect, setLessonSelect] = useState<ISubjectSelect[]>();
 
   useEffect(() => {
-    if (dataSub) {
-      let option: any[] = [];
-      dataSub.results.forEach((value: ISubject) => {
-        option.push({ name: value.subName, value: value.id });
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+      .unwrap()
+      .then((rs: any) => {
+        let option: any[] = [];
+
+        rs.results.forEach((value: ISubject) => {
+          option.push({ name: value.subName, value: value.id });
+        });
+        setSubjectSelect(option);
       });
-      setSubjectSelect(option);
-    }
-  }, [dataSub]);
+  }, []);
 
   const onFinish = async (values: any) => {
-    console.debug(values);
     delete values.topic;
+    dispatch(setLoading(true));
 
     await dispatch(uploadFilesToFirebase(values.url.fileList, "File")).then(
       (rs) => {
-        console.debug(rs);
+        dispatch(setLoading(false));
+
         values.url = rs;
         props.setVisible(false);
       }
@@ -62,7 +62,6 @@ export const ModalUploadFiles: React.FC<{
     dispatch(createFile({ ...values, user: user.id }))
       .unwrap()
       .then((rs) => {
-        console.debug(rs);
         props.handleRefresh();
       });
   };
@@ -99,7 +98,7 @@ export const ModalUploadFiles: React.FC<{
 
   return (
     <Modal
-      title="Thêm bài giảng"
+      title="Thêm tài liệu"
       className="modal-add-role"
       width="40%"
       visible={props.visible}

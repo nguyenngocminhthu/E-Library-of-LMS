@@ -113,6 +113,33 @@ export const updateBank = createAsyncThunk(
   }
 );
 
+export const deleteBank = createAsyncThunk(
+  "banks/deleteBank",
+  async (id: string, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Banks.deleteBank(id);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Xóa đề thi thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export interface IBanks {
   id: string;
   key?: number;
@@ -190,6 +217,18 @@ export const banksReducer = createSlice({
       state.listBanks = action.payload;
     });
     builder.addCase(createBank.rejected, (state, action) => {
+      state.listBanks = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
+    });
+    builder.addCase(deleteBank.fulfilled, (state, action) => {
+      state.listBanks = action.payload;
+    });
+    builder.addCase(deleteBank.rejected, (state, action) => {
       state.listBanks = {
         limit: 0,
         page: 0,

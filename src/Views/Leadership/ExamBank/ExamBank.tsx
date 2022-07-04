@@ -24,13 +24,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import {  SelectComp } from "../../../Components/Select";
+import { SelectComp } from "../../../Components/Select";
 import {
   getBanks,
   IBanks,
   updateBank,
 } from "../../../redux/reducers/banks.reducer";
-import { ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
+import {
+  getSubjects,
+  ISubject,
+  listSubject,
+} from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
@@ -51,7 +55,6 @@ export const ExamBank = () => {
   ]);
   const [filter, setFilter] = useState<any>({ limit: 999 });
   const [data, setData] = useState<IBanks[]>([]);
-  const dataSub = useSelector(listSubject);
   const teacher = useSelector((state: any) => state.user.listUser.results);
 
   useEffect(() => {
@@ -68,13 +71,15 @@ export const ExamBank = () => {
 
   useEffect(() => {
     const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    if (dataSub) {
-      dataSub.results.forEach((it: ISubject) => {
-        option.push({ name: it.subName, value: it.id });
+    dispatch(getSubjects({ limit: 999 }))
+      .unwrap()
+      .then((rs: any) => {
+        rs.results.forEach((it: ISubject) => {
+          option.push({ name: it.subName, value: it.id });
+        });
+        setSubjectSelect(option);
       });
-    }
-    setSubjectSelect(option);
-  }, [dataSub]);
+  }, []);
 
   useEffect(() => {
     const option: ISubjectSelect[] = [{ name: "Tất cả giảng viên", value: "" }];
@@ -142,7 +147,6 @@ export const ExamBank = () => {
     },
   ];
 
-
   const downloadFile = {
     title: "Tải xuống tệp",
     className: "modal-common-style",
@@ -151,7 +155,6 @@ export const ExamBank = () => {
     okText: "Xác nhận",
     cancelText: "Huỷ",
   };
-
 
   const ModalConFirm = (id: string) => {
     const config = {

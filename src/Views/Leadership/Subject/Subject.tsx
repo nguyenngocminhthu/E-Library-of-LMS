@@ -77,7 +77,7 @@ export const Subject = () => {
         option.push({ name: it.userName, value: it.id });
       });
     }
-    
+
     setTeacherSelect(option);
   }, [teacher]);
 
@@ -178,20 +178,36 @@ export const Subject = () => {
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
         >
-          <Form.Item name="subCode" label="Mã môn học" rules={[{ required: true }]}>
+          <Form.Item
+            name="subCode"
+            label="Mã môn học"
+            rules={[{ required: true }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="subName" label="Tên môn học" rules={[{ required: true }]}>
+          <Form.Item
+            name="subName"
+            label="Tên môn học"
+            rules={[{ required: true }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item name="subGroup" label="Tổ bộ môn" rules={[{ required: true }]}>
+          <Form.Item
+            name="subGroup"
+            label="Tổ bộ môn"
+            rules={[{ required: true }]}
+          >
             <Select>
               {dataSubGroup.map((vl: ISubjectGroup) => (
                 <Option value={vl.id}>{vl.groupName}</Option>
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="teacher" label="Giảng viên" rules={[{ required: true }]}>
+          <Form.Item
+            name="teacher"
+            label="Giảng viên"
+            rules={[{ required: true }]}
+          >
             <Select>
               <Option value="">Tất cả</Option>
               {teacher.map((vl: UserState) => (
@@ -287,19 +303,17 @@ export const Subject = () => {
     },
   ];
 
-
-
   return (
     <div className="subject">
       <BreadcrumbComp title="Danh sách môn học" />
 
       <Row>
         <Col className="table-header" span={14}>
-        <SelectComp
+          <SelectComp
             style={{ display: "block" }}
             textLabel="Bộ môn"
             defaultValue=""
-            dataString={subjectSelect}  
+            dataString={subjectSelect}
             onChange={(e: any) => handleFilterSubject(e)}
           />
           <SelectComp

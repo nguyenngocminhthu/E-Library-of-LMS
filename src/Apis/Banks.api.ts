@@ -28,6 +28,12 @@ const updateBank = (id: string, payload: any) => {
   });
 };
 
-const Banks = { getBanks, getBank, updateBank, createBank };
+const deleteBank = (id: string) => {
+  return axiosClient.delete(url + `/${id}`).then((rs: any) => {
+    return rs;
+  });
+};
+
+const Banks = { getBanks, getBank, updateBank, createBank, deleteBank };
 
 export default Banks;

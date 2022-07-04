@@ -1,11 +1,13 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message, Modal, Upload } from "antd";
+import lodash from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
 import { createLesson } from "../../../redux/reducers/lesson.reducer";
+import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
   getSubject,
   getSubjects,
@@ -26,31 +28,35 @@ export const ModalUpload: React.FC<{
   const [linkVideo, setLinkVideo] = useState<string>("");
   const dispatch: AppDispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const dataSub = useSelector(listSubject);
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([]);
   const [classSelect, setClassSelect] = useState<ISubjectSelect[]>();
   const [topicSelect, setTopicSelect] = useState<ISubjectSelect[]>();
 
   useEffect(() => {
-    if (dataSub) {
-      let option: any[] = [];
-      dataSub.results.forEach((value: ISubject) => {
-        option.push({ name: value.subName, value: value.id });
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+      .unwrap()
+      .then((rs: any) => {
+        let option: any[] = [];
+
+        rs.results.forEach((value: ISubject) => {
+          option.push({ name: value.subName, value: value.id });
+        });
+        setSubjectSelect(option);
       });
-      setSubjectSelect(option);
-    }
-  }, [dataSub]);
+  }, []);
 
   const handleChange = (fileList: any) => {
     setLinkVideo(URL.createObjectURL(fileList.file));
   };
 
   const onFinish = async (values: any) => {
-    console.debug(values);
+    dispatch(setLoading(true));
+
     await dispatch(uploadFilesToFirebase(values.video.fileList, "Video")).then(
       (rs) => {
         values.video = rs;
         props.setVisible(false);
+        dispatch(setLoading(false));
       }
     );
     dispatch(createLesson({ ...values, user: user.id }))
@@ -65,6 +71,7 @@ export const ModalUpload: React.FC<{
       .unwrap()
       .then((rs: ISubject) => {
         let option: any[] = [];
+
         rs.classes.forEach((vl: IClass) => {
           option.push({ name: vl.classCode, value: vl.id });
         });
@@ -103,9 +110,11 @@ export const ModalUpload: React.FC<{
         form={form}
         onFinish={onFinish}
       >
-        <Form.Item label="Chọn môn học" name="subject">
-          {" "}
+        <Form.Item
           rules={[{ required: true }]}
+          label="Chọn môn học"
+          name="subject"
+        >
           <SelectComp
             onChange={(e: any) => handleSelect(e)}
             style={{ display: "block" }}

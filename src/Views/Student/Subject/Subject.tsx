@@ -24,7 +24,11 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
-import { ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
+import {
+  getSubjects,
+  ISubject,
+  listSubject,
+} from "../../../redux/reducers/subject.reducer";
 import { AppDispatch } from "../../../redux/store";
 import {
   getUser,
@@ -43,7 +47,6 @@ export const Subject = () => {
   ]);
   const [filter, setFilter] = useState<any>();
   const [data, setData] = useState<ISubject[]>([]);
-  const dataSub = useSelector(listSubject);
 
   const userMenu = (
     <Menu>
@@ -65,16 +68,19 @@ export const Subject = () => {
       setData(arr);
     }
   }, [filter]);
-  
+
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    if (dataSub) {
-      dataSub.results.forEach((it: ISubject) => {
-        option.push({ name: it.subName, value: it.id });
+    dispatch(getSubjects({ limit: 999 }))
+      .unwrap()
+      .then((rs: any) => {
+        let option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+
+        rs.results.forEach((value: ISubject) => {
+          option.push({ name: value.subName, value: value.id });
+        });
+        setSubjectSelect(option);
       });
-    }
-    setSubjectSelect(option);
-  }, [dataSub]);
+  }, []);
 
   const handleClick = (id: string) => {
     navigate(`/student/subjects/subjectdetails/${id}`);
@@ -232,7 +238,7 @@ export const Subject = () => {
       </div>
       <Row>
         <Col className="table-header" span={16}>
-        <SelectComp
+          <SelectComp
             style={{ display: "block" }}
             defaultValue=""
             dataString={subjectSelect}

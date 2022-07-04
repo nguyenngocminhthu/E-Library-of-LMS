@@ -23,7 +23,11 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { getFiles, IFile } from "../../../redux/reducers/file.reducer";
-import { ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
+import {
+  getSubjects,
+  ISubject,
+  listSubject,
+} from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
@@ -43,7 +47,6 @@ export const Resources = () => {
     { name: "Tất cả bộ môn", value: "" },
   ]);
   const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
-  const dataSub = useSelector(listSubject);
 
   useEffect(() => {
     dispatch(getFiles(filter))
@@ -55,13 +58,15 @@ export const Resources = () => {
 
   useEffect(() => {
     const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    if (dataSub) {
-      dataSub.results.forEach((it: ISubject) => {
-        option.push({ name: it.subName, value: it.id });
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+      .unwrap()
+      .then((rs: any) => {
+        rs.results.forEach((it: ISubject) => {
+          option.push({ name: it.subName, value: it.id });
+        });
+        setSubjectSelect(option);
       });
-    }
-    setSubjectSelect(option);
-  }, [dataSub]);
+  }, []);
 
   const handleRefresh = () => {
     dispatch(getFiles({ limit: 999, user: user.id }))

@@ -30,6 +30,7 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { ISelect, SelectComp } from "../../../Components/Select";
 import {
+  deleteBank,
   getBanks,
   IBanks,
   updateBank,
@@ -77,9 +78,6 @@ export const Exam = () => {
           list.push({ key: idx, ...vl });
         });
         setData(list);
-      })
-      .catch((e: any) => {
-        console.debug("e: ", e);
       });
 
     dispatch(getSubjectGroups(999));
@@ -104,6 +102,18 @@ export const Exam = () => {
     }
     setSubjectGroupSelect(option);
   }, [dataSubGroup]);
+
+  const handleRefresh = () => {
+    dispatch(getBanks(filter))
+      .unwrap()
+      .then((rs: any) => {
+        let list: IBanks[] = [];
+        rs.results.forEach((vl: IBanks, idx: number) => {
+          list.push({ key: idx, ...vl });
+        });
+        setData(list);
+      });
+  };
 
   const handleModal = () => {
     let test = 0;
@@ -143,12 +153,19 @@ export const Exam = () => {
     modal.confirm(config);
   };
 
-  const removeRow = {
-    title: "Xác nhận xóa",
-    className: "modal-common-style",
-    content: "Bạn có chắc chắn muốn xóa tệp này khỏi thư viện không?",
-    okText: "Xoá",
-    cancelText: "Huỷ",
+  const ModalDelete = (id: string) => {
+    const removeRow = {
+      title: "Xác nhận xóa",
+      className: "modal-common-style",
+      content: "Bạn có chắc chắn muốn xóa đề thi này khỏi thư viện không?",
+      okText: "Xoá",
+      cancelText: "Huỷ",
+      onOk: () =>
+        dispatch(deleteBank(id)).then(() => {
+          handleRefresh();
+        }),
+    };
+    modal.confirm(removeRow);
   };
 
   const downloadFile = {
@@ -427,12 +444,15 @@ export const Exam = () => {
                   >
                     Xem chi tiết
                   </p>
-                  <p onClick={() => modalAssign(record.id)}>Phân bố đề thi</p>
+                  {record.status === 1 && (
+                    <p onClick={() => modalAssign(record.id)}>Phân bố đề thi</p>
+                  )}
+
                   <p onClick={() => modal.confirm(downloadFile)}>
                     Tải xuống đề thi
                   </p>
 
-                  <p onClick={() => modal.confirm(removeRow)}>Xoá đề thi</p>
+                  <p onClick={() => ModalDelete(record.id)}>Xoá đề thi</p>
                 </div>
               }
               trigger="click"
