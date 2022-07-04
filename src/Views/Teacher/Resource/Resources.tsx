@@ -19,19 +19,17 @@ import modal from "antd/lib/modal";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { ISelect, SelectComp } from "../../../Components/Select";
+import { SelectComp } from "../../../Components/Select";
 import { getFiles, IFile } from "../../../redux/reducers/file.reducer";
-import { getSubjects, ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
+import { ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
-import { ModalUploadFiles } from "./modalUploadFiles";
-import { saveAs } from "file-saver";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
+import { ModalUploadFiles } from "./modalUploadFiles";
 
 export const Resources = () => {
   const [form] = Form.useForm();
@@ -46,7 +44,7 @@ export const Resources = () => {
   ]);
   const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
   const dataSub = useSelector(listSubject);
-  
+
   useEffect(() => {
     dispatch(getFiles(filter))
       .unwrap()
@@ -404,7 +402,7 @@ export const Resources = () => {
       </div>
       <Row>
         <Col className="table-header" span={16}>
-        <SelectComp
+          <SelectComp
             style={{ display: "block" }}
             textLabel="Bộ môn"
             defaultValue=""
