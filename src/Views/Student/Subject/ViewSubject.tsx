@@ -3,7 +3,7 @@ import {
   HeartFilled,
   HeartOutlined,
   MessageOutlined,
-  PlayCircleFilled,
+  PlayCircleFilled
 } from "@ant-design/icons";
 import { Avatar, Button, Col, Collapse, Form, Input, Row, Tabs } from "antd";
 import TextArea from "antd/lib/input/TextArea";

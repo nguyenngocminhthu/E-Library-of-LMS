@@ -1,9 +1,7 @@
 import {
   CaretRightOutlined,
-  DownloadOutlined,
-  LinkOutlined,
   PlusOutlined,
-  SettingOutlined,
+  SettingOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -11,11 +9,9 @@ import {
   Collapse,
   Dropdown,
   Form,
-  Menu,
-  message,
-  Row,
+  Menu, Row,
   Tabs,
-  Tooltip,
+  Tooltip
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
@@ -24,7 +20,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import {
   getSubject,
-  ISubject,
+  ISubject
 } from "../../../../redux/reducers/subject.reducer";
 import { createTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
@@ -88,34 +84,36 @@ export const EditSubject = () => {
   }, []);
 
   const genExtra = (index: number) => (
-    <Dropdown.Button
-      overlay={
-        <Menu>
-          <Menu.Item
-            key=""
-            onClick={() => {
-              setEditTopic(true);
-              setIdx(index);
+    <div className="extra-style">
+      <Dropdown.Button
+        overlay={
+          <Menu>
+            <Menu.Item
+              key=""
+              onClick={() => {
+                setEditTopic(true);
+                setIdx(index);
+              }}
+            >
+              Thêm bài giảng
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="1">Chỉnh sửa</Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="2">Sao chép</Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="3">Xóa</Menu.Item>
+          </Menu>
+        }
+        icon={
+          <SettingOutlined
+            onClick={(event) => {
+              event.stopPropagation();
             }}
-          >
-            Thêm bài giảng
-          </Menu.Item>
-          <Menu.Divider />
-          <Menu.Item key="1">Chỉnh sửa</Menu.Item>
-          <Menu.Divider />
-          <Menu.Item key="2">Sao chép</Menu.Item>
-          <Menu.Divider />
-          <Menu.Item key="3">Xóa</Menu.Item>
-        </Menu>
-      }
-      icon={
-        <SettingOutlined
-          onClick={(event) => {
-            event.stopPropagation();
-          }}
-        />
-      }
-    ></Dropdown.Button>
+          />
+        }
+      ></Dropdown.Button>
+    </div>
   );
 
   const onFinish = (values: any) => {

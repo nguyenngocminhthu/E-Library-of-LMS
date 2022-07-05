@@ -2,7 +2,7 @@ import {
   AppstoreOutlined,
   FilterOutlined,
   MoreOutlined,
-  StarOutlined,
+  StarOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -14,11 +14,11 @@ import {
   Space,
   Table,
   Tooltip,
-  Typography,
+  Typography
 } from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
@@ -26,15 +26,14 @@ import { SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
 import {
   getSubjects,
-  ISubject,
-  listSubject,
+  ISubject
 } from "../../../redux/reducers/subject.reducer";
-import { AppDispatch } from "../../../redux/store";
 import {
   getUser,
   updateProfile,
-  UserState,
+  UserState
 } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 
 export const Subject = () => {

@@ -1,11 +1,9 @@
 import {
-  DownloadOutlined,
   FileFilled,
   HeartFilled,
   HeartOutlined,
   MessageOutlined,
-  PlayCircleFilled,
-  UserOutlined,
+  PlayCircleFilled
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -13,10 +11,8 @@ import {
   Col,
   Collapse,
   Form,
-  Input,
-  message,
-  Row,
-  Tabs,
+  Input, Row,
+  Tabs
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";

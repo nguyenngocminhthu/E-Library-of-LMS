@@ -181,3 +181,10 @@
     }
   }
 }
+.extra-style {
+  .ant-btn{
+    background: transparent;
+    color: $color-primary;
+    border-color: transparent;
+  }
+}

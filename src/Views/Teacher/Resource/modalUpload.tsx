@@ -1,8 +1,7 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message, Modal, Upload } from "antd";
-import lodash from "lodash";
+import { Button, Form, Input, Modal, Upload } from "antd";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { ISelect, SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
@@ -11,12 +10,10 @@ import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
   getSubject,
   getSubjects,
-  ISubject,
-  listSubject,
+  ISubject
 } from "../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 
 export const ModalUpload: React.FC<{
   visible: boolean;

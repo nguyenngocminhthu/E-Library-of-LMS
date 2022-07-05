@@ -9,9 +9,10 @@ import {
   Space,
   Table,
   Tooltip,
-  Upload,
+  Upload
 } from "antd";
 import modal from "antd/lib/modal";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -23,18 +24,17 @@ import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
   createSubject,
   getSubjects,
-  ISubject,
-  listSubject,
+  ISubject
 } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
-  ISubjectGroup,
+  ISubjectGroup
 } from "../../../redux/reducers/subjectgroup.reducer";
 import {
   getUser,
   getUsers,
   updateProfile,
-  UserState,
+  UserState
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
@@ -290,6 +290,9 @@ export const Subject = () => {
       title: "Ngày gửi phê duyệt",
       dataIndex: "createdAt",
       key: "createdAt",
+      render: (createdAt: any) => {
+        return moment(createdAt).format("DD/MM/YYYY");
+      },
     },
     {
       title: "",

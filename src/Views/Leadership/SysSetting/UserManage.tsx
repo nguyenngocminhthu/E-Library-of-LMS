@@ -3,16 +3,15 @@ import {
   Button,
   Col,
   Form,
-  Input,
-  message,
-  Row,
+  Input, Row,
   Select,
   Space,
   Table,
   Tooltip,
-  Typography,
+  Typography
 } from "antd";
 import modal from "antd/lib/modal";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
@@ -22,7 +21,7 @@ import {
   createUser,
   deleteUser,
   getUsers,
-  UserState,
+  UserState
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
@@ -91,6 +90,9 @@ export const UserManage = () => {
       title: "Lần cập nhật cuối",
       dataIndex: "updatedAt",
       key: "updatedAt",
+      render: (updatedAt: any) => {
+        return moment(updatedAt).format("DD/MM/YYYY");
+      },
     },
     {
       title: "",

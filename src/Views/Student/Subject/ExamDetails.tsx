@@ -9,7 +9,7 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import {
   getBank,
   IBanks,
-  updateBank,
+  updateBank
 } from "../../../redux/reducers/banks.reducer";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";

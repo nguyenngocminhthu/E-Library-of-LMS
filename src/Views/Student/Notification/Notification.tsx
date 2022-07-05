@@ -8,7 +8,7 @@ import {
   Skeleton,
   Space,
   Tabs,
-  Tooltip,
+  Tooltip
 } from "antd";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";

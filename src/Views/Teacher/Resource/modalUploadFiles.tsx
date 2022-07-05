@@ -1,7 +1,7 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Modal, Upload } from "antd";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
@@ -11,8 +11,7 @@ import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
   getSubject,
   getSubjects,
-  ISubject,
-  listSubject,
+  ISubject
 } from "../../../redux/reducers/subject.reducer";
 import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";

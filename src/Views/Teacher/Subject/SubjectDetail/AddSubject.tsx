@@ -1,5 +1,5 @@
-import { LinkOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Input, Form, Upload, message, Select, Checkbox } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Select, Upload } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import lodash from "lodash";
 import { useEffect, useState } from "react";
@@ -12,13 +12,10 @@ import { IClass } from "../../../../redux/reducers/classes.reducer";
 import { createLesson } from "../../../../redux/reducers/lesson.reducer";
 import { setLoading } from "../../../../redux/reducers/loading.reducer";
 import {
-  getSubject,
-  getSubjects,
-  ISubject,
+  getSubject, ISubject
 } from "../../../../redux/reducers/subject.reducer";
 import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
-import { ReactComponent as ColoudUp } from "../../../../shared/img/icon/cloud_up.svg";
 
 export const AddSubject = () => {
   const { Dragger } = Upload;

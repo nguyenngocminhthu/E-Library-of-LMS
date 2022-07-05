@@ -11,9 +11,9 @@ import {
   Skeleton,
   Space,
   Tabs,
-  Tooltip,
+  Tooltip
 } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
@@ -24,7 +24,7 @@ import { createNoti } from "../../../redux/reducers/noti.reducer";
 import {
   getSubject,
   getSubjects,
-  ISubject,
+  ISubject
 } from "../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";

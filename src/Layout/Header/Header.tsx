@@ -1,5 +1,5 @@
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
-import { Layout, Button } from "antd";
+import { Button, Layout } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { logout } from "../../redux/reducers/auth.reducer";

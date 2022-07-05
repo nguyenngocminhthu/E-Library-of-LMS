@@ -11,7 +11,7 @@ import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getUser,
   updateProfile,
-  UserState,
+  UserState
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";

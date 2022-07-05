@@ -10,7 +10,7 @@ import {
   Space,
   Table,
   Tag,
-  Tooltip,
+  Tooltip
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
@@ -24,17 +24,16 @@ import { SelectComp } from "../../../Components/Select";
 import {
   getFiles,
   IFile,
-  updateFile,
+  updateFile
 } from "../../../redux/reducers/file.reducer";
 import {
   getLessons,
   ILesson,
-  updateLesson,
+  updateLesson
 } from "../../../redux/reducers/lesson.reducer";
 import { getSubject, ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import "./style.scss";
 

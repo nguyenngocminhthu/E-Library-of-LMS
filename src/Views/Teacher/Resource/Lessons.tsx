@@ -1,7 +1,7 @@
 import {
   DownloadOutlined,
   MoreOutlined,
-  UploadOutlined,
+  UploadOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -12,12 +12,12 @@ import {
   Row,
   Space,
   Table,
-  Tooltip,
+  Tooltip
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
@@ -25,14 +25,11 @@ import { SelectComp } from "../../../Components/Select";
 import { getLessons, ILesson } from "../../../redux/reducers/lesson.reducer";
 import {
   getSubjects,
-  ISubject,
-  listSubject,
+  ISubject
 } from "../../../redux/reducers/subject.reducer";
-import { ISubjectGroup } from "../../../redux/reducers/subjectgroup.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
-import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 import { ModalUpload } from "./modalUpload";
 

@@ -1,7 +1,6 @@
 import { FileFilled, PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Collapse, Row } from "antd";
-import { useParams } from "react-router";
-import { useNavigate } from "react-router";
+import { Button, Collapse } from "antd";
+import { useNavigate, useParams } from "react-router";
 import { ILesson } from "../../../../redux/reducers/lesson.reducer";
 import { ITopic } from "../../../../redux/reducers/topic.reducer";
 

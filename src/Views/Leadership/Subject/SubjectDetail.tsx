@@ -1,7 +1,7 @@
 import {
-  CaretRightOutlined,
+  CaretRightOutlined
 } from "@ant-design/icons";
-import { Row, Col, Collapse, Tooltip, Button } from "antd";
+import { Button, Col, Collapse, Row, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";

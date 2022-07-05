@@ -1,5 +1,4 @@
-import React from "react";
-import { Row, Col } from "antd";
+import { Col, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import "./style.scss";

@@ -3,14 +3,15 @@ import {
   DislikeFilled,
   DislikeOutlined,
   LikeFilled,
-  LikeOutlined,
+  LikeOutlined
 } from "@ant-design/icons";
 import {
   Avatar,
   Button,
   Checkbox,
   Col,
-  Collapse,
+  Collapse, 
+  Comment, 
   Divider,
   Form,
   Input,
@@ -20,12 +21,12 @@ import {
   Select,
   Skeleton,
   Tabs,
-  Tooltip,
-  Comment,
+  Tooltip
 } from "antd";
-import moment from "moment";
-import React, { useEffect, createElement, useState } from "react";
+import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
+import moment from "moment";
+import React, { createElement, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -35,11 +36,10 @@ import SearchComponent from "../../../../Components/SearchComponent";
 import { SelectComp } from "../../../../Components/Select";
 import {
   getSubject,
-  ISubject,
+  ISubject
 } from "../../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
-import TextArea from "antd/lib/input/TextArea";
 
 export const SubjectDetail = () => {
   const { Option } = Select;

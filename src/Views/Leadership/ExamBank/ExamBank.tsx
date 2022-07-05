@@ -1,7 +1,7 @@
 import {
   DesktopOutlined,
   DownloadOutlined,
-  EyeOutlined,
+  EyeOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -15,7 +15,7 @@ import {
   Table,
   Tag,
   Tooltip,
-  Typography,
+  Typography
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
@@ -28,12 +28,11 @@ import { SelectComp } from "../../../Components/Select";
 import {
   getBanks,
   IBanks,
-  updateBank,
+  updateBank
 } from "../../../redux/reducers/banks.reducer";
 import {
   getSubjects,
-  ISubject,
-  listSubject,
+  ISubject
 } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";

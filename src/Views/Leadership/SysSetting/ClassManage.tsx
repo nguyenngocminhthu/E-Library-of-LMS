@@ -9,7 +9,7 @@ import {
   Space,
   Table,
   Tooltip,
-  Typography,
+  Typography
 } from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import {
   createClass,
-  getClasses,
+  getClasses
 } from "../../../redux/reducers/classes.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import { getUsers, UserState } from "../../../redux/reducers/user.reducer";
@@ -108,7 +108,7 @@ export const ClassManage = () => {
   const modalAddRole = {
     title: "Thiết lập lớp học",
     width: "50%",
-    className: "modal-add-role",
+    className: "modal-common-style",
     content: (
       <Form
         labelCol={{ span: 6 }}

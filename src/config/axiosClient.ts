@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookie from "js-cookie";
 import queryString from "query-string";
 
 const axiosClient = axios.create({

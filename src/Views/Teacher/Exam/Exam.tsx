@@ -2,7 +2,7 @@ import {
   DesktopOutlined,
   DownloadOutlined,
   MoreOutlined,
-  UploadOutlined,
+  UploadOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -10,7 +10,6 @@ import {
   DatePicker,
   Form,
   Input,
-  Modal,
   Popover,
   Radio,
   Row,
@@ -19,7 +18,7 @@ import {
   Table,
   Tag,
   Tooltip,
-  Typography,
+  Typography
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -28,21 +27,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { ISelect, SelectComp } from "../../../Components/Select";
+import { SelectComp } from "../../../Components/Select";
 import {
   deleteBank,
   getBanks,
   IBanks,
-  updateBank,
+  updateBank
 } from "../../../redux/reducers/banks.reducer";
 import {
   getSubjects,
-  ISubject,
-  listSubject,
+  ISubject
 } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
-  ISubjectGroup,
+  ISubjectGroup
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
@@ -124,14 +122,14 @@ export const Exam = () => {
     let test = 0;
     const config = {
       title: "Tạo đề thi mới",
-      width: "35%",
+      width: "45%",
       className: "cancel-form file-modal",
       content: (
         <Row>
-          <Col span={6}>
+          <Col span={5}>
             <b>Cách tạo đề thi</b>
           </Col>
-          <Col span={18}>
+          <Col span={19}>
             <Radio.Group
               defaultValue={0}
               onChange={(e) => {
@@ -231,28 +229,17 @@ export const Exam = () => {
     };
     const assign = {
       title: "Phân bố đề thi",
-      width: "40%",
-      className: "modal-add-role",
+      width: "30%",
+      className: "modal-common-style",
       content: (
         <Form
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 18 }}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
           name="profile-form"
           layout="horizontal"
           form={formAssign}
           onFinish={onFinish}
         >
-          {/* <Form.Item
-            name="subject"
-            label="Chọn môn học"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              {subjectSelect.map((vl: ISelect) => (
-                <Option value={vl.value}>{vl.name}</Option>
-              ))}
-            </Select>
-          </Form.Item> */}
           <Form.Item
             name="releaseTime"
             label="Chọn thời gian"

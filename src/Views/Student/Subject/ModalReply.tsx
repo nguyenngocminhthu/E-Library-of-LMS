@@ -1,4 +1,4 @@
-import { Avatar, Form, Modal, Comment, Button, Col, Row } from "antd";
+import { Avatar, Button, Col, Comment, Form, Modal, Row } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -56,7 +56,7 @@ export const ModalReply: React.FC<{
   return (
     <Modal
       title="Bình luận"
-      className="modal-add-role"
+      className="modal-add-role "
       width="40%"
       visible={props.visible}
       onCancel={() => {
@@ -85,35 +85,37 @@ export const ModalReply: React.FC<{
           </Col>
         </Row>
       </Form>
-      <Comment
-        author={<span>{data?.user.userName}</span>}
-        avatar={
-          <Avatar
-            src={
-              data?.user.avt ||
-              "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
-            }
-            alt={data?.user.userName}
-          />
-        }
-        content={<p>{data?.content}</p>}
-      >
-        {data?.answers.map((value: { user: UserState; content: string }) => (
-          <Comment
-            author={<span>{value.user.userName}</span>}
-            avatar={
-              <Avatar
-                src={
-                  value.user.avt ||
-                  "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
-                }
-                alt={value.user.userName}
-              />
-            }
-            content={<p>{value.content}</p>}
-          />
-        ))}
-      </Comment>
+      <div className="scroll-box">
+        <Comment
+          author={<span>{data?.user.userName}</span>}
+          avatar={
+            <Avatar
+              src={
+                data?.user.avt ||
+                "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
+              }
+              alt={data?.user.userName}
+            />
+          }
+          content={<p>{data?.content}</p>}
+        >
+          {data?.answers.map((value: { user: UserState; content: string }) => (
+            <Comment
+              author={<span>{value.user.userName}</span>}
+              avatar={
+                <Avatar
+                  src={
+                    value.user.avt ||
+                    "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
+                  }
+                  alt={value.user.userName}
+                />
+              }
+              content={<p>{value.content}</p>}
+            />
+          ))}
+        </Comment>
+      </div>
     </Modal>
   );
 };
