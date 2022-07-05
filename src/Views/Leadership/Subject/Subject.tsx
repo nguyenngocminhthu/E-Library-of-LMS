@@ -19,6 +19,7 @@ import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
+import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
   createSubject,
   getSubjects,
@@ -62,12 +63,20 @@ export const Subject = () => {
   const [filter, setFilter] = useState<any>({ limit: 999 });
 
   const teacher = useSelector((state: any) => state.user.listUser.results);
-  const dataSub = useSelector(listSubject);
 
   useEffect(() => {
-    dispatch(getSubjects(filter));
     dispatch(getSubjectGroups(999));
     dispatch(getUsers({ limit: 999, role: "teacher" }));
+    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    dispatch(getSubjects(filter))
+      .unwrap()
+      .then((rs) => {
+        rs.results.forEach((it: ISubject) => {
+          option.push({ name: it.subName, value: it.id });
+        });
+      });
+
+    setSubjectSelect(option);
   }, [filter]);
 
   useEffect(() => {
@@ -80,16 +89,6 @@ export const Subject = () => {
 
     setTeacherSelect(option);
   }, [teacher]);
-
-  useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    if (dataSub) {
-      dataSub.results.forEach((it: ISubject) => {
-        option.push({ name: it.subName, value: it.id });
-      });
-    }
-    setSubjectSelect(option);
-  }, [dataSub]);
 
   const handleFilterSubject = (e: any) => {
     if (e !== "") {
@@ -156,14 +155,18 @@ export const Subject = () => {
   };
 
   const onFinish = async (values: any) => {
-    await dispatch(uploadFilesToFirebase([values.image.file], "Subject")).then(
-      (rs: any) => {
-        values.image = rs;
-        dispatch(createSubject(values)).then((rs) => {
-          handleRefresh();
-        });
-      }
-    );
+    dispatch(setLoading(true));
+    await dispatch(
+      uploadFilesToFirebase(values.image.fileList, "Subject")
+    ).then((rs: any) => {
+      dispatch(setLoading(false));
+
+      values.image = rs;
+      dispatch(createSubject(values)).then((rs) => {
+        handleRefresh();
+        form.resetFields();
+      });
+    });
   };
 
   const handleModal = () => {
@@ -229,6 +232,7 @@ export const Subject = () => {
       okText: "Tạo",
       cancelText: "Huỷ",
       onOk: () => form.submit(),
+      onCancel: () => form.resetFields(),
     };
     modal.confirm(config);
   };

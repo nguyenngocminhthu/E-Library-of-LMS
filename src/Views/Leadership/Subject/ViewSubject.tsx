@@ -21,6 +21,7 @@ import {
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
@@ -49,6 +50,7 @@ export const ViewSubject = () => {
   const [idQA, setIdQA] = useState<string>("");
   const [visible, setVisible] = useState<boolean>(false);
   const [idx, setIdx] = useState<number>(0);
+  const [url, setUrl] = useState<string>("");
 
   useEffect(() => {
     if (params.idSub) {
@@ -140,11 +142,15 @@ export const ViewSubject = () => {
       />
       <Row>
         <Col span={16}>
-          <video
-            src={video}
-            style={{ width: "100%", height: "50vh" }}
-            controls
-          ></video>
+          {data?.lesson[idx].url === undefined ? (
+            <video
+              src={video}
+              style={{ width: "100%", height: "50vh" }}
+              controls
+            ></video>
+          ) : (
+            <ReactPlayer url={url} />
+          )}
           <Tabs defaultActiveKey="1">
             <TabPane tab="Tổng quan" key="1">
               <Row>
@@ -167,10 +173,18 @@ export const ViewSubject = () => {
                   form={form}
                   onFinish={onFinish}
                 >
-                  <Form.Item label="Tiêu đề câu hỏi" name="title" rules={[{ required: true }]}>
+                  <Form.Item
+                    label="Tiêu đề câu hỏi"
+                    name="title"
+                    rules={[{ required: true }]}
+                  >
                     <Input />
                   </Form.Item>
-                  <Form.Item label="Nội dung" name="content" rules={[{ required: true }]}>
+                  <Form.Item
+                    label="Nội dung"
+                    name="content"
+                    rules={[{ required: true }]}
+                  >
                     <TextArea rows={4} />
                   </Form.Item>
                   <div className="footer-btn">
@@ -370,6 +384,7 @@ export const ViewSubject = () => {
                   onClick={() => {
                     setVideo(value.video);
                     setIdx(index);
+                    setUrl(value.url);
                     dispatch(getLesson(value.id))
                       .unwrap()
                       .then((rs) => {

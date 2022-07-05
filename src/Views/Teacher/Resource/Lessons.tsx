@@ -131,17 +131,17 @@ export const Lessons = () => {
       dataIndex: "title",
       key: "title",
     },
-    {
-      title: "Thể loại",
-      dataIndex: "video",
-      key: "video",
-      render: (video: string) => {
-        let vid = video.split("/");
-        let vidName = vid[vid.length - 1];
-        console.debug(vidName);
-        return <>test</>;
-      },
-    },
+    // {
+    //   title: "Thể loại",
+    //   dataIndex: "video",
+    //   key: "video",
+    //   render: (video: string) => {
+    //     let vid = video.split("/");
+    //     let vidName = vid[vid.length - 1];
+    //     console.debug(vidName);
+    //     return <>test</>;
+    //   },
+    // },
     {
       title: "Kích thước",
       dataIndex: "size",
@@ -266,16 +266,16 @@ export const Lessons = () => {
   };
 
   const columns = [
-    {
-      title: "Thể loại",
-      dataIndex: "video",
-      key: "video",
-      render: (video: string) => {
-        const vid = video.split("/");
-        const fileType = vid[vid.length - 1].split("?")[0];
-        return <>{fileType.endsWith("mp4") && <Mp4 />}</>;
-      },
-    },
+    // {
+    //   title: "Thể loại",
+    //   dataIndex: "video",
+    //   key: "video",
+    //   render: (video: string) => {
+    //     const vid = video.split("/");
+    //     const fileType = vid[vid.length - 1].split("?")[0];
+    //     return <>{fileType.endsWith("mp4") && <Mp4 />}</>;
+    //   },
+    // },
     {
       title: "Tên",
       dataIndex: "title",

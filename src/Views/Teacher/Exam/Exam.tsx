@@ -35,7 +35,11 @@ import {
   IBanks,
   updateBank,
 } from "../../../redux/reducers/banks.reducer";
-import { ISubject, listSubject } from "../../../redux/reducers/subject.reducer";
+import {
+  getSubjects,
+  ISubject,
+  listSubject,
+} from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
   ISubjectGroup,
@@ -60,8 +64,6 @@ export const Exam = () => {
   const [form] = Form.useForm();
   const [formAssign] = Form.useForm();
 
-  const dataSub = useSelector(listSubject);
-
   const dataSubGroup = useSelector(
     (state: any) => state.subjectgroup.listSubjectGroup.results
   );
@@ -85,13 +87,16 @@ export const Exam = () => {
 
   useEffect(() => {
     const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    if (dataSub) {
-      dataSub.results.forEach((it: ISubject) => {
-        option.push({ name: it.subName, value: it.id });
+
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+      .unwrap()
+      .then((rs: any) => {
+        rs.results.forEach((it: ISubject) => {
+          option.push({ name: it.subName, value: it.id });
+        });
+        setSubjectSelect(option);
       });
-    }
-    setSubjectSelect(option);
-  }, [dataSub]);
+  }, []);
 
   useEffect(() => {
     const option: ISubjectSelect[] = [{ name: "Tất cả tổ bộ môn", value: "" }];

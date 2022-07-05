@@ -1,5 +1,17 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, message, Row, Select, Space, Table, Tooltip, Typography } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Space,
+  Table,
+  Tooltip,
+  Typography,
+} from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -32,9 +44,6 @@ export const UserManage = () => {
       .unwrap()
       .then((rs: any) => {
         setData(rs.results);
-      })
-      .catch((e: any) => {
-        console.debug("e: ", e);
       });
   }, [filter]);
 
@@ -60,7 +69,7 @@ export const UserManage = () => {
   const columns = [
     {
       title: "Mã người dùng",
-      dataIndex: "id",
+      dataIndex: "userCode",
       key: "id",
     },
     {
@@ -109,11 +118,15 @@ export const UserManage = () => {
   ];
 
   const onFinish = (values: any) => {
+    if (values.role !== "student") {
+      delete values.userCode;
+    }
     dispatch(createUser(values)).then(() => {
       dispatch(getUsers(filter))
         .unwrap()
         .then((rs: any) => {
           setData(rs.results);
+          form.resetFields();
         });
     });
   };
@@ -147,18 +160,6 @@ export const UserManage = () => {
         form={form}
         onFinish={onFinish}
       >
-        <Form.Item label="Tên" name="userName" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Email" name="email" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="MSSV" name="userCode" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Mật khẩu" name="password" rules={[{ required: true }]}>
-          <Input.Password />
-        </Form.Item>
         <Form.Item label="Tên vai trò" name="role" rules={[{ required: true }]}>
           <Select>
             <Option value={"leadership"}>Quản trị viên</Option>
@@ -166,11 +167,30 @@ export const UserManage = () => {
             <Option value={"student"}>Sinh viên</Option>
           </Select>
         </Form.Item>
+        <Form.Item label="Tên" name="userName" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Email" name="email" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="MSSV" name="userCode">
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="Mật khẩu"
+          name="password"
+          rules={[{ required: true }]}
+        >
+          <Input.Password />
+        </Form.Item>
       </Form>
     ),
     okText: "Lưu",
     cancelText: "Huỷ",
     onOk: () => form.submit(),
+    onCancel: () => form.resetFields(),
   };
 
   const handleFilter = (e: any) => {
@@ -220,4 +240,4 @@ export const UserManage = () => {
   );
 };
 
-export default UserManage
+export default UserManage;

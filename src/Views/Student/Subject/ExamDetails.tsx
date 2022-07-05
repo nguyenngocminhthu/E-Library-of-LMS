@@ -182,9 +182,12 @@ export const ExamDetails = () => {
           </div>
         </div>
       </div>
-      <div style={{ textAlign: "right" }}>
-        <Countdown value={releaseTime + time} onFinish={onFinish} />
-      </div>
+      {moment() < moment(data?.releaseTime).add(data?.time, "minutes") && (
+        <div style={{ textAlign: "right" }}>
+          <Countdown value={releaseTime + time} onFinish={onFinish} />
+        </div>
+      )}
+
       <div className="body-bank">
         <Row>
           <Col span={6}>
@@ -347,11 +350,13 @@ export const ExamDetails = () => {
               </Checkbox.Group>
             )}
           </Col>
-          <div className="t-right m1 w-100">
-            <Button onClick={onFinish} type="primary">
-              Nộp bài
-            </Button>
-          </div>
+          {moment() < moment(data?.releaseTime).add(data?.time, "minutes") && (
+            <div className="t-right m1 w-100">
+              <Button onClick={onFinish} type="primary">
+                Nộp bài
+              </Button>
+            </div>
+          )}
         </Row>
       </div>
     </div>

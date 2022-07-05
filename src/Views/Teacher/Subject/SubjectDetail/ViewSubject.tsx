@@ -5,19 +5,11 @@ import {
   MessageOutlined,
   PlayCircleFilled,
 } from "@ant-design/icons";
-import {
-  Avatar,
-  Button,
-  Col,
-  Collapse,
-  Form,
-  Input,
-  Row,
-  Tabs,
-} from "antd";
+import { Avatar, Button, Col, Collapse, Form, Input, Row, Tabs } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
@@ -46,6 +38,7 @@ export const ViewSubject = () => {
   const [idQA, setIdQA] = useState<string>("");
   const [visible, setVisible] = useState<boolean>(false);
   const [idx, setIdx] = useState<number>(0);
+  const [url, setUrl] = useState<string>("");
 
   useEffect(() => {
     if (params.id) {
@@ -64,8 +57,6 @@ export const ViewSubject = () => {
         });
     }
   }, [params.id]);
-  console.log("params.id", params.id)
-
 
   const handleRefresh = () => {
     if (params.id) {
@@ -141,11 +132,16 @@ export const ViewSubject = () => {
       />
       <Row>
         <Col span={16}>
-          <video
-            src={video}
-            style={{ width: "100%", height: "50vh" }}
-            controls
-          ></video>
+          {data?.lesson[idx].url === undefined ? (
+            <video
+              src={video}
+              style={{ width: "100%", height: "50vh" }}
+              controls
+            ></video>
+          ) : (
+            <ReactPlayer url={url} />
+          )}
+
           <Tabs defaultActiveKey="1">
             <TabPane tab="Tổng quan" key="1">
               <Row>
@@ -168,10 +164,18 @@ export const ViewSubject = () => {
                   form={form}
                   onFinish={onFinish}
                 >
-                  <Form.Item label="Tiêu đề câu hỏi" name="title" rules={[{ required: true }]}>
+                  <Form.Item
+                    label="Tiêu đề câu hỏi"
+                    name="title"
+                    rules={[{ required: true }]}
+                  >
                     <Input />
                   </Form.Item>
-                  <Form.Item label="Nội dung" name="content" rules={[{ required: true }]}>
+                  <Form.Item
+                    label="Nội dung"
+                    name="content"
+                    rules={[{ required: true }]}
+                  >
                     <TextArea rows={4} />
                   </Form.Item>
                   <div className="footer-btn">
@@ -298,7 +302,6 @@ export const ViewSubject = () => {
             <TabPane tab="Thông báo môn học" key="3">
               <div className="scroll-box sub-noti">
                 {data?.noti.map((value: INoti) => {
-                  
                   return (
                     <Row className="noti-detail">
                       <Col span={7}>
@@ -336,10 +339,10 @@ export const ViewSubject = () => {
                         <div
                           dangerouslySetInnerHTML={{ __html: value.content }}
                         />
-                        
                       </Col>
                     </Row>
-                  );})}
+                  );
+                })}
               </div>
             </TabPane>
           </Tabs>
@@ -372,6 +375,7 @@ export const ViewSubject = () => {
                   onClick={() => {
                     setVideo(value.video);
                     setIdx(index);
+                    setUrl(value.url);
                     dispatch(getLesson(value.id))
                       .unwrap()
                       .then((rs) => {
@@ -423,4 +427,4 @@ export const ViewSubject = () => {
       />
     </div>
   );
-};;
+};

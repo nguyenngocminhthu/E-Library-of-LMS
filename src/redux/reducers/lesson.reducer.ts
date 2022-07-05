@@ -125,6 +125,7 @@ export interface ILesson {
   updatedAt: string;
   status: number;
   QA: IQA[];
+  url: string;
 }
 
 interface LessonState {
@@ -203,6 +204,5 @@ export const listLesson = (state: RootState) => state.lesson.listLesson;
 
 export const totalLesson = (state: RootState) =>
   state.lesson.listLesson.totalResults;
-
 
 export default reducer;

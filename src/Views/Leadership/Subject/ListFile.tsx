@@ -191,16 +191,16 @@ export const ListFile = () => {
   };
 
   const columns = [
-    {
-      title: "Thể loại",
-      dataIndex: "video",
-      key: "video",
-      render: (video: string) => {
-        const vid = video.split("/");
-        const fileType = vid[vid.length - 1].split("?")[0];
-        return <>{fileType.endsWith("mp4") && <Mp4 />}</>;
-      },
-    },
+    // {
+    //   title: "Thể loại",
+    //   dataIndex: "video",
+    //   key: "video",
+    //   render: (video: string) => {
+    //     const vid = video.split("/");
+    //     const fileType = vid[vid.length - 1].split("?")[0];
+    //     return <>{fileType.endsWith("mp4") && <Mp4 />}</>;
+    //   },
+    // },
     {
       title: "Tên",
       dataIndex: "title",

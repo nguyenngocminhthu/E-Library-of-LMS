@@ -4,7 +4,7 @@ import lodash from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
-import { SelectComp } from "../../../Components/Select";
+import { ISelect, SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
 import { createLesson } from "../../../redux/reducers/lesson.reducer";
 import { setLoading } from "../../../redux/reducers/loading.reducer";
@@ -28,9 +28,10 @@ export const ModalUpload: React.FC<{
   const [linkVideo, setLinkVideo] = useState<string>("");
   const dispatch: AppDispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([]);
-  const [classSelect, setClassSelect] = useState<ISubjectSelect[]>();
-  const [topicSelect, setTopicSelect] = useState<ISubjectSelect[]>();
+  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([]);
+  const [classSelect, setClassSelect] = useState<ISelect[]>();
+  const [topicSelect, setTopicSelect] = useState<ISelect[]>();
+  const [url, setUrl] = useState<string>("");
 
   useEffect(() => {
     dispatch(getSubjects({ limit: 999, teacher: user.id }))
@@ -52,13 +53,19 @@ export const ModalUpload: React.FC<{
   const onFinish = async (values: any) => {
     dispatch(setLoading(true));
 
-    await dispatch(uploadFilesToFirebase(values.video.fileList, "Video")).then(
-      (rs) => {
+    if (url === "") {
+      delete values.url;
+      await dispatch(
+        uploadFilesToFirebase(values.video.fileList, "Video")
+      ).then((rs) => {
         values.video = rs;
-        props.setVisible(false);
         dispatch(setLoading(false));
-      }
-    );
+      });
+    } else {
+      delete values.video;
+
+      dispatch(setLoading(false));
+    }
     dispatch(createLesson({ ...values, user: user.id }))
       .unwrap()
       .then((rs) => {
@@ -156,15 +163,19 @@ export const ModalUpload: React.FC<{
           name="video"
           label="Video"
           className="upload-file"
-          rules={[{ required: true }]}
+          rules={[{ required: url === "" }]}
         >
           <Upload
             maxCount={1}
             beforeUpload={() => false}
             onChange={handleChange}
             accept="video/*"
+            onRemove={() => setLinkVideo("")}
           >
-            <Button icon={<UploadOutlined style={{ color: "#f17f21" }} />}>
+            <Button
+              disabled={url !== ""}
+              icon={<UploadOutlined style={{ color: "#f17f21" }} />}
+            >
               Tải lên
             </Button>
           </Upload>
@@ -172,6 +183,12 @@ export const ModalUpload: React.FC<{
         {linkVideo !== "" && (
           <video src={linkVideo} width={300} height={200} controls />
         )}
+        <Form.Item name="url" label="hoặc Đường link" className="download-file">
+          <Input
+            onChange={(e: any) => setUrl(e.target.value)}
+            disabled={linkVideo !== ""}
+          />
+        </Form.Item>
       </Form>
     </Modal>
   );
