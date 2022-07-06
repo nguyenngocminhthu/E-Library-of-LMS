@@ -120,7 +120,12 @@ export const ExamDetails = () => {
       updateBank({
         id: params.id,
         payload: {
-          submissions: { user: user.id, score: score, submit: questions },
+          submissions: {
+            user: user.id,
+            score: score,
+            submit: questions,
+            correctNum: count,
+          },
         },
       })
     )

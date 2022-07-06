@@ -27,20 +27,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
+import { ISelect, SelectComp } from "../../../Components/Select";
 import {
   deleteBank,
   getBanks,
   IBanks,
-  updateBank
+  updateBank,
 } from "../../../redux/reducers/banks.reducer";
-import {
-  getSubjects,
-  ISubject
-} from "../../../redux/reducers/subject.reducer";
+import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
-  ISubjectGroup
+  ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
@@ -53,12 +50,12 @@ export const Exam = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
+  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
-  const [subjectGroupSelect, setSubjectGroupSelect] = useState<
-    ISubjectSelect[]
-  >([{ name: "Tất cả tổ bộ môn", value: "" }]);
+  const [subjectGroupSelect, setSubjectGroupSelect] = useState<ISelect[]>([
+    { name: "Tất cả tổ bộ môn", value: "" },
+  ]);
   const [form] = Form.useForm();
   const [formAssign] = Form.useForm();
 
@@ -379,12 +376,20 @@ export const Exam = () => {
     },
     {
       title: "Hình thức",
-      dataIndex: "examType",
-      key: "examType",
-      render: (examType: number) => {
+      dataIndex: "isFinal",
+      key: "isFinal",
+      render: (isFinal: boolean) => {
         return (
-          <>{examType === 0 ? <div>Trắc nghiệm</div> : <div>Tự luận</div>}</>
+          <>{isFinal === true ? <div>Đề thi</div> : <div>Bài kiểm tra</div>}</>
         );
+      },
+    },
+    {
+      title: "Môn học",
+      dataIndex: "subject",
+      key: "subject",
+      render: (subject: ISubject) => {
+        return subject.subName;
       },
     },
     {
@@ -435,6 +440,13 @@ export const Exam = () => {
                     }
                   >
                     Xem chi tiết
+                  </p>
+                  <p
+                    onClick={() =>
+                      navigate(`/teacher/exams/submissions/${record?.id}`)
+                    }
+                  >
+                    Xem bài nộp
                   </p>
                   {record.status === 1 && (
                     <p onClick={() => modalAssign(record.id)}>Phân bố đề thi</p>

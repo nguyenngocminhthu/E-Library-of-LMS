@@ -28,6 +28,18 @@ const updateLesson = (id: string, payload: any) => {
   });
 };
 
-const Lesson = { getLessons, getLesson, createLesson, updateLesson };
+const deleteLesson = (id: string) => {
+  return axiosClient.delete(url + `/${id}`).then((rs: any) => {
+    return rs;
+  });
+};
+
+const Lesson = {
+  getLessons,
+  getLesson,
+  createLesson,
+  updateLesson,
+  deleteLesson,
+};
 
 export default Lesson;

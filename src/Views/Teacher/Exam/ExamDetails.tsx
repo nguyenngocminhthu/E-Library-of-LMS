@@ -35,7 +35,7 @@ export const ExamDetails = () => {
       <BreadcrumbComp
         title="Chi tiết đề thi"
         prevFirstPageTitle="Ngân hàng đề thi"
-        prevFirstPage="exambank"
+        prevFirstPage="teacher/exams"
       />
       <div className="top-head">
         <div
@@ -68,7 +68,7 @@ export const ExamDetails = () => {
             </div>
             <div>
               <div>{data?.user?.userName || "null"}</div>
-              <div>{moment(data?.createdAt).format('DD/MM/YYYY')}</div>
+              <div>{moment(data?.createdAt).format("DD/MM/YYYY")}</div>
             </div>
           </div>
         </div>

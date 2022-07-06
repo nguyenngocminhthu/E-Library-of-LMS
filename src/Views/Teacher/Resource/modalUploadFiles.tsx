@@ -55,13 +55,13 @@ export const ModalUploadFiles: React.FC<{
         dispatch(setLoading(false));
 
         values.url = rs;
-        props.setVisible(false);
       }
     );
     dispatch(createFile({ ...values, user: user.id }))
       .unwrap()
       .then((rs) => {
         props.handleRefresh();
+        props.setVisible(false);
       });
   };
 

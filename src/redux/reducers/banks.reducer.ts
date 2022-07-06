@@ -38,10 +38,20 @@ export const createBank = createAsyncThunk(
 
 export const getBanks = createAsyncThunk(
   "Banks/getBanks",
-  async ({ limit, subjectGroup, subject, user }: any, thunkAPI) => {
+  async (
+    { limit, subjectGroup, subject, user, status, sortBy }: any,
+    thunkAPI
+  ) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Banks.getBanks({ limit, subjectGroup, subject, user });
+      const data = await Banks.getBanks({
+        limit,
+        subjectGroup,
+        subject,
+        user,
+        status,
+        sortBy,
+      });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -156,6 +166,7 @@ export interface IBanks {
   updatedAt: string;
   time: number;
   releaseTime: string;
+  isFinal: boolean;
 }
 
 interface banksState {

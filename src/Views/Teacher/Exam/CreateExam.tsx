@@ -152,12 +152,15 @@ export const CreateExam = () => {
   };
 
   const onFinish = (values: any) => {
+    console.debug(values);
+
     dispatch(
       createBank({
         ...values,
         questions: questions,
         user: user.id,
         fileType: 0,
+        status: values.isFinal === true ? 0 : 1,
       })
     ).then(() => {
       navigate("/teacher/exams");
@@ -199,18 +202,36 @@ export const CreateExam = () => {
             </Form.Item>
           </Col>
           <Col span={10} offset={4}>
-            <Form.Item
-              name="time"
-              label="Thời lượng"
-              rules={[{ required: true }]}
-            >
-              <Select style={{ width: "100px" }}>
-                <Option value={15}>15</Option>
-                <Option value={30}>30</Option>
-                <Option value={45}>45</Option>
-                <Option value={60}>60</Option>
-              </Select>
-            </Form.Item>
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  labelCol={{ span: 12 }}
+                  wrapperCol={{ span: 12 }}
+                  name="time"
+                  label="Thời lượng"
+                  rules={[{ required: true }]}
+                >
+                  <Select style={{ width: "100px" }}>
+                    <Option value={15}>15</Option>
+                    <Option value={30}>30</Option>
+                    <Option value={45}>45</Option>
+                    <Option value={60}>60</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 18 }}
+                  name="isFinal"
+                  label="Loại đề thi"
+                  valuePropName="checked"
+                >
+                  <Checkbox>Đề thi cuối kì</Checkbox>
+                </Form.Item>
+              </Col>
+            </Row>
+
             <Form.Item
               name="subject"
               label="Môn học"
