@@ -53,11 +53,11 @@ export const Sidebar: React.FC = () => {
             key="subject"
             icon={<Book />}
           ></Menu.Item>
-          <Menu.Item
+          {/* <Menu.Item
             onClick={() => handleSelect(["privatefile"])}
             key="privatefile"
             icon={<File />}
-          ></Menu.Item>
+          ></Menu.Item> */}
           <Menu.Item
             onClick={() => handleSelect(["exambank"])}
             key="exambank"
@@ -104,12 +104,12 @@ export const Sidebar: React.FC = () => {
               Phê duyệt tài liệu môn học
             </Menu.Item>
           </SubMenu>
-          <Menu.Item
+          {/* <Menu.Item
             onClick={() => handleSelect(["privatefile"])}
             key="privatefile"
           >
             Tệp riêng tư
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item onClick={() => handleSelect(["exambank"])} key="exambank">
             Ngân hàng đề thi
           </Menu.Item>

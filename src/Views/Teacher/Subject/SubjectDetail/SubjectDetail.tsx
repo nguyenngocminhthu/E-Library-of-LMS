@@ -34,9 +34,10 @@ import SunEditor from "suneditor-react";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import SearchComponent from "../../../../Components/SearchComponent";
 import { SelectComp } from "../../../../Components/Select";
+import { getQAs, IQA } from "../../../../redux/reducers/QA.reducer";
 import {
   getSubject,
-  ISubject
+  ISubject,
 } from "../../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
@@ -56,6 +57,7 @@ export const SubjectDetail = () => {
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState<string | null>(null);
+  const [qa, setQa] = useState<IQA[]>([]);
 
   useEffect(() => {
     if (params.id) {
@@ -158,13 +160,25 @@ export const SubjectDetail = () => {
         layout="horizontal"
         form={form}
       >
-        <Form.Item name="fileName" label="Tiêu đề (tóm tắt)" rules={[{ required: true }]}>
+        <Form.Item
+          name="fileName"
+          label="Tiêu đề (tóm tắt)"
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item name="chooseTopic" label="Chi tiết (tuỳ chọn)" rules={[{ required: true }]}>
-          <TextArea rows={4}/>
+        <Form.Item
+          name="chooseTopic"
+          label="Chi tiết (tuỳ chọn)"
+          rules={[{ required: true }]}
+        >
+          <TextArea rows={4} />
         </Form.Item>
-        <Form.Item name="fileNameTitle" label="Lớp giảng dạy" rules={[{ required: true }]}>
+        <Form.Item
+          name="fileNameTitle"
+          label="Lớp giảng dạy"
+          rules={[{ required: true }]}
+        >
           <div className="selectcomp">
             <Select className="select" defaultValue={0}>
               <Option value={0}>Tất cả các lớp</Option>
@@ -173,7 +187,11 @@ export const SubjectDetail = () => {
             </Select>
           </div>
         </Form.Item>
-        <Form.Item name="fileNameTitle" label="Chủ đề" rules={[{ required: true }]}>
+        <Form.Item
+          name="fileNameTitle"
+          label="Chủ đề"
+          rules={[{ required: true }]}
+        >
           <div className="selectcomp">
             <Select className="select" defaultValue="Tuỳ chọn chủ đề">
               <Option value={0}>Giới thiệu chung về Thương mại Điện tử</Option>
@@ -181,9 +199,13 @@ export const SubjectDetail = () => {
             </Select>
           </div>
         </Form.Item>
-        <Form.Item name="fileNameTitle" label="Bài giảng" rules={[{ required: true }]}>
+        <Form.Item
+          name="fileNameTitle"
+          label="Bài giảng"
+          rules={[{ required: true }]}
+        >
           <div className="selectcomp">
-            <Select className="select" defaultValue="Tuỳ chọn bài giảng" >
+            <Select className="select" defaultValue="Tuỳ chọn bài giảng">
               <Option value={0}>
                 Giới thiệu về thương mại điện tử trong những năm gần đây
               </Option>
@@ -295,12 +317,6 @@ export const SubjectDetail = () => {
                 }}
               >
                 <div className="selectcomp">
-                  <Select className="select" defaultValue={0}>
-                    <Option value={0}>Thương mại điện tử</Option>
-                    <Option value={1}>Toán cao cấp</Option>
-                    <Option value={2}>Đại số </Option>
-                    <Option value={3}>Luật sở hữu trí tuệ</Option>
-                  </Select>
                   <Select className="select" defaultValue={0}>
                     <Option value={0}>Tất cả bài giảng</Option>
                     <Option value={1}>Giới thiệu chung về T...</Option>
