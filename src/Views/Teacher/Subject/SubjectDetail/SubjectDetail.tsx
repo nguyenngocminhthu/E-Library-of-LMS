@@ -26,8 +26,7 @@ import {
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
 import moment from "moment";
-import React, { createElement, useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import SunEditor from "suneditor-react";
@@ -39,7 +38,7 @@ import {
   getNotis,
   INoti,
 } from "../../../../redux/reducers/noti.reducer";
-import { getQAs, IQA } from "../../../../redux/reducers/QA.reducer";
+import { getQAs, IQA, updateQA } from "../../../../redux/reducers/QA.reducer";
 import {
   getSubject,
   getSubjects,
@@ -48,6 +47,8 @@ import {
 import { ITopic } from "../../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../../redux/store";
+import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
+import { ModalReply } from "../../../Student/Subject/ModalReply";
 
 export const SubjectDetail = () => {
   const { Option } = Select;
@@ -57,18 +58,16 @@ export const SubjectDetail = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const [data, setData] = useState<ISubject>();
-  const [loading, setLoading] = useState(false);
-  const [dataNotification, setDataNotification] = useState<any>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [action, setAction] = useState<string | null>(null);
   const [qa, setQa] = useState<IQA[]>([]);
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const [dataClass, setDataClass] = useState<ISelect[]>([]);
   const [topic, setTopic] = useState<ISelect[]>([]);
   const [notify, setNotify] = useState<INoti[]>([]);
+  const [question, setQuestion] = useState(false);
+  const [idQA, setIdQA] = useState<string>("");
+  const [visible, setVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (params.id) {
@@ -82,6 +81,11 @@ export const SubjectDetail = () => {
         .then((rs) => {
           setNotify(rs.results);
         });
+      dispatch(getQAs({ limit: 9999, subject: params.id }))
+        .unwrap()
+        .then((rs) => {
+          setQa(rs.results);
+        });
     }
   }, [params.id]);
 
@@ -92,29 +96,15 @@ export const SubjectDetail = () => {
         .then((rs: ISubject) => {
           setData(rs);
         });
+      dispatch(getNotis({ limit: 9999, subject: params.id }))
+        .unwrap()
+        .then((rs) => {
+          setNotify(rs.results);
+        });
     }
-  };
-
-  const loadMoreData = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    fetch(
-      "https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo"
-    )
-      .then((res) => res.json())
-      .then((body) => {
-        setDataNotification([...dataNotification, ...body.results]);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
   };
 
   useEffect(() => {
-    loadMoreData();
     dispatch(getSubjects({ limit: 999, teacher: user.id }))
       .unwrap()
       .then((rs: any) => {
@@ -138,18 +128,6 @@ export const SubjectDetail = () => {
       });
   };
 
-  const like = () => {
-    setLikes(1);
-    setDislikes(0);
-    setAction("liked");
-  };
-
-  const dislike = () => {
-    setLikes(0);
-    setDislikes(1);
-    setAction("disliked");
-  };
-
   const onFinish = (values: any) => {
     dispatch(
       createNoti({
@@ -163,24 +141,6 @@ export const SubjectDetail = () => {
         handleCancel();
       });
   };
-
-  const actions = [
-    <Tooltip key="comment-basic-like" title="Like">
-      <span onClick={like}>
-        {createElement(action === "liked" ? LikeFilled : LikeOutlined)}
-        <span className="comment-action">{likes}</span>
-      </span>
-    </Tooltip>,
-    <Tooltip key="comment-basic-dislike" title="Dislike">
-      <span onClick={dislike}>
-        {React.createElement(
-          action === "disliked" ? DislikeFilled : DislikeOutlined
-        )}
-        <span className="comment-action">{dislikes}</span>
-      </span>
-    </Tooltip>,
-    <span key="comment-basic-reply-to">Reply to</span>,
-  ];
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -393,60 +353,89 @@ export const SubjectDetail = () => {
                     Thêm câu hỏi mới
                   </Button>
                 </div>
-                <div className="question-and-answer-container">
-                  <Comment
-                    actions={actions}
-                    author={<a>Han Solo</a>}
-                    avatar={
-                      <Avatar
-                        src="https://joeschmoe.io/api/v1/random"
-                        alt="Han Solo"
-                      />
-                    }
-                    content={
-                      <p>
-                        We supply a series of design principles, practical
-                        patterns and high quality design resources (Sketch and
-                        Axure), to help people create their product prototypes
-                        beautifully and efficiently.
-                      </p>
-                    }
-                    datetime={
-                      <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
-                        <span>{moment().fromNow()}</span>
-                      </Tooltip>
-                    }
-                  />
-                </div>
-                <div className="question-and-answer-container">
-                  <Comment
-                    actions={actions}
-                    author={<a>Han Solo</a>}
-                    avatar={
-                      <Avatar
-                        src="https://joeschmoe.io/api/v1/random"
-                        alt="Han Solo"
-                      />
-                    }
-                    content={
-                      <p>
-                        We supply a series of design principles, practical
-                        patterns and high quality design resources (Sketch and
-                        Axure), to help people create their product prototypes
-                        beautifully and efficiently.
-                      </p>
-                    }
-                    datetime={
-                      <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
-                        <span>{moment().fromNow()}</span>
-                      </Tooltip>
-                    }
-                  />
+                <div className="scroll-box question">
+                  {qa?.map((value: IQA) => (
+                    <Row className="sub-content">
+                      <Col span={2}>
+                        <Avatar
+                          src={
+                            value.user.avt ||
+                            "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
+                          }
+                        />
+                      </Col>
+                      <Col span={21} offset={1}>
+                        <div className="flex-row">
+                          <h4>{value.user.userName}</h4>
+                          <span
+                            style={{
+                              marginLeft: "1rem",
+                              color: "gray",
+                              fontSize: "12px",
+                            }}
+                          >
+                            {value.title}
+                          </span>
+                          <span
+                            style={{
+                              marginLeft: "auto",
+                              color: "gray",
+                              fontStyle: "italic",
+                              fontSize: "12px",
+                            }}
+                          >
+                            {moment(value.createdAt).fromNow()}
+                          </span>
+                        </div>
+                        {value.content}
+                        <div className="flex-row">
+                          {value.likes.includes(user.id) ? (
+                            <HeartFilled
+                              onClick={() =>
+                                dispatch(
+                                  updateQA({
+                                    id: value.id,
+                                    payload: { likes: [user.id] },
+                                  })
+                                )
+                                  .unwrap()
+                                  .then(() => handleRefresh())
+                              }
+                              style={{ color: "red" }}
+                            />
+                          ) : (
+                            <HeartOutlined
+                              onClick={() =>
+                                dispatch(
+                                  updateQA({
+                                    id: value.id,
+                                    payload: { likes: [user.id] },
+                                  })
+                                )
+                                  .unwrap()
+                                  .then(() => handleRefresh())
+                              }
+                            />
+                          )}
+
+                          <span className="gray">{value.likes.length}</span>
+                          <MessageOutlined
+                            onClick={() => {
+                              setIdQA(value.id);
+                              setVisible(true);
+                            }}
+                            style={{ marginLeft: "2rem" }}
+                          />
+                          <span className="gray">{value.answers.length}</span>
+                        </div>
+                      </Col>
+                    </Row>
+                  ))}
                 </div>
               </div>
             </TabPane>
             <TabPane tab="Thông báo môn học" key="4">
-              <div className="t-right mb">
+              <div className="t-right mb p1">
                 <Button
                   className="btn-create-min"
                   type="primary"
@@ -456,7 +445,10 @@ export const SubjectDetail = () => {
                 </Button>
               </div>
 
-              <div className="scroll-box sub-noti w-100">
+              <div
+                className="scroll-box sub-noti w-100 p1"
+                style={{ height: "60vh" }}
+              >
                 {notify.map((value: INoti) => {
                   return (
                     <Row className="noti-detail">
@@ -582,6 +574,12 @@ export const SubjectDetail = () => {
           </Form.Item>
         </Form>
       </Modal>
+      <ModalReply
+        visible={visible}
+        setVisible={setVisible}
+        data={idQA}
+        handleRefresh={handleRefresh}
+      />
     </div>
   );
 };

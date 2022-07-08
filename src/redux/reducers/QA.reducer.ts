@@ -9,10 +9,10 @@ import { UserState } from "./user.reducer";
 
 export const getQAs = createAsyncThunk(
   "QA/getQAs",
-  async ({ limit, role }: any, thunkAPI) => {
+  async ({ limit, role, subject }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await QA.getQAs({ limit, role });
+      const data = await QA.getQAs({ limit, role, subject });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
