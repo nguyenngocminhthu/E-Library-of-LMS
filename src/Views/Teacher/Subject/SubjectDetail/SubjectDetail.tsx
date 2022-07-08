@@ -33,13 +33,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import SunEditor from "suneditor-react";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import SearchComponent from "../../../../Components/SearchComponent";
-import { SelectComp } from "../../../../Components/Select";
+import { ISelect, SelectComp } from "../../../../Components/Select";
+import {
+  createNoti,
+  getNotis,
+  INoti,
+} from "../../../../redux/reducers/noti.reducer";
 import { getQAs, IQA } from "../../../../redux/reducers/QA.reducer";
 import {
   getSubject,
+  getSubjects,
   ISubject,
 } from "../../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../../redux/reducers/topic.reducer";
+import { UserState } from "../../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../../redux/store";
 
 export const SubjectDetail = () => {
@@ -58,6 +65,10 @@ export const SubjectDetail = () => {
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState<string | null>(null);
   const [qa, setQa] = useState<IQA[]>([]);
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const [dataClass, setDataClass] = useState<ISelect[]>([]);
+  const [topic, setTopic] = useState<ISelect[]>([]);
+  const [notify, setNotify] = useState<INoti[]>([]);
 
   useEffect(() => {
     if (params.id) {
@@ -66,8 +77,23 @@ export const SubjectDetail = () => {
         .then((rs: ISubject) => {
           setData(rs);
         });
+      dispatch(getNotis({ limit: 9999, subject: params.id }))
+        .unwrap()
+        .then((rs) => {
+          setNotify(rs.results);
+        });
     }
-  }, []);
+  }, [params.id]);
+
+  const handleRefresh = () => {
+    if (params.id) {
+      dispatch(getSubject(params.id))
+        .unwrap()
+        .then((rs: ISubject) => {
+          setData(rs);
+        });
+    }
+  };
 
   const loadMoreData = () => {
     if (loading) {
@@ -89,22 +115,28 @@ export const SubjectDetail = () => {
 
   useEffect(() => {
     loadMoreData();
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+      .unwrap()
+      .then((rs: any) => {
+        let arr: ISelect[] = [];
+        rs.results.forEach((vl: ISubject) => {
+          arr.push({ name: vl.subName, value: vl.id });
+        });
+        setDataClass(arr);
+      });
   }, []);
 
-  const classTeach = [
-    {
-      name: "Tất cả các lớp",
-      value: "all",
-    },
-    {
-      name: "Lớp nâng cao",
-      value: "advancedClass",
-    },
-    {
-      name: "Lớp cơ bản",
-      value: "basicClass",
-    },
-  ];
+  const handleSelect = (e: any) => {
+    dispatch(getSubject(e))
+      .unwrap()
+      .then((rs: ISubject) => {
+        let arr: ISelect[] = [];
+        rs.topic.forEach((vl: ITopic) => {
+          arr.push({ name: vl.title, value: vl.id });
+        });
+        setTopic(arr);
+      });
+  };
 
   const like = () => {
     setLikes(1);
@@ -116,6 +148,20 @@ export const SubjectDetail = () => {
     setLikes(0);
     setDislikes(1);
     setAction("disliked");
+  };
+
+  const onFinish = (values: any) => {
+    dispatch(
+      createNoti({
+        ...values,
+        from: user.id,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        handleRefresh();
+        handleCancel();
+      });
   };
 
   const actions = [
@@ -400,95 +446,59 @@ export const SubjectDetail = () => {
               </div>
             </TabPane>
             <TabPane tab="Thông báo môn học" key="4">
-              <div
-                id="scrollableDiv"
-                style={{
-                  height: 400,
-                  overflow: "auto",
-                  padding: "0 16px",
-                }}
-              >
-                <div className="space-with-noti selectcomp">
-                  <Select className="select" defaultValue={0}>
-                    <Option value={0}>Thương mại điện tử</Option>
-                    <Option value={1}>Toán cao cấp</Option>
-                    <Option value={2}>Đại số </Option>
-                    <Option value={3}>Luật sở hữu trí tuệ</Option>
-                  </Select>
-                  <Button
-                    className="btn-create-min"
-                    type="primary"
-                    onClick={showModal}
-                  >
-                    Tạo thông báo mới
-                  </Button>
-                  <Modal
-                    title="Gửi thông báo mới"
-                    visible={isModalVisible}
-                    onOk={handleOk}
-                    onCancel={handleCancel}
-                    footer={[
-                      <Button key="submit" type="primary">
-                        Gửi
-                      </Button>,
-                    ]}
-                  >
-                    <SelectComp
-                      textLabel="Chọn lớp giảng dạy"
-                      defaultValue="Tất cả các lớp"
-                      dataString={classTeach}
-                    />
-                    <Checkbox className="cb-style" style={{ fontWeight: 700 }}>
-                      Chọn học viên
-                    </Checkbox>
-                    <SearchComponent placeholder="Tìm kiếm" />
-                    <Input
-                      style={{ margin: "10px 0px 10px 0px" }}
-                      placeholder="Chủ đề"
-                    />
-                    <SunEditor
-                      placeholder="Để lại lời nhắn của bạn tại đây..."
-                      setOptions={{
-                        defaultTag: "div",
-                        minHeight: "250px",
-                        showPathLabel: false,
-                        buttonList: [
-                          ["undo", "redo"],
-                          ["fontSize", "bold", "underline", "italic"],
-                          ["align", "image"],
-                          ["list", "outdent", "indent"],
-                          ["fullScreen"],
-                        ],
-                      }}
-                    />
-                  </Modal>
-                </div>
-                <InfiniteScroll
-                  dataLength={dataNotification.length}
-                  next={loadMoreData}
-                  hasMore={dataNotification.length < 50}
-                  loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-                  endMessage={
-                    <Divider plain>It is all, nothing more 🤐</Divider>
-                  }
-                  scrollableTarget="scrollableDiv"
+              <div className="t-right mb">
+                <Button
+                  className="btn-create-min"
+                  type="primary"
+                  onClick={showModal}
                 >
-                  <List
-                    dataSource={dataNotification}
-                    renderItem={(item: any) => (
-                      <List.Item key={item.id}>
-                        <List.Item.Meta
-                          avatar={<Avatar src={item.picture.large} />}
-                          title={
-                            <a href="https://ant.design">{item.name.last}</a>
-                          }
-                          description={item.email}
+                  Tạo thông báo mới
+                </Button>
+              </div>
+
+              <div className="scroll-box sub-noti w-100">
+                {notify.map((value: INoti) => {
+                  return (
+                    <Row className="noti-detail">
+                      <Col span={7}>
+                        <Row>
+                          <Col span={3}>
+                            <Avatar
+                              src={
+                                value.from.avt ||
+                                "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
+                              }
+                            />
+                          </Col>
+                          <Col
+                            span={20}
+                            offset={1}
+                            style={{ lineHeight: "normal" }}
+                          >
+                            <h4 style={{ marginBottom: "0" }}>
+                              {value.from.userName}
+                            </h4>
+                            <div className="flex-row">
+                              <span className="time">Giáo viên</span>
+                              <span
+                                style={{ marginLeft: "2rem" }}
+                                className="time"
+                              >
+                                {moment(value.createdAt).fromNow()}
+                              </span>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col span={17}>
+                        <h3>{value.title}</h3>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: value.content }}
                         />
-                        <div>5 phút trước</div>
-                      </List.Item>
-                    )}
-                  />
-                </InfiniteScroll>
+                      </Col>
+                    </Row>
+                  );
+                })}
               </div>
             </TabPane>
           </Tabs>
@@ -504,6 +514,74 @@ export const SubjectDetail = () => {
           </div>
         </div>
       </div>
+      <Modal
+        title="Gửi thông báo mới"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={() => {
+          handleCancel();
+        }}
+        footer={[
+          <Button onClick={() => form.submit()} type="primary">
+            Gửi
+          </Button>,
+        ]}
+      >
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={onFinish}
+          className="header-notification"
+        >
+          <Form.Item name="subject">
+            <SelectComp
+              textLabel="Chọn môn giảng dạy"
+              className="label-style-item"
+              dataString={dataClass}
+              onChange={(e: any) => handleSelect(e)}
+            />
+          </Form.Item>
+          <Form.Item name="topic">
+            <SelectComp
+              textLabel="Chọn chủ đề"
+              className="label-style-item"
+              dataString={topic}
+              disabled={topic.length === 0}
+            />
+          </Form.Item>
+          <Form.Item
+            name="title"
+            className="label-style-item"
+            label="Tiêu đề"
+            rules={[{ required: true }]}
+          >
+            <Input placeholder="Tiêu đề" />
+          </Form.Item>
+
+          <Form.Item
+            name="content"
+            label="Nội dung"
+            className="label-style-item"
+            rules={[{ required: true }]}
+          >
+            <SunEditor
+              placeholder="Nội dung"
+              setOptions={{
+                defaultTag: "div",
+                minHeight: "250px",
+                showPathLabel: false,
+                buttonList: [
+                  ["undo", "redo"],
+                  ["fontSize", "bold", "underline", "italic"],
+                  ["align", "image"],
+                  ["list", "outdent", "indent"],
+                  ["fullScreen"],
+                ],
+              }}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

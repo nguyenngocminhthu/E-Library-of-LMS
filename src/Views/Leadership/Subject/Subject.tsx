@@ -27,14 +27,15 @@ import {
   ISubject
 } from "../../../redux/reducers/subject.reducer";
 import {
+  createSubjectGroup,
   getSubjectGroups,
-  ISubjectGroup
+  ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import {
   getUser,
   getUsers,
   updateProfile,
-  UserState
+  UserState,
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
@@ -57,6 +58,8 @@ export const Subject = () => {
   const dispatch: AppDispatch = useDispatch();
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const [form] = Form.useForm();
+  const [formGroup] = Form.useForm();
+
   const dataSubGroup = useSelector(
     (state: any) => state.subjectgroup.listSubjectGroup.results
   );
@@ -100,7 +103,18 @@ export const Subject = () => {
   };
 
   const handleRefresh = () => {
-    dispatch(getSubjects(filter));
+    dispatch(getSubjectGroups(999));
+    dispatch(getUsers({ limit: 999, role: "teacher" }));
+    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    dispatch(getSubjects(filter))
+      .unwrap()
+      .then((rs) => {
+        rs.results.forEach((it: ISubject) => {
+          option.push({ name: it.subName, value: it.id });
+        });
+      });
+
+    setSubjectSelect(option);
   };
 
   const handleClick = (id: string) => {
@@ -169,6 +183,13 @@ export const Subject = () => {
     });
   };
 
+  const onFinishGroup = async (values: any) => {
+    dispatch(createSubjectGroup(values)).then((rs) => {
+      handleRefresh();
+      formGroup.resetFields();
+    });
+  };
+
   const handleModal = () => {
     const config = {
       title: "Tạo môn học mới",
@@ -233,6 +254,42 @@ export const Subject = () => {
       cancelText: "Huỷ",
       onOk: () => form.submit(),
       onCancel: () => form.resetFields(),
+    };
+    modal.confirm(config);
+  };
+
+  const handleSubGroup = () => {
+    const config = {
+      title: "Tạo tổ bộ môn mới",
+      width: "40%",
+      className: "cancel-form",
+      content: (
+        <Form
+          form={formGroup}
+          onFinish={onFinishGroup}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+        >
+          <Form.Item
+            name="groupCode"
+            label="Mã tổ bộ môn"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="groupName"
+            label="Tên tổ bộ môn"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+        </Form>
+      ),
+      okText: "Tạo",
+      cancelText: "Huỷ",
+      onOk: () => formGroup.submit(),
+      onCancel: () => formGroup.resetFields(),
     };
     modal.confirm(config);
   };
@@ -315,7 +372,7 @@ export const Subject = () => {
       <BreadcrumbComp title="Danh sách môn học" />
 
       <Row>
-        <Col className="table-header" span={14}>
+        <Col className="table-header" span={12}>
           <SelectComp
             style={{ display: "block" }}
             textLabel="Bộ môn"
@@ -347,6 +404,15 @@ export const Subject = () => {
         >
           <Button onClick={handleModal} type="primary">
             Tạo mới
+          </Button>
+        </Col>
+        <Col
+          className="table-header"
+          span={2}
+          style={{ display: "flex", justifyContent: "right" }}
+        >
+          <Button onClick={handleSubGroup} type="primary">
+            Tạo tổ bộ môn
           </Button>
         </Col>
       </Row>

@@ -113,7 +113,14 @@ export const ViewSubject = () => {
   ];
 
   const onFinish = (values: any) => {
-    dispatch(createQA({ ...values, lesson: lesson?.id, user: user.id }))
+    dispatch(
+      createQA({
+        ...values,
+        lesson: lesson?.id,
+        user: user.id,
+        subject: data?.subjectId.id,
+      })
+    )
       .unwrap()
       .then(() => {
         setQuestion(false);

@@ -10,10 +10,10 @@ import { UserState } from "./user.reducer";
 
 export const getNotis = createAsyncThunk(
   "Noti/getNotis",
-  async ({ limit, role }: any, thunkAPI) => {
+  async ({ limit, role, subject }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Noti.getNotis({ limit, role });
+      const data = await Noti.getNotis({ limit, role, subject });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }

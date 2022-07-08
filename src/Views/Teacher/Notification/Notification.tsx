@@ -105,8 +105,6 @@ export const Notification = () => {
     dispatch(getSubject(e))
       .unwrap()
       .then((rs: ISubject) => {
-        console.debug(rs);
-
         let arr: ISelect[] = [];
         rs.topic.forEach((vl: ITopic) => {
           arr.push({ name: vl.title, value: vl.id });
@@ -256,14 +254,14 @@ export const Notification = () => {
                   dataString={dataClass}
                   onChange={(e: any) => handleSelect(e)}
                 />
-                <Form.Item name="topic" rules={[{ required: true }]}>
-                  <SelectComp
-                    textLabel="Chọn chủ đề"
-                    className="label-style-item"
-                    dataString={topic}
-                    disabled={topic.length === 0}
-                  />
-                </Form.Item>
+              </Form.Item>
+              <Form.Item name="topic" rules={[{ required: true }]}>
+                <SelectComp
+                  textLabel="Chọn chủ đề"
+                  className="label-style-item"
+                  dataString={topic}
+                  disabled={topic.length === 0}
+                />
               </Form.Item>
               <Form.Item
                 name="title"
