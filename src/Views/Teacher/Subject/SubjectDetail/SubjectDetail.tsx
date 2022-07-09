@@ -3,15 +3,15 @@ import {
   DislikeFilled,
   DislikeOutlined,
   LikeFilled,
-  LikeOutlined
+  LikeOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
   Button,
   Checkbox,
   Col,
-  Collapse, 
-  Comment, 
+  Collapse,
+  Comment,
   Divider,
   Form,
   Input,
@@ -21,7 +21,7 @@ import {
   Select,
   Skeleton,
   Tabs,
-  Tooltip
+  Tooltip,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
