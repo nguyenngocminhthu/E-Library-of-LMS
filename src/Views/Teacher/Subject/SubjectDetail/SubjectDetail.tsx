@@ -38,17 +38,24 @@ import {
   getNotis,
   INoti,
 } from "../../../../redux/reducers/noti.reducer";
-import { getQAs, IQA, updateQA } from "../../../../redux/reducers/QA.reducer";
+import {
+  createQA,
+  getQAs,
+  IQA,
+  updateQA,
+} from "../../../../redux/reducers/QA.reducer";
 import {
   getSubject,
   getSubjects,
   ISubject,
 } from "../../../../redux/reducers/subject.reducer";
-import { ITopic } from "../../../../redux/reducers/topic.reducer";
+import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../../redux/store";
 import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
 import { ModalReply } from "../../../Student/Subject/ModalReply";
+import { ILesson } from "../../../../redux/reducers/lesson.reducer";
+import lodash from "lodash";
 
 export const SubjectDetail = () => {
   const { Option } = Select;
@@ -60,14 +67,17 @@ export const SubjectDetail = () => {
   const [data, setData] = useState<ISubject>();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
+  const [QAform] = Form.useForm();
+
   const [qa, setQa] = useState<IQA[]>([]);
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const [dataClass, setDataClass] = useState<ISelect[]>([]);
   const [topic, setTopic] = useState<ISelect[]>([]);
   const [notify, setNotify] = useState<INoti[]>([]);
-  const [question, setQuestion] = useState(false);
   const [idQA, setIdQA] = useState<string>("");
   const [visible, setVisible] = useState<boolean>(false);
+  const [lesson, setLesson] = useState<ILesson[]>([]);
+  const [QAvisible, setQAVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (params.id) {
@@ -128,6 +138,14 @@ export const SubjectDetail = () => {
       });
   };
 
+  const handleTopic = (e: any) => {
+    dispatch(getTopic(e))
+      .unwrap()
+      .then((rs: ITopic) => {
+        setLesson(rs.lesson);
+      });
+  };
+
   const onFinish = (values: any) => {
     dispatch(
       createNoti({
@@ -154,78 +172,20 @@ export const SubjectDetail = () => {
     setIsModalVisible(false);
   };
 
-  const modalAddQuestion = {
-    title: "Tạo câu hỏi cho học viên",
-    width: "50%",
-    className: "modal-add-role",
-    content: (
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-        name="cancel-form"
-        layout="horizontal"
-        form={form}
-      >
-        <Form.Item
-          name="fileName"
-          label="Tiêu đề (tóm tắt)"
-          rules={[{ required: true }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="chooseTopic"
-          label="Chi tiết (tuỳ chọn)"
-          rules={[{ required: true }]}
-        >
-          <TextArea rows={4} />
-        </Form.Item>
-        <Form.Item
-          name="fileNameTitle"
-          label="Lớp giảng dạy"
-          rules={[{ required: true }]}
-        >
-          <div className="selectcomp">
-            <Select className="select" defaultValue={0}>
-              <Option value={0}>Tất cả các lớp</Option>
-              <Option value={1}>Lớp nâng cao</Option>
-              <Option value={2}>Lớp căn bản</Option>
-            </Select>
-          </div>
-        </Form.Item>
-        <Form.Item
-          name="fileNameTitle"
-          label="Chủ đề"
-          rules={[{ required: true }]}
-        >
-          <div className="selectcomp">
-            <Select className="select" defaultValue="Tuỳ chọn chủ đề">
-              <Option value={0}>Giới thiệu chung về Thương mại Điện tử</Option>
-              <Option value={1}>Thương mại điện tử</Option>
-            </Select>
-          </div>
-        </Form.Item>
-        <Form.Item
-          name="fileNameTitle"
-          label="Bài giảng"
-          rules={[{ required: true }]}
-        >
-          <div className="selectcomp">
-            <Select className="select" defaultValue="Tuỳ chọn bài giảng">
-              <Option value={0}>
-                Giới thiệu về thương mại điện tử trong những năm gần đây
-              </Option>
-              <Option value={1}>
-                Thương mại điện tử đã thay đổi sự phát triển của nền kinh tế thế
-                giới
-              </Option>
-            </Select>
-          </div>
-        </Form.Item>
-      </Form>
-    ),
-    okText: "Lưu",
-    cancelText: "Huỷ",
+  const onFinishQA = (values: any) => {
+    dispatch(
+      createQA({
+        ...values,
+        user: user.id,
+        subject: params.id,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        handleRefresh();
+        QAform.resetFields();
+        setQAVisible(false);
+      });
   };
 
   return (
@@ -347,7 +307,7 @@ export const SubjectDetail = () => {
                   <Button
                     className="btn-create-min"
                     type="primary"
-                    onClick={() => modal.confirm(modalAddQuestion)}
+                    onClick={() => setQAVisible(true)}
                     style={{ margin: "10px" }}
                   >
                     Thêm câu hỏi mới
@@ -580,6 +540,68 @@ export const SubjectDetail = () => {
         data={idQA}
         handleRefresh={handleRefresh}
       />
+      <Modal
+        title="Tạo câu hỏi cho học viên"
+        className="modal-add-role"
+        width="50%"
+        visible={QAvisible}
+        onCancel={() => {
+          setQAVisible(false);
+          QAform.resetFields();
+        }}
+        onOk={() => QAform.submit()}
+      >
+        <Form
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+          name="cancel-form"
+          layout="horizontal"
+          form={QAform}
+          onFinish={onFinishQA}
+        >
+          <Form.Item
+            name="title"
+            label="Tiêu đề (tóm tắt)"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="content"
+            label="Nội dung"
+            rules={[{ required: true }]}
+          >
+            <TextArea rows={4} />
+          </Form.Item>
+
+          <Form.Item name="topic" label="Chủ đề" rules={[{ required: true }]}>
+            <Select
+              onChange={(e: any) => handleTopic(e)}
+              className="select"
+              defaultValue="Tuỳ chọn chủ đề"
+            >
+              {data?.topic.map((vl: ITopic) => (
+                <Option key={vl.id} value={vl.id}>
+                  {vl.title}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="lesson"
+            label="Bài giảng"
+            rules={[{ required: true }]}
+          >
+            <Select className="select" defaultValue="Tuỳ chọn bài giảng">
+              {lesson.map((vl: ILesson) => (
+                <Option key={vl.id} value={vl.id}>
+                  {vl.title}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
