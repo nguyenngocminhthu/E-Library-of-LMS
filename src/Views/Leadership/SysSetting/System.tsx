@@ -8,7 +8,7 @@ export const System = () => {
   return (
     <div className="sys-page">
       <BreadcrumbComp title="Cài đặt hệ thống" />
-      <Row style={{ marginTop: "2rem" }}>
+      <Row style={{ marginTop: "2rem", justifyContent: 'center' }}>
         <Col span={8}>
           <div className="card-content">
             <h2 className="title-card">Thông tin hệ thống</h2>
@@ -41,7 +41,8 @@ export const System = () => {
             </div>
           </div>
         </Col>
-        <Col span={8}>
+        {/*  remove class */}
+        <Col span={8} hidden>
           <div className="card-content">
             <h2 className="title-card">Quản lý lớp học</h2>
             <p>
