@@ -14,13 +14,18 @@ import { SocketContext, socket } from './context/socket.context';
 
 const App: React.FC = () => {
   const [listUser, setListUser] = useState([]);
+  const [statistical, setStatistical] = useState({});
+  const handleEventSocket = (listUser: [], statistical: any ) => {
+    setListUser(listUser);
+    setStatistical(statistical);
+  }
   useEffect(() => {
     socket.on("RECEIVED_JOIN_REQUEST", (data: { listUser: [], statistical: {} }) => {
-      setListUser(data.listUser);
+      handleEventSocket(data.listUser, data.statistical);
       console.log("socket connected: ", data);
     });
     socket.on("RECEIVED_OUT_REQUEST", (data: { listUser: [], statistical: {} }) => {
-      setListUser(data.listUser);
+      handleEventSocket(data.listUser, data.statistical);
       console.log("socket disconnected: ", data);
     });
     return () => {
@@ -29,7 +34,7 @@ const App: React.FC = () => {
     };
   }, []);
   return (
-    <SocketContext.Provider value={{ socket, listUser }}>
+    <SocketContext.Provider value={{ socket, listUser, statistical }}>
       <div className="App">
         <Suspense fallback={<Loader />}>
           <Routes>
