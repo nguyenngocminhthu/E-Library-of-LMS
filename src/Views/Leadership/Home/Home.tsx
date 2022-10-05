@@ -1,7 +1,7 @@
 import { CaretRightFilled } from "@ant-design/icons";
 import { Button, Card, Col, List, Row, Typography } from "antd";
 import moment from "moment";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { AnaCard } from "../../../Components/AnaCard";
@@ -16,6 +16,7 @@ import { getUsers, UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
 import "./style.scss"; // Alt Shift O
+import { SocketContext } from '../../../context/socket.context';
 
 interface IFile {
   fileName: string;
@@ -35,10 +36,17 @@ export const Home = () => {
     (state: any) => state.user.listUser.totalResults
   );
   const exams = useSelector(totalBank);
+  const client = useContext(SocketContext);
+  const [totalUser, setTotalUser] = useState(client.listUser.length);
 
   useEffect(() => {
     dispatch(getUsers({ limit: 999, role: "teacher" }));
   }, [subjects, exams]);
+
+  useEffect(() => {
+    console.log("change list user:", client);
+    setTotalUser(client.listUser.length);
+  }, [client.listUser]);
 
   const year = [
     {
@@ -157,7 +165,7 @@ export const Home = () => {
                   <p>Tổng lượt truy cập:</p>
                 </Col>
                 <Col span={6} offset={2}>
-                  <h4>31</h4>
+                  <h4>{totalUser}</h4>
                   <h4>31</h4>
                   <h4>31</h4>
                   <h4>31</h4>

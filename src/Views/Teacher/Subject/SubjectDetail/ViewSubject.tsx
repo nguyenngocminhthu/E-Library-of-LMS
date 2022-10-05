@@ -3,7 +3,7 @@ import {
   HeartFilled,
   HeartOutlined,
   MessageOutlined,
-  PlayCircleFilled
+  PlayCircleFilled,
 } from "@ant-design/icons";
 import { Avatar, Button, Col, Collapse, Form, Input, Row, Tabs } from "antd";
 import TextArea from "antd/lib/input/TextArea";
@@ -135,7 +135,7 @@ export const ViewSubject = () => {
         prevFirstPageTitle="Danh sách môn học"
         prevSecondPageTitle="Danh sách chủ đề"
         prevFirstPage="teacher/subject"
-        prevSecondPage="teacher/subject"
+        prevSecondPage={`teacher/subject/subjectdetail/${data?.subjectId.id}`}
       />
       <Row>
         <Col span={16}>

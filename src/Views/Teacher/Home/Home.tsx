@@ -9,7 +9,7 @@ import {
   Skeleton,
   Typography
 } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { AnaCard } from "../../../Components/AnaCard";
@@ -30,6 +30,7 @@ import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
 import WEB23 from "../../../shared/img/WEB23.png";
+import { SocketContext } from '../../../context/socket.context';
 interface IData {
   fileName: string;
   subject: string;
@@ -55,7 +56,7 @@ export const Home = () => {
   const lessons: any = useSelector(totalLesson);
   const files: any = useSelector(totalFile);
   const exams = useSelector(totalBank);
-
+  const client = useContext(SocketContext);
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -247,10 +248,10 @@ export const Home = () => {
             </div>
 
             <Card className="inside"
-            style={{
-              height: 250,
-              overflow: 'auto',
-            }}>
+              style={{
+                height: 250,
+                overflow: 'auto',
+              }}>
               <InfiniteScroll
                 dataLength={data.length}
                 next={loadMoreData}
