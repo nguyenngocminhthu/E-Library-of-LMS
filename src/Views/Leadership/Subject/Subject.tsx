@@ -9,7 +9,7 @@ import {
   Space,
   Table,
   Tooltip,
-  Upload
+  Upload,
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -24,7 +24,7 @@ import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
   createSubject,
   getSubjects,
-  ISubject
+  ISubject,
 } from "../../../redux/reducers/subject.reducer";
 import {
   createSubjectGroup,
@@ -49,6 +49,7 @@ export const Subject = () => {
   const { Option } = Select;
   const navigate = useNavigate();
   const data = useSelector((state: any) => state.subject.listSubject.results);
+  const [student, setStudent] = useState<UserState[]>([]);
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
@@ -78,7 +79,11 @@ export const Subject = () => {
           option.push({ name: it.subName, value: it.id });
         });
       });
-
+    dispatch(getUsers({ limit: 999, role: "student" }))
+      .unwrap()
+      .then((rs: any) => {
+        setStudent(rs.results);
+      });
     setSubjectSelect(option);
   }, [filter]);
 
@@ -236,6 +241,17 @@ export const Subject = () => {
               <Option value="">Tất cả</Option>
               {teacher.map((vl: UserState) => (
                 <Option value={vl.id}>{vl.userName}</Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="student"
+            label="Sinh viên"
+            rules={[{ required: true }]}
+          >
+            <Select mode="multiple" allowClear placeholder="Nhập hoặc select">
+              {student?.map((vl: UserState) => (
+                <Option key={vl.userCode || vl.id}>{vl.userCode}</Option>
               ))}
             </Select>
           </Form.Item>
@@ -400,7 +416,11 @@ export const Subject = () => {
         <Col
           className="table-header"
           span={2}
-          style={{ display: "flex", justifyContent: "right" }}
+          style={{
+            display: "flex",
+            justifyContent: "right",
+            paddingRight: "6px",
+          }}
         >
           <Button onClick={handleModal} type="primary">
             Tạo mới
@@ -409,7 +429,10 @@ export const Subject = () => {
         <Col
           className="table-header"
           span={2}
-          style={{ display: "flex", justifyContent: "right" }}
+          style={{
+            display: "flex",
+            justifyContent: "right",
+          }}
         >
           <Button onClick={handleSubGroup} type="primary">
             Tạo tổ bộ môn
