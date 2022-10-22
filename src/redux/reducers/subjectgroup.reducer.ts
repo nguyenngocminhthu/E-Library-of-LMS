@@ -1,10 +1,38 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { message } from "antd";
 import SubjectGroup from "../../Apis/SubjectGroup.api";
 import { RootState } from "../store";
 import { IBanks } from "./banks.reducer";
 import { setLoading } from "./loading.reducer";
 import { setMessage } from "./message.reducer";
 import { ISubject } from "./subject.reducer";
+
+export const createSubjectGroup = createAsyncThunk(
+  "subjectGroup/createSubjectGroup",
+  async (body: ISubjectGroup, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await SubjectGroup.createSubjectGroup(body);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo tổ bộ môn thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
 
 export const getSubjectGroups = createAsyncThunk(
   "subjectgroup/getSubjectGroups",

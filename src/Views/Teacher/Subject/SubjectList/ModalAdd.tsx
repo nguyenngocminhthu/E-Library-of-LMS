@@ -1,11 +1,11 @@
 import { LinkOutlined } from "@ant-design/icons";
-import { Modal, Button, Form, Input, Radio, Select, Row, Col, Table } from "antd";
+import { Button, Col, Form, Input, Modal, Radio, Row, Select, Table } from "antd";
 import { useState } from "react";
 import SearchComponent from "../../../../Components/SearchComponent";
-import { ReactComponent as Word } from "../../../../shared/img/icon/word.svg";
-import { ReactComponent as Powerpoint } from "../../../../shared/img/icon/pptw_file.svg";
 import { ReactComponent as Excel } from "../../../../shared/img/icon/excel_file.svg";
 import { ReactComponent as Mp4 } from "../../../../shared/img/icon/mp4_file.svg";
+import { ReactComponent as Powerpoint } from "../../../../shared/img/icon/pptw_file.svg";
+import { ReactComponent as Word } from "../../../../shared/img/icon/word.svg";
 
 export const ModalAdd: React.FC<{
   visible: boolean;

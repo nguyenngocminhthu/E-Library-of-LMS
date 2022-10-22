@@ -1,11 +1,9 @@
 import {
-  DownloadOutlined,
   FileFilled,
   HeartFilled,
   HeartOutlined,
   MessageOutlined,
-  PlayCircleFilled,
-  UserOutlined,
+  PlayCircleFilled
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -13,10 +11,8 @@ import {
   Col,
   Collapse,
   Form,
-  Input,
-  message,
-  Row,
-  Tabs,
+  Input, Row,
+  Tabs
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
@@ -125,7 +121,14 @@ export const ViewSubject = () => {
   ];
 
   const onFinish = (values: any) => {
-    dispatch(createQA({ ...values, lesson: lesson?.id, user: user.id }))
+    dispatch(
+      createQA({
+        ...values,
+        lesson: lesson?.id,
+        user: user.id,
+        subject: data?.subjectId.id,
+      })
+    )
       .unwrap()
       .then(() => {
         setQuestion(false);
@@ -140,6 +143,7 @@ export const ViewSubject = () => {
         prevFirstPageTitle="Danh sách môn học"
         prevFirstPage="subjects"
       />
+
       <Row>
         <Col span={16}>
           {data?.lesson[idx].url === undefined ? (
@@ -149,7 +153,7 @@ export const ViewSubject = () => {
               controls
             ></video>
           ) : (
-            <ReactPlayer url={url} />
+            <ReactPlayer url={url} volume={1} controls={true} />
           )}
           <Tabs defaultActiveKey="1">
             <TabPane tab="Tổng quan" key="1">

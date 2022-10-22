@@ -10,10 +10,11 @@ import {
   Space,
   Table,
   Tag,
-  Tooltip,
+  Tooltip
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
+import lodash from "lodash";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -34,8 +35,11 @@ import {
 import { getSubject, ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
+import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
+import pdf from "../../../shared/img/pdf.png";
+import pptx from "../../../shared/img/pptx.png";
+import { ReactComponent as Excel } from "../../../shared/img/icon/excel_file.svg";
 import "./style.scss";
 
 export const ListFile = () => {
@@ -191,16 +195,18 @@ export const ListFile = () => {
   };
 
   const columns = [
-    // {
-    //   title: "Thể loại",
-    //   dataIndex: "video",
-    //   key: "video",
-    //   render: (video: string) => {
-    //     const vid = video.split("/");
-    //     const fileType = vid[vid.length - 1].split("?")[0];
-    //     return <>{fileType.endsWith("mp4") && <Mp4 />}</>;
-    //   },
-    // },
+    {
+      title: "Thể loại",
+      dataIndex: "video",
+      key: "video",
+      render: (video: string) => {
+        if (!lodash.isEmpty(video)) {
+          const vid = video.split("/");
+          const fileType = vid[vid.length - 1].split("?")[0];
+          return <>{fileType.endsWith("mp4") && <Mp4 />}</>;
+        } else return "--";
+      },
+    },
     {
       title: "Tên",
       dataIndex: "title",
@@ -230,49 +236,49 @@ export const ListFile = () => {
         return moment(updatedAt).format("DD/MM/YYYY");
       },
     },
-    {
-      title: "Tình trạng tài liệu môn học",
-      dataIndex: "status",
-      key: "status",
-      render: (status: number) => (
-        <Tag
-          color={status === 0 ? "green" : status === 1 ? "blue" : "red"}
-          key={status}
-        >
-          {status === 0
-            ? "Chờ phê duyệt"
-            : status === 1
-            ? "Đã phê duyệt"
-            : "Đã huỷ"}
-        </Tag>
-      ),
-    },
-    {
-      title: "Phê duyệt tài liệu",
-      dataIndex: "verify",
-      key: "verify",
-      render: (stt: any, record: ILesson) => (
-        <div>
-          {record.status === 0 ? (
-            <div style={{ display: "flex" }}>
-              <Button onClick={() => ModalConFirm(record.id, 0)} type="primary">
-                Phê duyệt
-              </Button>
-              <Button
-                onClick={() => modal.confirm(config1)}
-                className="cancel-btn"
-              >
-                Huỷ
-              </Button>
-            </div>
-          ) : record.status === 1 ? (
-            <span className="gray">Đã phê duyệt</span>
-          ) : (
-            <span className="gray">Đã huỷ</span>
-          )}
-        </div>
-      ),
-    },
+    // {
+    //   title: "Tình trạng tài liệu môn học",
+    //   dataIndex: "status",
+    //   key: "status",
+    //   render: (status: number) => (
+    //     <Tag
+    //       color={status === 0 ? "green" : status === 1 ? "blue" : "red"}
+    //       key={status}
+    //     >
+    //       {status === 0
+    //         ? "Chờ phê duyệt"
+    //         : status === 1
+    //         ? "Đã phê duyệt"
+    //         : "Đã huỷ"}
+    //     </Tag>
+    //   ),
+    // },
+    // {
+    //   title: "Phê duyệt tài liệu",
+    //   dataIndex: "verify",
+    //   key: "verify",
+    //   render: (stt: any, record: ILesson) => (
+    //     <div>
+    //       {record.status === 0 ? (
+    //         <div style={{ display: "flex" }}>
+    //           <Button onClick={() => ModalConFirm(record.id, 0)} type="primary">
+    //             Phê duyệt
+    //           </Button>
+    //           <Button
+    //             onClick={() => modal.confirm(config1)}
+    //             className="cancel-btn"
+    //           >
+    //             Huỷ
+    //           </Button>
+    //         </div>
+    //       ) : record.status === 1 ? (
+    //         <span className="gray">Đã phê duyệt</span>
+    //       ) : (
+    //         <span className="gray">Đã huỷ</span>
+    //       )}
+    //     </div>
+    //   ),
+    // },
 
     {
       title: "",
@@ -298,12 +304,19 @@ export const ListFile = () => {
       render: (file: string) => {
         const vid = file.split("/");
         const fileType = vid[vid.length - 1].split("?")[0];
-        return (
-          <>
-            {fileType.endsWith("doc") ||
-              (fileType.endsWith("docx") && <Word />)}
-          </>
-        );
+        if (fileType.endsWith("doc") || fileType.endsWith("docx")) {
+          return <Word />;
+        } else if (fileType.endsWith("pdf")) {
+          return <img src={pdf} alt="pdf" />;
+        } else if (fileType.endsWith("pptx")) {
+          return <img src={pptx} alt="pptx" />;
+        } else if (
+          fileType.endsWith("xlsx") ||
+          fileType.endsWith("xls") ||
+          fileType.endsWith("csv")
+        ) {
+          return <Excel />;
+        }
       },
     },
     {
@@ -333,49 +346,49 @@ export const ListFile = () => {
         return user.userName;
       },
     },
-    {
-      title: "Tình trạng tài liệu môn học",
-      dataIndex: "status",
-      key: "status",
-      render: (status: number) => (
-        <Tag
-          color={status === 0 ? "green" : status === 1 ? "blue" : "red"}
-          key={status}
-        >
-          {status === 0
-            ? "Chờ phê duyệt"
-            : status === 1
-            ? "Đã phê duyệt"
-            : "Đã huỷ"}
-        </Tag>
-      ),
-    },
-    {
-      title: "Phê duyệt tài liệu",
-      dataIndex: "verify",
-      key: "verify",
-      render: (stt: any, record: IFile) => (
-        <div>
-          {record.status === 0 ? (
-            <div style={{ display: "flex" }}>
-              <Button onClick={() => ModalConFirm(record.id, 1)} type="primary">
-                Phê duyệt
-              </Button>
-              <Button
-                onClick={() => modal.confirm(config1)}
-                className="cancel-btn"
-              >
-                Huỷ
-              </Button>
-            </div>
-          ) : record.status === 1 ? (
-            <span className="gray">Đã phê duyệt</span>
-          ) : (
-            <span className="gray">Đã huỷ</span>
-          )}
-        </div>
-      ),
-    },
+    // {
+    //   title: "Tình trạng tài liệu môn học",
+    //   dataIndex: "status",
+    //   key: "status",
+    //   render: (status: number) => (
+    //     <Tag
+    //       color={status === 0 ? "green" : status === 1 ? "blue" : "red"}
+    //       key={status}
+    //     >
+    //       {status === 0
+    //         ? "Chờ phê duyệt"
+    //         : status === 1
+    //         ? "Đã phê duyệt"
+    //         : "Đã huỷ"}
+    //     </Tag>
+    //   ),
+    // },
+    // {
+    //   title: "Phê duyệt tài liệu",
+    //   dataIndex: "verify",
+    //   key: "verify",
+    //   render: (stt: any, record: IFile) => (
+    //     <div>
+    //       {record.status === 0 ? (
+    //         <div style={{ display: "flex" }}>
+    //           <Button onClick={() => ModalConFirm(record.id, 1)} type="primary">
+    //             Phê duyệt
+    //           </Button>
+    //           <Button
+    //             onClick={() => modal.confirm(config1)}
+    //             className="cancel-btn"
+    //           >
+    //             Huỷ
+    //           </Button>
+    //         </div>
+    //       ) : record.status === 1 ? (
+    //         <span className="gray">Đã phê duyệt</span>
+    //       ) : (
+    //         <span className="gray">Đã huỷ</span>
+    //       )}
+    //     </div>
+    //   ),
+    // },
 
     {
       title: "",

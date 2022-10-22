@@ -1,6 +1,13 @@
 import axiosClient from "../config/axiosClient";
+import { ISubjectGroup } from "../redux/reducers/subjectgroup.reducer";
 
 const url = "/v1/subjectgroups";
+
+const createSubjectGroup = (body: ISubjectGroup) => {
+  return axiosClient.post(url, body).then((rs: any) => {
+    return rs;
+  });
+};
 
 const getSubjectGroups = (limit: any) => {
   return axiosClient.get(url + `?limit=${limit}`).then((rs: any) => {
@@ -14,6 +21,6 @@ const getSubjectGroup = (id: string) => {
   });
 };
 
-const SubjectGroup = { getSubjectGroups, getSubjectGroup };
+const SubjectGroup = { getSubjectGroups, getSubjectGroup, createSubjectGroup };
 
 export default SubjectGroup;

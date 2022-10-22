@@ -3,7 +3,7 @@ import {
   HeartFilled,
   HeartOutlined,
   MessageOutlined,
-  PlayCircleFilled,
+  PlayCircleFilled
 } from "@ant-design/icons";
 import { Avatar, Button, Col, Collapse, Form, Input, Row, Tabs } from "antd";
 import TextArea from "antd/lib/input/TextArea";
@@ -113,7 +113,14 @@ export const ViewSubject = () => {
   ];
 
   const onFinish = (values: any) => {
-    dispatch(createQA({ ...values, lesson: lesson?.id, user: user.id }))
+    dispatch(
+      createQA({
+        ...values,
+        lesson: lesson?.id,
+        user: user.id,
+        subject: data?.subjectId.id,
+      })
+    )
       .unwrap()
       .then(() => {
         setQuestion(false);

@@ -11,7 +11,7 @@ import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getUser,
   updateProfile,
-  UserState,
+  UserState
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
@@ -36,7 +36,7 @@ export const Subject = () => {
         setData(list);
       });
   }, []);
-  
+
 
   const handleClick = (id: string) => {
     navigate(`subjectdetail/${id}`);
@@ -90,7 +90,7 @@ export const Subject = () => {
         name="cancel-form"
         layout="horizontal"
         form={form}
-        style={{ textAlign: "left"}}
+        style={{ textAlign: "left" }}
       >
         <Form.Item name="fileName" label="Mã môn học">
           <div>#DLK6</div>
@@ -101,7 +101,7 @@ export const Subject = () => {
         <Form.Item name="fileName" label="Giảng viên">
           <div>Hoa Hoa</div>
         </Form.Item>
-        <p style={{ fontWeight: "700", marginBottom: "16px"}}>Phân công vào các lớp giảng dạy</p>
+        <p style={{ fontWeight: "700", marginBottom: "16px" }}>Phân công vào các lớp giảng dạy</p>
         <Form.Item name="chooseTopic" label="Tất cả lớp học" rules={[{ required: true }]}>
           <Select disabled={disable} defaultValue="Tùy chọn lớp học">
             <Option value={0}>Văn hóa xã hội</Option>
@@ -115,7 +115,7 @@ export const Subject = () => {
           </Select>
         </Form.Item>
         <Form.Item name="fileNameTitle" label="Chọn bài giảng" rules={[{ required: true }]}>
-        <Select disabled={disable} defaultValue="Chọn bài giảng">
+          <Select disabled={disable} defaultValue="Chọn bài giảng">
             <Option value={0}>Văn hóa xã hội</Option>
             <Option value={1}>Sample</Option>
           </Select>
@@ -267,9 +267,9 @@ export const Subject = () => {
       <Table
         columns={columns}
         dataSource={data}
-        expandable={{
-          expandedRowRender: (record) => expandedRowRender(record),
-        }}
+      // expandable={{ // remove class 
+      //   expandedRowRender: (record) => expandedRowRender(record),
+      // }}
       />
     </div>
   );

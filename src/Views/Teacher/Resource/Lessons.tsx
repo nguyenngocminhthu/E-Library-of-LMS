@@ -1,7 +1,7 @@
 import {
   DownloadOutlined,
   MoreOutlined,
-  UploadOutlined,
+  UploadOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -12,29 +12,29 @@ import {
   Row,
   Space,
   Table,
-  Tooltip,
+  Tooltip
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { getLessons, ILesson } from "../../../redux/reducers/lesson.reducer";
 import {
-  getSubjects,
-  ISubject,
-  listSubject,
-} from "../../../redux/reducers/subject.reducer";
-import { ISubjectGroup } from "../../../redux/reducers/subjectgroup.reducer";
+  deleteLesson,
+  getLessons,
+  ILesson,
+} from "../../../redux/reducers/lesson.reducer";
+import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
-import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 import { ModalUpload } from "./modalUpload";
+import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
+import lodash from "lodash";
 
 export const Lessons = () => {
   const navigate = useNavigate();
@@ -160,27 +160,6 @@ export const Lessons = () => {
     },
   ];
 
-  const dataTable = [
-    {
-      key: "11",
-      fileType: 2,
-      nameType: "Tiềm năng của thương mại điện tử.doc",
-      size: "2 MB",
-    },
-    {
-      key: "12",
-      fileType: 2,
-      nameType: "Tiềm năng của thương mại điện tử.doc",
-      size: "2 MB",
-    },
-    {
-      key: "13",
-      fileType: 1,
-      nameType: "Tiềm năng của thương mại điện tử.doc",
-      size: "2 MB",
-    },
-  ];
-
   const seeDetails = {
     title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
     width: "90%",
@@ -211,13 +190,21 @@ export const Lessons = () => {
     cancelText: "Huỷ",
   };
 
-  const removeRow = {
-    title: "Xác nhận xóa",
-    className: "modal-common-style",
-    content: "Bạn có chắc chắn muốn xóa tệp này khỏi thư viện không?",
-    okText: "Xoá",
-    cancelText: "Huỷ",
+  const handleDelete = (id: string) => {
+    const removeRow = {
+      title: "Xác nhận xóa",
+      className: "modal-common-style",
+      content: "Bạn có chắc chắn muốn xóa bài giảng này khỏi thư viện không?",
+      okText: "Xoá",
+      cancelText: "Huỷ",
+      onOk: () =>
+        dispatch(deleteLesson(id)).then(() => {
+          handleRefresh();
+        }),
+    };
+    modal.confirm(removeRow);
   };
+
   const downloadFile = {
     title: "Tải xuống tệp",
     className: "modal-common-style",
@@ -239,13 +226,6 @@ export const Lessons = () => {
         layout="horizontal"
         form={form}
       >
-        <div style={{ marginBottom: "16px" }} className="subject">
-          <Table
-            columns={columnsTable}
-            dataSource={dataTable}
-            pagination={false}
-          />
-        </div>
         <Form.Item label="Chọn môn học" rules={[{ required: true }]}>
           <SelectComp style={{ display: "block" }} dataString={subjectSelect} />
         </Form.Item>
@@ -266,16 +246,18 @@ export const Lessons = () => {
   };
 
   const columns = [
-    // {
-    //   title: "Thể loại",
-    //   dataIndex: "video",
-    //   key: "video",
-    //   render: (video: string) => {
-    //     const vid = video.split("/");
-    //     const fileType = vid[vid.length - 1].split("?")[0];
-    //     return <>{fileType.endsWith("mp4") && <Mp4 />}</>;
-    //   },
-    // },
+    {
+      title: "Thể loại",
+      dataIndex: "video",
+      key: "video",
+      render: (video: string) => {
+        if (!lodash.isEmpty(video)) {
+          const vid = video.split("/");
+          const fileType = vid[vid.length - 1].split("?")[0];
+          return <>{fileType.endsWith("mp4") && <Mp4 />}</>;
+        } else return "--";
+      },
+    },
     {
       title: "Tên",
       dataIndex: "title",
@@ -320,7 +302,7 @@ export const Lessons = () => {
                   <p onClick={() => modal.confirm(modalAddSubject)}>
                     Thêm vào môn học
                   </p>
-                  <p onClick={() => modal.confirm(removeRow)}>Xoá file</p>
+                  <p onClick={() => handleDelete(record.id)}>Xoá bài giảng</p>
                 </div>
               }
               trigger="click"

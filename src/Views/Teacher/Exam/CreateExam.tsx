@@ -1,6 +1,4 @@
-import SunEditor from "suneditor-react";
-import "suneditor/dist/css/suneditor.min.css";
-import { MinusCircleOutlined, CloseOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, CloseOutlined } from "@ant-design/icons";
 import {
   Button,
   Checkbox,
@@ -10,27 +8,26 @@ import {
   Modal,
   Radio,
   Row,
-  Select,
+  Select
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import lodash from "lodash";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import "suneditor/dist/css/suneditor.min.css";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import { IQuestion } from "../../../redux/reducers/question.reducer";
-import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
+import { ISelect } from "../../../Components/Select";
+import { createBank } from "../../../redux/reducers/banks.reducer";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroup,
   getSubjectGroups,
-  ISubjectGroup,
+  ISubjectGroup
 } from "../../../redux/reducers/subjectgroup.reducer";
-import { AppDispatch } from "../../../redux/store";
-import { ISelect } from "../../../Components/Select";
-import { CheckCircleOutlined } from "@ant-design/icons";
-import { createBank } from "../../../redux/reducers/banks.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
-import lodash from "lodash";
 interface IQues {
   quesName: string;
   answers: string[];
@@ -155,12 +152,15 @@ export const CreateExam = () => {
   };
 
   const onFinish = (values: any) => {
+    console.debug(values);
+
     dispatch(
       createBank({
         ...values,
         questions: questions,
         user: user.id,
         fileType: 0,
+        status: values.isFinal === true ? 0 : 1,
       })
     ).then(() => {
       navigate("/teacher/exams");
@@ -202,18 +202,36 @@ export const CreateExam = () => {
             </Form.Item>
           </Col>
           <Col span={10} offset={4}>
-            <Form.Item
-              name="time"
-              label="Thời lượng"
-              rules={[{ required: true }]}
-            >
-              <Select style={{ width: "100px" }}>
-                <Option value={15}>15</Option>
-                <Option value={30}>30</Option>
-                <Option value={45}>45</Option>
-                <Option value={60}>60</Option>
-              </Select>
-            </Form.Item>
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  labelCol={{ span: 12 }}
+                  wrapperCol={{ span: 12 }}
+                  name="time"
+                  label="Thời lượng"
+                  rules={[{ required: true }]}
+                >
+                  <Select style={{ width: "100px" }}>
+                    <Option value={15}>15</Option>
+                    <Option value={30}>30</Option>
+                    <Option value={45}>45</Option>
+                    <Option value={60}>60</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 18 }}
+                  name="isFinal"
+                  label="Loại đề thi"
+                  valuePropName="checked"
+                >
+                  <Checkbox>Đề thi cuối kì</Checkbox>
+                </Form.Item>
+              </Col>
+            </Row>
+
             <Form.Item
               name="subject"
               label="Môn học"

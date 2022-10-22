@@ -111,6 +111,33 @@ export const updateLesson = createAsyncThunk(
   }
 );
 
+export const deleteLesson = createAsyncThunk(
+  "lesson/deleteLesson",
+  async (id: string, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Lesson.deleteLesson(id);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Xóa bài giảng thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export interface ILesson {
   id: string;
   key?: string;
@@ -187,6 +214,18 @@ export const LessonReducer = createSlice({
       state.listLesson = action.payload;
     });
     builder.addCase(updateLesson.rejected, (state) => {
+      state.listLesson = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
+    });
+    builder.addCase(deleteLesson.fulfilled, (state, action) => {
+      state.listLesson = action.payload;
+    });
+    builder.addCase(deleteLesson.rejected, (state) => {
       state.listLesson = {
         limit: 0,
         page: 0,

@@ -9,7 +9,7 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import {
   getBank,
   IBanks,
-  updateBank,
+  updateBank
 } from "../../../redux/reducers/banks.reducer";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
@@ -120,7 +120,12 @@ export const ExamDetails = () => {
       updateBank({
         id: params.id,
         payload: {
-          submissions: { user: user.id, score: score, submit: questions },
+          submissions: {
+            user: user.id,
+            score: score,
+            submit: questions,
+            correctNum: count,
+          },
         },
       })
     )

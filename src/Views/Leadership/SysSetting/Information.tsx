@@ -98,7 +98,7 @@ export const Information = () => {
             form={form}
           >
             <Row style={{ padding: "16px" }}>
-              <Col span={7}>
+              <Col span={6}>
                 <Form.Item name="avt">
                   <ImgCrop
                     rotate
@@ -124,7 +124,7 @@ export const Information = () => {
                   </ImgCrop>
                 </Form.Item>
               </Col>
-              <Col span={8}>
+              <Col span={9}>
                 <Form.Item
                   label="Mã trường học"
                   name="schoolCode"
@@ -168,8 +168,8 @@ export const Information = () => {
               </Col>
             </Row>
             <Row style={{ padding: "16px" }}>
-              <Col span={6}></Col>
-              <Col span={8} offset={1}>
+              <Col span={5}></Col>
+              <Col span={9} offset={1}>
                 <Form.Item
                   label="Tên hệ thống thư viện"
                   name="libraryName"
@@ -203,8 +203,8 @@ export const Information = () => {
               </Col>
             </Row>
             <Row style={{ padding: "16px" }}>
-              <Col span={6}></Col>
-              <Col span={8} offset={1}>
+              <Col span={5}></Col>
+              <Col span={9} offset={1}>
                 <Form.Item
                   label="Ngôn ngữ xác định"
                   name="language"

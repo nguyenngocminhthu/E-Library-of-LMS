@@ -113,7 +113,14 @@ export const ViewSubject = () => {
   ];
 
   const onFinish = (values: any) => {
-    dispatch(createQA({ ...values, lesson: lesson?.id, user: user.id }))
+    dispatch(
+      createQA({
+        ...values,
+        lesson: lesson?.id,
+        user: user.id,
+        subject: data?.subjectId.id,
+      })
+    )
       .unwrap()
       .then(() => {
         setQuestion(false);
@@ -128,7 +135,7 @@ export const ViewSubject = () => {
         prevFirstPageTitle="Danh sách môn học"
         prevSecondPageTitle="Danh sách chủ đề"
         prevFirstPage="teacher/subject"
-        prevSecondPage="teacher/subject"
+        prevSecondPage={`teacher/subject/subjectdetail/${data?.subjectId.id}`}
       />
       <Row>
         <Col span={16}>

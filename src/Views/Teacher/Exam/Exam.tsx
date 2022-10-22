@@ -2,7 +2,7 @@ import {
   DesktopOutlined,
   DownloadOutlined,
   MoreOutlined,
-  UploadOutlined,
+  UploadOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -10,7 +10,6 @@ import {
   DatePicker,
   Form,
   Input,
-  Modal,
   Popover,
   Radio,
   Row,
@@ -19,7 +18,7 @@ import {
   Table,
   Tag,
   Tooltip,
-  Typography,
+  Typography
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -35,11 +34,7 @@ import {
   IBanks,
   updateBank,
 } from "../../../redux/reducers/banks.reducer";
-import {
-  getSubjects,
-  ISubject,
-  listSubject,
-} from "../../../redux/reducers/subject.reducer";
+import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
   ISubjectGroup,
@@ -55,12 +50,12 @@ export const Exam = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
+  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
-  const [subjectGroupSelect, setSubjectGroupSelect] = useState<
-    ISubjectSelect[]
-  >([{ name: "Tất cả tổ bộ môn", value: "" }]);
+  const [subjectGroupSelect, setSubjectGroupSelect] = useState<ISelect[]>([
+    { name: "Tất cả tổ bộ môn", value: "" },
+  ]);
   const [form] = Form.useForm();
   const [formAssign] = Form.useForm();
 
@@ -124,14 +119,14 @@ export const Exam = () => {
     let test = 0;
     const config = {
       title: "Tạo đề thi mới",
-      width: "35%",
+      width: "45%",
       className: "cancel-form file-modal",
       content: (
         <Row>
-          <Col span={6}>
+          <Col span={5}>
             <b>Cách tạo đề thi</b>
           </Col>
-          <Col span={18}>
+          <Col span={19}>
             <Radio.Group
               defaultValue={0}
               onChange={(e) => {
@@ -231,28 +226,17 @@ export const Exam = () => {
     };
     const assign = {
       title: "Phân bố đề thi",
-      width: "40%",
-      className: "modal-add-role",
+      width: "30%",
+      className: "modal-common-style",
       content: (
         <Form
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 18 }}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
           name="profile-form"
           layout="horizontal"
           form={formAssign}
           onFinish={onFinish}
         >
-          {/* <Form.Item
-            name="subject"
-            label="Chọn môn học"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              {subjectSelect.map((vl: ISelect) => (
-                <Option value={vl.value}>{vl.name}</Option>
-              ))}
-            </Select>
-          </Form.Item> */}
           <Form.Item
             name="releaseTime"
             label="Chọn thời gian"
@@ -392,12 +376,20 @@ export const Exam = () => {
     },
     {
       title: "Hình thức",
-      dataIndex: "examType",
-      key: "examType",
-      render: (examType: number) => {
+      dataIndex: "isFinal",
+      key: "isFinal",
+      render: (isFinal: boolean) => {
         return (
-          <>{examType === 0 ? <div>Trắc nghiệm</div> : <div>Tự luận</div>}</>
+          <>{isFinal === true ? <div>Đề thi</div> : <div>Bài kiểm tra</div>}</>
         );
+      },
+    },
+    {
+      title: "Môn học",
+      dataIndex: "subject",
+      key: "subject",
+      render: (subject: ISubject) => {
+        return subject.subName;
       },
     },
     {
@@ -448,6 +440,13 @@ export const Exam = () => {
                     }
                   >
                     Xem chi tiết
+                  </p>
+                  <p
+                    onClick={() =>
+                      navigate(`/teacher/exams/submissions/${record?.id}`)
+                    }
+                  >
+                    Xem bài nộp
                   </p>
                   {record.status === 1 && (
                     <p onClick={() => modalAssign(record.id)}>Phân bố đề thi</p>

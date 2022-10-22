@@ -1,6 +1,7 @@
 import { CaretRightFilled } from "@ant-design/icons";
 import { Button, Card, Col, List, Row, Typography } from "antd";
-import { useEffect } from "react";
+import moment from "moment";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { AnaCard } from "../../../Components/AnaCard";
@@ -9,12 +10,13 @@ import { SelectComp } from "../../../Components/Select";
 import { totalBank } from "../../../redux/reducers/banks.reducer";
 import {
   ISubject,
-  totalSubject,
+  totalSubject
 } from "../../../redux/reducers/subject.reducer";
 import { getUsers, UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
 import "./style.scss"; // Alt Shift O
+import { SocketContext } from '../../../context/socket.context';
 
 interface IFile {
   fileName: string;
@@ -34,10 +36,21 @@ export const Home = () => {
     (state: any) => state.user.listUser.totalResults
   );
   const exams = useSelector(totalBank);
+  const client = useContext(SocketContext);
+  const [totalUser, setTotalUser] = useState(client.listUser.length);
+  const [statistical, setStatistical] = useState(client.statistical);
 
   useEffect(() => {
     dispatch(getUsers({ limit: 999, role: "teacher" }));
   }, [subjects, exams]);
+
+  useEffect(() => {
+    setTotalUser(client.listUser.length);
+  }, [client.listUser]);
+
+  useEffect(() => {
+    setStatistical(client.statistical);
+  }, [client.statistical]);
 
   const year = [
     {
@@ -143,7 +156,10 @@ export const Home = () => {
         <Col span={6}>
           <Card className="wrapper">
             <h5>Thống kê truy cập</h5>
-            <Card className="inside" style={{height: 400}}>
+            <Card className="inside" style={{
+              height: 180,
+              overflow: 'auto',
+            }}>
               <Row>
                 <Col span={15} offset={1}>
                   <p>Đang truy cập:</p>
@@ -153,11 +169,11 @@ export const Home = () => {
                   <p>Tổng lượt truy cập:</p>
                 </Col>
                 <Col span={6} offset={2}>
-                  <h4>31</h4>
-                  <h4>31</h4>
-                  <h4>31</h4>
-                  <h4>31</h4>
-                  <h4>31</h4>
+                  <h4>{totalUser}</h4>
+                  <h4>{statistical?.today?.total || 0}</h4>
+                  <h4>{statistical?.week || 0}</h4>
+                  <h4>{statistical?.month || 0}</h4>
+                  <h4>{statistical?.total || 0}</h4>
                 </Col>
               </Row>
             </Card>
@@ -187,7 +203,7 @@ export const Home = () => {
                         <Title ellipsis level={5}>
                           {item.fileName}
                         </Title>
-                        <p>{item.createdAt}</p>
+                        <p>{moment(item.createdAt).format('DD/MM/YYYY')}</p>
                         <h6>{item.subject}</h6>
                         <span>Giảng viên: {item.teacher}</span>
                       </Col>

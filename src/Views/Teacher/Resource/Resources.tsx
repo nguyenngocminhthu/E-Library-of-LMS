@@ -1,7 +1,7 @@
 import {
   DownloadOutlined,
   MoreOutlined,
-  UploadOutlined,
+  UploadOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -13,27 +13,29 @@ import {
   Space,
   Table,
   Tag,
-  Tooltip,
+  Tooltip
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { getFiles, IFile } from "../../../redux/reducers/file.reducer";
 import {
   getSubjects,
-  ISubject,
-  listSubject,
+  ISubject
 } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
+import { ReactComponent as Excel } from "../../../shared/img/icon/excel_file.svg";
+
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 import { ModalUploadFiles } from "./modalUploadFiles";
+import pdf from "../../../shared/img/pdf.png";
+import pptx from "../../../shared/img/pptx.png";
 
 export const Resources = () => {
   const [form] = Form.useForm();
@@ -135,62 +137,6 @@ export const Resources = () => {
     },
   ];
 
-  const columnsTable = [
-    {
-      title: "Tên file",
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: "Thể loại",
-      dataIndex: "file",
-      key: "file",
-      render: (file: string) => {
-        let vid = file.split("/");
-        let vidName = vid[vid.length - 1];
-        console.debug(vidName);
-        return <>test</>;
-      },
-    },
-    {
-      title: "Kích thước",
-      dataIndex: "size",
-      key: "size",
-    },
-    {
-      title: "",
-      key: "action",
-      render: (text: any, record: any) => (
-        <Delete
-          style={{
-            fontSize: "24px",
-          }}
-        />
-      ),
-    },
-  ];
-
-  const dataTable = [
-    {
-      key: "11",
-      fileType: 2,
-      nameType: "Tiềm năng của thương mại điện tử.doc",
-      size: "2 MB",
-    },
-    {
-      key: "12",
-      fileType: 2,
-      nameType: "Tiềm năng của thương mại điện tử.doc",
-      size: "2 MB",
-    },
-    {
-      key: "13",
-      fileType: 1,
-      nameType: "Tiềm năng của thương mại điện tử.doc",
-      size: "2 MB",
-    },
-  ];
-
   const seeDetails = {
     title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
     width: "90%",
@@ -249,13 +195,6 @@ export const Resources = () => {
         layout="horizontal"
         form={form}
       >
-        <div style={{ marginBottom: "16px" }} className="subject">
-          <Table
-            columns={columnsTable}
-            dataSource={dataTable}
-            pagination={false}
-          />
-        </div>
         <Form.Item label="Chọn môn học" rules={[{ required: true }]}>
           <SelectComp style={{ display: "block" }} dataString={subjectSelect} />
         </Form.Item>
@@ -283,12 +222,19 @@ export const Resources = () => {
       render: (file: string) => {
         const vid = file.split("/");
         const fileType = vid[vid.length - 1].split("?")[0];
-        return (
-          <>
-            {fileType.endsWith("doc") ||
-              (fileType.endsWith("docx") && <Word />)}
-          </>
-        );
+        if (fileType.endsWith("doc") || fileType.endsWith("docx")) {
+          return <Word />;
+        } else if (fileType.endsWith("pdf")) {
+          return <img src={pdf} alt="pdf" />;
+        } else if (fileType.endsWith("pptx")) {
+          return <img src={pptx} alt="pptx" />;
+        } else if (
+          fileType.endsWith("xlsx") ||
+          fileType.endsWith("xls") ||
+          fileType.endsWith("csv")
+        ) {
+          return <Excel />;
+        }
       },
     },
     {
@@ -318,20 +264,7 @@ export const Resources = () => {
         return user.userName;
       },
     },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      render: (status: number) => {
-        if (status === 0) {
-          return <Tag color="default">Chưa phê duyệt</Tag>;
-        } else if (status === 1) {
-          return <Tag color="green">Đã phê duyệt</Tag>;
-        } else {
-          return <Tag color="red">Đã hủy</Tag>;
-        }
-      },
-    },
+
     {
       title: "Ngày sửa lần cuối",
       dataIndex: "updatedAt",

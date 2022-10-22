@@ -1,5 +1,3 @@
-import SunEditor from "suneditor-react";
-import "suneditor/dist/css/suneditor.min.css";
 import { CloseOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -9,28 +7,29 @@ import {
   Input,
   Radio,
   Row,
-  Select,
+  Select
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import lodash from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
+import "suneditor/dist/css/suneditor.min.css";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import {
   createQuestion,
   getQuestion,
   IQuestion,
-  updateQuestion,
+  updateQuestion
 } from "../../../redux/reducers/question.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
-  ISubjectGroup,
+  ISubjectGroup
 } from "../../../redux/reducers/subjectgroup.reducer";
-import { AppDispatch } from "../../../redux/store";
 import { UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import "./style.scss";
-import lodash from "lodash";
 
 export const CreateQuestions = () => {
   const { Option } = Select;

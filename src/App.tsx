@@ -1,5 +1,5 @@
-import "antd/dist/antd.css";
-import { Suspense } from "react";
+import "antd/dist/antd.min.css";
+import { Suspense, useEffect, useState } from "react";
 import { Route, Routes } from "react-router";
 import "./App.scss";
 import { Loader } from "./Components/Loader";
@@ -10,24 +10,47 @@ import "./shared/styles/styles.scss";
 import Cover from "./Views/Cover/Cover";
 import Login from "./Views/Login/Login";
 import PageNotFound from "./Views/PageNotFound/PageNotFound";
+import { SocketContext, socket } from './context/socket.context';
 
 const App: React.FC = () => {
+  const [listUser, setListUser] = useState([]);
+  const [statistical, setStatistical] = useState({});
+  const handleEventSocket = (listUser: [], statistical: any ) => {
+    setListUser(listUser);
+    setStatistical(statistical);
+  }
+  useEffect(() => {
+    socket.on("RECEIVED_JOIN_REQUEST", (data: { listUser: [], statistical: {} }) => {
+      handleEventSocket(data.listUser, data.statistical);
+      console.log("socket connected: ", data);
+    });
+    socket.on("RECEIVED_OUT_REQUEST", (data: { listUser: [], statistical: {} }) => {
+      handleEventSocket(data.listUser, data.statistical);
+      console.log("socket disconnected: ", data);
+    });
+    return () => {
+      socket.off("RECEIVED_JOIN_REQUEST");
+      socket.off("RECEIVED_OUT_REQUEST");
+    };
+  }, []);
   return (
-    <div className="App">
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route>
-            <Route path="/" element={<Cover />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/404" element={<PageNotFound />} />
-          </Route>
-        </Routes>
-        <Leadership />
-        <Teacher />
-        <Student />
-        <Loader />
-      </Suspense>
-    </div>
+    <SocketContext.Provider value={{ socket, listUser, statistical }}>
+      <div className="App">
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route>
+              <Route path="/" element={<Cover />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/404" element={<PageNotFound />} />
+            </Route>
+          </Routes>
+          <Leadership />
+          <Teacher />
+          <Student />
+          <Loader />
+        </Suspense>
+      </div>
+    </SocketContext.Provider>
   );
 };
 

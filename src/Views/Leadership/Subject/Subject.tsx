@@ -9,9 +9,10 @@ import {
   Space,
   Table,
   Tooltip,
-  Upload,
+  Upload
 } from "antd";
 import modal from "antd/lib/modal";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -23,10 +24,10 @@ import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
   createSubject,
   getSubjects,
-  ISubject,
-  listSubject,
+  ISubject
 } from "../../../redux/reducers/subject.reducer";
 import {
+  createSubjectGroup,
   getSubjectGroups,
   ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
@@ -57,6 +58,8 @@ export const Subject = () => {
   const dispatch: AppDispatch = useDispatch();
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const [form] = Form.useForm();
+  const [formGroup] = Form.useForm();
+
   const dataSubGroup = useSelector(
     (state: any) => state.subjectgroup.listSubjectGroup.results
   );
@@ -100,7 +103,18 @@ export const Subject = () => {
   };
 
   const handleRefresh = () => {
-    dispatch(getSubjects(filter));
+    dispatch(getSubjectGroups(999));
+    dispatch(getUsers({ limit: 999, role: "teacher" }));
+    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    dispatch(getSubjects(filter))
+      .unwrap()
+      .then((rs) => {
+        rs.results.forEach((it: ISubject) => {
+          option.push({ name: it.subName, value: it.id });
+        });
+      });
+
+    setSubjectSelect(option);
   };
 
   const handleClick = (id: string) => {
@@ -166,6 +180,13 @@ export const Subject = () => {
         handleRefresh();
         form.resetFields();
       });
+    });
+  };
+
+  const onFinishGroup = async (values: any) => {
+    dispatch(createSubjectGroup(values)).then((rs) => {
+      handleRefresh();
+      formGroup.resetFields();
     });
   };
 
@@ -237,6 +258,42 @@ export const Subject = () => {
     modal.confirm(config);
   };
 
+  const handleSubGroup = () => {
+    const config = {
+      title: "Tạo tổ bộ môn mới",
+      width: "40%",
+      className: "cancel-form",
+      content: (
+        <Form
+          form={formGroup}
+          onFinish={onFinishGroup}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+        >
+          <Form.Item
+            name="groupCode"
+            label="Mã tổ bộ môn"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="groupName"
+            label="Tên tổ bộ môn"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+        </Form>
+      ),
+      okText: "Tạo",
+      cancelText: "Huỷ",
+      onOk: () => formGroup.submit(),
+      onCancel: () => formGroup.resetFields(),
+    };
+    modal.confirm(config);
+  };
+
   const status = [
     {
       name: "Đã phê duyệt",
@@ -290,6 +347,9 @@ export const Subject = () => {
       title: "Ngày gửi phê duyệt",
       dataIndex: "createdAt",
       key: "createdAt",
+      render: (createdAt: any) => {
+        return moment(createdAt).format("DD/MM/YYYY");
+      },
     },
     {
       title: "",
@@ -312,7 +372,7 @@ export const Subject = () => {
       <BreadcrumbComp title="Danh sách môn học" />
 
       <Row>
-        <Col className="table-header" span={14}>
+        <Col className="table-header" span={12}>
           <SelectComp
             style={{ display: "block" }}
             textLabel="Bộ môn"
@@ -344,6 +404,15 @@ export const Subject = () => {
         >
           <Button onClick={handleModal} type="primary">
             Tạo mới
+          </Button>
+        </Col>
+        <Col
+          className="table-header"
+          span={2}
+          style={{ display: "flex", justifyContent: "right" }}
+        >
+          <Button onClick={handleSubGroup} type="primary">
+            Tạo tổ bộ môn
           </Button>
         </Col>
       </Row>

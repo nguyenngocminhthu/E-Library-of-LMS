@@ -1,5 +1,6 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { Checkbox, Col, Radio, Row, Space } from "antd";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
@@ -34,7 +35,7 @@ export const ExamDetails = () => {
       <BreadcrumbComp
         title="Chi tiết đề thi"
         prevFirstPageTitle="Ngân hàng đề thi"
-        prevFirstPage="exambank"
+        prevFirstPage="teacher/exams"
       />
       <div className="top-head">
         <div
@@ -67,7 +68,7 @@ export const ExamDetails = () => {
             </div>
             <div>
               <div>{data?.user?.userName || "null"}</div>
-              <div>{data?.createdAt}</div>
+              <div>{moment(data?.createdAt).format("DD/MM/YYYY")}</div>
             </div>
           </div>
         </div>

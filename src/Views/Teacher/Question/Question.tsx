@@ -2,7 +2,7 @@ import {
   DownloadOutlined,
   EyeOutlined,
   LinkOutlined,
-  UploadOutlined,
+  UploadOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -15,7 +15,7 @@ import {
   Select,
   Space,
   Table,
-  Typography,
+  Typography
 } from "antd";
 import modal from "antd/lib/modal";
 import lodash from "lodash";
@@ -28,13 +28,13 @@ import { ISelect, SelectComp } from "../../../Components/Select";
 import {
   deleteQuestion,
   getQuestions,
-  IQuestion,
+  IQuestion
 } from "../../../redux/reducers/question.reducer";
 import { ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroup,
   getSubjectGroups,
-  ISubjectGroup,
+  ISubjectGroup
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
@@ -391,9 +391,9 @@ export const Question = () => {
                 <div>
                   <h3>{question?.quesName}</h3>
                   <Space direction="vertical">
-                    {question?.answers.map((value, index) => (
+                    {question?.answers.map((value) => (
                       <div key={value}>
-                        {convertAnswer(index)}. {value}
+                        {value}
                       </div>
                     ))}
                   </Space>

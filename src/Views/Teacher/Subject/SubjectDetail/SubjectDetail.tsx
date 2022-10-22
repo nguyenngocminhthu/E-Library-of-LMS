@@ -11,6 +11,7 @@ import {
   Checkbox,
   Col,
   Collapse,
+  Comment,
   Divider,
   Form,
   Input,
@@ -21,25 +22,40 @@ import {
   Skeleton,
   Tabs,
   Tooltip,
-  Comment,
 } from "antd";
-import moment from "moment";
-import React, { useEffect, createElement, useState } from "react";
+import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
-import InfiniteScroll from "react-infinite-scroll-component";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import SunEditor from "suneditor-react";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import SearchComponent from "../../../../Components/SearchComponent";
-import { SelectComp } from "../../../../Components/Select";
+import { ISelect, SelectComp } from "../../../../Components/Select";
+import {
+  createNoti,
+  getNotis,
+  INoti,
+} from "../../../../redux/reducers/noti.reducer";
+import {
+  createQA,
+  getQAs,
+  IQA,
+  updateQA,
+} from "../../../../redux/reducers/QA.reducer";
 import {
   getSubject,
+  getSubjects,
   ISubject,
 } from "../../../../redux/reducers/subject.reducer";
-import { ITopic } from "../../../../redux/reducers/topic.reducer";
+import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
+import { UserState } from "../../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../../redux/store";
-import TextArea from "antd/lib/input/TextArea";
+import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
+import { ModalReply } from "../../../Student/Subject/ModalReply";
+import { ILesson } from "../../../../redux/reducers/lesson.reducer";
+import lodash from "lodash";
 
 export const SubjectDetail = () => {
   const { Option } = Select;
@@ -49,13 +65,19 @@ export const SubjectDetail = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const [data, setData] = useState<ISubject>();
-  const [loading, setLoading] = useState(false);
-  const [dataNotification, setDataNotification] = useState<any>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [action, setAction] = useState<string | null>(null);
+  const [QAform] = Form.useForm();
+
+  const [qa, setQa] = useState<IQA[]>([]);
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const [dataClass, setDataClass] = useState<ISelect[]>([]);
+  const [topic, setTopic] = useState<ISelect[]>([]);
+  const [notify, setNotify] = useState<INoti[]>([]);
+  const [idQA, setIdQA] = useState<string>("");
+  const [visible, setVisible] = useState<boolean>(false);
+  const [lesson, setLesson] = useState<ILesson[]>([]);
+  const [QAvisible, setQAVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (params.id) {
@@ -64,75 +86,79 @@ export const SubjectDetail = () => {
         .then((rs: ISubject) => {
           setData(rs);
         });
+      dispatch(getNotis({ limit: 9999, subject: params.id }))
+        .unwrap()
+        .then((rs) => {
+          setNotify(rs.results);
+        });
+      dispatch(getQAs({ limit: 9999, subject: params.id }))
+        .unwrap()
+        .then((rs) => {
+          setQa(rs.results);
+        });
     }
-  }, []);
+  }, [params.id]);
 
-  const loadMoreData = () => {
-    if (loading) {
-      return;
+  const handleRefresh = () => {
+    if (params.id) {
+      dispatch(getSubject(params.id))
+        .unwrap()
+        .then((rs: ISubject) => {
+          setData(rs);
+        });
+      dispatch(getNotis({ limit: 9999, subject: params.id }))
+        .unwrap()
+        .then((rs) => {
+          setNotify(rs.results);
+        });
     }
-    setLoading(true);
-    fetch(
-      "https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo"
-    )
-      .then((res) => res.json())
-      .then((body) => {
-        setDataNotification([...dataNotification, ...body.results]);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
   };
 
   useEffect(() => {
-    loadMoreData();
+    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+      .unwrap()
+      .then((rs: any) => {
+        let arr: ISelect[] = [];
+        rs.results.forEach((vl: ISubject) => {
+          arr.push({ name: vl.subName, value: vl.id });
+        });
+        setDataClass(arr);
+      });
   }, []);
 
-  const classTeach = [
-    {
-      name: "Tất cả các lớp",
-      value: "all",
-    },
-    {
-      name: "Lớp nâng cao",
-      value: "advancedClass",
-    },
-    {
-      name: "Lớp cơ bản",
-      value: "basicClass",
-    },
-  ];
-
-  const like = () => {
-    setLikes(1);
-    setDislikes(0);
-    setAction("liked");
+  const handleSelect = (e: any) => {
+    dispatch(getSubject(e))
+      .unwrap()
+      .then((rs: ISubject) => {
+        let arr: ISelect[] = [];
+        rs.topic.forEach((vl: ITopic) => {
+          arr.push({ name: vl.title, value: vl.id });
+        });
+        setTopic(arr);
+      });
   };
 
-  const dislike = () => {
-    setLikes(0);
-    setDislikes(1);
-    setAction("disliked");
+  const handleTopic = (e: any) => {
+    dispatch(getTopic(e))
+      .unwrap()
+      .then((rs: ITopic) => {
+        setLesson(rs.lesson);
+      });
   };
 
-  const actions = [
-    <Tooltip key="comment-basic-like" title="Like">
-      <span onClick={like}>
-        {createElement(action === "liked" ? LikeFilled : LikeOutlined)}
-        <span className="comment-action">{likes}</span>
-      </span>
-    </Tooltip>,
-    <Tooltip key="comment-basic-dislike" title="Dislike">
-      <span onClick={dislike}>
-        {React.createElement(
-          action === "disliked" ? DislikeFilled : DislikeOutlined
-        )}
-        <span className="comment-action">{dislikes}</span>
-      </span>
-    </Tooltip>,
-    <span key="comment-basic-reply-to">Reply to</span>,
-  ];
+  const onFinish = (values: any) => {
+    dispatch(
+      createNoti({
+        ...values,
+        from: user.id,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        handleRefresh();
+        handleCancel();
+      });
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -146,58 +172,20 @@ export const SubjectDetail = () => {
     setIsModalVisible(false);
   };
 
-  const modalAddQuestion = {
-    title: "Tạo câu hỏi cho học viên",
-    width: "50%",
-    className: "modal-add-role",
-    content: (
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-        name="cancel-form"
-        layout="horizontal"
-        form={form}
-      >
-        <Form.Item name="fileName" label="Tiêu đề (tóm tắt)" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item name="chooseTopic" label="Chi tiết (tuỳ chọn)" rules={[{ required: true }]}>
-          <TextArea rows={4}/>
-        </Form.Item>
-        <Form.Item name="fileNameTitle" label="Lớp giảng dạy" rules={[{ required: true }]}>
-          <div className="selectcomp">
-            <Select className="select" defaultValue={0}>
-              <Option value={0}>Tất cả các lớp</Option>
-              <Option value={1}>Lớp nâng cao</Option>
-              <Option value={2}>Lớp căn bản</Option>
-            </Select>
-          </div>
-        </Form.Item>
-        <Form.Item name="fileNameTitle" label="Chủ đề" rules={[{ required: true }]}>
-          <div className="selectcomp">
-            <Select className="select" defaultValue="Tuỳ chọn chủ đề">
-              <Option value={0}>Giới thiệu chung về Thương mại Điện tử</Option>
-              <Option value={1}>Thương mại điện tử</Option>
-            </Select>
-          </div>
-        </Form.Item>
-        <Form.Item name="fileNameTitle" label="Bài giảng" rules={[{ required: true }]}>
-          <div className="selectcomp">
-            <Select className="select" defaultValue="Tuỳ chọn bài giảng" >
-              <Option value={0}>
-                Giới thiệu về thương mại điện tử trong những năm gần đây
-              </Option>
-              <Option value={1}>
-                Thương mại điện tử đã thay đổi sự phát triển của nền kinh tế thế
-                giới
-              </Option>
-            </Select>
-          </div>
-        </Form.Item>
-      </Form>
-    ),
-    okText: "Lưu",
-    cancelText: "Huỷ",
+  const onFinishQA = (values: any) => {
+    dispatch(
+      createQA({
+        ...values,
+        user: user.id,
+        subject: params.id,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        handleRefresh();
+        QAform.resetFields();
+        setQAVisible(false);
+      });
   };
 
   return (
@@ -296,12 +284,6 @@ export const SubjectDetail = () => {
               >
                 <div className="selectcomp">
                   <Select className="select" defaultValue={0}>
-                    <Option value={0}>Thương mại điện tử</Option>
-                    <Option value={1}>Toán cao cấp</Option>
-                    <Option value={2}>Đại số </Option>
-                    <Option value={3}>Luật sở hữu trí tuệ</Option>
-                  </Select>
-                  <Select className="select" defaultValue={0}>
                     <Option value={0}>Tất cả bài giảng</Option>
                     <Option value={1}>Giới thiệu chung về T...</Option>
                     <Option value={2}>Thương mại điện tử</Option>
@@ -325,154 +307,150 @@ export const SubjectDetail = () => {
                   <Button
                     className="btn-create-min"
                     type="primary"
-                    onClick={() => modal.confirm(modalAddQuestion)}
+                    onClick={() => setQAVisible(true)}
                     style={{ margin: "10px" }}
                   >
                     Thêm câu hỏi mới
                   </Button>
                 </div>
-                <div className="question-and-answer-container">
-                  <Comment
-                    actions={actions}
-                    author={<a>Han Solo</a>}
-                    avatar={
-                      <Avatar
-                        src="https://joeschmoe.io/api/v1/random"
-                        alt="Han Solo"
-                      />
-                    }
-                    content={
-                      <p>
-                        We supply a series of design principles, practical
-                        patterns and high quality design resources (Sketch and
-                        Axure), to help people create their product prototypes
-                        beautifully and efficiently.
-                      </p>
-                    }
-                    datetime={
-                      <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
-                        <span>{moment().fromNow()}</span>
-                      </Tooltip>
-                    }
-                  />
-                </div>
-                <div className="question-and-answer-container">
-                  <Comment
-                    actions={actions}
-                    author={<a>Han Solo</a>}
-                    avatar={
-                      <Avatar
-                        src="https://joeschmoe.io/api/v1/random"
-                        alt="Han Solo"
-                      />
-                    }
-                    content={
-                      <p>
-                        We supply a series of design principles, practical
-                        patterns and high quality design resources (Sketch and
-                        Axure), to help people create their product prototypes
-                        beautifully and efficiently.
-                      </p>
-                    }
-                    datetime={
-                      <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
-                        <span>{moment().fromNow()}</span>
-                      </Tooltip>
-                    }
-                  />
+                <div className="scroll-box question">
+                  {qa?.map((value: IQA) => (
+                    <Row className="sub-content">
+                      <Col span={2}>
+                        <Avatar
+                          src={
+                            value.user.avt ||
+                            "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
+                          }
+                        />
+                      </Col>
+                      <Col span={21} offset={1}>
+                        <div className="flex-row">
+                          <h4>{value.user.userName}</h4>
+                          <span
+                            style={{
+                              marginLeft: "1rem",
+                              color: "gray",
+                              fontSize: "12px",
+                            }}
+                          >
+                            {value.title}
+                          </span>
+                          <span
+                            style={{
+                              marginLeft: "auto",
+                              color: "gray",
+                              fontStyle: "italic",
+                              fontSize: "12px",
+                            }}
+                          >
+                            {moment(value.createdAt).fromNow()}
+                          </span>
+                        </div>
+                        {value.content}
+                        <div className="flex-row">
+                          {value.likes.includes(user.id) ? (
+                            <HeartFilled
+                              onClick={() =>
+                                dispatch(
+                                  updateQA({
+                                    id: value.id,
+                                    payload: { likes: [user.id] },
+                                  })
+                                )
+                                  .unwrap()
+                                  .then(() => handleRefresh())
+                              }
+                              style={{ color: "red" }}
+                            />
+                          ) : (
+                            <HeartOutlined
+                              onClick={() =>
+                                dispatch(
+                                  updateQA({
+                                    id: value.id,
+                                    payload: { likes: [user.id] },
+                                  })
+                                )
+                                  .unwrap()
+                                  .then(() => handleRefresh())
+                              }
+                            />
+                          )}
+
+                          <span className="gray">{value.likes.length}</span>
+                          <MessageOutlined
+                            onClick={() => {
+                              setIdQA(value.id);
+                              setVisible(true);
+                            }}
+                            style={{ marginLeft: "2rem" }}
+                          />
+                          <span className="gray">{value.answers.length}</span>
+                        </div>
+                      </Col>
+                    </Row>
+                  ))}
                 </div>
               </div>
             </TabPane>
             <TabPane tab="Thông báo môn học" key="4">
-              <div
-                id="scrollableDiv"
-                style={{
-                  height: 400,
-                  overflow: "auto",
-                  padding: "0 16px",
-                }}
-              >
-                <div className="space-with-noti selectcomp">
-                  <Select className="select" defaultValue={0}>
-                    <Option value={0}>Thương mại điện tử</Option>
-                    <Option value={1}>Toán cao cấp</Option>
-                    <Option value={2}>Đại số </Option>
-                    <Option value={3}>Luật sở hữu trí tuệ</Option>
-                  </Select>
-                  <Button
-                    className="btn-create-min"
-                    type="primary"
-                    onClick={showModal}
-                  >
-                    Tạo thông báo mới
-                  </Button>
-                  <Modal
-                    title="Gửi thông báo mới"
-                    visible={isModalVisible}
-                    onOk={handleOk}
-                    onCancel={handleCancel}
-                    footer={[
-                      <Button key="submit" type="primary">
-                        Gửi
-                      </Button>,
-                    ]}
-                  >
-                    <SelectComp
-                      textLabel="Chọn lớp giảng dạy"
-                      defaultValue="Tất cả các lớp"
-                      dataString={classTeach}
-                    />
-                    <Checkbox className="cb-style" style={{ fontWeight: 700 }}>
-                      Chọn học viên
-                    </Checkbox>
-                    <SearchComponent placeholder="Tìm kiếm" />
-                    <Input
-                      style={{ margin: "10px 0px 10px 0px" }}
-                      placeholder="Chủ đề"
-                    />
-                    <SunEditor
-                      placeholder="Để lại lời nhắn của bạn tại đây..."
-                      setOptions={{
-                        defaultTag: "div",
-                        minHeight: "250px",
-                        showPathLabel: false,
-                        buttonList: [
-                          ["undo", "redo"],
-                          ["fontSize", "bold", "underline", "italic"],
-                          ["align", "image"],
-                          ["list", "outdent", "indent"],
-                          ["fullScreen"],
-                        ],
-                      }}
-                    />
-                  </Modal>
-                </div>
-                <InfiniteScroll
-                  dataLength={dataNotification.length}
-                  next={loadMoreData}
-                  hasMore={dataNotification.length < 50}
-                  loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-                  endMessage={
-                    <Divider plain>It is all, nothing more 🤐</Divider>
-                  }
-                  scrollableTarget="scrollableDiv"
+              <div className="t-right mb p1">
+                <Button
+                  className="btn-create-min"
+                  type="primary"
+                  onClick={showModal}
                 >
-                  <List
-                    dataSource={dataNotification}
-                    renderItem={(item: any) => (
-                      <List.Item key={item.id}>
-                        <List.Item.Meta
-                          avatar={<Avatar src={item.picture.large} />}
-                          title={
-                            <a href="https://ant.design">{item.name.last}</a>
-                          }
-                          description={item.email}
+                  Tạo thông báo mới
+                </Button>
+              </div>
+
+              <div
+                className="scroll-box sub-noti w-100 p1"
+                style={{ height: "60vh" }}
+              >
+                {notify.map((value: INoti) => {
+                  return (
+                    <Row className="noti-detail">
+                      <Col span={7}>
+                        <Row>
+                          <Col span={3}>
+                            <Avatar
+                              src={
+                                value.from.avt ||
+                                "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
+                              }
+                            />
+                          </Col>
+                          <Col
+                            span={20}
+                            offset={1}
+                            style={{ lineHeight: "normal" }}
+                          >
+                            <h4 style={{ marginBottom: "0" }}>
+                              {value.from.userName}
+                            </h4>
+                            <div className="flex-row">
+                              <span className="time">Giáo viên</span>
+                              <span
+                                style={{ marginLeft: "2rem" }}
+                                className="time"
+                              >
+                                {moment(value.createdAt).fromNow()}
+                              </span>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col span={17}>
+                        <h3>{value.title}</h3>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: value.content }}
                         />
-                        <div>5 phút trước</div>
-                      </List.Item>
-                    )}
-                  />
-                </InfiniteScroll>
+                      </Col>
+                    </Row>
+                  );
+                })}
               </div>
             </TabPane>
           </Tabs>
@@ -488,6 +466,142 @@ export const SubjectDetail = () => {
           </div>
         </div>
       </div>
+      <Modal
+        title="Gửi thông báo mới"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={() => {
+          handleCancel();
+        }}
+        footer={[
+          <Button onClick={() => form.submit()} type="primary">
+            Gửi
+          </Button>,
+        ]}
+      >
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={onFinish}
+          className="header-notification"
+        >
+          <Form.Item name="subject">
+            <SelectComp
+              textLabel="Chọn môn giảng dạy"
+              className="label-style-item"
+              dataString={dataClass}
+              onChange={(e: any) => handleSelect(e)}
+            />
+          </Form.Item>
+          <Form.Item name="topic">
+            <SelectComp
+              textLabel="Chọn chủ đề"
+              className="label-style-item"
+              dataString={topic}
+              disabled={topic.length === 0}
+            />
+          </Form.Item>
+          <Form.Item
+            name="title"
+            className="label-style-item"
+            label="Tiêu đề"
+            rules={[{ required: true }]}
+          >
+            <Input placeholder="Tiêu đề" />
+          </Form.Item>
+
+          <Form.Item
+            name="content"
+            label="Nội dung"
+            className="label-style-item"
+            rules={[{ required: true }]}
+          >
+            <SunEditor
+              placeholder="Nội dung"
+              setOptions={{
+                defaultTag: "div",
+                minHeight: "250px",
+                showPathLabel: false,
+                buttonList: [
+                  ["undo", "redo"],
+                  ["fontSize", "bold", "underline", "italic"],
+                  ["align", "image"],
+                  ["list", "outdent", "indent"],
+                  ["fullScreen"],
+                ],
+              }}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <ModalReply
+        visible={visible}
+        setVisible={setVisible}
+        data={idQA}
+        handleRefresh={handleRefresh}
+      />
+      <Modal
+        title="Tạo câu hỏi cho học viên"
+        className="modal-add-role"
+        width="50%"
+        visible={QAvisible}
+        onCancel={() => {
+          setQAVisible(false);
+          QAform.resetFields();
+        }}
+        onOk={() => QAform.submit()}
+      >
+        <Form
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+          name="cancel-form"
+          layout="horizontal"
+          form={QAform}
+          onFinish={onFinishQA}
+        >
+          <Form.Item
+            name="title"
+            label="Tiêu đề (tóm tắt)"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="content"
+            label="Nội dung"
+            rules={[{ required: true }]}
+          >
+            <TextArea rows={4} />
+          </Form.Item>
+
+          <Form.Item name="topic" label="Chủ đề" rules={[{ required: true }]}>
+            <Select
+              onChange={(e: any) => handleTopic(e)}
+              className="select"
+              defaultValue="Tuỳ chọn chủ đề"
+            >
+              {data?.topic.map((vl: ITopic) => (
+                <Option key={vl.id} value={vl.id}>
+                  {vl.title}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="lesson"
+            label="Bài giảng"
+            rules={[{ required: true }]}
+          >
+            <Select className="select" defaultValue="Tuỳ chọn bài giảng">
+              {lesson.map((vl: ILesson) => (
+                <Option key={vl.id} value={vl.id}>
+                  {vl.title}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

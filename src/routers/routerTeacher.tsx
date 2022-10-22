@@ -5,6 +5,8 @@ import { Profile } from "../Views/Profile/Profile";
 import { CreateExam } from "../Views/Teacher/Exam/CreateExam";
 import { Exam } from "../Views/Teacher/Exam/Exam";
 import { ExamDetails } from "../Views/Teacher/Exam/ExamDetails";
+import { Submissions } from "../Views/Teacher/Exam/Submissions";
+import { SubmitDetail } from "../Views/Teacher/Exam/SubmitDetail";
 import { Home } from "../Views/Teacher/Home/Home";
 import { Notification } from "../Views/Teacher/Notification/Notification";
 import NotiSetting from "../Views/Teacher/Notification/NotiSetting";
@@ -68,6 +70,11 @@ export const Teacher: React.FC = () => {
         />
 
         <Route path="teacher/exams/examdetail/:id" element={<ExamDetails />} />
+        <Route path="teacher/exams/submissions/:id" element={<Submissions />} />
+        <Route
+          path="/teacher/exams/submissions/detail"
+          element={<SubmitDetail />}
+        />
 
         <Route path="/teacher/questions" element={<Question />} />
 
