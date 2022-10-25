@@ -3,12 +3,14 @@ import {
   Button,
   Col,
   Form,
-  Input, Row,
+  Input,
+  Row,
   Select,
   Space,
   Table,
   Tooltip,
-  Typography
+  Typography,
+  message,
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -21,7 +23,7 @@ import {
   createUser,
   deleteUser,
   getUsers,
-  UserState
+  UserState,
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
@@ -122,15 +124,20 @@ export const UserManage = () => {
   const onFinish = (values: any) => {
     if (values.role !== "student") {
       delete values.userCode;
-    }
-    dispatch(createUser(values)).then(() => {
-      dispatch(getUsers(filter))
-        .unwrap()
-        .then((rs: any) => {
-          setData(rs.results);
-          form.resetFields();
+    } else {
+      if (values.userCode === undefined) {
+        message.error("Hãy nhập MSSV");
+      } else {
+        dispatch(createUser(values)).then(() => {
+          dispatch(getUsers(filter))
+            .unwrap()
+            .then((rs: any) => {
+              setData(rs.results);
+              form.resetFields();
+            });
         });
-    });
+      }
+    }
   };
 
   const deleteRow = {
@@ -169,7 +176,11 @@ export const UserManage = () => {
             <Option value={"student"}>Sinh viên</Option>
           </Select>
         </Form.Item>
-        <Form.Item label="Tên" name="userName" rules={[{ required: true }]}>
+        <Form.Item
+          label="Tên người dùng"
+          name="userName"
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
         <Form.Item label="Email" name="email" rules={[{ required: true }]}>
@@ -177,7 +188,7 @@ export const UserManage = () => {
         </Form.Item>
 
         <Form.Item label="MSSV" name="userCode">
-          <Input />
+          <Input maxLength={8} />
         </Form.Item>
 
         <Form.Item

@@ -11,17 +11,28 @@ import Cover from "./Views/Cover/Cover";
 import Login from "./Views/Login/Login";
 import PageNotFound from "./Views/PageNotFound/PageNotFound";
 import { SocketContext, socket } from './context/socket.context';
+import { UserState } from "./redux/reducers/user.reducer";
 
 const App: React.FC = () => {
   const [listUser, setListUser] = useState([]);
+  const [statistical, setStatistical] = useState({});
+  const handleEventSocket = (listUser: [], statistical: any ) => {
+    setListUser(listUser);
+    setStatistical(statistical);
+  }
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+
   useEffect(() => {
+    if (user.id) {
+      socket.emit("SEND_JOIN_REQUEST", user.id);
+    }
     socket.on("RECEIVED_JOIN_REQUEST", (data: { listUser: [], statistical: {} }) => {
-      setListUser(data.listUser);
-      console.log("socket connected: ", data);
+      handleEventSocket(data.listUser, data.statistical);
+      // console.log("socket connected: ", data);
     });
     socket.on("RECEIVED_OUT_REQUEST", (data: { listUser: [], statistical: {} }) => {
-      setListUser(data.listUser);
-      console.log("socket disconnected: ", data);
+      handleEventSocket(data.listUser, data.statistical);
+      // console.log("socket disconnected: ", data);
     });
     return () => {
       socket.off("RECEIVED_JOIN_REQUEST");
@@ -29,7 +40,7 @@ const App: React.FC = () => {
     };
   }, []);
   return (
-    <SocketContext.Provider value={{ socket, listUser }}>
+    <SocketContext.Provider value={{ socket, listUser, statistical }}>
       <div className="App">
         <Suspense fallback={<Loader />}>
           <Routes>

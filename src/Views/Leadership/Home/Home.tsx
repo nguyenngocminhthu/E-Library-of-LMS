@@ -38,15 +38,19 @@ export const Home = () => {
   const exams = useSelector(totalBank);
   const client = useContext(SocketContext);
   const [totalUser, setTotalUser] = useState(client.listUser.length);
+  const [statistical, setStatistical] = useState(client.statistical);
 
   useEffect(() => {
     dispatch(getUsers({ limit: 999, role: "teacher" }));
   }, [subjects, exams]);
 
   useEffect(() => {
-    console.log("change list user:", client);
     setTotalUser(client.listUser.length);
   }, [client.listUser]);
+
+  useEffect(() => {
+    setStatistical(client.statistical);
+  }, [client.statistical]);
 
   const year = [
     {
@@ -166,10 +170,10 @@ export const Home = () => {
                 </Col>
                 <Col span={6} offset={2}>
                   <h4>{totalUser}</h4>
-                  <h4>31</h4>
-                  <h4>31</h4>
-                  <h4>31</h4>
-                  <h4>31</h4>
+                  <h4>{statistical?.today?.total || 0}</h4>
+                  <h4>{statistical?.week || 0}</h4>
+                  <h4>{statistical?.month || 0}</h4>
+                  <h4>{statistical?.total || 0}</h4>
                 </Col>
               </Row>
             </Card>
