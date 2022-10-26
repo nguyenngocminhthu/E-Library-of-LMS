@@ -23,6 +23,12 @@ const getSubject = (id: string) => {
   });
 };
 
-const Subject = { getSubjects, getSubject, createSubject };
+const updateSubject = (id: string, payload: ISubject) => {
+  return axiosClient.patch(url + `/${id}`, payload).then((rs: any) => {
+    return rs;
+  });
+};
+
+const Subject = { getSubjects, getSubject, createSubject, updateSubject };
 
 export default Subject;
