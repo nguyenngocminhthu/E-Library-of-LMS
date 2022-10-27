@@ -7,7 +7,7 @@ import {
   List,
   Row,
   Skeleton,
-  Typography
+  Typography,
 } from "antd";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -19,12 +19,12 @@ import { getBanks, totalBank } from "../../../redux/reducers/banks.reducer";
 import { getFiles, totalFile } from "../../../redux/reducers/file.reducer";
 import {
   getLessons,
-  totalLesson
+  totalLesson,
 } from "../../../redux/reducers/lesson.reducer";
 import {
   getSubjects,
   ISubject,
-  totalSubject
+  totalSubject,
 } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
@@ -238,11 +238,13 @@ export const Home = () => {
               </span>
             </div>
 
-            <Card className="inside"
+            <Card
+              className="inside"
               style={{
                 height: 250,
-                overflow: 'auto',
-              }}>
+                overflow: "auto",
+              }}
+            >
               <InfiniteScroll
                 dataLength={data.length}
                 next={loadMoreData}

@@ -1,14 +1,21 @@
 import {
-  CaretRightOutlined, HeartFilled, HeartOutlined, MessageOutlined
+  CaretRightOutlined,
+  HeartFilled,
+  HeartOutlined,
+  MessageOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
-  Button, Col,
-  Collapse, Form,
-  Input, Modal,
+  Button,
+  Col,
+  Collapse,
+  Form,
+  Input,
+  Modal,
   Row,
-  Select, Tabs,
-  Tooltip
+  Select,
+  Tabs,
+  Tooltip,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
@@ -23,18 +30,18 @@ import { ILesson } from "../../../../redux/reducers/lesson.reducer";
 import {
   createNoti,
   getNotis,
-  INoti
+  INoti,
 } from "../../../../redux/reducers/noti.reducer";
 import {
   createQA,
   getQAs,
   IQA,
-  updateQA
+  updateQA,
 } from "../../../../redux/reducers/QA.reducer";
 import {
   getSubject,
   getSubjects,
-  ISubject
+  ISubject,
 } from "../../../../redux/reducers/subject.reducer";
 import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../../redux/reducers/user.reducer";

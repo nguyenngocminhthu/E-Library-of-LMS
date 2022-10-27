@@ -10,7 +10,7 @@ import {
   Space,
   Table,
   Tag,
-  Tooltip
+  Tooltip,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
@@ -18,7 +18,7 @@ import { useState } from "react";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import "./style.scss";
+import "./Subject.style.scss";
 
 export const SubjectManage = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -48,37 +48,37 @@ export const SubjectManage = () => {
       value: "2021",
     },
   ];
-const allSubject = [
-  {
-    name: "Thương mại điện tử",
-    value: "TMDT",
-  },
-  {
-    name: "Nguyên lý kế toán",
-    value: "NLKT",
-  },
-  {
-    name: "Hệ thống thông tin",
-    value: "HTTT",
-  },
-  {
-    name: "Luật thương mại",
-    value: "LTM",
-  },
-  {
-    name: "Ngân hàng ",
-    value: "NG",
-  },
-];
+  const allSubject = [
+    {
+      name: "Thương mại điện tử",
+      value: "TMDT",
+    },
+    {
+      name: "Nguyên lý kế toán",
+      value: "NLKT",
+    },
+    {
+      name: "Hệ thống thông tin",
+      value: "HTTT",
+    },
+    {
+      name: "Luật thương mại",
+      value: "LTM",
+    },
+    {
+      name: "Ngân hàng ",
+      value: "NG",
+    },
+  ];
 
-const downloadFile = {
-  title: "Tải xuống tệp",
-  className: "modal-common-style",
-  content:
-    "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-  okText: "Xác nhận",
-  cancelText: "Huỷ",
-};
+  const downloadFile = {
+    title: "Tải xuống tệp",
+    className: "modal-common-style",
+    content:
+      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
+    okText: "Xác nhận",
+    cancelText: "Huỷ",
+  };
 
   const seeDetails = {
     title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
@@ -315,7 +315,7 @@ const downloadFile = {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..."/>
+          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
         </Col>
       </Row>
       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />

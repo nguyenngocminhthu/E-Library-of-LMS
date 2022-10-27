@@ -2,7 +2,7 @@ import {
   DownloadOutlined,
   EyeOutlined,
   LinkOutlined,
-  UploadOutlined
+  UploadOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -15,7 +15,7 @@ import {
   Select,
   Space,
   Table,
-  Typography
+  Typography,
 } from "antd";
 import modal from "antd/lib/modal";
 import lodash from "lodash";
@@ -28,19 +28,19 @@ import { ISelect, SelectComp } from "../../../Components/Select";
 import {
   deleteQuestion,
   getQuestions,
-  IQuestion
+  IQuestion,
 } from "../../../redux/reducers/question.reducer";
 import { ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroup,
   getSubjectGroups,
-  ISubjectGroup
+  ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
 import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
-import "./style.scss";
+import "./Question.style.scss";
 
 export const Question = () => {
   const { Panel } = Collapse;
@@ -392,9 +392,7 @@ export const Question = () => {
                   <h3>{question?.quesName}</h3>
                   <Space direction="vertical">
                     {question?.answers.map((value) => (
-                      <div key={value}>
-                        {value}
-                      </div>
+                      <div key={value}>{value}</div>
                     ))}
                   </Space>
                 </div>

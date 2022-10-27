@@ -21,7 +21,7 @@ import {
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ModalSubject } from "./ModalSubject";
-import "./style.scss";
+import "./Subject.style.scss";
 
 export interface ISubjectSelect {
   name: string;

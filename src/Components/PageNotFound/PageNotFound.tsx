@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
-import "./style.scss";
+import "./PageNotFound.style.scss";
 
 const PageNotFound = () => {
   const navigate = useNavigate();
@@ -9,10 +9,7 @@ const PageNotFound = () => {
     <div className="error-page">
       <h1 className="text-label">
         Xin lỗi!!! Chúng tôi không tìm thấy trang bạn yêu cầu.
-        <Button
-          className="coverButton"
-          onClick={() => navigate("/")}
-        >
+        <Button className="coverButton" onClick={() => navigate("/")}>
           GO TO HOMEPAGE →
         </Button>
       </h1>

@@ -10,7 +10,7 @@ import { BreadcrumbComp } from "../../Components/Breadcrumb";
 import { setLoading } from "../../redux/reducers/loading.reducer";
 import { updateProfile, UserState } from "../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../redux/store";
-import "./style.scss";
+import "./Profile.style.scss";
 
 export const Profile = () => {
   const { Option } = Select;

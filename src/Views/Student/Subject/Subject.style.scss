@@ -1,15 +1,16 @@
 @import "../../../shared/styles/variable";
+
 .viewSub-student {
     .icon-start {
-    color: #c9c4c0;
-}
-.ant-col-4 {
-    align-items: flex-start;
-    justify-content: left;
+        color: #c9c4c0;
+    }
+
+    .ant-col-4 {
+        align-items: flex-start;
+        justify-content: left;
+    }
 }
 
-
-}
 .student-exams {
     .ant-card-bordered {
         border-radius: 10px;

@@ -7,7 +7,7 @@ import { useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { getBank, IBanks } from "../../../redux/reducers/banks.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
+import "./ExamBank.style.scss";
 
 export const ExamDetails = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -68,7 +68,7 @@ export const ExamDetails = () => {
             </div>
             <div>
               <div>{data?.user?.userName || "null"}</div>
-              <div>{moment(data?.createdAt).format('DD/MM/YYYY')}</div>
+              <div>{moment(data?.createdAt).format("DD/MM/YYYY")}</div>
             </div>
           </div>
         </div>

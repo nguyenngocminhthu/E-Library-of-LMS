@@ -38,16 +38,17 @@
 
   .btn-img {
     position: relative;
+
     .img-play {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100%;
     }
-    
+
     img {
       width: 100%;
-    
+
     }
 
     .btn-play {
@@ -59,7 +60,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      }
+    }
   }
 
   .ant-card-body {

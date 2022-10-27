@@ -8,13 +8,13 @@ import {
   Skeleton,
   Space,
   Tabs,
-  Tooltip
+  Tooltip,
 } from "antd";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import "./style.scss";
+import "./Notification.style.scss";
 
 export const Notification = () => {
   const { TabPane } = Tabs;

@@ -1,12 +1,5 @@
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Checkbox,
-  Col,
-  Radio,
-  Row,
-  Space
-} from "antd";
+import { Button, Checkbox, Col, Radio, Row, Space } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import lodash from "lodash";
 import moment from "moment";
@@ -17,7 +10,7 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import {
   getBank,
   IBanks,
-  updateBank
+  updateBank,
 } from "../../../redux/reducers/banks.reducer";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
 import { AppDispatch } from "../../../redux/store";

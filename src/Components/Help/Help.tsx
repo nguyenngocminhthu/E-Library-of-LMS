@@ -1,13 +1,12 @@
 import * as React from "react";
-import SunEditor from 'suneditor-react';
+import SunEditor from "suneditor-react";
 import { ReactComponent as Location } from "../../shared/img/icon/location.svg";
 import { ReactComponent as Phone } from "../../shared/img/icon/phone.svg";
 import { ReactComponent as Email } from "../../shared/img/icon/mail.svg";
 import { Button, Input, Row, Col, message } from "antd";
 import { BreadcrumbComp } from "../../Components/Breadcrumb";
-import 'suneditor/dist/css/suneditor.min.css';
-import "./style.scss";
-
+import "suneditor/dist/css/suneditor.min.css";
+import "./Help.style.scss";
 
 export const Help = () => {
   const openNotification = () => {

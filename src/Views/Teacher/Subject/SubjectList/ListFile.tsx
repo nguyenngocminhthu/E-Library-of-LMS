@@ -8,15 +8,15 @@ import {
   Space,
   Table,
   Tag,
-  Tooltip
+  Tooltip,
 } from "antd";
 import modal from "antd/lib/modal";
 import { useState } from "react";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import SearchComponent from "../../../../Components/SearchComponent";
 import { SelectComp } from "../../../../Components/Select";
-import "../style.scss";
 import { ModalAdd } from "./ModalAdd";
+import "../Subject.style.scss";
 
 const status = [
   {

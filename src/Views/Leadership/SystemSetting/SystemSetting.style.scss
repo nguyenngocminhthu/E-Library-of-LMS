@@ -45,7 +45,7 @@
   .tab-notilist {
     position: relative;
 
-    .ant-form-item-label > label {
+    .ant-form-item-label>label {
       font-weight: 600;
     }
 
@@ -143,12 +143,12 @@
     border-top: 1px solid #c9c4c0;
   }
 
-  .ant-table-thead > tr > th {
+  .ant-table-thead>tr>th {
     background: $color-primary;
     color: $color-white;
   }
 
-  .ant-table-tbody > tr:nth-child(even) {
+  .ant-table-tbody>tr:nth-child(even) {
     background-color: $color-grey-light-2;
   }
 
@@ -157,19 +157,19 @@
   }
 
   // for border table
-  .ant-table-container table > thead > tr:first-child th:first-child {
+  .ant-table-container table>thead>tr:first-child th:first-child {
     border-top-left-radius: $border-radius;
   }
 
-  .ant-table-container table > thead > tr:first-child th:last-child {
+  .ant-table-container table>thead>tr:first-child th:last-child {
     border-top-right-radius: $border-radius;
   }
 
-  .ant-table-tbody > tr.ant-table-row:last-child > td:first-child {
+  .ant-table-tbody>tr.ant-table-row:last-child>td:first-child {
     border-bottom-left-radius: $border-radius;
   }
 
-  .ant-table-tbody > tr.ant-table-row:last-child > td:last-child {
+  .ant-table-tbody>tr.ant-table-row:last-child>td:last-child {
     border-bottom-right-radius: $border-radius;
   }
 
@@ -197,6 +197,7 @@
   }
 
   .search-bar {
+
     .ant-input-affix-wrapper,
     input {
       border: 1px solid $color-grey-light-2;
@@ -251,10 +252,8 @@
   .ant-modal-confirm-title {
     margin-bottom: 24px;
   }
-  .ant-modal-confirm-body
-    > .anticon
-    + .ant-modal-confirm-title
-    + .ant-modal-confirm-content {
+
+  .ant-modal-confirm-body>.anticon+.ant-modal-confirm-title+.ant-modal-confirm-content {
     margin-left: 0;
   }
 }
@@ -262,6 +261,7 @@
 .download-file {
   display: flex;
   margin-top: 1rem;
+
   .ant-upload-list {
     align-items: unset;
   }

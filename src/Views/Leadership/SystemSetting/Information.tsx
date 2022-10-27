@@ -8,7 +8,7 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { setLoading } from "../../../redux/reducers/loading.reducer";
 import { updateProfile } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
+import "./SystemSetting.style.scss";
 
 export const Information = () => {
   const { Option } = Select;
@@ -240,5 +240,3 @@ export const Information = () => {
 };
 
 export default Information;
-
-

@@ -7,8 +7,8 @@ import { AppDispatch } from "../../redux/store";
 import { ReactComponent as Account } from "../../shared/img/icon/account.svg";
 import logoLogin from "../../shared/img/icon/logo-second.svg";
 import { ReactComponent as Password } from "../../shared/img/icon/shield-keyhole-line.svg";
-import "./Login.scss";
-import { SocketContext } from '../../context/socket.context';
+import { SocketContext } from "../../context/socket.context";
+import "./Login.style.scss";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ const Login = () => {
           client.socket.connect();
         }
         client.socket.emit("SEND_JOIN_REQUEST", rs.user.id);
-        console.log('emit socket', client.socket);
+        console.log("emit socket", client.socket);
         if (rs.user.role === "teacher") {
           navigate("/teacher/home");
         } else if (rs.user.role === "student") {
@@ -39,7 +39,6 @@ const Login = () => {
       });
   };
 
-
   return (
     <div className="login">
       <img className="logoLogin" src={logoLogin} alt="logoLogin" />
@@ -52,7 +51,10 @@ const Login = () => {
             <div className="input-icons">
               <Form.Item
                 name="email"
-                rules={[{ required: true, message: "Vui lòng nhập tên đăng nhập!" }]}>
+                rules={[
+                  { required: true, message: "Vui lòng nhập tên đăng nhập!" },
+                ]}
+              >
                 <Input
                   className="input-style"
                   prefix={<Account className="site-form-item-icon" />}

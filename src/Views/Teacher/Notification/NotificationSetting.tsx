@@ -1,8 +1,8 @@
 import { Collapse, Switch } from "antd";
 import { useState } from "react";
-import "./style.scss";
+import "./Notification.style.scss";
 
-function NotiSetting() {
+function NotificationSetting() {
   const { Panel } = Collapse;
   const [checked, setChecked] = useState(false);
 
@@ -80,4 +80,4 @@ function NotiSetting() {
   );
 }
 
-export default NotiSetting;
+export default NotificationSetting;

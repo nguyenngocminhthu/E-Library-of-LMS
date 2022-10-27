@@ -1,14 +1,14 @@
 import { Col, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import "./style.scss";
+import "./SystemSetting.style.scss";
 
-export const System = () => {
+export const SystemContainer = () => {
   const navigate = useNavigate();
   return (
     <div className="sys-page">
       <BreadcrumbComp title="Cài đặt hệ thống" />
-      <Row style={{ marginTop: "2rem", justifyContent: 'center' }}>
+      <Row style={{ marginTop: "2rem", justifyContent: "center" }}>
         <Col span={8}>
           <div className="card-content">
             <h2 className="title-card">Thông tin hệ thống</h2>

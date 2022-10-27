@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router";
+import { Help } from "../Components/Help/Help";
+import { Profile } from "../Components/Profile/Profile";
 import { StudentLayout } from "../Layout/StudentLayout";
-import { Help } from "../Views/Help/Help";
-import { Profile } from "../Views/Profile/Profile";
 import DebtReport from "../Views/Student/FeeManage/DebtReport";
 import PaySchoolFees from "../Views/Student/FeeManage/PaySchoolFees";
 import { Home } from "../Views/Student/Home/Home";
 import { Notification } from "../Views/Student/Notification/Notification";
-import NotiSetting from "../Views/Student/Notification/NotiSetting";
+import NotificationSetting from "../Views/Student/Notification/NotificationSetting";
 import { ExamDetails } from "../Views/Student/Subject/ExamDetails";
 import { Exam } from "../Views/Student/Subject/Exams";
 import { Subject } from "../Views/Student/Subject/Subject";
@@ -42,7 +42,10 @@ export const Student = () => {
 
         <Route path="/student/notification" element={<Notification />} />
 
-        <Route path="/student/notification/setting" element={<NotiSetting />} />
+        <Route
+          path="/student/notification/setting"
+          element={<NotificationSetting />}
+        />
 
         <Route path="/student/payschoolfees" element={<PaySchoolFees />} />
 

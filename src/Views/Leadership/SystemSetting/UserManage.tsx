@@ -28,7 +28,7 @@ import {
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
 import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
-import "./style.scss";
+import "./SystemSetting.style.scss";
 
 export const UserManage = () => {
   const { Option } = Select;

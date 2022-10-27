@@ -94,10 +94,6 @@
   }
 }
 
-hr {
-  margin: 1rem 0;
-}
-
 .subDetail {
   h1 {
     font-size: 24px;
@@ -169,11 +165,6 @@ hr {
       color: white;
     }
   }
-
-  // .anticon svg {
-  //   color: #ff7506;
-  //   font-size: large;
-  // }
 
   .collapse-inside {
     .ant-collapse-content-box {
@@ -247,6 +238,10 @@ hr {
 }
 
 .viewSub {
+  hr {
+    margin: 1rem 0;
+  }
+
   h1 {
     font-size: 24px;
     font-weight: $font-weight-bold;
@@ -404,6 +399,7 @@ hr {
       &:hover {
         cursor: pointer;
       }
+
       h4 {
         color: $color-primary;
         margin-bottom: 0;
@@ -432,7 +428,7 @@ hr {
       color: $color-text-light;
     }
 
-    
+
 
     .ant-col-17 {
       border-left: 1px solid gray;
@@ -441,7 +437,7 @@ hr {
     }
   }
 
-  
+
   .view-more {
     color: $color-text-light;
     font-weight: 700;
@@ -459,6 +455,7 @@ hr {
     &:hover {
       cursor: pointer;
     }
+
     .ant-col-4 {
       display: flex;
       align-items: center;
@@ -472,36 +469,14 @@ hr {
 }
 
 .sub-manage {
-  .top-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    h1 {
-      font-weight: 700;
-      font-size: 24px;
-    }
-
-    .anticon svg {
-      color: $color-text-light;
-      font-size: 36px;
-      width: 50px;
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
   .line {
     border-left: 1px solid $color-background-cancel;
     height: 40px;
     margin: 0px 10px 0px 10px;
-}
+  }
 }
 
 .file-modal {
-  
-
   .ant-modal-confirm-body>.anticon+.ant-modal-confirm-title+.ant-modal-confirm-content {
     margin-left: 0;
   }
@@ -531,6 +506,7 @@ hr {
   }
 
 }
+
 .upload-inline {
   display: flex;
 
@@ -538,6 +514,28 @@ hr {
     color: $color-primary !important;
   }
 }
+
+.top-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-weight: 700;
+    font-size: 24px;
+  }
+
+  .anticon svg {
+    color: $color-text-light;
+    font-size: 36px;
+    width: 50px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
 .scroll-box {
   height: 210px;
   overflow-y: scroll;
@@ -557,6 +555,7 @@ hr {
     background-color: rgb(173, 173, 173);
   }
 }
+
 .noti-detail {
   border: 1px solid gray;
   border-radius: 8px;

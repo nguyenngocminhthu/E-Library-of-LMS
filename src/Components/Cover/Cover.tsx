@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import cover from "../../shared/img/cover2x.png";
 import logo from "../../shared/img/logo-system.png";
-import "./Cover.scss";
+import "./Cover.style.scss";
 const Cover = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user") || "{}");

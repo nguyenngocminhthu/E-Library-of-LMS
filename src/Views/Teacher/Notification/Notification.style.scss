@@ -24,7 +24,7 @@
                 margin: 0px 10px 0px 10px;
             }
         }
-        
+
 
     }
 
@@ -137,21 +137,26 @@
     background: $color-secondary-dark-light !important;
     border-radius: 8px 8px 0px 0px !important;
 }
+
 .ant-modal-content {
     .anticon svg {
         color: $color-white;
     }
 }
+
 .ant-modal-title {
     color: $color-white !important;
 }
-.selectcomp{
+
+.selectcomp {
     display: block !important;
-    margin-bottom: 12px;
-    .select{
+    margin: 0 1rem 1rem 0;
+
+    .select {
         width: 100% !important;
     }
 }
-.ant-checkbox-wrapper{
+
+.ant-checkbox-wrapper {
     margin-bottom: 6px;
 }

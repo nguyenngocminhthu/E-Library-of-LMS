@@ -12,7 +12,8 @@ import { IClass } from "../../../../redux/reducers/classes.reducer";
 import { createLesson } from "../../../../redux/reducers/lesson.reducer";
 import { setLoading } from "../../../../redux/reducers/loading.reducer";
 import {
-  getSubject, ISubject
+  getSubject,
+  ISubject,
 } from "../../../../redux/reducers/subject.reducer";
 import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";

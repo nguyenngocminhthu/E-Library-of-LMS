@@ -2,7 +2,7 @@ import {
   DesktopOutlined,
   DownloadOutlined,
   MoreOutlined,
-  UploadOutlined
+  UploadOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -18,7 +18,7 @@ import {
   Table,
   Tag,
   Tooltip,
-  Typography
+  Typography,
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -42,7 +42,7 @@ import {
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
-import "./style.scss";
+import "./Exam.style.scss";
 
 export const Exam = () => {
   const { Title } = Typography;
