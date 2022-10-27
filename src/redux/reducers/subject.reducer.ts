@@ -1,3 +1,4 @@
+import { ISubjectGroup } from './subjectgroup.reducer';
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message.reducer";
 import Subject from "../../Apis/Subject.api";
@@ -8,6 +9,7 @@ import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
 import { message } from "antd";
 import { IList } from "./interface";
+import { cloneDeep } from 'lodash';
 
 export const createSubject = createAsyncThunk(
   "subject/createSubject",
@@ -35,6 +37,34 @@ export const createSubject = createAsyncThunk(
     }
   }
 );
+
+export const updateSubject = createAsyncThunk(
+  "subject/updateSubject",
+  async ({ id, payload }: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Subject.updateSubject(id, payload);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Cập nhật môn học thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 
 export const getSubjects = createAsyncThunk(
   "subject/getSubjects",
@@ -92,7 +122,9 @@ export interface ISubject {
   key?: number;
   subCode: string;
   subName: string;
+  subGroup: ISubjectGroup;
   teacher: UserState;
+  student: string[];
   description: string;
   status: number;
   file: number;
@@ -123,7 +155,10 @@ export const subjectReducer = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(createSubject.fulfilled, (state, action) => {
-      state.listSubject = action.payload;
+      if (action.payload.code) return state;
+      const newState = cloneDeep(state);
+      newState.listSubject.results.unshift(action.payload);
+      return newState;
     });
     builder.addCase(createSubject.rejected, (state) => {
       state.listSubject = {
@@ -157,6 +192,18 @@ export const subjectReducer = createSlice({
         totalPages: 0,
         totalResults: 0,
       };
+    });
+    builder.addCase(updateSubject.fulfilled, (state, action) => {
+      if (action.payload.code) return state;
+      const newState = cloneDeep(state);
+      const oldIndex = newState.listSubject.results.findIndex((item: any) => {
+        return item.id === action.payload.id;
+      })
+      newState.listSubject.results.splice(oldIndex, 1, action.payload);
+      return newState;
+    });
+    builder.addCase(updateSubject.rejected, (state, action) => {
+      return state;
     });
   },
 });

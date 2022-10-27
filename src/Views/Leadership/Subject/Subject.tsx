@@ -1,35 +1,17 @@
-import { UnorderedListOutlined, UploadOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  Row,
-  Select,
-  Space,
-  Table,
-  Tooltip,
-  Upload,
-} from "antd";
+import { EditOutlined, UnorderedListOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Input, Row, Space, Table, Tooltip } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { setLoading } from "../../../redux/reducers/loading.reducer";
-import {
-  createSubject,
-  getSubjects,
-  ISubject,
-} from "../../../redux/reducers/subject.reducer";
+import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   createSubjectGroup,
   getSubjectGroups,
-  ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import {
   getUser,
@@ -38,6 +20,7 @@ import {
   UserState,
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
+import { ModalSubject } from "./ModalSubject";
 import "./style.scss";
 
 export interface ISubjectSelect {
@@ -46,10 +29,13 @@ export interface ISubjectSelect {
 }
 
 export const Subject = () => {
-  const { Option } = Select;
   const navigate = useNavigate();
   const data = useSelector((state: any) => state.subject.listSubject.results);
   const [student, setStudent] = useState<UserState[]>([]);
+  const [teacher, setTeacher] = useState<UserState[]>([]);
+  const [currentRecord, setCurrentRecord] = useState<ISubject>();
+  const [modeSubject, setModeSubject] = useState("create");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
@@ -58,15 +44,8 @@ export const Subject = () => {
   ]);
   const dispatch: AppDispatch = useDispatch();
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
-  const [form] = Form.useForm();
   const [formGroup] = Form.useForm();
-
-  const dataSubGroup = useSelector(
-    (state: any) => state.subjectgroup.listSubjectGroup.results
-  );
   const [filter, setFilter] = useState<any>({ limit: 999 });
-
-  const teacher = useSelector((state: any) => state.user.listUser.results);
 
   useEffect(() => {
     dispatch(getSubjectGroups(999));
@@ -83,6 +62,11 @@ export const Subject = () => {
       .unwrap()
       .then((rs: any) => {
         setStudent(rs.results);
+      });
+    dispatch(getUsers({ limit: 999, role: "teacher" }))
+      .unwrap()
+      .then((rs) => {
+        setTeacher(rs.results);
       });
     setSubjectSelect(option);
   }, [filter]);
@@ -173,21 +157,6 @@ export const Subject = () => {
     }
   };
 
-  const onFinish = async (values: any) => {
-    dispatch(setLoading(true));
-    await dispatch(
-      uploadFilesToFirebase(values.image.fileList, "Subject")
-    ).then((rs: any) => {
-      dispatch(setLoading(false));
-
-      values.image = rs;
-      dispatch(createSubject(values)).then((rs) => {
-        handleRefresh();
-        form.resetFields();
-      });
-    });
-  };
-
   const onFinishGroup = async (values: any) => {
     dispatch(createSubjectGroup(values)).then((rs) => {
       handleRefresh();
@@ -195,83 +164,12 @@ export const Subject = () => {
     });
   };
 
-  const handleModal = () => {
-    const config = {
-      title: "Tạo môn học mới",
-      width: "40%",
-      className: "cancel-form",
-      content: (
-        <Form
-          form={form}
-          onFinish={onFinish}
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 18 }}
-        >
-          <Form.Item
-            name="subCode"
-            label="Mã môn học"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="subName"
-            label="Tên môn học"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="subGroup"
-            label="Tổ bộ môn"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              {dataSubGroup.map((vl: ISubjectGroup) => (
-                <Option value={vl.id}>{vl.groupName}</Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="teacher"
-            label="Giảng viên"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              <Option value="">Tất cả</Option>
-              {teacher.map((vl: UserState) => (
-                <Option value={vl.id}>{vl.userName}</Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="student"
-            label="Sinh viên"
-            rules={[{ required: true }]}
-          >
-            <Select mode="multiple" allowClear placeholder="Nhập hoặc select">
-              {student?.map((vl: UserState) => (
-                <Option key={vl.userCode || vl.id}>{vl.userCode}</Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item name="image" label="Hình ảnh" rules={[{ required: true }]}>
-            <Upload
-              beforeUpload={() => false}
-              maxCount={1}
-              className="upload-inline"
-            >
-              <Button icon={<UploadOutlined />}>Upload</Button>
-            </Upload>
-          </Form.Item>
-        </Form>
-      ),
-      okText: "Tạo",
-      cancelText: "Huỷ",
-      onOk: () => form.submit(),
-      onCancel: () => form.resetFields(),
-    };
-    modal.confirm(config);
+  const handleModal = (mode: string, record?: ISubject) => {
+    if (record) {
+      setCurrentRecord(record);
+    }
+    setIsModalOpen(true);
+    setModeSubject(mode);
   };
 
   const handleSubGroup = () => {
@@ -381,6 +279,20 @@ export const Subject = () => {
         </Space>
       ),
     },
+    {
+      title: "",
+      key: "delete",
+      render: (text: any, record: any) => (
+        <Space size="middle">
+          <Tooltip title="Detail">
+            <Button
+              onClick={() => handleModal("edit", record)}
+              icon={<EditOutlined />}
+            />
+          </Tooltip>
+        </Space>
+      ),
+    },
   ];
 
   return (
@@ -422,7 +334,7 @@ export const Subject = () => {
             paddingRight: "6px",
           }}
         >
-          <Button onClick={handleModal} type="primary">
+          <Button onClick={() => handleModal("create")} type="primary">
             Tạo mới
           </Button>
         </Col>
@@ -440,6 +352,14 @@ export const Subject = () => {
         </Col>
       </Row>
       <Table columns={columns} dataSource={data} />
+      <ModalSubject
+        record={currentRecord}
+        student={student}
+        teacher={teacher}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        mode={modeSubject}
+      ></ModalSubject>
     </div>
   );
 };
