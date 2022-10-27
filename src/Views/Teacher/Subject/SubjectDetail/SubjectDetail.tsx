@@ -1,61 +1,45 @@
 import {
-  CaretRightOutlined,
-  DislikeFilled,
-  DislikeOutlined,
-  LikeFilled,
-  LikeOutlined,
+  CaretRightOutlined, HeartFilled, HeartOutlined, MessageOutlined
 } from "@ant-design/icons";
 import {
   Avatar,
-  Button,
-  Checkbox,
-  Col,
-  Collapse,
-  Comment,
-  Divider,
-  Form,
-  Input,
-  List,
-  Modal,
+  Button, Col,
+  Collapse, Form,
+  Input, Modal,
   Row,
-  Select,
-  Skeleton,
-  Tabs,
-  Tooltip,
+  Select, Tabs,
+  Tooltip
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-import modal from "antd/lib/modal";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import SunEditor from "suneditor-react";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import SearchComponent from "../../../../Components/SearchComponent";
 import { ISelect, SelectComp } from "../../../../Components/Select";
+import { ILesson } from "../../../../redux/reducers/lesson.reducer";
 import {
   createNoti,
   getNotis,
-  INoti,
+  INoti
 } from "../../../../redux/reducers/noti.reducer";
 import {
   createQA,
   getQAs,
   IQA,
-  updateQA,
+  updateQA
 } from "../../../../redux/reducers/QA.reducer";
 import {
   getSubject,
   getSubjects,
-  ISubject,
+  ISubject
 } from "../../../../redux/reducers/subject.reducer";
 import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../../redux/store";
-import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
 import { ModalReply } from "../../../Student/Subject/ModalReply";
-import { ILesson } from "../../../../redux/reducers/lesson.reducer";
-import lodash from "lodash";
 
 export const SubjectDetail = () => {
   const { Option } = Select;

@@ -37,7 +37,6 @@ import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
 import lodash from "lodash";
 
 export const Lessons = () => {
-  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -122,41 +121,6 @@ export const Lessons = () => {
     {
       name: "Chủ đề bổ túc nâng cao",
       value: "CDBCNC",
-    },
-  ];
-
-  const columnsTable = [
-    {
-      title: "Tên file",
-      dataIndex: "title",
-      key: "title",
-    },
-    // {
-    //   title: "Thể loại",
-    //   dataIndex: "video",
-    //   key: "video",
-    //   render: (video: string) => {
-    //     let vid = video.split("/");
-    //     let vidName = vid[vid.length - 1];
-    //     console.debug(vidName);
-    //     return <>test</>;
-    //   },
-    // },
-    {
-      title: "Kích thước",
-      dataIndex: "size",
-      key: "size",
-    },
-    {
-      title: "",
-      key: "action",
-      render: (text: any, record: any) => (
-        <Delete
-          style={{
-            fontSize: "24px",
-          }}
-        />
-      ),
     },
   ];
 

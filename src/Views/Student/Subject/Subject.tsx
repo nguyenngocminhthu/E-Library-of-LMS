@@ -56,11 +56,11 @@ export const Subject = () => {
       <Menu.Item key="2">Không được gắn sao</Menu.Item>
     </Menu>
   );
-
+  /* TO DO , SET DATA CLASSES FOR STUDENT */
   useEffect(() => {
     if (user) {
       let arr: ISubject[] = [];
-      user.classes.forEach((value: IClass, index: number) => {
+      user.subject?.forEach((value: IClass, index: number) => {
         value.subject.teacher = value.teacher;
         arr.push({ ...value.subject, key: index });
       });

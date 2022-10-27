@@ -135,14 +135,6 @@ export const ListFile = () => {
       note: "",
     },
   ];
-  const downloadFile = {
-    title: "Tải xuống tệp",
-    className: "modal-change-name",
-    content:
-      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
 
   const seeDetails = {
     title: "Tổng quan về Thương mại Điện tử ở Việt Nam",

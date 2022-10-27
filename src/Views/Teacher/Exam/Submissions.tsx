@@ -1,12 +1,12 @@
-import { List, Avatar, Badge, Tag } from "antd";
-import { useState, useEffect } from "react";
+import { EditOutlined } from "@ant-design/icons";
+import { Avatar, List, Tag } from "antd";
 import VirtualList from "rc-virtual-list";
-import { useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../redux/store";
+import { useNavigate, useParams } from "react-router";
 import { getBank } from "../../../redux/reducers/banks.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
-import { EditOutlined } from "@ant-design/icons";
+import { AppDispatch } from "../../../redux/store";
 
 export interface ISubmit {
   user: UserState;

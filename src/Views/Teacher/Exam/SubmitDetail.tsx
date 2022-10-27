@@ -1,13 +1,11 @@
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import {
-  Badge,
   Button,
   Checkbox,
   Col,
   Radio,
   Row,
-  Space,
-  Statistic,
+  Space
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import lodash from "lodash";
@@ -19,10 +17,9 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import {
   getBank,
   IBanks,
-  updateBank,
+  updateBank
 } from "../../../redux/reducers/banks.reducer";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
-import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ISubmit } from "./Submissions";
 
@@ -39,7 +36,6 @@ export const SubmitDetail = () => {
   const [select, setSelect] = useState(0);
   const [data, setData] = useState<IBanks>();
   const navigate = useNavigate();
-  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
 
   let arr: IAns[] = [];
   const [questions, setQuestions] = useState<IAns[]>(arr);
@@ -96,34 +92,6 @@ export const SubmitDetail = () => {
     let base = 10 ** 3;
     let result = Math.round(num * base) / base;
     return result;
-  };
-
-  const handleSubmit = () => {
-    let arr: ISubmit[] = [];
-    submission.forEach((vl) => {
-      arr.push(vl);
-    });
-    arr.forEach((item: ISubmit) => {
-      if (item._id === submitId) {
-        console.debug(item.correctNum);
-        item.correctNum = 1;
-        // let score = (10 / submission.length) * item.correctNum;
-        // item.score = takeDecimalNumber(score);
-      }
-    });
-
-    setSubmission(arr);
-  };
-
-  const handleReject = (id: any) => {
-    setQuestions((value: IAns[]) =>
-      value.map((item: IAns) => {
-        if (item.id === id) {
-          item.ans = id;
-        }
-        return item;
-      })
-    );
   };
 
   const onFinish = () => {

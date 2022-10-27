@@ -11,9 +11,7 @@ import {
   Popover,
   Row,
   Space,
-  Table,
-  Tag,
-  Tooltip
+  Table, Tooltip
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -29,13 +27,13 @@ import {
 } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import { ReactComponent as Excel } from "../../../shared/img/icon/excel_file.svg";
+import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 
-import { ISubjectSelect } from "../../Leadership/Subject/Subject";
-import { ModalUploadFiles } from "./modalUploadFiles";
 import pdf from "../../../shared/img/pdf.png";
 import pptx from "../../../shared/img/pptx.png";
+import { ISubjectSelect } from "../../Leadership/Subject/Subject";
+import { ModalUploadFiles } from "./modalUploadFiles";
 
 export const Resources = () => {
   const [form] = Form.useForm();

@@ -1,12 +1,11 @@
 import { FileFilled, PlusOutlined } from "@ant-design/icons";
 import { Button, Collapse } from "antd";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { ILesson } from "../../../../redux/reducers/lesson.reducer";
 import { ITopic } from "../../../../redux/reducers/topic.reducer";
 
 export const EditTopic: React.FC<{ topic?: ITopic }> = (props) => {
   const navigate = useNavigate();
-  const params = useParams<{ id: string }>();
   const { Panel } = Collapse;
 
   console.debug(props.topic);
