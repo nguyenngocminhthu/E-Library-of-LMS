@@ -233,6 +233,7 @@ export const ModalSubject = (props: any) => {
               message: "Hãy thêm sinh viên",
             },
           ]}
+          className="fit-content"
         >
           <Select mode="multiple" allowClear placeholder="Nhập hoặc chọn">
             {student?.map((vl: UserState) => (

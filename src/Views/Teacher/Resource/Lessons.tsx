@@ -1,7 +1,7 @@
 import {
   DownloadOutlined,
   MoreOutlined,
-  UploadOutlined
+  UploadOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -12,7 +12,7 @@ import {
   Row,
   Space,
   Table,
-  Tooltip
+  Tooltip,
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -143,7 +143,7 @@ export const Lessons = () => {
         form={form}
       >
         <Form.Item label="Tên mới" name="userName" rules={[{ required: true }]}>
-          <div className="input-layout">
+          <div style={{ display: "flex" }}>
             <Input />
             .file
           </div>
@@ -256,7 +256,7 @@ export const Lessons = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="More">
+          <Tooltip title="Mở rộng">
             <Popover
               content={
                 <div className="popover">
@@ -295,7 +295,7 @@ export const Lessons = () => {
         <h1>Danh sách tài nguyên</h1>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Download">
+            <Tooltip title="Tải xuống">
               <Button
                 type="link"
                 icon={

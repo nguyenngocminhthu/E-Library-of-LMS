@@ -95,7 +95,7 @@ export const ListFile = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Detail">
+          <Tooltip title="Xem chi tiết">
             <Button
               onClick={() => modal.confirm(seeDetails)}
               icon={<EyeOutlined />}
@@ -188,7 +188,7 @@ export const ListFile = () => {
         <h1>Thương mại điện tử</h1>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Delete">
+            <Tooltip title="Xóa">
               <Button
                 type="link"
                 disabled={selectedRowKeys.length === 0 ? true : false}

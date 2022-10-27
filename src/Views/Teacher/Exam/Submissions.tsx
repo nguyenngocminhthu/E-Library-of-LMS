@@ -1,5 +1,5 @@
-import { EditOutlined } from "@ant-design/icons";
-import { Avatar, List, Tag } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
+import { Avatar, Button, List, Space, Tag, Tooltip } from "antd";
 import VirtualList from "rc-virtual-list";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -53,17 +53,17 @@ export const Submissions = () => {
                   </>
                 }
               />
-              <div>
-                <EditOutlined
+              <Tooltip title="Xem chi tiết">
+                <Button
                   onClick={() =>
                     navigate({
                       pathname: "/teacher/exams/submissions/detail",
                       search: `id=${params.id}?submitId=${item._id}`,
                     })
                   }
-                  className="c-pointer"
+                  icon={<EyeOutlined />}
                 />
-              </div>
+              </Tooltip>
             </List.Item>
           )}
         </VirtualList>

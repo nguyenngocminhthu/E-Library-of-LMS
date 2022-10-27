@@ -315,7 +315,7 @@ export const SubjectDetail = () => {
                           }
                         />
                       </Col>
-                      <Col span={21} offset={1}>
+                      <Col span={21} offset={1} className="row-style">
                         <div className="flex-row">
                           <h4>{value.user.userName}</h4>
                           <span

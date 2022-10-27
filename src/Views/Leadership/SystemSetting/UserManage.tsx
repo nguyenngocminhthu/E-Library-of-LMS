@@ -99,12 +99,13 @@ export const UserManage = () => {
     {
       title: "",
       key: "action",
+      width: 100,
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Edit">
+          <Tooltip title="Chỉnh sửa">
             <Button icon={<Edit />} />
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title="Xóa">
             <Button
               icon={
                 <Trash

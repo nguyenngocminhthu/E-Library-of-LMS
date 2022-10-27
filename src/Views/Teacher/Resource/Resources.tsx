@@ -152,7 +152,7 @@ export const Resources = () => {
         form={form}
       >
         <Form.Item label="Tên mới" name="userName" rules={[{ required: true }]}>
-          <div className="input-layout">
+          <div style={{ display: "flex" }}>
             <Input />
             .file
           </div>
@@ -274,7 +274,7 @@ export const Resources = () => {
       key: "action",
       render: (text: any, record: IFile) => (
         <Space size="middle">
-          <Tooltip title="More">
+          <Tooltip title="Mở rộng">
             <Popover
               content={
                 <div className="popover">
@@ -313,7 +313,7 @@ export const Resources = () => {
         <h1>Danh sách tài nguyên</h1>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Download">
+            <Tooltip title="Tải xuống">
               <Button
                 type="link"
                 icon={

@@ -46,6 +46,7 @@ export const PaySchoolFees = () => {
     {
       title: "",
       key: "action",
+      width: 100,
       render: (text: any, record: any) => (
         <Space size="middle">
           <Tooltip title="Chi tiết">

@@ -94,3 +94,10 @@ $color-site-layout: #fafbfc;
 .p1 {
   padding: 1rem;
 }
+
+.ant-table-tbody>tr>td,
+.ant-table-thead>tr>th,
+.ant-table tfoot>tr>td,
+.ant-table tfoot>tr>th {
+  padding: 10px;
+}

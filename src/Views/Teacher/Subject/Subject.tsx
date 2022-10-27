@@ -164,10 +164,9 @@ export const Subject = () => {
       {
         title: "Xem chi tiết",
         dataIndex: "details",
-        key: "details",
         render: (record: any) => (
           <Space size="middle">
-            <Tooltip title="Detail">
+            <Tooltip title="Xem chi tiết">
               <Button
                 onClick={() => navigate(`subjectdetail/${record.id}`)}
                 icon={<EyeOutlined />}
@@ -234,13 +233,14 @@ export const Subject = () => {
       title: "Số tài liệu chờ duyệt",
       dataIndex: "file",
       key: "file",
+      width: 200,
     },
     {
       title: "",
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="More">
+          <Tooltip title="Mở rộng">
             <Popover
               content={
                 <div className="popover">

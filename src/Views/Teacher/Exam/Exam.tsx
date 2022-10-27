@@ -430,7 +430,7 @@ export const Exam = () => {
       key: "action",
       render: (text: any, record: IBanks) => (
         <Space size="middle">
-          <Tooltip title="More">
+          <Tooltip title="Mở rộng">
             <Popover
               content={
                 <div className="popover">
@@ -513,7 +513,7 @@ export const Exam = () => {
         </Title>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Download">
+            <Tooltip title="Tải xuống">
               <Button
                 type="link"
                 disabled={selectedRowKeys.length === 0 ? true : false}

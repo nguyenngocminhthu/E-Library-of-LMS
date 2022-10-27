@@ -285,7 +285,7 @@ export const ListFile = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Detail">
+          <Tooltip title="Xem chi tiết">
             <Button
               onClick={() => modal.confirm(seeDetails)}
               icon={<EyeOutlined />}
@@ -395,7 +395,7 @@ export const ListFile = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Detail">
+          <Tooltip title="Xem chi tiết">
             <Button
               onClick={() => modal.confirm(seeDetails)}
               icon={<EyeOutlined />}
@@ -417,7 +417,7 @@ export const ListFile = () => {
         <h1>{subData?.subName}</h1>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Download">
+            <Tooltip title="Tải xuống">
               <Button
                 type="link"
                 disabled={selectedRowKeys.length === 0 ? true : false}
