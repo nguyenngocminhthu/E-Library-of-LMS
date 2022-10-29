@@ -82,11 +82,11 @@ export const Subject = () => {
     setTeacherSelect(option);
   }, [teacher]);
 
-  const handleFilterSubject = (e: any) => {
+  const handleFilterSubject = (query: string, e: any) => {
     if (e !== "") {
-      setFilter({ ...filter, subject: e });
+      setFilter({ ...filter, [`${query}`]: e });
     } else {
-      delete filter.subject;
+      delete filter[query];
       setFilter({ ...filter });
     }
   };
@@ -148,15 +148,6 @@ export const Subject = () => {
     }
   };
 
-  const handleFilterTeacher = (e: any) => {
-    if (e !== "") {
-      setFilter({ ...filter, teacher: e });
-    } else {
-      delete filter.teacher;
-      setFilter({ ...filter });
-    }
-  };
-
   const onFinishGroup = async (values: any) => {
     dispatch(createSubjectGroup(values)).then((rs) => {
       handleRefresh();
@@ -209,6 +200,10 @@ export const Subject = () => {
   };
 
   const status = [
+    {
+      name: "Tất cả tình trạng",
+      value: "",
+    },
     {
       name: "Đã phê duyệt",
       value: "DPD",
@@ -298,20 +293,21 @@ export const Subject = () => {
             textLabel="Bộ môn"
             defaultValue=""
             dataString={subjectSelect}
-            onChange={(e: any) => handleFilterSubject(e)}
+            onChange={(e: any) => handleFilterSubject("subGroup", e)}
           />
           <SelectComp
             style={{ display: "block" }}
             defaultValue=""
             textLabel="Giảng viên"
             dataString={teacherSelect}
-            onChange={(e: any) => handleFilterTeacher(e)}
+            onChange={(e: any) => handleFilterSubject("teacher", e)}
           />
           <SelectComp
             style={{ display: "block" }}
             textLabel="Tình trạng tài liệu"
-            defaultValue="Tất cả tình trạng"
+            defaultValue=""
             dataString={status}
+            onChange={(e: any) => handleFilterSubject("status", e)}
           />
         </Col>
         <Col className="table-header" span={8}>
