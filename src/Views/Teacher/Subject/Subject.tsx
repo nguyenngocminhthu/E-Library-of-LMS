@@ -1,5 +1,15 @@
 import { EyeOutlined, MoreOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Popover, Row, Select, Space, Table, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Popover,
+  Row,
+  Select,
+  Space,
+  Table,
+  Tooltip,
+} from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -11,10 +21,10 @@ import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getUser,
   updateProfile,
-  UserState
+  UserState,
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
+import "./Subject.style.scss";
 
 export const Subject = () => {
   const { Option } = Select;
@@ -36,7 +46,6 @@ export const Subject = () => {
         setData(list);
       });
   }, []);
-
 
   const handleClick = (id: string) => {
     navigate(`subjectdetail/${id}`);
@@ -101,20 +110,34 @@ export const Subject = () => {
         <Form.Item name="fileName" label="Giảng viên">
           <div>Hoa Hoa</div>
         </Form.Item>
-        <p style={{ fontWeight: "700", marginBottom: "16px" }}>Phân công vào các lớp giảng dạy</p>
-        <Form.Item name="chooseTopic" label="Tất cả lớp học" rules={[{ required: true }]}>
+        <p style={{ fontWeight: "700", marginBottom: "16px" }}>
+          Phân công vào các lớp giảng dạy
+        </p>
+        <Form.Item
+          name="chooseTopic"
+          label="Tất cả lớp học"
+          rules={[{ required: true }]}
+        >
           <Select disabled={disable} defaultValue="Tùy chọn lớp học">
             <Option value={0}>Văn hóa xã hội</Option>
             <Option value={1}>Sample</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="chooseTopic" label="Chọn chủ đề" rules={[{ required: true }]}>
+        <Form.Item
+          name="chooseTopic"
+          label="Chọn chủ đề"
+          rules={[{ required: true }]}
+        >
           <Select disabled={disable} defaultValue="Chọn chủ đề">
             <Option value={0}>Văn hóa xã hội</Option>
             <Option value={1}>Sample</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="fileNameTitle" label="Chọn bài giảng" rules={[{ required: true }]}>
+        <Form.Item
+          name="fileNameTitle"
+          label="Chọn bài giảng"
+          rules={[{ required: true }]}
+        >
           <Select disabled={disable} defaultValue="Chọn bài giảng">
             <Option value={0}>Văn hóa xã hội</Option>
             <Option value={1}>Sample</Option>
@@ -141,10 +164,9 @@ export const Subject = () => {
       {
         title: "Xem chi tiết",
         dataIndex: "details",
-        key: "details",
         render: (record: any) => (
           <Space size="middle">
-            <Tooltip title="Detail">
+            <Tooltip title="Xem chi tiết">
               <Button
                 onClick={() => navigate(`subjectdetail/${record.id}`)}
                 icon={<EyeOutlined />}
@@ -211,13 +233,14 @@ export const Subject = () => {
       title: "Số tài liệu chờ duyệt",
       dataIndex: "file",
       key: "file",
+      width: 200,
     },
     {
       title: "",
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="More">
+          <Tooltip title="Mở rộng">
             <Popover
               content={
                 <div className="popover">
@@ -267,9 +290,9 @@ export const Subject = () => {
       <Table
         columns={columns}
         dataSource={data}
-      // expandable={{ // remove class 
-      //   expandedRowRender: (record) => expandedRowRender(record),
-      // }}
+        // expandable={{ // remove class
+        //   expandedRowRender: (record) => expandedRowRender(record),
+        // }}
       />
     </div>
   );

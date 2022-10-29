@@ -1,14 +1,5 @@
 import { CloseOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  Radio,
-  Row,
-  Select
-} from "antd";
+import { Button, Checkbox, Col, Form, Input, Radio, Row, Select } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import lodash from "lodash";
 import { useEffect, useState } from "react";
@@ -20,16 +11,16 @@ import {
   createQuestion,
   getQuestion,
   IQuestion,
-  updateQuestion
+  updateQuestion,
 } from "../../../redux/reducers/question.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroups,
-  ISubjectGroup
+  ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
+import "./Question.style.scss";
 
 export const CreateQuestions = () => {
   const { Option } = Select;

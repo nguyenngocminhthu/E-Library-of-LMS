@@ -11,7 +11,7 @@ import {
   Skeleton,
   Space,
   Tabs,
-  Tooltip
+  Tooltip,
 } from "antd";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -24,12 +24,12 @@ import { createNoti } from "../../../redux/reducers/noti.reducer";
 import {
   getSubject,
   getSubjects,
-  ISubject
+  ISubject,
 } from "../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
+import "./Notification.style.scss";
 
 export const Notification = () => {
   const { TabPane } = Tabs;
@@ -130,7 +130,7 @@ export const Notification = () => {
   };
 
   return (
-    <div className="Noti-Page">
+    <div className="noti-page">
       <BreadcrumbComp title="Thông báo" />
       <div className="tab-notilist">
         <Tabs defaultActiveKey="1" type="card" size={"small"}>

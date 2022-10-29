@@ -2,7 +2,7 @@ import {
   AppstoreOutlined,
   FilterOutlined,
   MoreOutlined,
-  StarOutlined
+  StarOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -14,7 +14,7 @@ import {
   Space,
   Table,
   Tooltip,
-  Typography
+  Typography,
 } from "antd";
 import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
@@ -24,14 +24,11 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
-import {
-  getSubjects,
-  ISubject
-} from "../../../redux/reducers/subject.reducer";
+import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getUser,
   updateProfile,
-  UserState
+  UserState,
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
@@ -180,7 +177,7 @@ export const Subject = () => {
       key: "action",
       render: (text: any, record: ISubject) => (
         <Space size="middle">
-          <Tooltip title="More">
+          <Tooltip title="Mở rộng">
             <Popover
               content={
                 <div className="popover">
@@ -222,18 +219,6 @@ export const Subject = () => {
         <Title ellipsis level={5}>
           Danh sách môn học
         </Title>
-        <div style={{ display: "flex" }}>
-          <Dropdown.Button
-            placement="bottomLeft"
-            overlay={userMenu}
-            icon={<FilterOutlined />}
-          ></Dropdown.Button>
-          <Space style={{ marginLeft: "24px" }} size="middle">
-            <Tooltip title="All subject">
-              <Button icon={<AppstoreOutlined />} />
-            </Tooltip>
-          </Space>
-        </div>
       </div>
       <Row>
         <Col className="table-header" span={16}>

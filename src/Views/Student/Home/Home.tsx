@@ -4,7 +4,7 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import math from "../../../shared/img/math.png";
 import ppt from "../../../shared/img/ppt.png";
-import "./style.scss";
+import "./Home.style.scss";
 
 interface IFile {
   learn: string;

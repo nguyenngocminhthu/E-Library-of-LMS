@@ -11,7 +11,7 @@ import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
   getSubject,
   getSubjects,
-  ISubject
+  ISubject,
 } from "../../../redux/reducers/subject.reducer";
 import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";

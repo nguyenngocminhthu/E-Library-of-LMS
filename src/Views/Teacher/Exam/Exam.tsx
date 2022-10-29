@@ -2,7 +2,7 @@ import {
   DesktopOutlined,
   DownloadOutlined,
   MoreOutlined,
-  UploadOutlined
+  UploadOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -18,7 +18,7 @@ import {
   Table,
   Tag,
   Tooltip,
-  Typography
+  Typography,
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -42,7 +42,7 @@ import {
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
-import "./style.scss";
+import "./Exam.style.scss";
 
 export const Exam = () => {
   const { Title } = Typography;
@@ -430,7 +430,7 @@ export const Exam = () => {
       key: "action",
       render: (text: any, record: IBanks) => (
         <Space size="middle">
-          <Tooltip title="More">
+          <Tooltip title="Mở rộng">
             <Popover
               content={
                 <div className="popover">
@@ -513,7 +513,7 @@ export const Exam = () => {
         </Title>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Download">
+            <Tooltip title="Tải xuống">
               <Button
                 type="link"
                 disabled={selectedRowKeys.length === 0 ? true : false}

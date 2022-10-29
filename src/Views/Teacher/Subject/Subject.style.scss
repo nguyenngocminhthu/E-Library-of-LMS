@@ -1,0 +1,246 @@
+@import "../../../shared/styles/variable";
+
+.teacher-subject {
+
+  .ant-checkbox,
+  .ant-radio {
+    transform: scale(1.2);
+  }
+
+  .ant-checkbox-inner {
+    border: 2px solid #0b80ec;
+  }
+
+  .ant-form label {
+    align-items: center;
+  }
+
+  .ant-list {
+    border: 1px solid #f2f2f2;
+    border-radius: 8px;
+  }
+
+  .ant-list-item {
+    margin: 0px 20px 0px 20px;
+  }
+
+  .space-with-noti {
+    margin-bottom: 24px;
+  }
+
+  .btn-create-min {
+    align-items: center;
+    padding: 0px;
+    background: $color-primary-light;
+    border: 1px solid $color-primary;
+    border-radius: 4px;
+    color: $color-black;
+    height: 1.5rem;
+    padding: 0px 24px;
+    float: right;
+  }
+
+  .selectcomp {
+    margin: 0 1rem 1rem 0;
+  }
+
+  .lesson-select {
+    .selectcomp .select {
+      width: 100% !important;
+    }
+  }
+
+  .selectcomp .select {
+    width: fit-content !important;
+    width: -moz-fit-content;
+    margin-right: 12px;
+  }
+
+  .Noti-Page {
+    .tab-notilist {
+      .ant-form-horizontal .ant-form-item-label {
+        text-align: left;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .add-description {
+    background-color: $color-primary-light;
+
+    .anticon svg {
+      color: $color-ant-input;
+      font-size: none;
+    }
+
+    color: $color-black;
+    font-size: none;
+  }
+
+  .add-description-input {
+    background-color: $color-background-secondary;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 1px dashed #ff7506;
+    box-sizing: border-box;
+    border-radius: 16px;
+  }
+
+  .group-btn-add {
+    text-align: end;
+    margin-top: 16px;
+  }
+
+  .sub-title {
+    font-weight: 700;
+    margin: 16px;
+
+    span {
+      color: $color-primary;
+    }
+  }
+
+  .question {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    padding-right: 1rem;
+
+    h4 {
+      font-weight: $font-weight-bold;
+      color: $color-text-light;
+      margin-top: 0 !important;
+    }
+
+    .sub-content {
+      padding-top: 0.5rem;
+      width: 48%;
+      margin-bottom: 1rem;
+      height: fit-content;
+      border: 1px solid black;
+      padding: 12px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      h4 {
+        color: $color-primary;
+        margin-bottom: 0;
+      }
+
+      .row-style {
+        background-color: #F3F3F3;
+        padding: 8px;
+
+        .flex-row {
+          display: flex;
+          align-items: center;
+
+          .anticon svg {
+            margin-right: 0.2rem;
+          }
+
+          .gray {
+            color: gray;
+          }
+        }
+      }
+    }
+  }
+
+  .box-cover {
+    background: $color-white;
+    border-radius: 16px;
+    height: fit-content;
+    overflow: auto;
+    border: 1px solid rgba(140, 140, 140, 0.35);
+
+    .header-box {
+      background: $color-second-text;
+
+      .text-header {
+        color: $color-white;
+        font-size: 0.875rem;
+        font-weight: bold;
+        padding: 16px;
+        margin-left: 36px;
+      }
+    }
+
+    .add-subject-container {
+      padding: 28px 56px;
+    }
+
+    .note-span {
+      font-style: italic;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 20px;
+      opacity: 0.5;
+    }
+  }
+
+  .action-btn-add {
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .question-and-answer-container {
+    padding: 16px 0px 16px 40px;
+    display: flex;
+    place-content: space-between;
+    background: #ffffff;
+    box-shadow: 4px 4px 25px 4px rgba(154, 202, 245, 0.25);
+    border-radius: 8px 8px 0px 0px;
+    margin-top: 8px;
+  }
+}
+
+.sun-editor .se-toolbar {
+  text-align: left;
+}
+
+.select-margin {
+  margin-right: 16px;
+}
+
+.table-nested {
+  .ant-table {
+    margin: -16px 36px 0px 42px !important;
+  }
+
+  .ant-table-cell {
+    text-align: center;
+  }
+
+  .ant-table-thead>tr>th {
+    background: $color-secondary-dark-light;
+  }
+}
+
+.modal-course-manage {
+  .ant-modal .ant-modal-confirm-content {
+    text-align: left !important;
+  }
+}
+
+.dropdown-create {
+  .ant-dropdown-menu {
+    background-color: transparent;
+    box-shadow: none;
+
+    .ant-dropdown-menu-item:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+.extra-style {
+  .ant-btn {
+    background: transparent;
+    color: $color-primary;
+    border-color: transparent;
+  }
+}

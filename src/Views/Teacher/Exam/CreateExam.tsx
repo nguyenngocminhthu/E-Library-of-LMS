@@ -8,7 +8,7 @@ import {
   Modal,
   Radio,
   Row,
-  Select
+  Select,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import lodash from "lodash";
@@ -23,11 +23,11 @@ import { ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getSubjectGroup,
   getSubjectGroups,
-  ISubjectGroup
+  ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
+import "./Exam.style.scss";
 interface IQues {
   quesName: string;
   answers: string[];

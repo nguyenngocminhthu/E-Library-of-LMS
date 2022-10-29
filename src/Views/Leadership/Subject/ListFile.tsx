@@ -10,7 +10,7 @@ import {
   Space,
   Table,
   Tag,
-  Tooltip
+  Tooltip,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import modal from "antd/lib/modal";
@@ -40,7 +40,7 @@ import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
 import pdf from "../../../shared/img/pdf.png";
 import pptx from "../../../shared/img/pptx.png";
 import { ReactComponent as Excel } from "../../../shared/img/icon/excel_file.svg";
-import "./style.scss";
+import "./Subject.style.scss";
 
 export const ListFile = () => {
   const params = useParams<{ idSub: string }>();
@@ -285,7 +285,7 @@ export const ListFile = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Detail">
+          <Tooltip title="Xem chi tiết">
             <Button
               onClick={() => modal.confirm(seeDetails)}
               icon={<EyeOutlined />}
@@ -395,7 +395,7 @@ export const ListFile = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Detail">
+          <Tooltip title="Xem chi tiết">
             <Button
               onClick={() => modal.confirm(seeDetails)}
               icon={<EyeOutlined />}
@@ -417,7 +417,7 @@ export const ListFile = () => {
         <h1>{subData?.subName}</h1>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Download">
+            <Tooltip title="Tải xuống">
               <Button
                 type="link"
                 disabled={selectedRowKeys.length === 0 ? true : false}

@@ -3,17 +3,9 @@ import {
   HeartFilled,
   HeartOutlined,
   MessageOutlined,
-  PlayCircleFilled
+  PlayCircleFilled,
 } from "@ant-design/icons";
-import {
-  Avatar,
-  Button,
-  Col,
-  Collapse,
-  Form,
-  Input, Row,
-  Tabs
-} from "antd";
+import { Avatar, Button, Col, Collapse, Form, Input, Row, Tabs } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -29,7 +21,7 @@ import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ModalReply } from "../../Student/Subject/ModalReply";
-import "./style.scss";
+import "./Subject.style.scss";
 
 export const ViewSubject = () => {
   const { Panel } = Collapse;

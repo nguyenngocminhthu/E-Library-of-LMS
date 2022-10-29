@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
+import { Help } from "../Components/Help/Help";
+import { Profile } from "../Components/Profile/Profile";
 import { TeacherLayout } from "../Layout/TeacherLayout";
-import { Help } from "../Views/Help/Help";
-import { Profile } from "../Views/Profile/Profile";
 import { CreateExam } from "../Views/Teacher/Exam/CreateExam";
 import { Exam } from "../Views/Teacher/Exam/Exam";
 import { ExamDetails } from "../Views/Teacher/Exam/ExamDetails";
@@ -9,7 +9,7 @@ import { Submissions } from "../Views/Teacher/Exam/Submissions";
 import { SubmitDetail } from "../Views/Teacher/Exam/SubmitDetail";
 import { Home } from "../Views/Teacher/Home/Home";
 import { Notification } from "../Views/Teacher/Notification/Notification";
-import NotiSetting from "../Views/Teacher/Notification/NotiSetting";
+import NotificationSetting from "../Views/Teacher/Notification/NotificationSetting";
 import { CreateQuestions } from "../Views/Teacher/Question/CreateQuestions";
 import { Question } from "../Views/Teacher/Question/Question";
 import { Lessons } from "../Views/Teacher/Resource/Lessons";
@@ -84,7 +84,10 @@ export const Teacher: React.FC = () => {
 
         <Route path="/teacher/notification" element={<Notification />} />
 
-        <Route path="/teacher/notification/setting" element={<NotiSetting />} />
+        <Route
+          path="/teacher/notification/setting"
+          element={<NotificationSetting />}
+        />
         <Route path="/teacher/profile" element={<Profile />} />
       </Route>
     </Routes>
