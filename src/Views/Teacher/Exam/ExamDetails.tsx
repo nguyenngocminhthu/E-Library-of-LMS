@@ -7,7 +7,7 @@ import { useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { getBank, IBanks } from "../../../redux/reducers/banks.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
+import "./Exam.style.scss";
 
 export const ExamDetails = () => {
   const dispatch: AppDispatch = useDispatch();

@@ -1,38 +1,32 @@
 import {
   CaretRightOutlined,
-  DislikeFilled,
-  DislikeOutlined,
-  LikeFilled,
-  LikeOutlined,
+  HeartFilled,
+  HeartOutlined,
+  MessageOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
   Button,
-  Checkbox,
   Col,
   Collapse,
-  Comment,
-  Divider,
   Form,
   Input,
-  List,
   Modal,
   Row,
   Select,
-  Skeleton,
   Tabs,
   Tooltip,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-import modal from "antd/lib/modal";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import SunEditor from "suneditor-react";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import SearchComponent from "../../../../Components/SearchComponent";
 import { ISelect, SelectComp } from "../../../../Components/Select";
+import { ILesson } from "../../../../redux/reducers/lesson.reducer";
 import {
   createNoti,
   getNotis,
@@ -52,10 +46,7 @@ import {
 import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../../redux/store";
-import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
 import { ModalReply } from "../../../Student/Subject/ModalReply";
-import { ILesson } from "../../../../redux/reducers/lesson.reducer";
-import lodash from "lodash";
 
 export const SubjectDetail = () => {
   const { Option } = Select;
@@ -324,7 +315,7 @@ export const SubjectDetail = () => {
                           }
                         />
                       </Col>
-                      <Col span={21} offset={1}>
+                      <Col span={21} offset={1} className="row-style">
                         <div className="flex-row">
                           <h4>{value.user.userName}</h4>
                           <span

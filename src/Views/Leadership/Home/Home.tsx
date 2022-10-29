@@ -10,13 +10,13 @@ import { SelectComp } from "../../../Components/Select";
 import { totalBank } from "../../../redux/reducers/banks.reducer";
 import {
   ISubject,
-  totalSubject
+  totalSubject,
 } from "../../../redux/reducers/subject.reducer";
 import { getUsers, UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
-import "./style.scss"; // Alt Shift O
-import { SocketContext } from '../../../context/socket.context';
+import "./Home.style.scss"; // Alt Shift O
+import { SocketContext } from "../../../context/socket.context";
 
 interface IFile {
   fileName: string;
@@ -156,10 +156,13 @@ export const Home = () => {
         <Col span={6}>
           <Card className="wrapper">
             <h5>Thống kê truy cập</h5>
-            <Card className="inside" style={{
-              height: 180,
-              overflow: 'auto',
-            }}>
+            <Card
+              className="inside"
+              style={{
+                height: 180,
+                overflow: "auto",
+              }}
+            >
               <Row>
                 <Col span={15} offset={1}>
                   <p>Đang truy cập:</p>
@@ -203,7 +206,7 @@ export const Home = () => {
                         <Title ellipsis level={5}>
                           {item.fileName}
                         </Title>
-                        <p>{moment(item.createdAt).format('DD/MM/YYYY')}</p>
+                        <p>{moment(item.createdAt).format("DD/MM/YYYY")}</p>
                         <h6>{item.subject}</h6>
                         <span>Giảng viên: {item.teacher}</span>
                       </Col>

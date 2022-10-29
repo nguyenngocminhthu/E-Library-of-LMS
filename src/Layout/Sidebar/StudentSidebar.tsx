@@ -6,7 +6,9 @@ import { ReactComponent as Home } from "../../shared/img/icon/home.svg";
 import logosecond from "../../shared/img/icon/logo-second.svg";
 import { ReactComponent as Book } from "../../shared/img/icon/u_book-open.svg";
 import { ReactComponent as Question } from "../../shared/img/icon/u_comment-question.svg";
+import { ReactComponent as FeeManage } from "../../shared/img/icon/fi_search money.svg";
 import "../../shared/styles/layout-style/sidebar.scss";
+import SubMenu from "antd/lib/menu/SubMenu";
 const { Sider } = Layout;
 
 export const StudentSidebar: React.FC = () => {
@@ -41,12 +43,17 @@ export const StudentSidebar: React.FC = () => {
             key="subject"
             icon={<Book />}
           ></Menu.Item>
-
           <Menu.Item
             onClick={() => handleSelect(["notification"])}
             key="notification"
             icon={<Bell />}
           ></Menu.Item>
+          <Menu.Item
+            onClick={() => handleSelect(["payschoolfees", "feemanage"])}
+            key="feemanage"
+            icon={<FeeManage />}
+          ></Menu.Item>
+
           <Menu.Item
             onClick={() => handleSelect(["help"])}
             key="help"
@@ -74,6 +81,20 @@ export const StudentSidebar: React.FC = () => {
           >
             Thông báo
           </Menu.Item>
+          <SubMenu key="feemanage" title="Quản lý học phí">
+            <Menu.Item
+              onClick={() => handleSelect(["payschoolfees", "feemanage"])}
+              key="payschoolfees"
+            >
+              Thanh toán trực tuyến
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => handleSelect(["debtreport", "feemanage"])}
+              key="debtreport"
+            >
+              Tra cứu công nợ
+            </Menu.Item>
+          </SubMenu>
           <Menu.Item onClick={() => handleSelect(["help"])} key="help">
             Trợ giúp
           </Menu.Item>

@@ -1,0 +1,127 @@
+@import "../../../shared/styles/variable";
+
+.icon-custom {
+  .anticon svg {
+    font-size: 20px !important;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+  }
+}
+
+.popover {
+  p {
+    border-bottom: 1px solid orange;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.new-exam-form {
+  h3 {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .ant-form-item {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .question-number {
+    .ant-form-item-control-input {
+      display: inline-block;
+      padding-top: 5px;
+    }
+
+    .ant-form-item-control-input-content {
+      text-align: center;
+      position: relative;
+      height: 100%;
+
+      .answer {
+        display: block;
+        margin-top: 0;
+      }
+
+      .anticon {
+        position: absolute;
+        right: 0;
+        top: 8px;
+      }
+    }
+  }
+
+  .answer-form {
+    .ant-form-item-control-input-content {
+      text-align: right;
+    }
+  }
+
+  .answer-input {
+    .ant-form-item-control-input-content {
+      display: flex;
+      align-items: center;
+    }
+
+    .dynamic-delete-button {
+      margin-left: 1rem;
+      color: #823B00;
+    }
+  }
+}
+
+.upload-file {
+  .ant-form-item-control-input {
+    text-align: left;
+  }
+
+  .ant-upload-list {
+    align-items: unset;
+  }
+
+  .ant-btn {
+    background-color: #ffd8b8 !important;
+    border: 1px solid $color-primary !important;
+    color: #373839;
+    border-radius: 4px !important;
+    font-weight: 700 !important;
+  }
+
+  .anticon svg {
+    color: $color-primary !important;
+    font-size: 18px;
+  }
+}
+
+.span-download-file {
+  color: $color-primary;
+  font-style: italic;
+
+  .anticon svg {
+    font-size: 20px;
+  }
+}
+
+.create-exam-question {
+  .line {
+    border-top: 1px solid $color-background-cancel;
+    margin: 16px 0px 16px 0px;
+  }
+
+  .small-input {
+    width: 30%;
+  }
+
+  .display-flex {
+    display: flex;
+  }
+
+  .span-detail {
+    margin: auto;
+    margin-left: 8px;
+  }
+}

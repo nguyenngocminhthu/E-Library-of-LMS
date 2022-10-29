@@ -1,7 +1,7 @@
 import {
   DownloadOutlined,
   MoreOutlined,
-  UploadOutlined
+  UploadOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -12,7 +12,7 @@ import {
   Row,
   Space,
   Table,
-  Tooltip
+  Tooltip,
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -37,7 +37,6 @@ import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
 import lodash from "lodash";
 
 export const Lessons = () => {
-  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -125,41 +124,6 @@ export const Lessons = () => {
     },
   ];
 
-  const columnsTable = [
-    {
-      title: "Tên file",
-      dataIndex: "title",
-      key: "title",
-    },
-    // {
-    //   title: "Thể loại",
-    //   dataIndex: "video",
-    //   key: "video",
-    //   render: (video: string) => {
-    //     let vid = video.split("/");
-    //     let vidName = vid[vid.length - 1];
-    //     console.debug(vidName);
-    //     return <>test</>;
-    //   },
-    // },
-    {
-      title: "Kích thước",
-      dataIndex: "size",
-      key: "size",
-    },
-    {
-      title: "",
-      key: "action",
-      render: (text: any, record: any) => (
-        <Delete
-          style={{
-            fontSize: "24px",
-          }}
-        />
-      ),
-    },
-  ];
-
   const seeDetails = {
     title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
     width: "90%",
@@ -179,7 +143,7 @@ export const Lessons = () => {
         form={form}
       >
         <Form.Item label="Tên mới" name="userName" rules={[{ required: true }]}>
-          <div className="input-layout">
+          <div style={{ display: "flex" }}>
             <Input />
             .file
           </div>
@@ -292,7 +256,7 @@ export const Lessons = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="More">
+          <Tooltip title="Mở rộng">
             <Popover
               content={
                 <div className="popover">
@@ -331,7 +295,7 @@ export const Lessons = () => {
         <h1>Danh sách tài nguyên</h1>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Download">
+            <Tooltip title="Tải xuống">
               <Button
                 type="link"
                 icon={

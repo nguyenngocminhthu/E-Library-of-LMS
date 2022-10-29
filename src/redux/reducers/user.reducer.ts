@@ -144,7 +144,7 @@ export interface UserState {
   recentSubject: any[];
   recentSubjectId: string[];
   avt: string;
-  classes: IClass[];
+  subject: IClass[];
 }
 
 interface IUser {

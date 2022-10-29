@@ -7,9 +7,9 @@ import {
   List,
   Row,
   Skeleton,
-  Typography
+  Typography,
 } from "antd";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { AnaCard } from "../../../Components/AnaCard";
@@ -19,25 +19,17 @@ import { getBanks, totalBank } from "../../../redux/reducers/banks.reducer";
 import { getFiles, totalFile } from "../../../redux/reducers/file.reducer";
 import {
   getLessons,
-  totalLesson
+  totalLesson,
 } from "../../../redux/reducers/lesson.reducer";
 import {
   getSubjects,
   ISubject,
-  totalSubject
+  totalSubject,
 } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
 import WEB23 from "../../../shared/img/WEB23.png";
-import { SocketContext } from '../../../context/socket.context';
-interface IData {
-  fileName: string;
-  subject: string;
-  fileCode: string;
-  teacher: string;
-  avt: string;
-}
 
 interface IFile {
   fileName: string;
@@ -56,7 +48,6 @@ export const Home = () => {
   const lessons: any = useSelector(totalLesson);
   const files: any = useSelector(totalFile);
   const exams = useSelector(totalBank);
-  const client = useContext(SocketContext);
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -189,9 +180,7 @@ export const Home = () => {
                     <h5>{item.subName}</h5>
                     <h6>{item.subCode}</h6>
 
-                    <span style={{ position: "absolute", bottom: 0 }}>
-                      Đang dạy 5 lớp
-                    </span>
+                    <span style={{ bottom: 0 }}>Đang dạy 5 lớp</span>
                   </Col>
                 </Row>
               </Card>
@@ -247,11 +236,13 @@ export const Home = () => {
               </span>
             </div>
 
-            <Card className="inside"
+            <Card
+              className="inside"
               style={{
                 height: 250,
-                overflow: 'auto',
-              }}>
+                overflow: "auto",
+              }}
+            >
               <InfiniteScroll
                 dataLength={data.length}
                 next={loadMoreData}

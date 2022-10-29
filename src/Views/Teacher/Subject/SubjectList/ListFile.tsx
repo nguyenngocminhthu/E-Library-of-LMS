@@ -8,15 +8,15 @@ import {
   Space,
   Table,
   Tag,
-  Tooltip
+  Tooltip,
 } from "antd";
 import modal from "antd/lib/modal";
 import { useState } from "react";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import SearchComponent from "../../../../Components/SearchComponent";
 import { SelectComp } from "../../../../Components/Select";
-import "../style.scss";
 import { ModalAdd } from "./ModalAdd";
+import "../Subject.style.scss";
 
 const status = [
   {
@@ -95,7 +95,7 @@ export const ListFile = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Detail">
+          <Tooltip title="Xem chi tiết">
             <Button
               onClick={() => modal.confirm(seeDetails)}
               icon={<EyeOutlined />}
@@ -135,14 +135,6 @@ export const ListFile = () => {
       note: "",
     },
   ];
-  const downloadFile = {
-    title: "Tải xuống tệp",
-    className: "modal-change-name",
-    content:
-      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
 
   const seeDetails = {
     title: "Tổng quan về Thương mại Điện tử ở Việt Nam",
@@ -196,7 +188,7 @@ export const ListFile = () => {
         <h1>Thương mại điện tử</h1>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Delete">
+            <Tooltip title="Xóa">
               <Button
                 type="link"
                 disabled={selectedRowKeys.length === 0 ? true : false}

@@ -1,5 +1,15 @@
 import { LinkOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, Modal, Radio, Row, Select, Table } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Modal,
+  Radio,
+  Row,
+  Select,
+  Table,
+} from "antd";
 import { useState } from "react";
 import SearchComponent from "../../../../Components/SearchComponent";
 import { ReactComponent as Excel } from "../../../../shared/img/icon/excel_file.svg";
@@ -111,7 +121,11 @@ export const ModalAdd: React.FC<{
         >
           <div>Thương mại điện tử</div>
         </Form.Item>
-        <Form.Item name="topic" label="Chọn chủ đề" rules={[{ required: true }]}>
+        <Form.Item
+          name="topic"
+          label="Chọn chủ đề"
+          rules={[{ required: true }]}
+        >
           <Select defaultValue="Chọn chủ đề" className="select">
             <Option value={0}>Văn hóa xã hội</Option>
             <Option value={1}>Sample</Option>

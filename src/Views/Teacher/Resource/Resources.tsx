@@ -1,7 +1,7 @@
 import {
   DownloadOutlined,
   MoreOutlined,
-  UploadOutlined
+  UploadOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -12,8 +12,7 @@ import {
   Row,
   Space,
   Table,
-  Tag,
-  Tooltip
+  Tooltip,
 } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -23,19 +22,16 @@ import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
 import { getFiles, IFile } from "../../../redux/reducers/file.reducer";
-import {
-  getSubjects,
-  ISubject
-} from "../../../redux/reducers/subject.reducer";
+import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import { ReactComponent as Excel } from "../../../shared/img/icon/excel_file.svg";
+import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 
-import { ISubjectSelect } from "../../Leadership/Subject/Subject";
-import { ModalUploadFiles } from "./modalUploadFiles";
 import pdf from "../../../shared/img/pdf.png";
 import pptx from "../../../shared/img/pptx.png";
+import { ISubjectSelect } from "../../Leadership/Subject/Subject";
+import { ModalUploadFiles } from "./modalUploadFiles";
 
 export const Resources = () => {
   const [form] = Form.useForm();
@@ -156,7 +152,7 @@ export const Resources = () => {
         form={form}
       >
         <Form.Item label="Tên mới" name="userName" rules={[{ required: true }]}>
-          <div className="input-layout">
+          <div style={{ display: "flex" }}>
             <Input />
             .file
           </div>
@@ -278,7 +274,7 @@ export const Resources = () => {
       key: "action",
       render: (text: any, record: IFile) => (
         <Space size="middle">
-          <Tooltip title="More">
+          <Tooltip title="Mở rộng">
             <Popover
               content={
                 <div className="popover">
@@ -317,7 +313,7 @@ export const Resources = () => {
         <h1>Danh sách tài nguyên</h1>
         <div style={{ display: "flex" }}>
           <Space className="" size="middle">
-            <Tooltip title="Download">
+            <Tooltip title="Tải xuống">
               <Button
                 type="link"
                 icon={

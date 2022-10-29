@@ -21,7 +21,7 @@ import {
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ModalSubject } from "./ModalSubject";
-import "./style.scss";
+import "./Subject.style.scss";
 
 export interface ISubjectSelect {
   name: string;
@@ -268,23 +268,16 @@ export const Subject = () => {
     {
       title: "",
       key: "action",
+      width: 100,
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Detail">
+          <Tooltip title="Chi tiết">
             <Button
               onClick={() => navigate(`/subjects/listfile/${record.id}`)}
               icon={<UnorderedListOutlined />}
             />
           </Tooltip>
-        </Space>
-      ),
-    },
-    {
-      title: "",
-      key: "delete",
-      render: (text: any, record: any) => (
-        <Space size="middle">
-          <Tooltip title="Detail">
+          <Tooltip title="Chỉnh sửa">
             <Button
               onClick={() => handleModal("edit", record)}
               icon={<EditOutlined />}
@@ -298,9 +291,8 @@ export const Subject = () => {
   return (
     <div className="subject">
       <BreadcrumbComp title="Danh sách môn học" />
-
       <Row>
-        <Col className="table-header" span={12}>
+        <Col className="table-header" span={11}>
           <SelectComp
             style={{ display: "block" }}
             textLabel="Bộ môn"
@@ -327,6 +319,18 @@ export const Subject = () => {
         </Col>
         <Col
           className="table-header"
+          span={3}
+          style={{
+            display: "flex",
+            justifyContent: "right",
+          }}
+        >
+          <Button onClick={handleSubGroup} type="primary">
+            Tạo tổ bộ môn
+          </Button>
+        </Col>
+        <Col
+          className="table-header"
           span={2}
           style={{
             display: "flex",
@@ -336,18 +340,6 @@ export const Subject = () => {
         >
           <Button onClick={() => handleModal("create")} type="primary">
             Tạo mới
-          </Button>
-        </Col>
-        <Col
-          className="table-header"
-          span={2}
-          style={{
-            display: "flex",
-            justifyContent: "right",
-          }}
-        >
-          <Button onClick={handleSubGroup} type="primary">
-            Tạo tổ bộ môn
           </Button>
         </Col>
       </Row>

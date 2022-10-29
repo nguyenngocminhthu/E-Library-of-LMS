@@ -39,11 +39,13 @@ $color-site-layout: #fafbfc;
   background-color: rgba(187, 185, 185, 0.392);
   z-index: 99999;
 }
+
 .d-flex {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
 }
+
 .f-direction {
   flex-direction: row;
   column-gap: 1rem;
@@ -64,6 +66,7 @@ $color-site-layout: #fafbfc;
 .mr {
   margin-right: 1rem;
 }
+
 .t-right {
   text-align: right;
 }
@@ -75,6 +78,7 @@ $color-site-layout: #fafbfc;
 .mb {
   margin-bottom: 1rem;
 }
+
 .w-100 {
   width: 100%;
 }
@@ -86,6 +90,14 @@ $color-site-layout: #fafbfc;
 .c-pointer {
   cursor: pointer;
 }
+
 .p1 {
   padding: 1rem;
+}
+
+.ant-table-tbody>tr>td,
+.ant-table-thead>tr>th,
+.ant-table tfoot>tr>td,
+.ant-table tfoot>tr>th {
+  padding: 10px;
 }

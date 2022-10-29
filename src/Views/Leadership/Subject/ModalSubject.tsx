@@ -11,7 +11,7 @@ import {
 import { ISubjectGroup } from "../../../redux/reducers/subjectgroup.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./style.scss";
+import "./Subject.style.scss";
 
 export const ModalSubject = (props: any) => {
   const dispatch: AppDispatch = useDispatch();
@@ -233,6 +233,7 @@ export const ModalSubject = (props: any) => {
               message: "Hãy thêm sinh viên",
             },
           ]}
+          className="fit-content"
         >
           <Select mode="multiple" allowClear placeholder="Nhập hoặc chọn">
             {student?.map((vl: UserState) => (

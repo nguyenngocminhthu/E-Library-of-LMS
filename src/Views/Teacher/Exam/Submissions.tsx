@@ -1,12 +1,12 @@
-import { List, Avatar, Badge, Tag } from "antd";
-import { useState, useEffect } from "react";
+import { EyeOutlined } from "@ant-design/icons";
+import { Avatar, Button, List, Space, Tag, Tooltip } from "antd";
 import VirtualList from "rc-virtual-list";
-import { useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../redux/store";
+import { useNavigate, useParams } from "react-router";
 import { getBank } from "../../../redux/reducers/banks.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
-import { EditOutlined } from "@ant-design/icons";
+import { AppDispatch } from "../../../redux/store";
 
 export interface ISubmit {
   user: UserState;
@@ -53,17 +53,17 @@ export const Submissions = () => {
                   </>
                 }
               />
-              <div>
-                <EditOutlined
+              <Tooltip title="Xem chi tiết">
+                <Button
                   onClick={() =>
                     navigate({
                       pathname: "/teacher/exams/submissions/detail",
                       search: `id=${params.id}?submitId=${item._id}`,
                     })
                   }
-                  className="c-pointer"
+                  icon={<EyeOutlined />}
                 />
-              </div>
+              </Tooltip>
             </List.Item>
           )}
         </VirtualList>

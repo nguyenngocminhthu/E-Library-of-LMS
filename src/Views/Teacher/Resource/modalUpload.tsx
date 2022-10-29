@@ -10,7 +10,7 @@ import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
   getSubject,
   getSubjects,
-  ISubject
+  ISubject,
 } from "../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../redux/store";
