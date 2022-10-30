@@ -125,3 +125,34 @@
     margin-left: 8px;
   }
 }
+
+.submissions-style {
+  .ant-col-4 {
+    display: flex;
+  }
+
+  .box-img-style {
+    width: 56px;
+    height: 56px;
+    padding: 4px;
+    border: solid 1px #ccc;
+    border-radius: 20%;
+
+    .img-style {
+      width: 48px;
+      height: 48px
+    }
+  }
+
+  .text-style {
+    margin-left: 8px;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  .ant-row-space-between {
+    margin-bottom: 24px;
+  }
+}

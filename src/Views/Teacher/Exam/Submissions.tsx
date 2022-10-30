@@ -1,12 +1,24 @@
 import { EyeOutlined } from "@ant-design/icons";
-import { Avatar, Button, List, Space, Tag, Tooltip } from "antd";
+import {
+  Avatar,
+  Button,
+  Col,
+  List,
+  Row,
+  Space,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
 import VirtualList from "rc-virtual-list";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
+import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { getBank } from "../../../redux/reducers/banks.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
+import "./Exam.style.scss";
 
 export interface ISubmit {
   user: UserState;
@@ -17,6 +29,7 @@ export interface ISubmit {
 }
 
 export const Submissions = () => {
+  const { Title } = Typography;
   const [data, setData] = useState<ISubmit[]>([]);
   const params = useParams();
   const dispatch: AppDispatch = useDispatch();
@@ -34,14 +47,82 @@ export const Submissions = () => {
   }, [params.id]);
 
   return (
-    <div>
+    <div className="submissions-style">
+      <BreadcrumbComp
+        title="Bài nộp"
+        prevFirstPageTitle="Ngân hàng đề thi"
+        prevFirstPage="teacher/exams"
+      />
+      <Title ellipsis level={5}>
+        Bài kiểm tra môn Cơ sở dữ liệu
+      </Title>
+      <p>
+        Thời gian:
+        <span style={{ color: "blue" }}>
+          10:00 29/09/2022 - 10:15 29/09/2022
+        </span>
+      </p>
+      <Row justify="space-between">
+        <Col span={4}>
+          <div className="box-img-style">
+            <img
+              className="img-style"
+              alt="example"
+              src={require("../../../shared/img/user-location.png")}
+            />
+          </div>
+          <div className="text-style">
+            <h2>1/30</h2>
+            <span>người trả lời</span>
+          </div>
+        </Col>
+        <Col span={4}>
+          <div className="box-img-style">
+            <img
+              className="img-style"
+              alt="example"
+              src={require("../../../shared/img/writing-down.png")}
+            />
+          </div>
+          <div className="text-style">
+            <h2>1</h2>
+            <span>lượt trả lời</span>
+          </div>
+        </Col>
+        <Col span={4}>
+          <div className="box-img-style">
+            <img
+              className="img-style"
+              alt="example"
+              src={require("../../../shared/img/checkmark.png")}
+            />
+          </div>
+          <div className="text-style">
+            <h2>60%</h2>
+            <span>trả lời dúng</span>
+          </div>
+        </Col>
+        <Col span={4}>
+          <div className="box-img-style">
+            <img
+              className="img-style"
+              alt="example"
+              src={require("../../../shared/img/prize.png")}
+            />
+          </div>
+          <div className="text-style">
+            <h2>9.7</h2>
+            <span>điểm trung bình</span>
+          </div>
+        </Col>
+      </Row>
       <List>
         <VirtualList data={data} height={400} itemHeight={47} itemKey="id">
           {(item: ISubmit) => (
             <List.Item key={item._id}>
               <List.Item.Meta
                 avatar={<Avatar src={item.user.avt} />}
-                title={<a href="https://ant.design">{item.user.userName}</a>}
+                title={<a>{item.user.userName}</a>}
                 description={
                   <>
                     Điểm:
