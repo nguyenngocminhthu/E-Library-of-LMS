@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import User from "../../Apis/User.api";
 import { RootState } from "../store";
-import { IClass } from "./classes.reducer";
 import { IList } from "./interface";
 import { setLoading } from "./loading.reducer";
 import { setMessage } from "./message.reducer";
+import { ISubject } from "./subject.reducer";
 
 export const getUsers = createAsyncThunk(
   "user/getUsers",
@@ -144,7 +144,7 @@ export interface UserState {
   recentSubject: any[];
   recentSubjectId: string[];
   avt: string;
-  subject: IClass[];
+  subjects: ISubject[];
 }
 
 interface IUser {

@@ -35,7 +35,6 @@ const Login = () => {
         }
       })
       .catch((e: any) => {
-        console.debug("e: ", e);
       });
   };
 

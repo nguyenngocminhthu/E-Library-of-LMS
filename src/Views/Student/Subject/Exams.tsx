@@ -24,7 +24,6 @@ export const Exam = () => {
       dispatch(getSubject(params.id))
         .unwrap()
         .then((rs) => {
-          console.debug(rs);
           setBanks(rs.bank);
         });
     }
@@ -40,11 +39,13 @@ export const Exam = () => {
       <div className="d-flex j-space-between">
         {banks.map((value: IBanks) => {
           let check: boolean = false;
+          let submissionId: string = '';
           if (value.releaseTime !== undefined) {
             if (!lodash.isEmpty(value.submissions)) {
               value.submissions.forEach((vl: any) => {
                 if (vl.user === user.id) {
                   check = true;
+                  submissionId = vl.id
                 } else {
                   check = false;
                 }
@@ -64,7 +65,7 @@ export const Exam = () => {
                         <EyeOutlined
                           onClick={() =>
                             navigate(
-                              `/student/subjects/exams/detail/${value.id}`
+                              `/student/subjects/exams/detail/${submissionId}`
                             )
                           }
                           key="detail"
@@ -75,7 +76,7 @@ export const Exam = () => {
                         <EyeOutlined
                           onClick={() =>
                             navigate(
-                              `/student/subjects/exams/detail/${value.id}`
+                              `/student/subjects/exams/detail/${submissionId}`
                             )
                           }
                           key="detail"

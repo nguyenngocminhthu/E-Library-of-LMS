@@ -221,7 +221,6 @@ export const Exam = () => {
 
   const modalAssign = (id: string) => {
     const onFinish = (values: any) => {
-      console.debug(values);
       dispatch(updateBank({ id: id, payload: values }));
     };
     const assign = {

@@ -72,7 +72,7 @@ export const Teacher: React.FC = () => {
         <Route path="teacher/exams/examdetail/:id" element={<ExamDetails />} />
         <Route path="teacher/exams/submissions/:id" element={<Submissions />} />
         <Route
-          path="/teacher/exams/submissions/detail"
+          path="/teacher/exams/submissions/detail/:id"
           element={<SubmitDetail />}
         />
 

@@ -2,10 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import Noti from "../../Apis/Noti.api";
 import { RootState } from "../store";
-import { ILesson } from "./lesson.reducer";
 import { setLoading } from "./loading.reducer";
 import { setMessage } from "./message.reducer";
-import { ITopic } from "./topic.reducer";
 import { UserState } from "./user.reducer";
 
 export const getNotis = createAsyncThunk(

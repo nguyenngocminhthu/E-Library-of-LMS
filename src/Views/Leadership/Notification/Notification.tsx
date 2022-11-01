@@ -105,7 +105,6 @@ export const Notification = () => {
     dispatch(getSubject(e))
       .unwrap()
       .then((rs: ISubject) => {
-        console.debug(rs);
 
         let arr: ISelect[] = [];
         rs.topic.forEach((vl: ITopic) => {

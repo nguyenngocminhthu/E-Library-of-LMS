@@ -23,7 +23,6 @@ import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
-import { IClass } from "../../../redux/reducers/classes.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getUser,
@@ -56,10 +55,9 @@ export const Subject = () => {
   /* TO DO , SET DATA CLASSES FOR STUDENT */
   useEffect(() => {
     if (user) {
-      let arr: ISubject[] = [];
-      user.subject?.forEach((value: IClass, index: number) => {
-        value.subject.teacher = value.teacher;
-        arr.push({ ...value.subject, key: index });
+      let arr: any[] = [];
+      user.subjects?.forEach((value: ISubject, index: number) => {
+        arr.push({ ...value, key: index });
       });
       setData(arr);
     }
