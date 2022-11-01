@@ -94,6 +94,12 @@ export const StudentSidebar: React.FC = () => {
             >
               Tra cứu công nợ
             </Menu.Item>
+            <Menu.Item
+              onClick={() => handleSelect(["generalreceipts", "feemanage"])}
+              key="generalreceipts"
+            >
+              Phiếu thu tổng hợp
+            </Menu.Item>
           </SubMenu>
           <Menu.Item onClick={() => handleSelect(["help"])} key="help">
             Trợ giúp
