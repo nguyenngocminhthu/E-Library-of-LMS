@@ -152,8 +152,6 @@ export const CreateExam = () => {
   };
 
   const onFinish = (values: any) => {
-    console.debug(values);
-
     dispatch(
       createBank({
         ...values,

@@ -1,26 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message.reducer";
-import Banks from "../../Apis/Banks.api";
+import Submissions from "../../Apis/Submission.api";
 import { setLoading } from "./loading.reducer";
-import { ISubject } from "./subject.reducer";
 import { UserState } from "./user.reducer";
-import { IQuestion } from "./question.reducer";
 import { message } from "antd";
 import { RootState } from "../store";
 import { IList } from "./interface";
+import { IBanks } from "./banks.reducer";
+import { IAns } from "../../Views/Student/Subject/ExamDetails";
 
-export const createBank = createAsyncThunk(
-  "Banks/createBank",
-  async (body: IQuestion, thunkAPI) => {
+export const createSubmission = createAsyncThunk(
+  "Submissions/createSubmission",
+  async (body: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Banks.createBank(body);
+      const data = await Submissions.createSubmission(body);
       if (data.code) {
         thunkAPI.dispatch(setLoading(false));
         message.error(data.message);
       } else {
         thunkAPI.dispatch(setLoading(false));
-        message.success("Tạo đề thi thành công");
+        message.success("Nộp bài thành công");
       }
       return data;
     } catch (error: any) {
@@ -36,20 +36,17 @@ export const createBank = createAsyncThunk(
   }
 );
 
-export const getBanks = createAsyncThunk(
-  "Banks/getBanks",
+export const getSubmissions = createAsyncThunk(
+  "Submissions/getSubmissions",
   async (
-    { limit, subjectGroup, subject, user, status, sortBy }: any,
+    { limit, bank, sortBy }: any,
     thunkAPI
   ) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Banks.getBanks({
+      const data = await Submissions.getSubmissions({
         limit,
-        subjectGroup,
-        subject,
-        user,
-        status,
+        bank,
         sortBy,
       });
       if (data) {
@@ -69,12 +66,12 @@ export const getBanks = createAsyncThunk(
   }
 );
 
-export const getBank = createAsyncThunk(
-  "Banks/getBank",
+export const getSubmission = createAsyncThunk(
+  "Submissions/getSubmission",
   async (id: string, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Banks.getBank(id);
+      const data = await Submissions.getSubmission(id);
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }
@@ -92,21 +89,18 @@ export const getBank = createAsyncThunk(
   }
 );
 
-export const updateBank = createAsyncThunk(
-  "Banks/updateBank",
+export const updateSubmission = createAsyncThunk(
+  "Submissions/updateSubmission",
   async ({ id, payload }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Banks.updateBank(id, payload);
+      const data = await Submissions.updateSubmission(id, payload);
       if (data.code) {
         thunkAPI.dispatch(setLoading(false));
-        message.error(data.message);
-      } else if (payload.submissions) {
-        thunkAPI.dispatch(setLoading(false));
-        message.success("Nộp bài thành công");
+        message.error(data.message);     
       } else {
         thunkAPI.dispatch(setLoading(false));
-        message.success("Cập nhật đề thi thành công");
+        message.success("Cập nhật bài nộp thành công");
       }
       return data;
     } catch (error: any) {
@@ -122,18 +116,18 @@ export const updateBank = createAsyncThunk(
   }
 );
 
-export const deleteBank = createAsyncThunk(
-  "banks/deleteBank",
+export const deleteSubmission = createAsyncThunk(
+  "Submissions/deleteSubmission",
   async (id: string, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await Banks.deleteBank(id);
+      const data = await Submissions.deleteSubmission(id);
       if (data.code) {
         thunkAPI.dispatch(setLoading(false));
         message.error(data.message);
       } else {
         thunkAPI.dispatch(setLoading(false));
-        message.success("Xóa đề thi thành công");
+        message.success("Xóa bài nộp thành công");
       }
       return data;
     } catch (error: any) {
@@ -149,31 +143,24 @@ export const deleteBank = createAsyncThunk(
   }
 );
 
-export interface IBanks {
+export interface ISubmissions {
   id: string;
   key?: number;
-  status: number;
-  fileType: number;
-  examName: string;
-  subject: ISubject;
-  subjectGroup: string;
+  submit: IAns[];
+  correctNum: number;
+  score: number;
   user: UserState;
-  questions: IQuestion[];
-  question: IQuestion[];
-  submissions: any[];
+  bank: IBanks;
   createdAt: string;
   updatedAt: string;
-  time: number;
-  releaseTime: string;
-  isFinal: boolean;
 }
 
-interface banksState {
-  listBanks: IList;
+interface SubmissionsState {
+  listSubmissions: IList;
 }
 
-const initialState: banksState = {
-  listBanks: {
+const initialState: SubmissionsState = {
+  listSubmissions: {
     limit: 0,
     page: 0,
     results: [],
@@ -182,16 +169,16 @@ const initialState: banksState = {
   },
 };
 
-export const banksReducer = createSlice({
-  name: "Banks",
+export const SubmissionsReducer = createSlice({
+  name: "Submissions",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getBanks.fulfilled, (state, action) => {
-      state.listBanks = action.payload;
+    builder.addCase(getSubmissions.fulfilled, (state, action) => {
+      state.listSubmissions = action.payload;
     });
-    builder.addCase(getBanks.rejected, (state, action) => {
-      state.listBanks = {
+    builder.addCase(getSubmissions.rejected, (state, action) => {
+      state.listSubmissions = {
         limit: 0,
         page: 0,
         results: [],
@@ -199,11 +186,11 @@ export const banksReducer = createSlice({
         totalResults: 0,
       };
     });
-    builder.addCase(getBank.fulfilled, (state, action) => {
-      state.listBanks = action.payload;
+    builder.addCase(getSubmission.fulfilled, (state, action) => {
+      state.listSubmissions = action.payload;
     });
-    builder.addCase(getBank.rejected, (state, action) => {
-      state.listBanks = {
+    builder.addCase(getSubmission.rejected, (state, action) => {
+      state.listSubmissions = {
         limit: 0,
         page: 0,
         results: [],
@@ -211,11 +198,11 @@ export const banksReducer = createSlice({
         totalResults: 0,
       };
     });
-    builder.addCase(updateBank.fulfilled, (state, action) => {
-      state.listBanks = action.payload;
+    builder.addCase(updateSubmission.fulfilled, (state, action) => {
+      state.listSubmissions = action.payload;
     });
-    builder.addCase(updateBank.rejected, (state, action) => {
-      state.listBanks = {
+    builder.addCase(updateSubmission.rejected, (state, action) => {
+      state.listSubmissions = {
         limit: 0,
         page: 0,
         results: [],
@@ -223,11 +210,11 @@ export const banksReducer = createSlice({
         totalResults: 0,
       };
     });
-    builder.addCase(createBank.fulfilled, (state, action) => {
-      state.listBanks = action.payload;
+    builder.addCase(createSubmission.fulfilled, (state, action) => {
+      state.listSubmissions = action.payload;
     });
-    builder.addCase(createBank.rejected, (state, action) => {
-      state.listBanks = {
+    builder.addCase(createSubmission.rejected, (state, action) => {
+      state.listSubmissions = {
         limit: 0,
         page: 0,
         results: [],
@@ -235,11 +222,11 @@ export const banksReducer = createSlice({
         totalResults: 0,
       };
     });
-    builder.addCase(deleteBank.fulfilled, (state, action) => {
-      state.listBanks = action.payload;
+    builder.addCase(deleteSubmission.fulfilled, (state, action) => {
+      state.listSubmissions = action.payload;
     });
-    builder.addCase(deleteBank.rejected, (state, action) => {
-      state.listBanks = {
+    builder.addCase(deleteSubmission.rejected, (state, action) => {
+      state.listSubmissions = {
         limit: 0,
         page: 0,
         results: [],
@@ -250,10 +237,10 @@ export const banksReducer = createSlice({
   },
 });
 
-export const listBank = (state: RootState) => state.bank.listBanks.results;
-export const totalBank = (state: RootState) =>
-  state.bank.listBanks.totalResults;
+export const listSubmission = (state: RootState) => state.submission.listSubmissions.results;
+export const totalSubmission = (state: RootState) =>
+  state.submission.listSubmissions.totalResults;
 
-const { reducer } = banksReducer;
+const { reducer } = SubmissionsReducer;
 
 export default reducer;

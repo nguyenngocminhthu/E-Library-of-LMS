@@ -6,7 +6,6 @@ import { UserState } from "./user.reducer";
 import { ISubject } from "./subject.reducer";
 import File from "../../Apis/File.api";
 import { IClass } from "./classes.reducer";
-import { ITopic } from "./topic.reducer";
 import { message } from "antd";
 import { IList } from "./interface";
 
