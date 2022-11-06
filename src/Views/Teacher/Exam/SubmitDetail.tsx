@@ -1,19 +1,19 @@
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Col, Radio, Row, Space } from "antd";
+import { Button, Checkbox, Col, Form, Input, Radio, Row, Space } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import modal from "antd/lib/modal";
 import lodash from "lodash";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import {
-  getBank,
-  IBanks,
-  updateBank,
-} from "../../../redux/reducers/banks.reducer";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
-import { getSubmission, ISubmissions } from "../../../redux/reducers/submission.reducer";
+import {
+  getSubmission,
+  ISubmissions,
+  updateSubmission,
+} from "../../../redux/reducers/submission.reducer";
 import { AppDispatch } from "../../../redux/store";
 
 interface IAns {
@@ -29,6 +29,7 @@ export const SubmitDetail = () => {
   const [select, setSelect] = useState(0);
   const [data, setData] = useState<ISubmissions>();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
 
   let arr: IAns[] = [];
   const [questions, setQuestions] = useState<IAns[]>(arr);
@@ -40,9 +41,9 @@ export const SubmitDetail = () => {
         .then((rs: ISubmissions) => {
           setData(rs);
           setSelect(0);
-          if(rs.submit) {
+          if (rs.submit) {
             setQuestions(rs.submit);
-          }else if (rs.bank.question.length !== 0) {
+          } else if (rs.bank.question.length !== 0) {
             rs.bank.question.forEach((vl: IQuestion) => {
               if (vl.correctEssay !== undefined) {
                 arr.push({
@@ -68,30 +69,47 @@ export const SubmitDetail = () => {
               }
             });
             setQuestions(arr);
-          }          
+          }
         });
     }
   }, [params.id]);
 
-  const takeDecimalNumber = (num: number) => {
-    let base = 10 ** 3;
-    let result = Math.round(num * base) / base;
-    return result;
+  const onFinish = (value: any) => {
+    dispatch(updateSubmission({ id: params.id, payload: value }))
+      .unwrap()
+      .then(() => {
+        navigate(`/teacher/exams/submissions/${data?.bank.id}`);
+      });
   };
 
-  const onFinish = () => {
-    // dispatch(
-    //   updateBank({
-    //     id: params.id,
-    //     payload: {
-    //       submissions: submission,
-    //     },
-    //   })
-    // )
-    //   .unwrap()
-    //   .then(() => {
-    //     navigate(`/student/subjects/exams/${data?.subject.id}`);
-    //   });
+  const scoreAgain = {
+    title: "Chỉnh sửa điểm bài nộp",
+    width: "50%",
+    content: (
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        name="cancel-form"
+        layout="horizontal"
+        form={form}
+        style={{ textAlign: "left" }}
+        onFinish={onFinish}
+      >
+        <Form.Item name="correctNum" label="Số câu đúng">
+          <Input
+            max={data?.submit.length}
+            type="number"
+            defaultValue={data?.correctNum}
+          />
+        </Form.Item>
+        <Form.Item name="score" label="Điểm">
+          <Input max={10} type="number" defaultValue={data?.score} />
+        </Form.Item>
+      </Form>
+    ),
+    okText: "Lưu",
+    cancelText: "Huỷ",
+    onOk: () => form.submit(),
   };
 
   const handleSelect = (idx: number) => {
@@ -135,6 +153,8 @@ export const SubmitDetail = () => {
         title="Chi tiết đề thi"
         prevFirstPageTitle="Ngân hàng đề thi"
         prevFirstPage="exambank"
+        prevSecondPageTitle="Bài nộp"
+        prevSecondPage={`teacher/exams/submissions/${data?.bank.id}`}
       />
       <div className="top-head">
         <div
@@ -222,20 +242,14 @@ export const SubmitDetail = () => {
                     }
                     rows={10}
                   />
-                  <div className="mt">
-                    <Button
-                      // onClick={() => handleSubmit()}
-                      type="primary"
-                      shape="round"
-                      icon={<CheckOutlined />}
-                      size={"large"}
-                      className="mr"
-                    />
-                    <Button
-                      shape="round"
-                      icon={<CloseOutlined />}
-                      size={"large"}
-                    />
+                  <div>
+                    Đáp án đúng <b>{questions[select]?.correct[0]}</b>{" "}
+                    {questions[select]?.correct[0] ===
+                    questions[select]?.ans[0] ? (
+                      <CheckOutlined style={{ color: "#52c41a" }} />
+                    ) : (
+                      <CloseOutlined style={{ color: "#f5222d" }} />
+                    )}
                   </div>
                 </div>
               ) : (
@@ -252,20 +266,14 @@ export const SubmitDetail = () => {
                   }
                   rows={10}
                 />
-                <div className="mt">
-                  <Button
-                    // onClick={() => handleSubmit()}
-                    type="primary"
-                    shape="round"
-                    icon={<CheckOutlined />}
-                    size={"large"}
-                    className="mr"
-                  />
-                  <Button
-                    shape="round"
-                    icon={<CloseOutlined />}
-                    size={"large"}
-                  />
+                <div>
+                  Đáp án đúng <b>{questions[select]?.correct[0]}</b>{" "}
+                  {questions[select]?.correct[0] ===
+                  questions[select]?.ans[0] ? (
+                    <CheckOutlined style={{ color: "#52c41a" }} />
+                  ) : (
+                    <CloseOutlined style={{ color: "#f5222d" }} />
+                  )}
                 </div>
               </div>
             ) : (
@@ -360,8 +368,8 @@ export const SubmitDetail = () => {
             )}
           </Col>
           <div className="t-right m1 w-100">
-            <Button onClick={onFinish} type="primary">
-              Lưu
+            <Button onClick={() => modal.confirm(scoreAgain)} type="primary">
+              Chấm lại
             </Button>
           </div>
         </Row>

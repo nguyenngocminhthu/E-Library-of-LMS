@@ -7,7 +7,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
-import { createSubmission, getSubmission, ISubmissions } from "../../../redux/reducers/submission.reducer";
+import {
+  createSubmission,
+  getSubmission,
+  ISubmissions,
+} from "../../../redux/reducers/submission.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 const { Countdown } = Statistic;
@@ -41,9 +45,9 @@ export const ExamDetails = () => {
           setSelect(0);
           setTime(rs.bank.time * 1000 * 60);
           setReleaseTime(Date.parse(rs.bank.releaseTime));
-          if(rs.submit) {
+          if (rs.submit) {
             setQuestions(rs.submit);
-          }else if (rs.bank.question.length !== 0) {
+          } else if (rs.bank.question.length !== 0) {
             rs.bank.question.forEach((vl: IQuestion) => {
               if (vl.correctEssay !== undefined) {
                 arr.push({
@@ -69,7 +73,7 @@ export const ExamDetails = () => {
               }
             });
             setQuestions(arr);
-          }          
+          }
         });
     }
   }, []);
@@ -111,7 +115,7 @@ export const ExamDetails = () => {
         score: score,
         submit: questions,
         correctNum: count,
-        bank: params.id
+        bank: params.id,
       })
     )
       .unwrap()
@@ -152,8 +156,8 @@ export const ExamDetails = () => {
               <div>Hình thức: </div>
             </div>
             <div>
+              <div>{data?.bank?.examName}</div>
               <div>Kiểm tra {data?.bank?.time} phút</div>
-              <div>Kiểm tra online</div>
             </div>
           </div>
           <div className="d-flex">
@@ -172,7 +176,8 @@ export const ExamDetails = () => {
           </div>
         </div>
       </div>
-      {moment() < moment(data?.bank?.releaseTime).add(data?.bank?.time, "minutes") && (
+      {moment() <
+        moment(data?.bank?.releaseTime).add(data?.bank?.time, "minutes") && (
         <div style={{ textAlign: "right" }}>
           <Countdown value={releaseTime + time} onFinish={onFinish} />
         </div>
@@ -221,7 +226,10 @@ export const ExamDetails = () => {
                   }
                   rows={10}
                   onChange={(e: any) =>
-                    handleSubmit(data?.bank?.question[select].id, e.target.value)
+                    handleSubmit(
+                      data?.bank?.question[select].id,
+                      e.target.value
+                    )
                   }
                 />
               ) : (
@@ -237,7 +245,10 @@ export const ExamDetails = () => {
                 }
                 rows={10}
                 onChange={(e: any) =>
-                  handleSubmit(data?.bank?.questions[select]._id, e.target.value)
+                  handleSubmit(
+                    data?.bank?.questions[select]._id,
+                    e.target.value
+                  )
                 }
               />
             ) : (
@@ -301,23 +312,25 @@ export const ExamDetails = () => {
                 }
               >
                 {data?.bank?.question.length !== 0
-                  ? data?.bank?.question[select]?.answers.map((vl: any, idx: any) => (
-                      <>
-                        <Checkbox
-                          onChange={(e) =>
-                            handleSubmit(data?.bank?.question[select].id, [
-                              e.target.value,
-                            ])
-                          }
-                          key={vl}
-                          value={idx}
-                        >
-                          {vl}
-                        </Checkbox>
+                  ? data?.bank?.question[select]?.answers.map(
+                      (vl: any, idx: any) => (
+                        <>
+                          <Checkbox
+                            onChange={(e) =>
+                              handleSubmit(data?.bank?.question[select].id, [
+                                e.target.value,
+                              ])
+                            }
+                            key={vl}
+                            value={idx}
+                          >
+                            {vl}
+                          </Checkbox>
 
-                        <br />
-                      </>
-                    ))
+                          <br />
+                        </>
+                      )
+                    )
                   : data?.bank?.questions[select]?.answers.map(
                       (vl: any, idx: any) => (
                         <>
@@ -340,7 +353,11 @@ export const ExamDetails = () => {
               </Checkbox.Group>
             )}
           </Col>
-          {moment() < moment(data?.bank?.releaseTime).add(data?.bank?.time, "minutes") && (
+          {moment() <
+            moment(data?.bank?.releaseTime).add(
+              data?.bank?.time,
+              "minutes"
+            ) && (
             <div className="t-right m1 w-100">
               <Button onClick={onFinish} type="primary">
                 Nộp bài

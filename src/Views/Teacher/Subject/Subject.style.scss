@@ -1,7 +1,6 @@
 @import "../../../shared/styles/variable";
 
 .teacher-subject {
-
   .ant-checkbox,
   .ant-radio {
     transform: scale(1.2);
@@ -131,7 +130,7 @@
       }
 
       .row-style {
-        background-color: #F3F3F3;
+        background-color: #f3f3f3;
         padding: 8px;
 
         .flex-row {
@@ -196,6 +195,15 @@
     border-radius: 8px 8px 0px 0px;
     margin-top: 8px;
   }
+  .exam-card {
+    :hover {
+      cursor: pointer;
+    }
+    border: 1px solid rgb(205, 204, 204);
+    padding: 1rem;
+    width: 30%;
+    border-radius: 8px;
+  }
 }
 
 .sun-editor .se-toolbar {
@@ -215,7 +223,7 @@
     text-align: center;
   }
 
-  .ant-table-thead>tr>th {
+  .ant-table-thead > tr > th {
     background: $color-secondary-dark-light;
   }
 }

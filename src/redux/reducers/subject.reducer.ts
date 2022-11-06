@@ -1,4 +1,4 @@
-import { ISubjectGroup } from './subjectgroup.reducer';
+import { ISubjectGroup } from "./subjectgroup.reducer";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message.reducer";
 import Subject from "../../Apis/Subject.api";
@@ -9,7 +9,8 @@ import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
 import { message } from "antd";
 import { IList } from "./interface";
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from "lodash";
+import { IBanks } from "./banks.reducer";
 
 export const createSubject = createAsyncThunk(
   "subject/createSubject",
@@ -64,7 +65,6 @@ export const updateSubject = createAsyncThunk(
     }
   }
 );
-
 
 export const getSubjects = createAsyncThunk(
   "subject/getSubjects",
@@ -132,6 +132,7 @@ export interface ISubject {
   image: string;
   classes: IClass[];
   topic: ITopic[];
+  bank: IBanks[];
   createdAt: string;
   updatedAt: string;
 }
@@ -199,7 +200,7 @@ export const subjectReducer = createSlice({
       const newState = cloneDeep(state);
       const oldIndex = newState.listSubject.results.findIndex((item: any) => {
         return item.id === action.payload.id;
-      })
+      });
       newState.listSubject.results.splice(oldIndex, 1, action.payload);
       return newState;
     });
