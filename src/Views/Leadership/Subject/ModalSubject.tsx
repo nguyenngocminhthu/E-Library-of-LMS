@@ -72,6 +72,7 @@ export const ModalSubject = (props: any) => {
     setIsModalOpen(false);
   };
   useEffect(() => {
+    console.log("record: ", record);
     if (isModalOpen) {
       if (mode == "edit") {
         setAction({
@@ -89,7 +90,7 @@ export const ModalSubject = (props: any) => {
           },
           subGroup: {
             required: true,
-            value: record?.subGroup,
+            value: record?.subGroup.id,
             disabled: false,
           },
           teacher: {
