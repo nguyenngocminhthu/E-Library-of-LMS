@@ -12,6 +12,7 @@ import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   createSubjectGroup,
   getSubjectGroups,
+  ISubjectGroup,
 } from "../../../redux/reducers/subjectgroup.reducer";
 import {
   getUser,
@@ -36,9 +37,9 @@ export const Subject = () => {
   const [currentRecord, setCurrentRecord] = useState<ISubject>();
   const [modeSubject, setModeSubject] = useState("create");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
-    { name: "Tất cả bộ môn", value: "" },
-  ]);
+  const [subjectGroupSelect, setSubjectGroupSelect] = useState<
+    ISubjectSelect[]
+  >([{ name: "Tất cả bộ môn", value: "" }]);
   const [teacherSelect, setTeacherSelect] = useState<ISubjectSelect[]>([
     { name: "Tất cả giảng viên", value: "" },
   ]);
@@ -48,16 +49,16 @@ export const Subject = () => {
   const [filter, setFilter] = useState<any>({ limit: 999 });
 
   useEffect(() => {
-    dispatch(getSubjectGroups(999));
-    dispatch(getUsers({ limit: 999, role: "teacher" }));
     const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    dispatch(getSubjects(filter))
+    dispatch(getSubjectGroups(999))
       .unwrap()
       .then((rs) => {
-        rs.results.forEach((it: ISubject) => {
-          option.push({ name: it.subName, value: it.id });
+        rs.results.forEach((it: ISubjectGroup) => {
+          option.push({ name: it.groupName, value: it.id });
         });
       });
+    setSubjectGroupSelect(option);
+    dispatch(getSubjects(filter));
     dispatch(getUsers({ limit: 999, role: "student" }))
       .unwrap()
       .then((rs: any) => {
@@ -68,7 +69,6 @@ export const Subject = () => {
       .then((rs) => {
         setTeacher(rs.results);
       });
-    setSubjectSelect(option);
   }, [filter]);
 
   useEffect(() => {
@@ -103,7 +103,7 @@ export const Subject = () => {
         });
       });
 
-    setSubjectSelect(option);
+    setSubjectGroupSelect(option);
   };
 
   const handleClick = (id: string) => {
@@ -292,7 +292,7 @@ export const Subject = () => {
             style={{ display: "block" }}
             textLabel="Bộ môn"
             defaultValue=""
-            dataString={subjectSelect}
+            dataString={subjectGroupSelect}
             onChange={(e: any) => handleFilterSubject("subGroup", e)}
           />
           <SelectComp
