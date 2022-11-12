@@ -13,6 +13,7 @@ import subjectReducer from "./reducers/subject.reducer";
 import subjectgroupReducer from "./reducers/subjectgroup.reducer";
 import topicReducer from "./reducers/topic.reducer";
 import userReducer from "./reducers/user.reducer";
+import submissionReducer from "./reducers/submission.reducer";
 // ...
 
 const reducer = {
@@ -30,6 +31,7 @@ const reducer = {
   file: fileReducer,
   QA: QAReducer,
   noti: notiReducer,
+  submission: submissionReducer,
 };
 
 export const store = configureStore({

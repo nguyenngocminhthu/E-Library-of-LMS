@@ -58,6 +58,7 @@ export const ExamDetails = () => {
               <div>Hình thức: </div>
             </div>
             <div>
+              <div>{data?.examName}</div>
               <div>Kiểm tra {data?.time} phút</div>
             </div>
           </div>

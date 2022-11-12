@@ -1,0 +1,25 @@
+.creditdebit-style {
+    .box-paymentmethod {
+        background-color: #F2F2F2;
+        border-radius: 16px;
+    }
+
+    .ant-card-bordered .ant-card-cover {
+        text-align: -webkit-center;
+    }
+
+    .ant-card-body {
+        padding: 0;
+        text-align: center;
+    }
+
+    .ant-card-cover img {
+        width: auto;
+    }
+
+    .ant-card-bordered {
+        width: 240px;
+        height: 120px;
+        margin: 24px;
+    }
+}

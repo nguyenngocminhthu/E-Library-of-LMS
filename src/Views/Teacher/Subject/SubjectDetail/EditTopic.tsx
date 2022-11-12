@@ -8,8 +8,6 @@ export const EditTopic: React.FC<{ topic?: ITopic }> = (props) => {
   const navigate = useNavigate();
   const { Panel } = Collapse;
 
-  console.debug(props.topic);
-
   return (
     <div
       id="scrollableDiv"

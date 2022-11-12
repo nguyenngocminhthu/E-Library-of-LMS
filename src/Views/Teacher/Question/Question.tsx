@@ -272,7 +272,6 @@ export const Question = () => {
       dispatch(getSubjectGroup(e))
         .unwrap()
         .then((rs: ISubjectGroup) => {
-          console.debug(rs);
           const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
 
           rs.subject.forEach((it: ISubject) => {

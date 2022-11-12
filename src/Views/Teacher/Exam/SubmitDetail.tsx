@@ -1,20 +1,20 @@
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Col, Radio, Row, Space } from "antd";
+import { Button, Checkbox, Col, Form, Input, Radio, Row, Space } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import modal from "antd/lib/modal";
 import lodash from "lodash";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
-import {
-  getBank,
-  IBanks,
-  updateBank,
-} from "../../../redux/reducers/banks.reducer";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
+import {
+  getSubmission,
+  ISubmissions,
+  updateSubmission,
+} from "../../../redux/reducers/submission.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ISubmit } from "./Submissions";
 
 interface IAns {
   id: string;
@@ -27,31 +27,24 @@ export const SubmitDetail = () => {
   const dispatch: AppDispatch = useDispatch();
   const params = useParams<{ id: string }>();
   const [select, setSelect] = useState(0);
-  const [data, setData] = useState<IBanks>();
+  const [data, setData] = useState<ISubmissions>();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
 
   let arr: IAns[] = [];
   const [questions, setQuestions] = useState<IAns[]>(arr);
-  const [submission, setSubmission] = useState<ISubmit[]>([]);
-  const location = useLocation();
-  const bankId = location.search.split("?")[1].split("id=")[1];
-  const submitId = location.search.split("?")[2].split("submitId=")[1];
 
   useEffect(() => {
-    if (bankId) {
-      dispatch(getBank(bankId))
+    if (params.id) {
+      dispatch(getSubmission(params.id))
         .unwrap()
-        .then((rs: IBanks) => {
+        .then((rs: ISubmissions) => {
           setData(rs);
           setSelect(0);
-
-          if (!lodash.isEmpty(rs.submissions)) {
-            setSubmission(rs.submissions);
-            rs.submissions.forEach((vl: any) => {
-              setQuestions(vl.submit);
-            });
-          } else if (rs.question.length !== 0) {
-            rs.question.forEach((vl: IQuestion) => {
+          if (rs.submit) {
+            setQuestions(rs.submit);
+          } else if (rs.bank.question.length !== 0) {
+            rs.bank.question.forEach((vl: IQuestion) => {
               if (vl.correctEssay !== undefined) {
                 arr.push({
                   id: vl.id,
@@ -64,7 +57,7 @@ export const SubmitDetail = () => {
             });
             setQuestions(arr);
           } else {
-            rs.questions.forEach((vl: any) => {
+            rs.bank.questions.forEach((vl: any) => {
               if (vl.correctEssay !== undefined) {
                 arr.push({
                   id: vl._id,
@@ -79,27 +72,44 @@ export const SubmitDetail = () => {
           }
         });
     }
-  }, [bankId]);
+  }, [params.id]);
 
-  const takeDecimalNumber = (num: number) => {
-    let base = 10 ** 3;
-    let result = Math.round(num * base) / base;
-    return result;
-  };
-
-  const onFinish = () => {
-    dispatch(
-      updateBank({
-        id: params.id,
-        payload: {
-          submissions: submission,
-        },
-      })
-    )
+  const onFinish = (value: any) => {
+    dispatch(updateSubmission({ id: params.id, payload: value }))
       .unwrap()
       .then(() => {
-        navigate(`/student/subjects/exams/${data?.subject.id}`);
+        navigate(`/teacher/exams/submissions/${data?.bank.id}`);
       });
+  };
+
+  const scoreAgain = {
+    title: "Chỉnh sửa điểm bài nộp",
+    width: "50%",
+    content: (
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        name="cancel-form"
+        layout="horizontal"
+        form={form}
+        style={{ textAlign: "left" }}
+        onFinish={onFinish}
+      >
+        <Form.Item name="correctNum" label="Số câu đúng">
+          <Input
+            max={data?.submit.length}
+            type="number"
+            defaultValue={data?.correctNum}
+          />
+        </Form.Item>
+        <Form.Item name="score" label="Điểm">
+          <Input max={10} type="number" defaultValue={data?.score} />
+        </Form.Item>
+      </Form>
+    ),
+    okText: "Lưu",
+    cancelText: "Huỷ",
+    onOk: () => form.submit(),
   };
 
   const handleSelect = (idx: number) => {
@@ -143,6 +153,8 @@ export const SubmitDetail = () => {
         title="Chi tiết đề thi"
         prevFirstPageTitle="Ngân hàng đề thi"
         prevFirstPage="exambank"
+        prevSecondPageTitle="Bài nộp"
+        prevSecondPage={`teacher/exams/submissions/${data?.bank.id}`}
       />
       <div className="top-head">
         <div
@@ -155,8 +167,8 @@ export const SubmitDetail = () => {
               <div>Thời lượng: </div>
             </div>
             <div>
-              <div>{data?.subject?.subName}</div>
-              <div>{data?.time}</div>
+              <div>{data?.bank?.subject?.subName}</div>
+              <div>{data?.bank?.time}</div>
             </div>
           </div>
           <div className="d-flex">
@@ -165,7 +177,7 @@ export const SubmitDetail = () => {
               <div>Hình thức: </div>
             </div>
             <div>
-              <div>Kiểm tra {data?.time} phút</div>
+              <div>Kiểm tra {data?.bank?.time} phút</div>
               <div>Kiểm tra online</div>
             </div>
           </div>
@@ -177,8 +189,8 @@ export const SubmitDetail = () => {
             <div>
               <div>{data?.user?.userName || "null"}</div>
               <div>
-                {moment(data?.releaseTime)
-                  .add(data?.time, "minutes")
+                {moment(data?.bank?.releaseTime)
+                  .add(data?.bank?.time, "minutes")
                   .format("DD/MM/YYYY HH:mm:ss")}
               </div>
             </div>
@@ -190,8 +202,8 @@ export const SubmitDetail = () => {
         <Row>
           <Col span={6}>
             <div>Phần câu hỏi - đáp án:</div>
-            {data?.question.length !== 0
-              ? data?.question.map((vl, idx) => (
+            {data?.bank?.question.length !== 0
+              ? data?.bank?.question.map((vl, idx) => (
                   <div
                     className={select === idx ? "answer true" : "answer"}
                     key={vl.id}
@@ -200,7 +212,7 @@ export const SubmitDetail = () => {
                     Câu {idx + 1}
                   </div>
                 ))
-              : data?.questions.map((vl, idx) => (
+              : data?.bank?.questions.map((vl, idx) => (
                   <div
                     className={select === idx ? "answer true" : "answer"}
                     key={vl.id}
@@ -213,13 +225,13 @@ export const SubmitDetail = () => {
           <Col style={{ padding: "2rem" }} span={18}>
             <h3>
               Câu {select + 1}:{" "}
-              {data?.question.length !== 0
-                ? data?.question[select]?.quesName
-                : data?.questions[select]?.quesName}
+              {data?.bank?.question.length !== 0
+                ? data?.bank?.question[select]?.quesName
+                : data?.bank?.questions[select]?.quesName}
             </h3>
 
-            {data?.question.length !== 0 ? (
-              data?.question[select]?.correctEssay ? (
+            {data?.bank?.question.length !== 0 ? (
+              data?.bank?.question[select]?.correctEssay ? (
                 <div>
                   <TextArea
                     value={
@@ -230,26 +242,20 @@ export const SubmitDetail = () => {
                     }
                     rows={10}
                   />
-                  <div className="mt">
-                    <Button
-                      // onClick={() => handleSubmit()}
-                      type="primary"
-                      shape="round"
-                      icon={<CheckOutlined />}
-                      size={"large"}
-                      className="mr"
-                    />
-                    <Button
-                      shape="round"
-                      icon={<CloseOutlined />}
-                      size={"large"}
-                    />
+                  <div>
+                    Đáp án đúng <b>{questions[select]?.correct[0]}</b>{" "}
+                    {questions[select]?.correct[0] ===
+                    questions[select]?.ans[0] ? (
+                      <CheckOutlined style={{ color: "#52c41a" }} />
+                    ) : (
+                      <CloseOutlined style={{ color: "#f5222d" }} />
+                    )}
                   </div>
                 </div>
               ) : (
                 ""
               )
-            ) : data?.questions[select]?.correctEssay ? (
+            ) : data?.bank?.questions[select]?.correctEssay ? (
               <div>
                 <TextArea
                   value={
@@ -260,28 +266,22 @@ export const SubmitDetail = () => {
                   }
                   rows={10}
                 />
-                <div className="mt">
-                  <Button
-                    // onClick={() => handleSubmit()}
-                    type="primary"
-                    shape="round"
-                    icon={<CheckOutlined />}
-                    size={"large"}
-                    className="mr"
-                  />
-                  <Button
-                    shape="round"
-                    icon={<CloseOutlined />}
-                    size={"large"}
-                  />
+                <div>
+                  Đáp án đúng <b>{questions[select]?.correct[0]}</b>{" "}
+                  {questions[select]?.correct[0] ===
+                  questions[select]?.ans[0] ? (
+                    <CheckOutlined style={{ color: "#52c41a" }} />
+                  ) : (
+                    <CloseOutlined style={{ color: "#f5222d" }} />
+                  )}
                 </div>
               </div>
             ) : (
               ""
             )}
 
-            {data?.questions[select]?.correct.length === 1 ||
-            data?.question[select]?.correct.length === 1 ? (
+            {data?.bank?.questions[select]?.correct.length === 1 ||
+            data?.bank?.question[select]?.correct.length === 1 ? (
               <div>
                 <Radio.Group
                   value={
@@ -291,15 +291,15 @@ export const SubmitDetail = () => {
                   }
                 >
                   <Space direction="vertical">
-                    {data?.question.length !== 0
-                      ? data?.question[select]?.answers.map(
+                    {data?.bank?.question.length !== 0
+                      ? data?.bank?.question[select]?.answers.map(
                           (vl: string, idx: number) => (
                             <Radio key={idx} value={idx}>
                               {vl}
                             </Radio>
                           )
                         )
-                      : data?.questions[select]?.answers.map(
+                      : data?.bank?.questions[select]?.answers.map(
                           (vl: string, idx: number) => (
                             <Radio key={idx} value={idx}>
                               {vl}
@@ -309,8 +309,8 @@ export const SubmitDetail = () => {
                   </Space>
                 </Radio.Group>
                 <br />
-                {(data?.questions[select]?.examType === 0 ||
-                  data?.question[select]?.examType === 0) && (
+                {(data?.bank?.questions[select]?.examType === 0 ||
+                  data?.bank?.question[select]?.examType === 0) && (
                   <div>
                     Đáp án đúng{" "}
                     <b>{convertAnswer(questions[select]?.correct[0])}</b>{" "}
@@ -332,8 +332,8 @@ export const SubmitDetail = () => {
                     questions[select].ans
                   }
                 >
-                  {data?.question.length !== 0
-                    ? data?.question[select]?.answers.map(
+                  {data?.bank?.question.length !== 0
+                    ? data?.bank?.question[select]?.answers.map(
                         (vl: any, idx: any) => (
                           <>
                             <Checkbox key={vl} value={idx}>
@@ -344,7 +344,7 @@ export const SubmitDetail = () => {
                           </>
                         )
                       )
-                    : data?.questions[select]?.answers.map(
+                    : data?.bank?.questions[select]?.answers.map(
                         (vl: any, idx: any) => (
                           <>
                             <Checkbox key={vl} value={idx}>
@@ -368,8 +368,8 @@ export const SubmitDetail = () => {
             )}
           </Col>
           <div className="t-right m1 w-100">
-            <Button onClick={onFinish} type="primary">
-              Lưu
+            <Button onClick={() => modal.confirm(scoreAgain)} type="primary">
+              Chấm lại
             </Button>
           </div>
         </Row>

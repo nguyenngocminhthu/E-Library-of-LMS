@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography,
 } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 
 interface DataType {
@@ -22,6 +22,8 @@ interface DataType {
 
 export const PaySchoolFees = () => {
   const { Title } = Typography;
+  const [paymentMethod, setPaymentMethod] = useState<number>(0);
+
   const columns = [
     {
       title: "STT",
@@ -41,7 +43,7 @@ export const PaySchoolFees = () => {
     {
       title: "Số tiền (VNĐ)",
       dataIndex: "money",
-      key: "teacher",
+      key: "money",
     },
     {
       title: "",
@@ -96,9 +98,12 @@ export const PaySchoolFees = () => {
         <Title ellipsis level={4}>
           Chọn hình thức thanh toán:
         </Title>
-        <Radio.Group>
+        <Radio.Group
+          defaultValue={0}
+          onChange={(e) => setPaymentMethod(e.target.value)}
+        >
           <Radio value={0}>Credit / Debit</Radio>
-          <Radio value={1}>Onepay</Radio>
+          <Radio value={1}>VNPAY</Radio>
         </Radio.Group>
         <Table columns={columns} dataSource={data} />
         <Row>

@@ -8,7 +8,6 @@ import { setMessage } from "./message.reducer";
 import { INoti } from "./noti.reducer";
 import { IQA } from "./QA.reducer";
 import { ISubject } from "./subject.reducer";
-import { UserState } from "./user.reducer";
 
 export const createTopic = createAsyncThunk(
   "topic/createTopic",

@@ -118,7 +118,6 @@ export const EditSubject = () => {
   );
 
   const onFinish = (values: any) => {
-    console.debug(values.title[newIdx]);
     dispatch(createTopic({ subjectId: params.id, title: values.title[newIdx] }))
       .unwrap()
       .then((rs) => {

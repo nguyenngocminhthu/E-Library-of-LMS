@@ -444,6 +444,33 @@ export const SubjectDetail = () => {
                 })}
               </div>
             </TabPane>
+            <TabPane tab="Đề kiểm tra" key="5">
+              <div
+                id="scrollableDiv"
+                style={{
+                  height: 400,
+                  overflow: "auto",
+                  padding: "0 16px",
+                }}
+              >
+                <h1>Đề kiểm tra</h1>
+                {data?.bank.map((item) => (
+                  <div
+                    className="exam-card"
+                    onClick={() =>
+                      navigate(`/teacher/exams/examdetail/${item.id}`)
+                    }
+                  >
+                    <h3>{item.examName}</h3>
+                    <p>Thời lượng: {item.time}</p>
+                    <p>
+                      Giờ bắt đầu:{" "}
+                      {moment(data?.createdAt).format("DD/MM/YYYY")}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </TabPane>
           </Tabs>
           <div className="tab-control">
             <Button

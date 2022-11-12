@@ -38,7 +38,6 @@ export const ModalReply: React.FC<{
   };
 
   const onFinish = (values: any) => {
-    console.debug(values);
     dispatch(
       updateQA({
         id: props.data,

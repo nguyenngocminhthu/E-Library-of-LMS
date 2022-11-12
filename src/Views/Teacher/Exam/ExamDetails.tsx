@@ -1,12 +1,13 @@
 import { CheckCircleOutlined } from "@ant-design/icons";
-import { Checkbox, Col, Radio, Row, Space } from "antd";
+import { Button, Checkbox, Col, Radio, Row, Space } from "antd";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { getBank, IBanks } from "../../../redux/reducers/banks.reducer";
 import { AppDispatch } from "../../../redux/store";
+import lodash from "lodash";
 import "./Exam.style.scss";
 
 export const ExamDetails = () => {
@@ -14,6 +15,7 @@ export const ExamDetails = () => {
   const params = useParams<{ id: string }>();
   const [select, setSelect] = useState(0);
   const [data, setData] = useState<IBanks>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (params.id) {
@@ -58,6 +60,7 @@ export const ExamDetails = () => {
               <div>Hình thức: </div>
             </div>
             <div>
+              <div>{data?.examName}</div>
               <div>Kiểm tra {data?.time} phút</div>
             </div>
           </div>
@@ -72,6 +75,15 @@ export const ExamDetails = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="t-right mt w-100">
+        <Button
+          onClick={() => navigate(`/teacher/exams/submissions/${params?.id}`)}
+          disabled={lodash.isEmpty(data?.submissions)}
+          type="primary"
+        >
+          Xem bài nộp
+        </Button>
       </div>
       <div className="body-bank">
         <Row>

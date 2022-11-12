@@ -1,4 +1,4 @@
-import { createAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { UserState } from "./user.reducer";
 import Auth from "../../Apis/Auth.api";
 import { setMessage } from "./message.reducer";

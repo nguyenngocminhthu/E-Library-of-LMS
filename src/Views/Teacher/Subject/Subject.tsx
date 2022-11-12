@@ -1,4 +1,4 @@
-import { EyeOutlined, MoreOutlined } from "@ant-design/icons";
+import { MoreOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -147,43 +147,6 @@ export const Subject = () => {
     ),
     okText: "Lưu",
     cancelText: "Huỷ",
-  };
-
-  const expandedRowRender = (record: ISubject) => {
-    const columnsNested = [
-      {
-        title: "Mã lớp",
-        dataIndex: "classCode",
-        key: "classCode",
-      },
-      {
-        title: "Tên lớp",
-        dataIndex: "className",
-        key: "className",
-      },
-      {
-        title: "Xem chi tiết",
-        dataIndex: "details",
-        render: (record: any) => (
-          <Space size="middle">
-            <Tooltip title="Xem chi tiết">
-              <Button
-                onClick={() => navigate(`subjectdetail/${record.id}`)}
-                icon={<EyeOutlined />}
-              />
-            </Tooltip>
-          </Space>
-        ),
-      },
-    ];
-    return (
-      <Table
-        columns={columnsNested}
-        dataSource={record.classes}
-        pagination={false}
-        className="table-nested"
-      />
-    );
   };
 
   const subjectSelect = [
