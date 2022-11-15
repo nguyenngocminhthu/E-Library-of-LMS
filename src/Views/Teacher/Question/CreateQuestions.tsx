@@ -33,6 +33,7 @@ export const CreateQuestions = () => {
   const [answerNum, setAnswerNum] = useState<any[]>([]);
   const [quesType, setQuesType] = useState<number>(0);
   const [examType, setExamType] = useState<number>(0);
+  const [level, setLevel] = useState<number>(0);
   const [dataSub, setDataSub] = useState<ISubject[]>([]);
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const params: any = useParams();
@@ -97,7 +98,7 @@ export const CreateQuestions = () => {
           handleRefresh();
         });
     } else {
-      dispatch(createQuestion({ ...values, user: user.id }))
+      dispatch(createQuestion({ ...values, user: user.id, examType, level }))
         .unwrap()
         .then(() => {
           form.resetFields();
@@ -148,11 +149,7 @@ export const CreateQuestions = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
-              name="examType"
-              label="Hình thức"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="examType" label="Hình thức">
               <Radio.Group
                 defaultValue={0}
                 onChange={(e) => setExamType(e.target.value)}
@@ -176,8 +173,11 @@ export const CreateQuestions = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item name="level" label="Độ khó" rules={[{ required: true }]}>
-              <Radio.Group defaultValue={0}>
+            <Form.Item name="level" label="Độ khó">
+              <Radio.Group
+                defaultValue={0}
+                onChange={(e) => setLevel(e.target.value)}
+              >
                 <Radio value={0}>Dễ</Radio>
                 <Radio value={1}>Trung bình</Radio>
                 <Radio value={2}>Khó</Radio>
