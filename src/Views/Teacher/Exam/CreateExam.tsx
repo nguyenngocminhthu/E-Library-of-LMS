@@ -155,10 +155,10 @@ export const CreateExam = () => {
     dispatch(
       createBank({
         ...values,
-        questions: questions,
+        questions,
         user: user.id,
         fileType: 0,
-        status: values.isFinal === true ? 0 : 1,
+        status: values.isFinal ? 0 : 1,
       })
     ).then(() => {
       navigate("/teacher/exams");

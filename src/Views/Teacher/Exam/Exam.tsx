@@ -13,7 +13,6 @@ import {
   Popover,
   Radio,
   Row,
-  Select,
   Space,
   Table,
   Tag,
@@ -43,10 +42,10 @@ import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 import "./Exam.style.scss";
+import { ModalCreateExamWithQuestion } from "./ModalCreateExamWithQuestion";
 
 export const Exam = () => {
   const { Title } = Typography;
-  const { Option } = Select;
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -62,21 +61,13 @@ export const Exam = () => {
   const dataSubGroup = useSelector(
     (state: any) => state.subjectgroup.listSubjectGroup.results
   );
-  const [data, setData] = useState<IBanks[]>([]);
+  const data = useSelector((state: any) => state.bank.listBanks.results);
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(getBanks(filter))
-      .unwrap()
-      .then((rs: any) => {
-        let list: IBanks[] = [];
-        rs.results.forEach((vl: IBanks, idx: number) => {
-          list.push({ key: idx, ...vl });
-        });
-        setData(list);
-      });
-
+    dispatch(getBanks(filter));
     dispatch(getSubjectGroups(999));
   }, [filter]);
 
@@ -104,15 +95,8 @@ export const Exam = () => {
   }, [dataSubGroup]);
 
   const handleRefresh = () => {
-    dispatch(getBanks(filter))
-      .unwrap()
-      .then((rs: any) => {
-        let list: IBanks[] = [];
-        rs.results.forEach((vl: IBanks, idx: number) => {
-          list.push({ key: idx, ...vl });
-        });
-        setData(list);
-      });
+    dispatch(getBanks(filter));
+    dispatch(getSubjectGroups(999));
   };
 
   const handleModal = () => {
@@ -144,7 +128,7 @@ export const Exam = () => {
       cancelText: "Huỷ",
       onOk: () => {
         if (test === 0) {
-          modal.confirm(modalCreateExamFromQuestions);
+          setIsModalOpen(true);
         } else if (test === 1) {
           navigate("/teacher/exams/createExam");
         }
@@ -253,100 +237,6 @@ export const Exam = () => {
       onOk: () => formAssign.submit(),
     };
     modal.confirm(assign);
-  };
-
-  const modalCreateExamFromQuestions = {
-    title: "Tạo mới đề thi từ ngân hàng câu hỏi",
-    width: "50%",
-    content: (
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-        className="modal-add-role create-exam-question"
-        layout="horizontal"
-        form={form}
-        style={{ textAlign: "left" }}
-      >
-        <Form.Item
-          name="class"
-          label="Chọn lớp học"
-          rules={[{ required: true }]}
-        >
-          <Select defaultValue="Chọn lớp học">
-            <Option value={0}>Công nghệ thông tin</Option>
-            <Option value={1}>Công nghệ thực phẩm</Option>
-            <Option value={2}>Hóa học nông nghiệp</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name="topic"
-          label="Chọn chủ đề"
-          rules={[{ required: true }]}
-        >
-          <Select defaultValue="Chọn chủ đề">
-            <Option value={0}>Chủ nghĩa Mác - Lênin</Option>
-            <Option value={1}>Kinh tế căng bản</Option>
-            <Option value={2}>Hóa học nâng cao</Option>
-          </Select>
-        </Form.Item>
-        <div className="line"></div>
-        <Form.Item
-          name="nameExam"
-          label="Tên đề thi"
-          rules={[{ required: true }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="amountExam"
-          label="Số lượng đề thi"
-          rules={[{ required: true }]}
-        >
-          <div className="display-flex">
-            <Input className="small-input" />
-            <div className="span-detail">Đề</div>
-          </div>
-        </Form.Item>
-        <Form.Item
-          name="amountQuestion"
-          label="Số lượng câu hỏi"
-          rules={[{ required: true }]}
-        >
-          <div className="display-flex">
-            <Input className="small-input" />
-            <div className="span-detail">Câu</div>
-          </div>
-        </Form.Item>
-        <Form.Item name="scope" label="Thang điểm" rules={[{ required: true }]}>
-          <div className="display-flex">
-            <Input className="small-input" />
-            <div className="span-detail">Điểm</div>
-          </div>
-        </Form.Item>
-        <Form.Item
-          name="amountQuestionLevel"
-          label="Số câu hỏi theo độ khó"
-          rules={[{ required: true }]}
-        >
-          <Row>
-            <Col span={8} className="display-flex">
-              <Input className="small-input" />
-              <div className="span-detail">Khó</div>
-            </Col>
-            <Col span={8} className="display-flex">
-              <Input className="small-input" />
-              <div className="span-detail">Trung Bình</div>
-            </Col>
-            <Col span={8} className="display-flex">
-              <Input className="small-input" />
-              <div className="span-detail">Dễ</div>
-            </Col>
-          </Row>
-        </Form.Item>
-      </Form>
-    ),
-    okText: "Lưu và gửi phê duyệt",
-    cancelText: "Huỷ",
   };
 
   const columns = [
@@ -563,6 +453,10 @@ export const Exam = () => {
         </Col>
       </Row>
       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      <ModalCreateExamWithQuestion
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      ></ModalCreateExamWithQuestion>
     </div>
   );
 };

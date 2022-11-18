@@ -9,6 +9,12 @@ const createBank = (body: any) => {
   });
 };
 
+const createBankWithQuestion = (body: any) => {
+  return axiosClient.post(`${url}/create-with-questions`, body).then((rs: any) => {
+    return rs;
+  });
+};
+
 const getBanks = (params: any) => {
   const query = queryString.stringify(params);
   return axiosClient.get(url + `?${query}`).then((rs: any) => {
@@ -34,6 +40,6 @@ const deleteBank = (id: string) => {
   });
 };
 
-const Banks = { getBanks, getBank, updateBank, createBank, deleteBank };
+const Banks = { getBanks, getBank, updateBank, createBank, deleteBank, createBankWithQuestion };
 
 export default Banks;
