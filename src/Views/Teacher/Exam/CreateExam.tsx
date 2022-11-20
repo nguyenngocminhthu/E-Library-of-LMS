@@ -5,6 +5,7 @@ import {
   Col,
   Form,
   Input,
+  InputNumber,
   Modal,
   Radio,
   Row,
@@ -483,8 +484,17 @@ export const CreateExam = () => {
         ]}
       >
         <Form onFinish={quesNumFinish} form={formQuesNum}>
-          <Form.Item name="quesNum" label="Số câu">
-            <Input />
+          <Form.Item
+            name="quesNum"
+            label="Số câu"
+            rules={[
+              {
+                required: true,
+                message: "Nhập số câu lớn hơn 0",
+              },
+            ]}
+          >
+            <InputNumber className="input-number-large" min={1} />
           </Form.Item>
         </Form>
       </Modal>
