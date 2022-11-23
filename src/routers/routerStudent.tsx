@@ -5,6 +5,8 @@ import { StudentLayout } from "../Layout/StudentLayout";
 import DebtReport from "../Views/Student/FeeManage/DebtReport";
 import GeneralReceipts from "../Views/Student/FeeManage/GeneralReceipts";
 import CreditDebit from "../Views/Student/FeeManage/PaymentMethod/CreditDebit";
+import ATM from "../Views/Student/FeeManage/PaymentMethod/CreditDebit/ATM";
+import Visa from "../Views/Student/FeeManage/PaymentMethod/CreditDebit/Visa";
 import VNPAY from "../Views/Student/FeeManage/PaymentMethod/VNPAY";
 import PaySchoolFees from "../Views/Student/FeeManage/PaySchoolFees";
 import { Home } from "../Views/Student/Home/Home";
@@ -55,6 +57,16 @@ export const Student = () => {
         <Route
           path="/student/payschoolfees/creditdebit"
           element={<CreditDebit />}
+        />
+
+        <Route
+          path="/student/payschoolfees/creditdebit/visa"
+          element={<Visa />}
+        />
+
+        <Route
+          path="/student/payschoolfees/creditdebit/atm"
+          element={<ATM />}
         />
 
         <Route path="/student/payschoolfees/vnpay" element={<VNPAY />} />

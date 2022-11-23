@@ -8,9 +8,12 @@ import {
   Table,
   Tooltip,
   Typography,
+  Form,
 } from "antd";
+import modal from "antd/lib/modal";
 import React, { useState } from "react";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import "./FeeManage.style.scss";
 
 interface DataType {
   codeNumber: number;
@@ -20,8 +23,17 @@ interface DataType {
   action: any;
 }
 
+interface DataTypeDetailsTable {
+  codeNumber: string;
+  billCodeSubject: number;
+  feeContent: string;
+  session: string;
+  money: number;
+}
+
 export const PaySchoolFees = () => {
   const { Title } = Typography;
+  const [form] = Form.useForm();
   const [paymentMethod, setPaymentMethod] = useState<number>(0);
 
   const columns = [
@@ -55,6 +67,7 @@ export const PaySchoolFees = () => {
             <Button
               icon={<EyeOutlined className="icon-start" />}
               size="large"
+              onClick={() => modal.confirm(modalPaySchoolFees)}
             />
           </Tooltip>
         </Space>
@@ -86,12 +99,87 @@ export const PaySchoolFees = () => {
     },
   ];
 
+  const columnsDetailsTable = [
+    {
+      title: "STT",
+      dataIndex: "codeNumber",
+      key: "codeNumber",
+    },
+    {
+      title: "Mã",
+      dataIndex: "billCodeSubject",
+      key: "billCodeSubject",
+    },
+    {
+      title: "Nội dung khoản thu",
+      dataIndex: "feeContent",
+      key: "feeContent",
+    },
+    {
+      title: "Học kỳ",
+      dataIndex: "session",
+      key: "session",
+    },
+    {
+      title: "Số tiền (VNĐ)",
+      dataIndex: "money",
+      key: "money",
+    },
+  ];
+
+  const dataDetailsTable: DataTypeDetailsTable[] = [
+    {
+      codeNumber: "1",
+      billCodeSubject: 123974,
+      feeContent: "Kế toán đại cương",
+      session: "2020 - 2021",
+      money: 1160000,
+    },
+    {
+      codeNumber: "2",
+      billCodeSubject: 123974,
+      feeContent: "Kế toán đại cương",
+      session: "2020 - 2021",
+      money: 1160000,
+    },
+    {
+      codeNumber: "3",
+      billCodeSubject: 123974,
+      feeContent: "Kế toán đại cương",
+      session: "2020 - 2021",
+      money: 1160000,
+    },
+  ];
+
+  const modalPaySchoolFees = {
+    width: "50%",
+    title: "Các học phần đã đăng ký",
+    content: (
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        name="cancel-form"
+        layout="horizontal"
+        form={form}
+        style={{ textAlign: "left" }}
+        className="subject"
+      >
+        <Table
+          columns={columnsDetailsTable}
+          dataSource={dataDetailsTable}
+          className="ant-table-wrapper"
+        />
+      </Form>
+    ),
+    cancelText: "Hủy",
+  };
+
   return (
     <div>
       <div className="subject">
         <BreadcrumbComp title="Thanh toán trực tuyến" />
         <div className="top-head">
-          <Title ellipsis level={5}>
+          <Title ellipsis level={5} style={{ color: "#CC5C00" }}>
             Thanh toán trực tuyến
           </Title>
         </div>
@@ -106,8 +194,10 @@ export const PaySchoolFees = () => {
           <Radio value={1}>VNPAY</Radio>
         </Radio.Group>
         <Table columns={columns} dataSource={data} />
-        <Row>
-          <Col span={18}>Tổng thu:</Col>
+        <Row className="totalFee">
+          <Col span={18} style={{ color: "#CC5C00" }}>
+            Tổng thu:
+          </Col>
           <Col span={6}>8.650.000 VNĐ</Col>
         </Row>
         <div style={{ marginTop: "20px", textAlign: "center" }}>

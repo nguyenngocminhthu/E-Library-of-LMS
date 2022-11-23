@@ -3,6 +3,7 @@ import { Button, Col, Form, Row, Space, Table, Tooltip } from "antd";
 import modal from "antd/lib/modal";
 import React from "react";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import "./FeeManage.style.scss";
 
 interface DataType {
   codeNumber: string;
@@ -72,7 +73,7 @@ export const GeneralReceipts = () => {
             <Button
               icon={<EyeOutlined className="icon-start" />}
               size="large"
-              onClick={() => modal.confirm(modalCourseManage)}
+              onClick={() => modal.confirm(modalGeneralReceipts)}
             />
           </Tooltip>
         </Space>
@@ -165,7 +166,7 @@ export const GeneralReceipts = () => {
     },
   ];
 
-  const modalCourseManage = {
+  const modalGeneralReceipts = {
     width: "50%",
     content: (
       <Form
@@ -186,8 +187,10 @@ export const GeneralReceipts = () => {
           dataSource={dataDetailsTable}
           className="ant-table-wrapper"
         />
-        <Row>
-          <Col span={20}>Tổng thanh toán:</Col>
+        <Row className="totalFee">
+          <Col span={20} style={{ color: "#CC5C00" }}>
+            Tổng thanh toán:
+          </Col>
           <Col span={4}>8.650.000 VNĐ</Col>
         </Row>
       </Form>
