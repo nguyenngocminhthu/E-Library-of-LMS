@@ -61,6 +61,8 @@ export const Question = () => {
   const [data, setData] = useState<IQuestion[]>([]);
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
 
   const [collapseShow, setCollapseShow] = useState<any>(false);
   const [question, setQuestion] = useState<IQuestion>();
@@ -77,6 +79,7 @@ export const Question = () => {
       });
 
     dispatch(getSubjectGroups(999));
+    setPage(1);
   }, [filter]);
 
   const handleRefresh = () => {
@@ -194,7 +197,6 @@ export const Question = () => {
       title: "STT",
       dataIndex: "key",
       key: "key",
-      sorter: true,
       render: (key: number) => {
         return <div>{key + 1}</div>;
       },
@@ -353,6 +355,7 @@ export const Question = () => {
             <div className="select-label">Độ khó</div>
             <Radio.Group
               onChange={(e: any) => handleFilterLevel(e.target.value)}
+              defaultValue=""
             >
               <Radio value="">Tất cả</Radio>
               <Radio value={0}>Thấp</Radio>
@@ -373,7 +376,27 @@ export const Question = () => {
             </Col>
           </Row>
           <Table
-            pagination={{ defaultPageSize: 4 }}
+            pagination={{
+              defaultPageSize: 10,
+              current: page,
+              total: data.length,
+              showTotal(total, range) {
+                return `Total ${total} items`;
+              },
+              onChange(page, pageSize) {
+                setPage(page);
+              },
+              pageSize,
+              pageSizeOptions: ["10", "15", "20", "25"],
+              showSizeChanger: true,
+              onShowSizeChange(current, size) {
+                setPageSize(size);
+                setPage(1);
+              },
+            }}
+            scroll={{
+              y: 600,
+            }}
             columns={columns}
             dataSource={data}
           />
