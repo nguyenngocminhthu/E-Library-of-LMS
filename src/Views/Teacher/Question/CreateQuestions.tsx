@@ -136,7 +136,7 @@ export const CreateQuestions = () => {
             <Form.Item
               name="subjectgroup"
               label="Tổ bộ môn"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "Chọn tổ bộ môn" }]}
             >
               <Select
                 // disabled={params.id}
@@ -163,7 +163,7 @@ export const CreateQuestions = () => {
             <Form.Item
               name="subject"
               label="Môn học"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "Chọn môn học" }]}
             >
               <Select disabled={dataSub.length === 0 || params.id}>
                 {dataSub?.map((vl: ISubject) => (
@@ -188,7 +188,12 @@ export const CreateQuestions = () => {
 
         <div className="body-bank">
           <div className="question-detail">
-            <Form.Item labelCol={{ span: 4 }} name="quesName" label="Câu hỏi :">
+            <Form.Item
+              labelCol={{ span: 4 }}
+              name="quesName"
+              label="Câu hỏi :"
+              rules={[{ required: true, message: "Điền câu hỏi" }]}
+            >
               <TextArea rows={4} />
             </Form.Item>
             {examType === 0 ? (
