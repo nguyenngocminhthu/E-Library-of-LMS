@@ -12,6 +12,7 @@ import {
 } from "antd";
 import modal from "antd/lib/modal";
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import "./FeeManage.style.scss";
 
@@ -35,6 +36,7 @@ export const PaySchoolFees = () => {
   const { Title } = Typography;
   const [form] = Form.useForm();
   const [paymentMethod, setPaymentMethod] = useState<number>(0);
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -174,6 +176,14 @@ export const PaySchoolFees = () => {
     cancelText: "Hủy",
   };
 
+  const handleClick = () => {
+    if (paymentMethod === 0) {
+      navigate("/student/payschoolfees/creditdebit");
+    } else {
+      navigate("/student/payschoolfees/vnpay");
+    }
+  };
+
   return (
     <div>
       <div className="subject">
@@ -201,7 +211,11 @@ export const PaySchoolFees = () => {
           <Col span={6}>8.650.000 VNĐ</Col>
         </Row>
         <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <Button style={{ marginLeft: "1rem" }} type="primary">
+          <Button
+            onClick={handleClick}
+            style={{ marginLeft: "1rem" }}
+            type="primary"
+          >
             Thanh toán
           </Button>
         </div>
