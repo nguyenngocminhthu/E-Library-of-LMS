@@ -121,9 +121,6 @@ export const Home = () => {
           dataSource={user.recentSubject}
           pagination={{
             position: "top",
-            onChange: (page) => {
-              console.log(page);
-            },
             pageSize: 8,
           }}
           renderItem={(item: ISubject) => (

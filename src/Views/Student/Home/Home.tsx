@@ -1,6 +1,8 @@
 import { Column } from "@ant-design/plots";
 import { Card, Col, List, Progress, Row, Typography } from "antd";
+import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import math from "../../../shared/img/math.png";
 import ppt from "../../../shared/img/ppt.png";
@@ -23,6 +25,7 @@ interface ILearnTime {
 export const Home = () => {
   const { Title } = Typography;
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const navigate = useNavigate();
 
   const listFile: any[] | undefined = [];
   for (let i = 0; i < 10; i++) {
@@ -114,29 +117,34 @@ export const Home = () => {
         <List
           style={{ marginBottom: "24px" }}
           grid={{ gutter: 30, column: 4 }}
-          dataSource={listFile}
+          dataSource={user.recentSubject}
           pagination={{
             position: "top",
-            onChange: (page) => {
-              console.log(page);
-            },
             pageSize: 4,
           }}
-          renderItem={(item: IFile) => (
-            <List.Item key={item.subject}>
-              <Card>
+          renderItem={(item: ISubject) => (
+            <List.Item key={item.subCode}>
+              <Card
+                className="c-pointer"
+                onClick={() =>
+                  navigate(`/student/subjects/subjectdetails/${item.id}`)
+                }
+              >
                 <Row>
-                  <Col span={6}>
-                    <img src={ppt} alt="file" />
+                  <Col
+                    span={6}
+                    style={{ display: "flex", verticalAlign: "middle" }}
+                  >
+                    <img src={item.image} alt="file" />
                   </Col>
                   <Col span={17} offset={1}>
-                    <p>{item.subject}</p>
+                    <p>{item.subCode}</p>
                     <Title ellipsis level={5}>
-                      {item.learn}
+                      {item.teacher.userName}
                     </Title>
-                    <span className="lesson-style">{item.lesson}</span>
+                    <span className="lesson-style">{item.subName}</span>
                   </Col>
-                  <Progress percent={item.progress} showInfo={false} />
+                  <Progress percent={60} showInfo={false} />
                 </Row>
               </Card>
             </List.Item>
