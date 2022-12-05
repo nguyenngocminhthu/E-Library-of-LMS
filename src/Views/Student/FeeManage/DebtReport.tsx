@@ -54,11 +54,23 @@ export const DebtReport = () => {
       title: "Số tiền (VNĐ)",
       dataIndex: "money",
       key: "money",
+      render: (money: number) => {
+        return money.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
     {
       title: "Đã nộp (VNĐ)",
       dataIndex: "alreadyPaid",
       key: "alreadyPaid",
+      render: (money: number) => {
+        return money.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
     {
       title: "Khấu trừ",

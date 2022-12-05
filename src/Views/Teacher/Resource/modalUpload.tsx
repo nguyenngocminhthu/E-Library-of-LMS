@@ -180,7 +180,7 @@ export const ModalUpload: React.FC<{
         {linkVideo !== "" && (
           <video src={linkVideo} width={300} height={200} controls />
         )}
-        <Form.Item name="url" label="hoặc Đường link" className="download-file">
+        <Form.Item name="url" label="hoặc Đường link">
           <Input
             onChange={(e: any) => setUrl(e.target.value)}
             disabled={linkVideo !== ""}
