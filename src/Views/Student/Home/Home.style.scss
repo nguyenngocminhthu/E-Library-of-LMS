@@ -1,22 +1,25 @@
 @import "../../../shared/styles/variable";
 
 .student {
+  img {
+    width: -webkit-fill-available;
+    height: 70px;
+  }
+  .ant-progress-success-bg,
+  .ant-progress-bg {
+    background-color: $color-primary;
+  }
 
-    .ant-progress-success-bg,
-    .ant-progress-bg {
-        background-color: $color-primary;
-    }
+  .lesson-style {
+    font-style: normal;
+    font-weight: 700;
+    color: #0b80ec;
+  }
 
-    .lesson-style {
-        font-style: normal;
-        font-weight: 700;
-        color: #0B80EC;
+  .chart {
+    .title {
+      position: unset !important;
+      margin-bottom: 1rem;
     }
-
-    .chart {
-        .title {
-            position: unset !important;
-            margin-bottom: 1rem;
-        }
-    }
+  }
 }

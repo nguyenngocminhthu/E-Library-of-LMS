@@ -6,7 +6,7 @@ import SearchComponent from "../../../Components/SearchComponent";
 
 interface DataType {
   feeCode: string;
-  nameFee: string;
+  feeName: string;
   courseLoad: string;
   statusRegister: number;
   money: number;
@@ -26,8 +26,8 @@ export const DebtReport = () => {
     },
     {
       title: "Tên khoản thu",
-      dataIndex: "nameFee",
-      key: "nameFee",
+      dataIndex: "feeName",
+      key: "feeName",
     },
     {
       title: "Số tín chỉ",
@@ -104,7 +104,7 @@ export const DebtReport = () => {
   const data: DataType[] = [
     {
       feeCode: "0021500",
-      nameFee: "Kế toán đại cương",
+      feeName: "Kế toán đại cương",
       courseLoad: "4",
       statusRegister: 0,
       money: 1600000,
@@ -115,7 +115,7 @@ export const DebtReport = () => {
     },
     {
       feeCode: "0021600",
-      nameFee: "Nguyên lý kế toán",
+      feeName: "Nguyên lý kế toán",
       courseLoad: "6",
       statusRegister: 0,
       money: 2000000,
@@ -126,7 +126,7 @@ export const DebtReport = () => {
     },
     {
       feeCode: "0021700",
-      nameFee: "Kế toán tài chính doanh nghiệp 1",
+      feeName: "Kế toán tài chính doanh nghiệp 1",
       courseLoad: "6",
       statusRegister: 1,
       money: 2000000,
