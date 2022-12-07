@@ -6,7 +6,6 @@ import "../FeeManage.style.scss";
 
 function CreditDebit() {
   const { Title } = Typography;
-  const { Meta } = Card;
   const navigate = useNavigate();
 
   return (
@@ -49,10 +48,7 @@ function CreditDebit() {
                     src={require("../../../../shared/img/visapayment.png")}
                   />
                 }
-              >
-                {" "}
-                <Meta title="Visa" />
-              </Card>
+              />
             </Col>
             <Col span={6}>
               <Card
@@ -63,10 +59,7 @@ function CreditDebit() {
                     src={require("../../../../shared/img/mastercard.png")}
                   />
                 }
-              >
-                {" "}
-                <Meta title="Master Card" />
-              </Card>
+              />
             </Col>
             <Col span={6}>
               <Card
@@ -77,10 +70,7 @@ function CreditDebit() {
                     src={require("../../../../shared/img/jcb.png")}
                   />
                 }
-              >
-                {" "}
-                <Meta title="JCB" />
-              </Card>
+              />
             </Col>
             <Col span={6}>
               <Card
@@ -92,10 +82,7 @@ function CreditDebit() {
                     src={require("../../../../shared/img/atm.png")}
                   />
                 }
-              >
-                {" "}
-                <Meta title="ATM" />
-              </Card>
+              />
             </Col>
           </Row>
         </Space>

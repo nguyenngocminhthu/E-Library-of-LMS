@@ -8,6 +8,7 @@ import CreditDebit from "../Views/Student/FeeManage/PaymentMethod/CreditDebit";
 import ATM from "../Views/Student/FeeManage/PaymentMethod/CreditDebit/ATM";
 import Visa from "../Views/Student/FeeManage/PaymentMethod/CreditDebit/Visa";
 import VNPAY from "../Views/Student/FeeManage/PaymentMethod/VNPAY";
+import VNPAYpayments from "../Views/Student/FeeManage/PaymentMethod/VNPAY/VNPAYpayments";
 import PaySchoolFees from "../Views/Student/FeeManage/PaySchoolFees";
 import { Home } from "../Views/Student/Home/Home";
 import { Notification } from "../Views/Student/Notification/Notification";
@@ -70,6 +71,11 @@ export const Student = () => {
         />
 
         <Route path="/student/payschoolfees/vnpay" element={<VNPAY />} />
+
+        <Route
+          path="/student/payschoolfees/vnpay/confirm"
+          element={<VNPAYpayments />}
+        />
 
         <Route path="/student/debtreport" element={<DebtReport />} />
 
