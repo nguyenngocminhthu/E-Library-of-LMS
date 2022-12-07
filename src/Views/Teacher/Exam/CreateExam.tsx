@@ -5,6 +5,7 @@ import {
   Col,
   Form,
   Input,
+  InputNumber,
   Modal,
   Radio,
   Row,
@@ -91,7 +92,7 @@ export const CreateExam = () => {
     formQues.setFieldsValue(questions[select]);
     setQuesType(questions[select].quesType);
     setExamType(questions[select].examType);
-    if (questions[select].correct.length === 1) {
+    if (questions[select].quesType === 0) {
       formQues.setFieldsValue({ correct: questions[select].correct[0] });
     } else {
       formQues.setFieldsValue({ correct: questions[select].correct });
@@ -155,10 +156,10 @@ export const CreateExam = () => {
     dispatch(
       createBank({
         ...values,
-        questions: questions,
+        questions,
         user: user.id,
         fileType: 0,
-        status: values.isFinal === true ? 0 : 1,
+        status: values.isFinal ? 0 : 1,
       })
     ).then(() => {
       navigate("/teacher/exams");
@@ -483,8 +484,17 @@ export const CreateExam = () => {
         ]}
       >
         <Form onFinish={quesNumFinish} form={formQuesNum}>
-          <Form.Item name="quesNum" label="Số câu">
-            <Input />
+          <Form.Item
+            name="quesNum"
+            label="Số câu"
+            rules={[
+              {
+                required: true,
+                message: "Nhập số câu lớn hơn 0",
+              },
+            ]}
+          >
+            <InputNumber className="input-number-large" min={1} />
           </Form.Item>
         </Form>
       </Modal>

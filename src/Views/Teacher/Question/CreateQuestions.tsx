@@ -33,6 +33,7 @@ export const CreateQuestions = () => {
   const [answerNum, setAnswerNum] = useState<any[]>([]);
   const [quesType, setQuesType] = useState<number>(0);
   const [examType, setExamType] = useState<number>(0);
+  const [level, setLevel] = useState<number>(0);
   const [dataSub, setDataSub] = useState<ISubject[]>([]);
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const params: any = useParams();
@@ -52,7 +53,7 @@ export const CreateQuestions = () => {
           setQuesType(rs.quesType);
           form.setFieldsValue(rs);
           setAnswerNum(rs.answers);
-          if (rs.correct.length === 1) {
+          if (rs.quesType === 0) {
             form.setFieldsValue({ correct: rs.correct[0] });
           } else {
             form.setFieldsValue({ correct: rs.correct });
@@ -97,7 +98,7 @@ export const CreateQuestions = () => {
           handleRefresh();
         });
     } else {
-      dispatch(createQuestion({ ...values, user: user.id }))
+      dispatch(createQuestion({ ...values, user: user.id, examType, level }))
         .unwrap()
         .then(() => {
           form.resetFields();
@@ -112,6 +113,7 @@ export const CreateQuestions = () => {
         setDataSub(rs.results);
       });
   };
+  console.debug(answerNum);
 
   return (
     <div className="sub-exam-bank">
@@ -135,7 +137,7 @@ export const CreateQuestions = () => {
             <Form.Item
               name="subjectgroup"
               label="Tổ bộ môn"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "Chọn tổ bộ môn" }]}
             >
               <Select
                 // disabled={params.id}
@@ -148,11 +150,7 @@ export const CreateQuestions = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
-              name="examType"
-              label="Hình thức"
-              rules={[{ required: true }]}
-            >
+            <Form.Item name="examType" label="Hình thức">
               <Radio.Group
                 defaultValue={0}
                 onChange={(e) => setExamType(e.target.value)}
@@ -166,7 +164,7 @@ export const CreateQuestions = () => {
             <Form.Item
               name="subject"
               label="Môn học"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "Chọn môn học" }]}
             >
               <Select disabled={dataSub.length === 0 || params.id}>
                 {dataSub?.map((vl: ISubject) => (
@@ -176,8 +174,11 @@ export const CreateQuestions = () => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item name="level" label="Độ khó" rules={[{ required: true }]}>
-              <Radio.Group defaultValue={0}>
+            <Form.Item name="level" label="Độ khó">
+              <Radio.Group
+                defaultValue={0}
+                onChange={(e) => setLevel(e.target.value)}
+              >
                 <Radio value={0}>Dễ</Radio>
                 <Radio value={1}>Trung bình</Radio>
                 <Radio value={2}>Khó</Radio>
@@ -188,7 +189,12 @@ export const CreateQuestions = () => {
 
         <div className="body-bank">
           <div className="question-detail">
-            <Form.Item labelCol={{ span: 4 }} name="quesName" label="Câu hỏi :">
+            <Form.Item
+              labelCol={{ span: 4 }}
+              name="quesName"
+              label="Câu hỏi :"
+              rules={[{ required: true, message: "Điền câu hỏi" }]}
+            >
               <TextArea rows={4} />
             </Form.Item>
             {examType === 0 ? (

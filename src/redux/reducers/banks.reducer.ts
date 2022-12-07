@@ -8,6 +8,7 @@ import { IQuestion } from "./question.reducer";
 import { message } from "antd";
 import { RootState } from "../store";
 import { IList } from "./interface";
+import { cloneDeep } from "lodash";
 
 export const createBank = createAsyncThunk(
   "Banks/createBank",
@@ -15,6 +16,33 @@ export const createBank = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Banks.createBank(body);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo đề thi thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const createBankWithQuestion = createAsyncThunk(
+  "Banks/createBankWithQuestion",
+  async (body: IQuestion, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Banks.createBankWithQuestion(body);
       if (data.code) {
         thunkAPI.dispatch(setLoading(false));
         message.error(data.message);
@@ -168,11 +196,11 @@ export interface IBanks {
   isFinal: boolean;
 }
 
-interface banksState {
+interface IBanksState {
   listBanks: IList;
 }
 
-const initialState: banksState = {
+const initialState: IBanksState = {
   listBanks: {
     limit: 0,
     page: 0,
@@ -224,9 +252,27 @@ export const banksReducer = createSlice({
       };
     });
     builder.addCase(createBank.fulfilled, (state, action) => {
-      state.listBanks = action.payload;
+      if (action.payload.code) return state;
+      const newState = cloneDeep(state);
+      newState.listBanks.results.unshift(action.payload);
+      return newState;
     });
     builder.addCase(createBank.rejected, (state, action) => {
+      state.listBanks = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
+    });
+    builder.addCase(createBankWithQuestion.fulfilled, (state, action) => {
+      if (action.payload.code) return state;
+      const newState = cloneDeep(state);
+      newState.listBanks.results.unshift(action.payload);
+      return newState;
+    });
+    builder.addCase(createBankWithQuestion.rejected, (state, action) => {
       state.listBanks = {
         limit: 0,
         page: 0,

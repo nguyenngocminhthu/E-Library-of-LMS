@@ -74,6 +74,7 @@ export const ModalSubject = (props: any) => {
   useEffect(() => {
     if (isModalOpen) {
       if (mode == "edit") {
+        const students = record?.students.map((item: any) => item.id);
         setAction({
           title: "Chỉnh sửa môn học",
           okText: "Lưu",
@@ -89,7 +90,7 @@ export const ModalSubject = (props: any) => {
           },
           subGroup: {
             required: true,
-            value: record?.subGroup,
+            value: record?.subGroup.id,
             disabled: false,
           },
           teacher: {
@@ -99,7 +100,7 @@ export const ModalSubject = (props: any) => {
           },
           student: {
             required: true,
-            value: record?.student,
+            value: students,
             disabled: false,
           },
           image: {
@@ -123,7 +124,7 @@ export const ModalSubject = (props: any) => {
         subName: action.subName.value,
         subGroup: action.subGroup.value,
         teacher: action.teacher.value,
-        student: action.student.value,
+        students: action.student.value,
       });
     }
   }, [action]);
@@ -225,7 +226,7 @@ export const ModalSubject = (props: any) => {
           </Select>
         </Form.Item>
         <Form.Item
-          name="student"
+          name="students"
           label="Sinh viên"
           rules={[
             {
@@ -237,7 +238,7 @@ export const ModalSubject = (props: any) => {
         >
           <Select mode="multiple" allowClear placeholder="Nhập hoặc chọn">
             {student?.map((vl: UserState) => (
-              <Option key={vl.userCode}>{vl.userCode}</Option>
+              <Option key={vl.id}>{vl.userCode}</Option>
             ))}
           </Select>
         </Form.Item>

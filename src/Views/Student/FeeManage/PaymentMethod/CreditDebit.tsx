@@ -1,11 +1,13 @@
 import { Card, Col, Row, Space, Typography } from "antd";
 import React from "react";
+import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import "../FeeManage.style.scss";
 
 function CreditDebit() {
   const { Title } = Typography;
   const { Meta } = Card;
+  const navigate = useNavigate();
 
   return (
     <div className="subDetail creditdebit-style">
@@ -40,6 +42,7 @@ function CreditDebit() {
             <Col span={6}>
               <Card
                 hoverable
+                onClick={() => navigate("visa")}
                 cover={
                   <img
                     alt="example"
@@ -82,6 +85,7 @@ function CreditDebit() {
             <Col span={6}>
               <Card
                 hoverable
+                onClick={() => navigate("atm")}
                 cover={
                   <img
                     alt="example"
