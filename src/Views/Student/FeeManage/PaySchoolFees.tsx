@@ -1,37 +1,34 @@
-import { EyeOutlined } from "@ant-design/icons";
 import {
   Button,
-  Col,
-  Radio,
+  Col, Radio,
   Row,
-  Space,
   Table,
-  Tooltip,
-  Typography,
-  Form,
+  Typography
 } from "antd";
-import modal from "antd/lib/modal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { getPayments, IPayment } from "../../../redux/reducers/payment.reducer";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { AppDispatch } from "../../../redux/store";
 import "./FeeManage.style.scss";
-
-interface DataType {
-  key: React.Key;
-  codeNumber: string;
-  billCodeSubject: number;
-  feeContent: string;
-  session: string;
-  money: number;
-}
 
 export const PaySchoolFees = () => {
   const { Title } = Typography;
-  const [form] = Form.useForm();
   const [paymentMethod, setPaymentMethod] = useState<number>(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [money, setMoney] = useState<number[]>([]);
+  const [payments, setPayments] = useState<IPayment[]>([])
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getPayments({limit: 999})).unwrap().then((rs) => {
+      const payments = rs.results.map((vl: IPayment,idx: number) => {return {...vl, key: idx}})
+      setPayments(payments)
+    })
+  },[])
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -41,24 +38,24 @@ export const PaySchoolFees = () => {
     selectedRowKeys,
     onChange: onSelectChange,
     onSelect: (
-      record: DataType,
+      record: IPayment,
       selected: boolean,
-      selectedRows: DataType[]
+      selectedRows: IPayment[]
     ) => {
       setMoney(
-        selectedRows.map((selectedRow: DataType) => {
-          return selectedRow.money;
+        selectedRows.map((selectedRow: IPayment) => {
+          return selectedRow.cost;
         })
       );
     },
     onSelectAll: (
       selected: boolean,
-      selectedRows: DataType[],
-      changeRows: DataType[]
+      selectedRows: IPayment[],
+      changeRows: IPayment[]
     ) => {
       setMoney(
-        selectedRows.map((selectedRow: DataType) => {
-          return selectedRow.money;
+        selectedRows.map((selectedRow: IPayment) => {
+          return selectedRow.cost;
         })
       );
     },
@@ -69,30 +66,33 @@ export const PaySchoolFees = () => {
   const columns = [
     {
       title: "STT",
-      dataIndex: "codeNumber",
-      key: "codeNumber",
+      dataIndex: "key",
+      key: "key",
     },
     {
-      title: "Mã",
-      dataIndex: "billCodeSubject",
-      key: "billCodeSubject",
+      title: "Mã phí",
+      dataIndex: "feeCode",
+      key: "feeCode",
     },
     {
       title: "Nội dung khoản thu",
-      dataIndex: "feeContent",
-      key: "feeContent",
+      dataIndex: "subject",
+      key: "subject",
+      render: (subject: ISubject) => {
+        return subject.subName;
+      }
     },
-    {
-      title: "Học kỳ",
-      dataIndex: "session",
-      key: "session",
-    },
+    // {
+    //   title: "Học kỳ",
+    //   dataIndex: "session",
+    //   key: "session",
+    // },
     {
       title: "Số tiền (VNĐ)",
-      dataIndex: "money",
-      key: "money",
-      render: (money: number) => {
-        return money.toLocaleString("it-IT", {
+      dataIndex: "cost",
+      key: "cost",
+      render: (cost: number) => {
+        return cost.toLocaleString("it-IT", {
           style: "currency",
           currency: "VND",
         });
@@ -100,38 +100,11 @@ export const PaySchoolFees = () => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: "1",
-      codeNumber: "1",
-      billCodeSubject: 123974,
-      feeContent: "Kế toán đại cương",
-      session: "2020 - 2021",
-      money: 1160000,
-    },
-    {
-      key: "2",
-      codeNumber: "2",
-      billCodeSubject: 123975,
-      feeContent: "Xác xuất thống kê",
-      session: "2020 - 2021",
-      money: 2330000,
-    },
-    {
-      key: "3",
-      codeNumber: "3",
-      billCodeSubject: 123976,
-      feeContent: "Lập trình hướng đối tượng",
-      session: "2020 - 2021",
-      money: 2330000,
-    },
-  ];
-
   const handleClick = () => {
     if (paymentMethod === 0) {
-      navigate("/student/payschoolfees/creditdebit");
+      navigate(`/student/payschoolfees/creditdebit/${money.reduce((a, b) => a + b, 0)}`);
     } else {
-      navigate("/student/payschoolfees/vnpay");
+      navigate(`/student/payschoolfees/vnpay/${money.reduce((a, b) => a + b, 0)}`);
     }
   };
 
@@ -157,7 +130,7 @@ export const PaySchoolFees = () => {
         <Table
           rowSelection={rowSelection}
           columns={columns}
-          dataSource={data}
+          dataSource={payments}
         />
         <Row className="totalFee">
           <Col span={18} style={{ color: "#CC5C00" }}>

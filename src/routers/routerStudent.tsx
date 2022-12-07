@@ -56,7 +56,7 @@ export const Student = () => {
         <Route path="/student/payschoolfees" element={<PaySchoolFees />} />
 
         <Route
-          path="/student/payschoolfees/creditdebit"
+          path="/student/payschoolfees/creditdebit/:cost"
           element={<CreditDebit />}
         />
 
@@ -70,7 +70,7 @@ export const Student = () => {
           element={<ATM />}
         />
 
-        <Route path="/student/payschoolfees/vnpay" element={<VNPAY />} />
+        <Route path='/student/payschoolfees/vnpay/:cost' element={<VNPAY />} />
 
         <Route
           path="/student/payschoolfees/vnpay/confirm"
