@@ -204,8 +204,18 @@ export const Exam = () => {
   };
 
   const modalAssign = (id: string) => {
+    const range = (start: number, end: number) => {
+      const result = [];
+      for (let i = start; i < end; i++) {
+        result.push(i);
+      }
+      return result;
+    };
+
     const onFinish = (values: any) => {
-      dispatch(updateBank({ id: id, payload: values }));
+      dispatch(updateBank({ id: id, payload: values })).unwrap().then(() => {
+        handleRefresh();
+      });
     };
     const assign = {
       title: "Phân bố đề thi",
@@ -228,6 +238,7 @@ export const Exam = () => {
             <DatePicker
               format="DD-MM-YYYY HH:mm:ss"
               showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}
+              disabledDate={(c) => c && c < moment().startOf('day')}
             />
           </Form.Item>
         </Form>

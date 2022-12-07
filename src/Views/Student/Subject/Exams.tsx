@@ -65,7 +65,7 @@ export const Exam = () => {
                         <EyeOutlined
                           onClick={() =>
                             navigate(
-                              `/student/subjects/exams/detail/${submissionId}`
+                              `/student/subjects/exams/detail/${value.id}`
                             )
                           }
                           key="detail"
@@ -76,7 +76,7 @@ export const Exam = () => {
                         <EyeOutlined
                           onClick={() =>
                             navigate(
-                              `/student/subjects/exams/detail/${submissionId}`
+                              `/student/subjects/exams/detail/${value.id}`
                             )
                           }
                           key="detail"
