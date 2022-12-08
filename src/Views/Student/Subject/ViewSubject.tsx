@@ -73,7 +73,7 @@ export const ViewSubject = () => {
       dispatch(
         updateTimeLearningByStudentAndSubject({
           param: { student: user.id, subject: currentSubject?.id },
-          payload: { time },
+          payload: { time: timeLearning },
         })
       );
     };
