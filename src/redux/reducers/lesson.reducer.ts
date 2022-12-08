@@ -143,20 +143,21 @@ export interface ILesson {
   key?: string;
   classes: [];
   title: string;
-  user: UserState;
+  user?: UserState;
   video: string;
   file: [];
-  subject: ISubject;
-  topic: ITopic;
+  subject?: ISubject;
+  topic?: ITopic;
   createdAt: string;
   updatedAt: string;
   status: number;
-  QA: IQA[];
+  QA?: IQA[];
   url: string;
 }
 
 interface LessonState {
   listLesson: IList;
+  current: ILesson;
 }
 
 const initialState: LessonState = {
@@ -167,6 +168,17 @@ const initialState: LessonState = {
     totalPages: 0,
     totalResults: 0,
   },
+  current: {
+    id: '',
+    classes: [],
+    title: '',
+    video: '',
+    file: [],
+    createdAt: '',
+    updatedAt: '',
+    status: 0,
+    url: '',
+  }
 };
 
 export const LessonReducer = createSlice({
@@ -199,7 +211,7 @@ export const LessonReducer = createSlice({
       };
     });
     builder.addCase(getLesson.fulfilled, (state, action) => {
-      state.listLesson = action.payload;
+      state.current = action.payload;
     });
     builder.addCase(getLesson.rejected, (state) => {
       state.listLesson = {

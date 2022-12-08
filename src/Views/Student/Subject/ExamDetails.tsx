@@ -6,11 +6,10 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { getBank, IBanks } from "../../../redux/reducers/banks.reducer";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
 import {
-  createSubmission,
-  getSubmission,
-  ISubmissions,
+  createSubmission, ISubmissions,
 } from "../../../redux/reducers/submission.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
@@ -26,7 +25,7 @@ export const ExamDetails = () => {
   const dispatch: AppDispatch = useDispatch();
   const params = useParams<{ id: string }>();
   const [select, setSelect] = useState(0);
-  const [data, setData] = useState<ISubmissions>();
+  const [data, setData] = useState<IBanks>();
 
   const [time, setTime] = useState<number>(0);
   const [releaseTime, setReleaseTime] = useState<any>();
@@ -38,17 +37,21 @@ export const ExamDetails = () => {
 
   useEffect(() => {
     if (params.id) {
-      dispatch(getSubmission(params.id))
+      dispatch(getBank(params.id))
         .unwrap()
-        .then((rs: ISubmissions) => {
+        .then((rs: IBanks) => {
           setData(rs);
           setSelect(0);
-          setTime(rs.bank.time * 1000 * 60);
-          setReleaseTime(Date.parse(rs.bank.releaseTime));
-          if (rs.submit) {
-            setQuestions(rs.submit);
-          } else if (rs.bank.question.length !== 0) {
-            rs.bank.question.forEach((vl: IQuestion) => {
+          setTime(rs.time * 1000 * 60);
+          setReleaseTime(Date.parse(rs.releaseTime));
+          if (!lodash.isEmpty(rs.submissions)) {
+            rs.submissions.forEach((vl: ISubmissions) => {
+              if (vl.user.id === user.id) {
+                setQuestions(vl.submit);
+              }
+            });
+          } else if (rs.question.length !== 0) {
+            rs.question.forEach((vl: IQuestion) => {
               if (vl.correctEssay !== undefined) {
                 arr.push({
                   id: vl.id,
@@ -61,7 +64,7 @@ export const ExamDetails = () => {
             });
             setQuestions(arr);
           } else {
-            rs.bank.questions.forEach((vl: any) => {
+            rs.questions.forEach((vl: any) => {
               if (vl.correctEssay !== undefined) {
                 arr.push({
                   id: vl._id,
@@ -120,7 +123,7 @@ export const ExamDetails = () => {
     )
       .unwrap()
       .then(() => {
-        navigate(`/student/subjects/exams/${data?.bank.subject.id}`);
+        navigate(`/student/subjects/exams/${data?.subject.id}`);
       });
   };
 
@@ -133,7 +136,7 @@ export const ExamDetails = () => {
       <BreadcrumbComp
         title="Chi tiết đề thi"
         prevFirstPageTitle="Ngân hàng đề thi"
-        prevFirstPage="exambank"
+        prevFirstPage={`student/subjects/exams/${data?.subject.id}`}
       />
       <div className="top-head">
         <div
@@ -146,8 +149,8 @@ export const ExamDetails = () => {
               <div>Thời lượng: </div>
             </div>
             <div>
-              <div>{data?.bank?.subject?.subName}</div>
-              <div>{data?.bank?.time}</div>
+              <div>{data?.subject?.subName}</div>
+              <div>{data?.time}</div>
             </div>
           </div>
           <div className="d-flex">
@@ -156,8 +159,8 @@ export const ExamDetails = () => {
               <div>Hình thức: </div>
             </div>
             <div>
-              <div>{data?.bank?.examName}</div>
-              <div>Kiểm tra {data?.bank?.time} phút</div>
+              <div>{data?.examName}</div>
+              <div>Kiểm tra {data?.time} phút</div>
             </div>
           </div>
           <div className="d-flex">
@@ -168,8 +171,8 @@ export const ExamDetails = () => {
             <div>
               <div>{data?.user?.userName || "null"}</div>
               <div>
-                {moment(data?.bank?.releaseTime)
-                  .add(data?.bank?.time, "minutes")
+                {moment(data?.releaseTime)
+                  .add(data?.time, "minutes")
                   .format("DD/MM/YYYY HH:mm:ss")}
               </div>
             </div>
@@ -177,7 +180,7 @@ export const ExamDetails = () => {
         </div>
       </div>
       {moment() <
-        moment(data?.bank?.releaseTime).add(data?.bank?.time, "minutes") && (
+        moment(data?.releaseTime).add(data?.time, "minutes") && (
         <div style={{ textAlign: "right" }}>
           <Countdown value={releaseTime + time} onFinish={onFinish} />
         </div>
@@ -187,20 +190,20 @@ export const ExamDetails = () => {
         <Row>
           <Col span={6}>
             <div>Phần câu hỏi - đáp án:</div>
-            {data?.bank?.question.length !== 0
-              ? data?.bank?.question.map((vl, idx) => (
+            {data?.question.length !== 0
+              ? data?.question.map((vl, idx) => (
                   <div
                     className={select === idx ? "answer true" : "answer"}
-                    key={vl.id}
+                    key={`${idx}-${vl.id}`}
                     onClick={() => handleSelect(idx)}
                   >
                     Câu {idx + 1}
                   </div>
                 ))
-              : data?.bank?.questions.map((vl, idx) => (
+              : data?.questions.map((vl, idx) => (
                   <div
                     className={select === idx ? "answer true" : "answer"}
-                    key={vl.id}
+                    key={`${idx}-${vl.id}`}
                     onClick={() => handleSelect(idx)}
                   >
                     Câu {idx + 1}
@@ -210,13 +213,13 @@ export const ExamDetails = () => {
           <Col style={{ padding: "2rem" }} span={18}>
             <h3>
               Câu {select + 1}:{" "}
-              {data?.bank?.question.length !== 0
-                ? data?.bank?.question[select]?.quesName
-                : data?.bank?.questions[select]?.quesName}
+              {data?.question.length !== 0
+                ? data?.question[select]?.quesName
+                : data?.questions[select]?.quesName}
             </h3>
 
-            {data?.bank?.question.length !== 0 ? (
-              data?.bank?.question[select]?.correctEssay ? (
+            {data?.question.length !== 0 ? (
+              data?.question[select]?.correctEssay ? (
                 <TextArea
                   value={
                     !lodash.isEmpty(questions[select]) &&
@@ -225,9 +228,11 @@ export const ExamDetails = () => {
                       : ""
                   }
                   rows={10}
+                  disabled={lodash.isEmpty(questions[select]) &&
+                    lodash.isEmpty(questions[select].ans)}
                   onChange={(e: any) =>
                     handleSubmit(
-                      data?.bank?.question[select].id,
+                      data?.question[select].id,
                       e.target.value
                     )
                   }
@@ -235,7 +240,7 @@ export const ExamDetails = () => {
               ) : (
                 ""
               )
-            ) : data?.bank.questions[select]?.correctEssay ? (
+            ) : data?.questions[select]?.correctEssay ? (
               <TextArea
                 value={
                   !lodash.isEmpty(questions[select]) &&
@@ -243,10 +248,12 @@ export const ExamDetails = () => {
                     ? questions[select].ans
                     : ""
                 }
+                disabled={lodash.isEmpty(questions[select]) &&
+                  lodash.isEmpty(questions[select].ans)}
                 rows={10}
                 onChange={(e: any) =>
                   handleSubmit(
-                    data?.bank?.questions[select]._id,
+                    data?.questions[select]._id,
                     e.target.value
                   )
                 }
@@ -255,22 +262,24 @@ export const ExamDetails = () => {
               ""
             )}
 
-            {data?.bank?.questions[select]?.correct.length === 1 ||
-            data?.bank?.question[select]?.correct.length === 1 ? (
+            {data?.questions[select]?.correct.length === 1 ||
+            data?.question[select]?.correct.length === 1 ? (
               <Radio.Group
                 value={
                   !lodash.isEmpty(questions[select]) &&
                   !lodash.isEmpty(questions[select].ans) &&
                   questions[select].ans[0]
                 }
+                disabled={moment() >=
+                  moment(data?.releaseTime).add(data?.time, "minutes")}
               >
                 <Space direction="vertical">
-                  {data?.bank?.question.length !== 0
-                    ? data?.bank?.question[select]?.answers.map(
+                  {data?.question.length !== 0
+                    ? data?.question[select]?.answers.map(
                         (vl: string, idx: number) => (
                           <Radio
                             onChange={(e) =>
-                              handleSubmit(data?.bank.question[select].id, [
+                              handleSubmit(data?.question[select].id, [
                                 e.target.value,
                               ])
                             }
@@ -281,11 +290,11 @@ export const ExamDetails = () => {
                           </Radio>
                         )
                       )
-                    : data?.bank?.questions[select]?.answers.map(
+                    : data?.questions[select]?.answers.map(
                         (vl: string, idx: number) => (
                           <Radio
                             onChange={(e) =>
-                              handleSubmit(data?.bank.questions[select]._id, [
+                              handleSubmit(data?.questions[select]._id, [
                                 e.target.value,
                               ])
                             }
@@ -306,22 +315,24 @@ export const ExamDetails = () => {
                   questions[select].ans
                 }
                 onChange={(e) =>
-                  data?.bank?.question.length !== 0
-                    ? handleSubmit(data?.bank?.question[select].id, e)
-                    : handleSubmit(data?.bank?.questions[select]._id, e)
+                  data?.question.length !== 0
+                    ? handleSubmit(data?.question[select].id, e)
+                    : handleSubmit(data?.questions[select]._id, e)
                 }
+                disabled={moment() >=
+                  moment(data?.releaseTime).add(data?.time, "minutes")}
               >
-                {data?.bank?.question.length !== 0
-                  ? data?.bank?.question[select]?.answers.map(
+                {data?.question.length !== 0
+                  ? data?.question[select]?.answers.map(
                       (vl: any, idx: any) => (
                         <>
                           <Checkbox
                             onChange={(e) =>
-                              handleSubmit(data?.bank?.question[select].id, [
+                              handleSubmit(data?.question[select].id, [
                                 e.target.value,
                               ])
                             }
-                            key={vl}
+                            key={idx}
                             value={idx}
                           >
                             {vl}
@@ -331,16 +342,16 @@ export const ExamDetails = () => {
                         </>
                       )
                     )
-                  : data?.bank?.questions[select]?.answers.map(
+                  : data?.questions[select]?.answers.map(
                       (vl: any, idx: any) => (
                         <>
                           <Checkbox
                             onChange={(e) =>
-                              handleSubmit(data?.bank?.questions[select]._id, [
+                              handleSubmit(data?.questions[select]._id, [
                                 e.target.value,
                               ])
                             }
-                            key={vl}
+                            key={idx}
                             value={idx}
                           >
                             {vl}
@@ -354,8 +365,8 @@ export const ExamDetails = () => {
             )}
           </Col>
           {moment() <
-            moment(data?.bank?.releaseTime).add(
-              data?.bank?.time,
+            moment(data?.releaseTime).add(
+              data?.time,
               "minutes"
             ) && (
             <div className="t-right m1 w-100">

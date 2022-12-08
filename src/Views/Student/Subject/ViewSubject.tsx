@@ -10,16 +10,17 @@ import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { SelectComp } from "../../../Components/Select";
 import { getLesson, ILesson } from "../../../redux/reducers/lesson.reducer";
 import { INoti } from "../../../redux/reducers/noti.reducer";
 import { createQA, IQA, updateQA } from "../../../redux/reducers/QA.reducer";
+import { updateTimeLearningByStudentAndSubject } from "../../../redux/reducers/timeLearning.reducer";
 import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
-import { AppDispatch } from "../../../redux/store";
+import { AppDispatch, RootState } from "../../../redux/store";
 import { ModalReply } from "./ModalReply";
 import "./Subject.style.scss";
 
@@ -39,6 +40,10 @@ export const ViewSubject = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [idx, setIdx] = useState<number>(0);
   const [url, setUrl] = useState<string>("");
+  const [time, setTime] = useState(Date.now());
+  const currentSubject = useSelector(
+    (state: RootState) => state.subject.current
+  );
 
   useEffect(() => {
     if (params.idSub) {
@@ -57,6 +62,22 @@ export const ViewSubject = () => {
         });
     }
   }, [params.idSub]);
+
+  useEffect(() => {
+    setTime(Date.now());
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      const timeLearning = Date.now() - time;
+      dispatch(
+        updateTimeLearningByStudentAndSubject({
+          param: { student: user.id, subject: currentSubject?.id },
+          payload: { time },
+        })
+      );
+    };
+  }, []);
 
   const handleRefresh = () => {
     if (params.idSub) {

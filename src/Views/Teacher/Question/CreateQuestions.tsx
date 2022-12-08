@@ -53,7 +53,7 @@ export const CreateQuestions = () => {
           setQuesType(rs.quesType);
           form.setFieldsValue(rs);
           setAnswerNum(rs.answers);
-          if (rs.correct.length === 1) {
+          if (rs.quesType === 0) {
             form.setFieldsValue({ correct: rs.correct[0] });
           } else {
             form.setFieldsValue({ correct: rs.correct });
@@ -113,6 +113,7 @@ export const CreateQuestions = () => {
         setDataSub(rs.results);
       });
   };
+  console.debug(answerNum);
 
   return (
     <div className="sub-exam-bank">

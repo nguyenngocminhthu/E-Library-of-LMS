@@ -2,15 +2,16 @@
     .box-paymentmethod {
         background-color: #F2F2F2;
         border-radius: 16px;
+        width: 100%;
+        padding-left: 8px;
     }
 
     .ant-card-bordered .ant-card-cover {
-        text-align: -webkit-center;
+        align-self: center;
     }
 
     .ant-card-body {
         padding: 0;
-        text-align: center;
     }
 
     .ant-card-cover img {
@@ -21,5 +22,46 @@
         width: 240px;
         height: 120px;
         margin: 24px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .ant-card-meta {
+        text-align: center;
+        display: contents;
+    }
+
+    .space-custom {
+        border: solid#EFEFEF 1px;
+        border-radius: 8px;
+        display: block;
+        padding: 16px;
+    }
+}
+
+.vnpay-style {
+    .ant-card-bordered {
+        width: 160px !important;
+        height: 80px !important;
+    }
+}
+
+.totalFee {
+    font-weight: 700;
+    background-color: #EFEFEF;
+    border-radius: 0.4rem;
+    padding: 10px;
+}
+
+.modalOTP {
+    p {
+        text-align: center;
+    }
+
+    .ant-input {
+        width: 50%;
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
     }
 }

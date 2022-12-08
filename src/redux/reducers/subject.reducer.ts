@@ -139,6 +139,7 @@ export interface ISubject {
 
 interface SubjectState {
   listSubject: IList;
+  current?: ISubject;
 }
 
 const initialState: SubjectState = {
@@ -148,7 +149,7 @@ const initialState: SubjectState = {
     results: [],
     totalPages: 0,
     totalResults: 0,
-  },
+  }
 };
 
 export const subjectReducer = createSlice({
@@ -184,7 +185,7 @@ export const subjectReducer = createSlice({
       };
     });
     builder.addCase(getSubject.fulfilled, (state, action) => {
-      state.listSubject = action.payload;
+      state.current = action.payload;
     });
     builder.addCase(getSubject.rejected, (state) => {
       state.listSubject = {

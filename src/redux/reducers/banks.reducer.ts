@@ -240,16 +240,16 @@ export const banksReducer = createSlice({
       };
     });
     builder.addCase(updateBank.fulfilled, (state, action) => {
-      state.listBanks = action.payload;
+      if (action.payload.code) return state;
+      const newState = cloneDeep(state);
+      const oldIndex = newState.listBanks.results.findIndex((item: any) => {
+        return item.id === action.payload.id;
+      });
+      newState.listBanks.results.splice(oldIndex, 1, action.payload);
+      return newState;
     });
     builder.addCase(updateBank.rejected, (state, action) => {
-      state.listBanks = {
-        limit: 0,
-        page: 0,
-        results: [],
-        totalPages: 0,
-        totalResults: 0,
-      };
+      return state;
     });
     builder.addCase(createBank.fulfilled, (state, action) => {
       if (action.payload.code) return state;

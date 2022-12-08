@@ -92,7 +92,7 @@ export const CreateExam = () => {
     formQues.setFieldsValue(questions[select]);
     setQuesType(questions[select].quesType);
     setExamType(questions[select].examType);
-    if (questions[select].correct.length === 1) {
+    if (questions[select].quesType === 0) {
       formQues.setFieldsValue({ correct: questions[select].correct[0] });
     } else {
       formQues.setFieldsValue({ correct: questions[select].correct });

@@ -171,7 +171,7 @@ export const AddSubject = () => {
                 disabled={linkVideo !== ""}
               />
             </Form.Item>
-            <Form.Item name="file" label="Tài nguyên" className="download-file">
+            <Form.Item name="file" label="Tài nguyên">
               <Upload maxCount={3} beforeUpload={() => false}>
                 <Button icon={<UploadOutlined style={{ color: "#f17f21" }} />}>
                   Tải lên
