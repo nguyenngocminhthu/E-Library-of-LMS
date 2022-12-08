@@ -1,13 +1,14 @@
 import { Card, Col, Row, Space, Typography } from "antd";
 import React from "react";
+import { useParams } from "react-router";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
 import "../FeeManage.style.scss";
 
 function CreditDebit() {
   const { Title } = Typography;
-  const { Meta } = Card;
   const navigate = useNavigate();
+  const params = useParams();
 
   return (
     <div className="subDetail creditdebit-style">
@@ -29,9 +30,9 @@ function CreditDebit() {
             <Col span={3}>Đơn vị thụ hưởng:</Col>
             <Col span={21}>CLOUD CAMPUS</Col>
             <Col span={3}>Nội dung thanh toán:</Col>
-            <Col span={21}>Thanh toán tiền học phí học kỳ I</Col>
+            <Col span={21}>Thanh toán tiền học phí</Col>
             <Col span={3}>Số tiền:</Col>
-            <Col span={21}>8.650.000 VNĐ</Col>
+            <Col span={21}>{params.cost} VNĐ</Col>
           </Row>
         </div>
         <Title ellipsis level={5} style={{ color: "#CC5C00" }}>
@@ -49,10 +50,7 @@ function CreditDebit() {
                     src={require("../../../../shared/img/visapayment.png")}
                   />
                 }
-              >
-                {" "}
-                <Meta title="Visa" />
-              </Card>
+              />
             </Col>
             <Col span={6}>
               <Card
@@ -63,10 +61,7 @@ function CreditDebit() {
                     src={require("../../../../shared/img/mastercard.png")}
                   />
                 }
-              >
-                {" "}
-                <Meta title="Master Card" />
-              </Card>
+              />
             </Col>
             <Col span={6}>
               <Card
@@ -77,10 +72,7 @@ function CreditDebit() {
                     src={require("../../../../shared/img/jcb.png")}
                   />
                 }
-              >
-                {" "}
-                <Meta title="JCB" />
-              </Card>
+              />
             </Col>
             <Col span={6}>
               <Card
@@ -92,10 +84,7 @@ function CreditDebit() {
                     src={require("../../../../shared/img/atm.png")}
                   />
                 }
-              >
-                {" "}
-                <Meta title="ATM" />
-              </Card>
+              />
             </Col>
           </Row>
         </Space>

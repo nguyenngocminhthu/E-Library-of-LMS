@@ -1,186 +1,110 @@
-import { EyeOutlined } from "@ant-design/icons";
 import {
   Button,
-  Col,
-  Radio,
+  Col, Radio,
   Row,
-  Space,
   Table,
-  Tooltip,
-  Typography,
-  Form,
+  Typography
 } from "antd";
-import modal from "antd/lib/modal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { getPayments, IPayment } from "../../../redux/reducers/payment.reducer";
+import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { AppDispatch } from "../../../redux/store";
 import "./FeeManage.style.scss";
-
-interface DataType {
-  codeNumber: number;
-  feeCode: string;
-  feeContent: string;
-  money: number;
-  action: any;
-}
-
-interface DataTypeDetailsTable {
-  codeNumber: string;
-  billCodeSubject: number;
-  feeContent: string;
-  session: string;
-  money: number;
-}
 
 export const PaySchoolFees = () => {
   const { Title } = Typography;
-  const [form] = Form.useForm();
   const [paymentMethod, setPaymentMethod] = useState<number>(0);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [money, setMoney] = useState<number[]>([]);
+  const [payments, setPayments] = useState<IPayment[]>([])
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getPayments({limit: 999})).unwrap().then((rs) => {
+      const payments = rs.results.map((vl: IPayment,idx: number) => {return {...vl, key: idx}})
+      setPayments(payments)
+    })
+  },[])
+
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    onSelect: (
+      record: IPayment,
+      selected: boolean,
+      selectedRows: IPayment[]
+    ) => {
+      setMoney(
+        selectedRows.map((selectedRow: IPayment) => {
+          return selectedRow.cost;
+        })
+      );
+    },
+    onSelectAll: (
+      selected: boolean,
+      selectedRows: IPayment[],
+      changeRows: IPayment[]
+    ) => {
+      setMoney(
+        selectedRows.map((selectedRow: IPayment) => {
+          return selectedRow.cost;
+        })
+      );
+    },
+  };
+
+  const hasSelected = selectedRowKeys.length > 0;
 
   const columns = [
     {
       title: "STT",
-      dataIndex: "codeNumber",
-      key: "codeNumber",
+      dataIndex: "key",
+      key: "key",
     },
     {
-      title: "Mã khoản thu",
+      title: "Mã phí",
       dataIndex: "feeCode",
       key: "feeCode",
     },
     {
-      title: "Nội dung thu",
-      dataIndex: "feeContent",
-      key: "feeContent",
-    },
-    {
-      title: "Số tiền (VNĐ)",
-      dataIndex: "money",
-      key: "money",
-    },
-    {
-      title: "",
-      key: "action",
-      width: 100,
-      render: (text: any, record: any) => (
-        <Space size="middle">
-          <Tooltip title="Chi tiết">
-            <Button
-              icon={<EyeOutlined className="icon-start" />}
-              size="large"
-              onClick={() => modal.confirm(modalPaySchoolFees)}
-            />
-          </Tooltip>
-        </Space>
-      ),
-    },
-  ];
-
-  const data: DataType[] = [
-    {
-      codeNumber: 1,
-      feeCode: "001",
-      feeContent: "Thu học phí học kỳ 1",
-      money: 8120000,
-      action: "",
-    },
-    {
-      codeNumber: 2,
-      feeCode: "002",
-      feeContent: "Thu học phí học kỳ 2",
-      money: 1080000,
-      action: "",
-    },
-    {
-      codeNumber: 3,
-      feeCode: "003",
-      feeContent: "Bảo hiểm y tế bắt buộc (12 tháng) NH 2020-2021",
-      money: 530000,
-      action: "",
-    },
-  ];
-
-  const columnsDetailsTable = [
-    {
-      title: "STT",
-      dataIndex: "codeNumber",
-      key: "codeNumber",
-    },
-    {
-      title: "Mã",
-      dataIndex: "billCodeSubject",
-      key: "billCodeSubject",
-    },
-    {
       title: "Nội dung khoản thu",
-      dataIndex: "feeContent",
-      key: "feeContent",
+      dataIndex: "subject",
+      key: "subject",
+      render: (subject: ISubject) => {
+        return subject.subName;
+      }
     },
-    {
-      title: "Học kỳ",
-      dataIndex: "session",
-      key: "session",
-    },
+    // {
+    //   title: "Học kỳ",
+    //   dataIndex: "session",
+    //   key: "session",
+    // },
     {
       title: "Số tiền (VNĐ)",
-      dataIndex: "money",
-      key: "money",
+      dataIndex: "cost",
+      key: "cost",
+      render: (cost: number) => {
+        return cost.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
   ];
-
-  const dataDetailsTable: DataTypeDetailsTable[] = [
-    {
-      codeNumber: "1",
-      billCodeSubject: 123974,
-      feeContent: "Kế toán đại cương",
-      session: "2020 - 2021",
-      money: 1160000,
-    },
-    {
-      codeNumber: "2",
-      billCodeSubject: 123974,
-      feeContent: "Kế toán đại cương",
-      session: "2020 - 2021",
-      money: 1160000,
-    },
-    {
-      codeNumber: "3",
-      billCodeSubject: 123974,
-      feeContent: "Kế toán đại cương",
-      session: "2020 - 2021",
-      money: 1160000,
-    },
-  ];
-
-  const modalPaySchoolFees = {
-    width: "50%",
-    title: "Các học phần đã đăng ký",
-    content: (
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-        name="cancel-form"
-        layout="horizontal"
-        form={form}
-        style={{ textAlign: "left" }}
-        className="subject"
-      >
-        <Table
-          columns={columnsDetailsTable}
-          dataSource={dataDetailsTable}
-          className="ant-table-wrapper"
-        />
-      </Form>
-    ),
-    cancelText: "Hủy",
-  };
 
   const handleClick = () => {
     if (paymentMethod === 0) {
-      navigate("/student/payschoolfees/creditdebit");
+      navigate(`/student/payschoolfees/creditdebit/${money.reduce((a, b) => a + b, 0)}`);
     } else {
-      navigate("/student/payschoolfees/vnpay");
+      navigate(`/student/payschoolfees/vnpay/${money.reduce((a, b) => a + b, 0)}`);
     }
   };
 
@@ -203,16 +127,30 @@ export const PaySchoolFees = () => {
           <Radio value={0}>Credit / Debit</Radio>
           <Radio value={1}>VNPAY</Radio>
         </Radio.Group>
-        <Table columns={columns} dataSource={data} />
+        <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={payments}
+        />
         <Row className="totalFee">
           <Col span={18} style={{ color: "#CC5C00" }}>
             Tổng thu:
           </Col>
-          <Col span={6}>8.650.000 VNĐ</Col>
+          <Col span={6}>
+            {hasSelected
+              ? `${money
+                  .reduce((a, b) => a + b, 0)
+                  .toLocaleString("it-IT", {
+                    style: "currency",
+                    currency: "VND",
+                  })}`
+              : ""}
+          </Col>
         </Row>
         <div style={{ marginTop: "20px", textAlign: "center" }}>
           <Button
             onClick={handleClick}
+            disabled={!hasSelected}
             style={{ marginLeft: "1rem" }}
             type="primary"
           >

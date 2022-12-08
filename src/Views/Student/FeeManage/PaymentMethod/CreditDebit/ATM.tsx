@@ -62,7 +62,7 @@ function ATM() {
   return (
     <div className="subDetail creditdebit-style">
       <BreadcrumbComp
-        title="Nhập thông tin Visa"
+        title="Thanh toán ATM"
         prevFirstPageTitle="Thanh toán trực tuyến"
         prevSecondPageTitle="Credit/Debit"
         prevFirstPage="student/payschoolfees"

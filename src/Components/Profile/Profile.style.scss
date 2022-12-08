@@ -1,7 +1,7 @@
 @import "../../shared/styles/variable";
 
 .profile-page {
- 
+
   .ant-form-item-label {
     text-align: left;
   }
@@ -16,7 +16,7 @@
       right: 0;
     }
 
-    .ant-form-item-label > label {
+    .ant-form-item-label>label {
       font-weight: 600;
     }
 
@@ -78,7 +78,7 @@
     border-radius: 8px;
   }
 
-  .ant-input-affix-wrapper > input.ant-input {
+  .ant-input-affix-wrapper>input.ant-input {
     margin-left: 16px;
   }
 
@@ -99,14 +99,14 @@
     color: $color-white;
   }
 
-  .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab,
-  .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab {
+  .ant-tabs-card>.ant-tabs-nav .ant-tabs-tab,
+  .ant-tabs-card>div>.ant-tabs-nav .ant-tabs-tab {
     background: none;
     border: none;
   }
 
-  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
-  .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
+  .ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab,
+  .ant-tabs-card.ant-tabs-top>div>.ant-tabs-nav .ant-tabs-tab {
     align-items: center;
     padding: 12px 40px;
     font-size: 0.875rem;
@@ -114,14 +114,14 @@
     transition: none;
   }
 
-  .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active,
-  .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab-active {
+  .ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab-active,
+  .ant-tabs-card.ant-tabs-top>div>.ant-tabs-nav .ant-tabs-tab-active {
     background: #373839;
     border-radius: 24px;
   }
 
-  .ant-tabs > .ant-tabs-nav,
-  .ant-tabs > div > .ant-tabs-nav {
+  .ant-tabs>.ant-tabs-nav,
+  .ant-tabs>div>.ant-tabs-nav {
     position: unset;
     width: fit-content;
     width: -moz-fit-content;
@@ -133,6 +133,7 @@
     color: $color-primary;
   }
 }
+
 .ant-upload-list {
   display: flex;
   flex-direction: column;
@@ -143,6 +144,7 @@
     height: 200px;
     margin: 0;
   }
+
   .ant-upload-list-picture-card {
     border: none;
   }

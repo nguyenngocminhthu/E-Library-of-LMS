@@ -18,7 +18,6 @@ import modal from "antd/lib/modal";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { SelectComp } from "../../../Components/Select";
@@ -289,7 +288,7 @@ export const Lessons = () => {
   ];
 
   return (
-    <div className="subject sub-manage teacher-subject">
+    <div className="subject sub-manage">
       <BreadcrumbComp title="Tất cả bài giảng" />
       <div className="top-head">
         <h1>Danh sách tài nguyên</h1>
