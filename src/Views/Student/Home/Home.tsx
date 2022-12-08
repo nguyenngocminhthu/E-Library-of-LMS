@@ -1,9 +1,16 @@
 import { Column } from "@ant-design/plots";
 import { Card, Col, List, Progress, Row, Typography } from "antd";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { ISubject } from "../../../redux/reducers/subject.reducer";
+import {
+  getTimeLearnings,
+  ITimeLearning,
+} from "../../../redux/reducers/timeLearning.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import math from "../../../shared/img/math.png";
 import ppt from "../../../shared/img/ppt.png";
 import "./Home.style.scss";
@@ -26,6 +33,15 @@ export const Home = () => {
   const { Title } = Typography;
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTimeLearnings({ student: user.id }))
+      .unwrap()
+      .then((rs: ITimeLearning) => {
+        console.log("ITimeLearning: ", rs);
+      });
+  });
 
   const listFile: any[] | undefined = [];
   for (let i = 0; i < 10; i++) {

@@ -14,6 +14,7 @@ import subjectgroupReducer from "./reducers/subjectgroup.reducer";
 import topicReducer from "./reducers/topic.reducer";
 import userReducer from "./reducers/user.reducer";
 import submissionReducer from "./reducers/submission.reducer";
+import timeLearningReducer from "./reducers/timeLearning.reducer";
 // ...
 
 const reducer = {
@@ -32,6 +33,7 @@ const reducer = {
   QA: QAReducer,
   noti: notiReducer,
   submission: submissionReducer,
+  timeLearning: timeLearningReducer,
 };
 
 export const store = configureStore({
