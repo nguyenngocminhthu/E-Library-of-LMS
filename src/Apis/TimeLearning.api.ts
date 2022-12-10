@@ -17,6 +17,13 @@ const getTimeLearnings = (params: any) => {
   });
 };
 
+const getByStudentInCurrentWeek = (params: any) => {
+  const query = queryString.stringify(params);
+  return axiosClient.get(`${url}/getByStudentInCurrentWeek` + `?${query}`).then((rs: any) => {
+    return rs;
+  });
+};
+
 const getTimeLearning = (id: string) => {
   return axiosClient.get(url + `/${id}`).then((rs: any) => {
     return rs;
@@ -41,6 +48,6 @@ const updateTimeLearningByStudentAndSubject = (params: IParamsUpdate, payload: I
   });
 };
 
-const TimeLearning = { getTimeLearnings, getTimeLearning, createTimeLearning, updateTimeLearning, updateTimeLearningByStudentAndSubject };
+const TimeLearning = { getTimeLearnings, getTimeLearning, createTimeLearning, updateTimeLearning, updateTimeLearningByStudentAndSubject, getByStudentInCurrentWeek };
 
 export default TimeLearning;

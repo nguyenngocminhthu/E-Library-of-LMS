@@ -90,7 +90,7 @@ export const updateTimeLearningByStudentAndSubject = createAsyncThunk(
 
 export const getTimeLearnings = createAsyncThunk(
   "time-learning/getTimeLearnings",
-  async ({ limit, student, subject, sortBy }: any, thunkAPI) => {
+  async ({ limit, student, subject, sortBy, sort }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await TimeLearning.getTimeLearnings({
@@ -98,6 +98,7 @@ export const getTimeLearnings = createAsyncThunk(
         student,
         subject,
         sortBy,
+        sort,
       });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
@@ -115,6 +116,32 @@ export const getTimeLearnings = createAsyncThunk(
     }
   }
 );
+
+export const getByStudentInCurrentWeek = createAsyncThunk(
+  "time-learning/getByStudentInCurrentWeek",
+  async ({ student }: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await TimeLearning.getByStudentInCurrentWeek({
+        student,
+      });
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 
 export const getTimeLearning = createAsyncThunk(
   "time-learning/getTimeLearning",
@@ -197,6 +224,18 @@ export const timeLearningReducer = createSlice({
       state.listTimeLearning = action.payload;
     });
     builder.addCase(getTimeLearning.rejected, (state) => {
+      state.listTimeLearning = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
+    });
+    builder.addCase(getByStudentInCurrentWeek.fulfilled, (state, action) => {
+      state.listTimeLearning = action.payload;
+    });
+    builder.addCase(getByStudentInCurrentWeek.rejected, (state) => {
       state.listTimeLearning = {
         limit: 0,
         page: 0,
