@@ -1,11 +1,12 @@
 import { Column } from "@ant-design/plots";
 import { Card, Col, List, Progress, Row, Typography } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { ISubject } from "../../../redux/reducers/subject.reducer";
 import {
+  getByStudentInCurrentWeek,
   getTimeLearnings,
   ITimeLearning,
 } from "../../../redux/reducers/timeLearning.reducer";
@@ -14,6 +15,7 @@ import { AppDispatch } from "../../../redux/store";
 import math from "../../../shared/img/math.png";
 import ppt from "../../../shared/img/ppt.png";
 import "./Home.style.scss";
+import { day } from "../../../shared/const/en";
 
 interface IFile {
   learn: string;
@@ -36,12 +38,35 @@ export const Home = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getTimeLearnings({ student: user.id }))
+    dispatch(
+      getTimeLearnings({
+        student: user.id,
+        limit: 10,
+        sortBy: "total",
+        sort: "desc",
+      })
+    )
       .unwrap()
       .then((rs: ITimeLearning) => {
         console.log("ITimeLearning: ", rs);
       });
-  });
+    dispatch(
+      getByStudentInCurrentWeek({
+        student: user.id,
+      })
+    )
+      .unwrap()
+      .then((rs: any) => {
+        console.log("ITimeLearning: ", rs);
+        const times = rs.map((item: any) => {
+          return {
+            day: day[item.day],
+            time: item.time,
+          };
+        });
+        setTimeLearningInWeek(times);
+      });
+  }, []);
 
   const listFile: any[] | undefined = [];
   for (let i = 0; i < 10; i++) {
@@ -66,35 +91,38 @@ export const Home = () => {
   const data = [
     {
       day: "Thứ 2",
-      time: 15,
+      time: 0,
     },
     {
       day: "Thứ 3",
-      time: 9,
+      time: 0,
     },
     {
       day: "Thứ 4",
-      time: 21,
+      time: 0,
     },
     {
       day: "Thứ 5",
-      time: 6,
+      time: 0,
     },
     {
       day: "Thứ 6",
-      time: 9,
+      time: 0,
     },
     {
       day: "Thứ 7",
-      time: 21,
+      time: 0,
     },
     {
       day: "CN",
-      time: 21,
+      time: 0,
     },
   ];
+
+  const [timeLearningInWeek, setTimeLearningInWeek] = useState(data);
+
   const config = {
-    data,
+    data: timeLearningInWeek,
     xField: "day",
     yField: "time",
     xAxis: {
