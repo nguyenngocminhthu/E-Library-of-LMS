@@ -36,6 +36,7 @@ export const Home = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  const [listLearnTime, setListLearnTime] = useState<ILearnTime[]>([]);
 
   useEffect(() => {
     dispatch(
@@ -47,8 +48,16 @@ export const Home = () => {
       })
     )
       .unwrap()
-      .then((rs: ITimeLearning) => {
-        console.log("ITimeLearning: ", rs);
+      .then((rs: any) => {
+        const temp: ILearnTime[] = [];
+        rs.results.forEach((item: any) => {
+          temp.push({
+            subject: item.subject.subName,
+            time: item.total,
+            progress: 40,
+          });
+        });
+        setListLearnTime(temp);
       });
     dispatch(
       getByStudentInCurrentWeek({
@@ -57,7 +66,6 @@ export const Home = () => {
     )
       .unwrap()
       .then((rs: any) => {
-        console.log("ITimeLearning: ", rs);
         const times = rs.map((item: any) => {
           return {
             day: day[item.day],
@@ -76,15 +84,6 @@ export const Home = () => {
       lesson: "Bài 1: Lorem Ipsum Dolem",
       progress: 50,
       avt: `${ppt}`,
-    });
-  }
-
-  const listLearnTime: any[] | undefined = [];
-  for (let i = 0; i < 10; i++) {
-    listLearnTime.push({
-      subject: "Toán đại số",
-      time: "3 giờ",
-      progress: 40,
     });
   }
 
