@@ -11,23 +11,16 @@ import { ISelect, SelectComp } from "../../../../Components/Select";
 import { IClass } from "../../../../redux/reducers/classes.reducer";
 import { createLesson } from "../../../../redux/reducers/lesson.reducer";
 import { setLoading } from "../../../../redux/reducers/loading.reducer";
-import {
-  getSubject,
-  ISubject,
-} from "../../../../redux/reducers/subject.reducer";
 import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
 
 export const AddSubject = () => {
-  const { Dragger } = Upload;
-  const { Option } = Select;
   const [form] = Form.useForm();
   const [linkVideo, setLinkVideo] = useState<string>("");
   const navigate = useNavigate();
   const params = useParams<{ id: string }>();
   const dispatch: AppDispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const [classSelect, setClassSelect] = useState<ISelect[]>();
   const [data, setData] = useState<ITopic>();
   const [url, setUrl] = useState<string>("");
 
@@ -37,16 +30,6 @@ export const AddSubject = () => {
         .unwrap()
         .then((rs: ITopic) => {
           setData(rs);
-          dispatch(getSubject(rs.subjectId.id))
-            .unwrap()
-            .then((rs: ISubject) => {
-              let option: any[] = [];
-
-              rs.classes.forEach((vl: IClass) => {
-                option.push({ name: vl.classCode, value: vl.id });
-              });
-              setClassSelect(option);
-            });
         });
     }
   }, [params.id]);
@@ -98,7 +81,7 @@ export const AddSubject = () => {
   return (
     <div className="subDetail teacher-subject">
       <BreadcrumbComp
-        title="Thương mại điện tử"
+        title={data?.subjectId.subName}
         prevFirstPageTitle="Danh sách môn giảng dạy"
         prevFirstPage="teacher/subject"
       />
@@ -179,31 +162,14 @@ export const AddSubject = () => {
               </Upload>
             </Form.Item>
           </div>
-          <div className="header-box">
-            <div className="text-header">Phân công bài giảng</div>
-          </div>
-          <div className="add-subject-container">
-            <Form.Item
-              label="Chọn lớp học"
-              name="classes"
-              rules={[{ required: true }]}
-              className="lesson-select"
-            >
-              <SelectComp
-                mode="multiple"
-                allowClear={true}
-                disabled={classSelect === undefined}
-                style={{ display: "block" }}
-                dataString={classSelect}
-              />
-            </Form.Item>
-          </div>
         </Form>
       </div>
       <div className="action-btn-add">
         <Button
           className="cancel-btn"
-          onClick={() => navigate(`/teacher/subject/editsubject/${params.id}`)}
+          onClick={() =>
+            navigate(`/teacher/subject/editsubject/${data?.subjectId.id}`)
+          }
         >
           Huỷ
         </Button>

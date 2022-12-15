@@ -1,5 +1,6 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal, Select, Upload } from "antd";
+import TextArea from "antd/lib/input/TextArea";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
@@ -31,6 +32,10 @@ export const ModalSubject = (props: any) => {
     },
     subName: {
       required: true,
+      value: "",
+      disabled: false,
+    },
+    description: {
       value: "",
       disabled: false,
     },
@@ -88,6 +93,10 @@ export const ModalSubject = (props: any) => {
             value: record?.subName,
             disabled: false,
           },
+          description: {
+            value: record?.description,
+            disabled: false,
+          },
           subGroup: {
             required: true,
             value: record?.subGroup.id,
@@ -122,6 +131,7 @@ export const ModalSubject = (props: any) => {
       form.setFieldsValue({
         subCode: action.subCode.value,
         subName: action.subName.value,
+        description: action.description.value,
         subGroup: action.subGroup.value,
         teacher: action.teacher.value,
         students: action.student.value,
@@ -191,6 +201,9 @@ export const ModalSubject = (props: any) => {
           ]}
         >
           <Input disabled={action.subName.disabled} />
+        </Form.Item>
+        <Form.Item name="description" label="Mô tả">
+          <TextArea disabled={action.description.disabled} rows={4} />
         </Form.Item>
         <Form.Item
           name="subGroup"

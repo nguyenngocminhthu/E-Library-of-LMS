@@ -9,6 +9,7 @@ import { Home } from "../Views/Leadership/Home/Home";
 import { Notification } from "../Views/Leadership/Notification/Notification";
 import NotificationSetting from "../Views/Leadership/Notification/NotificationSetting";
 import { ListFile } from "../Views/Leadership/Subject/ListFile";
+import Payment from "../Views/Leadership/Subject/Payment";
 import { Subject } from "../Views/Leadership/Subject/Subject";
 import { SubjectDetail } from "../Views/Leadership/Subject/SubjectDetail";
 import { SubjectManage } from "../Views/Leadership/Subject/SubjectManage";
@@ -52,6 +53,7 @@ export const Leadership = () => {
 
         <Route path="/notification/setting" element={<NotificationSetting />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/subjects/payment/:id" element={<Payment />} />
       </Route>
     </Routes>
   );

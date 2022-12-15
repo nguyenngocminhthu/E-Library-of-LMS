@@ -1,4 +1,8 @@
-import { EditOutlined, UnorderedListOutlined } from "@ant-design/icons";
+import {
+  DollarOutlined,
+  EditOutlined,
+  UnorderedListOutlined,
+} from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Space, Table, Tooltip } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
@@ -22,6 +26,7 @@ import {
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ModalSubject } from "./ModalSubject";
+
 import "./Subject.style.scss";
 
 export interface ISubjectSelect {
@@ -238,22 +243,12 @@ export const Subject = () => {
       },
     },
     {
-      title: "Số tài liệu chờ duyệt",
-      dataIndex: "file",
-      key: "file",
+      title: "Mô tả",
+      dataIndex: "description",
+      key: "description",
     },
     {
-      title: "Tình trạng tài liệu môn học",
-      dataIndex: "status",
-      key: "status",
-      render: (status: number) => (
-        <div className={status === 0 ? "gray" : "green"}>
-          {status === 0 ? "Chờ phê duyệt" : "Đã phê duyệt"}
-        </div>
-      ),
-    },
-    {
-      title: "Ngày gửi phê duyệt",
+      title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (createdAt: any) => {
@@ -276,6 +271,12 @@ export const Subject = () => {
             <Button
               onClick={() => handleModal("edit", record)}
               icon={<EditOutlined />}
+            />
+          </Tooltip>
+          <Tooltip title="Học phí">
+            <Button
+              onClick={() => navigate(`/subjects/payment/${record.id}`)}
+              icon={<DollarOutlined />}
             />
           </Tooltip>
         </Space>

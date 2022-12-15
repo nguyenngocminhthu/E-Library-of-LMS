@@ -1,16 +1,11 @@
-import {
-  Button,
-  Col, Radio,
-  Row,
-  Table,
-  Typography
-} from "antd";
+import { Button, Col, Radio, Row, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { getPayments, IPayment } from "../../../redux/reducers/payment.reducer";
 import { ISubject } from "../../../redux/reducers/subject.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./FeeManage.style.scss";
 
@@ -19,16 +14,21 @@ export const PaySchoolFees = () => {
   const [paymentMethod, setPaymentMethod] = useState<number>(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [money, setMoney] = useState<number[]>([]);
-  const [payments, setPayments] = useState<IPayment[]>([])
+  const [payments, setPayments] = useState<IPayment[]>([]);
   const dispatch: AppDispatch = useDispatch();
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getPayments({limit: 999})).unwrap().then((rs) => {
-      const payments = rs.results.map((vl: IPayment,idx: number) => {return {...vl, key: idx}})
-      setPayments(payments)
-    })
-  },[])
+    dispatch(getPayments({ limit: 999, user: user.id }))
+      .unwrap()
+      .then((rs) => {
+        const payments = rs.results.map((vl: IPayment, idx: number) => {
+          return { ...vl, key: idx };
+        });
+        setPayments(payments);
+      });
+  }, []);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -80,7 +80,7 @@ export const PaySchoolFees = () => {
       key: "subject",
       render: (subject: ISubject) => {
         return subject.subName;
-      }
+      },
     },
     // {
     //   title: "Học kỳ",
@@ -98,13 +98,25 @@ export const PaySchoolFees = () => {
         });
       },
     },
+    {
+      title: "Tình trạng",
+      dataIndex: "status",
+      key: "status",
+      render: (status: number) => {
+        return status === 0 ? "Chưa thanh toán" : " Đã thanh toán";
+      },
+    },
   ];
 
   const handleClick = () => {
     if (paymentMethod === 0) {
-      navigate(`/student/payschoolfees/creditdebit/${money.reduce((a, b) => a + b, 0)}`);
+      navigate(
+        `/student/payschoolfees/creditdebit/${money.reduce((a, b) => a + b, 0)}`
+      );
     } else {
-      navigate(`/student/payschoolfees/vnpay/${money.reduce((a, b) => a + b, 0)}`);
+      navigate(
+        `/student/payschoolfees/vnpay/${money.reduce((a, b) => a + b, 0)}`
+      );
     }
   };
 

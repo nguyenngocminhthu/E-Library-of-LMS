@@ -8,14 +8,13 @@ import { ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getByStudentInCurrentWeek,
   getTimeLearnings,
-  ITimeLearning,
 } from "../../../redux/reducers/timeLearning.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
+import { day } from "../../../shared/const/en";
 import math from "../../../shared/img/math.png";
 import ppt from "../../../shared/img/ppt.png";
 import "./Home.style.scss";
-import { day } from "../../../shared/const/en";
 
 interface IFile {
   learn: string;
@@ -53,7 +52,7 @@ export const Home = () => {
         rs.results.forEach((item: any) => {
           temp.push({
             subject: item.subject.subName,
-            time: item.total,
+            time: item.total.toFixed(1),
             progress: 40,
           });
         });
