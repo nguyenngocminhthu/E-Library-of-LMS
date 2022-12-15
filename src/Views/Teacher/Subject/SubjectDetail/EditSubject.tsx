@@ -151,7 +151,7 @@ export const EditSubject = () => {
                   <div>{data?.subName}</div>
                 </Form.Item>
                 <Form.Item name="teacher" label="Giảng viên">
-                  <div>{data?.teacher.userName}</div>
+                  <div>{data?.teacher?.userName}</div>
                 </Form.Item>
                 <Form.Item name="description" label="Mô tả">
                   <TextArea rows={3} />

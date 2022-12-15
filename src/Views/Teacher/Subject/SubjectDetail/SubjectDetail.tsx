@@ -102,6 +102,11 @@ export const SubjectDetail = () => {
         .then((rs) => {
           setNotify(rs.results);
         });
+      dispatch(getQAs({ limit: 9999, subject: params.id }))
+        .unwrap()
+        .then((rs) => {
+          setQa(rs.results);
+        });
     }
   };
 
@@ -268,7 +273,7 @@ export const SubjectDetail = () => {
               <div
                 id="scrollableDiv"
                 style={{
-                  height: 400,
+                  height: 500,
                   overflow: "auto",
                   padding: "0 16px",
                 }}
@@ -304,7 +309,10 @@ export const SubjectDetail = () => {
                     Thêm câu hỏi mới
                   </Button>
                 </div>
-                <div className="scroll-box question">
+                <div
+                  className="scroll-box question"
+                  style={{ height: "310px" }}
+                >
                   {qa?.map((value: IQA) => (
                     <Row className="sub-content">
                       <Col span={2}>
@@ -448,7 +456,7 @@ export const SubjectDetail = () => {
               <div
                 id="scrollableDiv"
                 style={{
-                  height: 400,
+                  height: 500,
                   overflow: "auto",
                   padding: "0 16px",
                 }}

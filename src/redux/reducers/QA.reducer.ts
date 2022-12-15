@@ -55,10 +55,11 @@ export const updateQA = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await QA.updateQA(id, payload);
+      console.debug(payload);
       if (data.code) {
         thunkAPI.dispatch(setLoading(false));
         message.error(data.message);
-      } else {
+      } else if (payload.likes === undefined) {
         thunkAPI.dispatch(setLoading(false));
         message.success("Cập nhật QA thành công");
       }
