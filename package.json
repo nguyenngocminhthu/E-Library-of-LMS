@@ -19,6 +19,7 @@
     "antd": "^4.20.7",
     "antd-img-crop": "^4.2.3",
     "axios": "^0.26.1",
+    "dotenv": "^16.0.3",
     "draft-js": "^0.11.7",
     "express": "^4.17.3",
     "file-saver": "^2.0.5",
