@@ -1,6 +1,6 @@
 import React from 'react';
 import socketIOClient from 'socket.io-client';
-const ENDPOINT = 'http://localhost:4000';
+const ENDPOINT = process.env.REACT_APP_BASE_URL || 'http://localhost:4000';
 
 export const socket = socketIOClient(ENDPOINT);
 let listUser: Array<any> = [];
