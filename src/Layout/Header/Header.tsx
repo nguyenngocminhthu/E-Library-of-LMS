@@ -6,7 +6,7 @@ import { logout } from "../../redux/reducers/auth.reducer";
 import { UserState } from "../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../redux/store";
 import "../../shared/styles/layout-style/header.scss";
-import { SocketContext } from '../../context/socket.context';
+import { SocketContext } from "../../context/socket.context";
 import { useContext } from "react";
 const { Header } = Layout;
 
@@ -30,8 +30,8 @@ export const HeaderComp = () => {
           user.role === "leadership"
             ? navigate("/profile")
             : user.role === "teacher"
-              ? navigate("/teacher/profile")
-              : navigate("/student/profile")
+            ? navigate("/teacher/profile")
+            : navigate("/student/profile")
         }
         style={{ background: "transparent", boxShadow: "none" }}
         className="btn-header"
@@ -42,7 +42,9 @@ export const HeaderComp = () => {
       <Button
         onClick={() => {
           dispatch(logout());
-          client.socket.disconnect();
+          if (client.socket) {
+            client.socket.disconnect();
+          }
           navigate("/login");
         }}
         type="primary"
