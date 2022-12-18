@@ -40,8 +40,9 @@ export const HeaderComp = () => {
       </Button>
       <Button
         onClick={() => {
-          dispatch(out(user.id));
-          dispatch(logout());
+          dispatch(out(user.id)).then(() => {
+            dispatch(logout());
+          });
           navigate("/login");
         }}
         type="primary"
