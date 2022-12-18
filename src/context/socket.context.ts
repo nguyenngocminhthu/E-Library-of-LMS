@@ -6,7 +6,7 @@ export let socket: any;
 // if (ENDPOINT === 'http://localhost:4000') {
 //   socket = socketIOClient(ENDPOINT);
 // } else {
-socket = socketIOClient(ENDPOINT, { transports: ['websocket'], path: "/trans-socket" });
+socket = socketIOClient(ENDPOINT, { transports: ['polling', 'websocket'] });
 // }
 
 let listUser: Array<any> = [];
