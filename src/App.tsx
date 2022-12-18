@@ -39,6 +39,11 @@ const App: React.FC = () => {
     if (user.id) {
       dispatch(join(user.id));
     }
+    return () => {
+      if (channel) {
+        channel.unsubscribe();
+      }
+    };
   }, []);
 
   useEffect(() => {

@@ -64,7 +64,7 @@ export const Home = () => {
     });
     return () => {
       if (channel) {
-        channel.disconnect();
+        channel.unsubscribe();
       }
     };
   }, []);
