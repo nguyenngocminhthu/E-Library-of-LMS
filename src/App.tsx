@@ -46,30 +46,30 @@ const App: React.FC = () => {
     // if (socket && isConnected) {
     if (user.id) {
       socket.emit("SEND_JOIN_REQUEST", user.id);
+      socket.on(
+        "RECEIVED_JOIN_REQUEST",
+        (data: { listUser: []; statistical: {} }) => {
+          handleEventSocket(data.listUser, data.statistical);
+          console.log("socket connected: ", data);
+        }
+      );
+      socket.on(
+        "RECEIVED_OUT_REQUEST",
+        (data: { listUser: []; statistical: {} }) => {
+          handleEventSocket(data.listUser, data.statistical);
+          console.log("socket disconnected: ", data);
+        }
+      );
     }
-    socket.on(
-      "RECEIVED_JOIN_REQUEST",
-      (data: { listUser: []; statistical: {} }) => {
-        handleEventSocket(data.listUser, data.statistical);
-        console.log("socket connected: ", data);
-      }
-    );
-    socket.on(
-      "RECEIVED_OUT_REQUEST",
-      (data: { listUser: []; statistical: {} }) => {
-        handleEventSocket(data.listUser, data.statistical);
-        console.log("socket disconnected: ", data);
-      }
-    );
     // }
 
     return () => {
-      // if (socket) {
-      socket.off("RECEIVED_JOIN_REQUEST");
-      socket.off("RECEIVED_OUT_REQUEST");
-      // }
+      if (user.id) {
+        socket.off("RECEIVED_JOIN_REQUEST");
+        socket.off("RECEIVED_OUT_REQUEST");
+      }
     };
-  }, []);
+  }, [user.id]);
 
   return (
     <SocketContext.Provider value={{ socket, listUser, statistical }}>
