@@ -49,10 +49,10 @@ export const Home = () => {
       console.log(JSON.stringify(data));
     });
     channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
-      console.log("app channel connected: ", data);
+      console.log("student channel connected: ", data);
     });
     channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
-      console.log("app channel disconnected: ", data);
+      console.log("student channel disconnected: ", data);
     });
     if (user.id) {
       dispatch(join(user.id));

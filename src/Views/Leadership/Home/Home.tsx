@@ -17,6 +17,7 @@ import { AppDispatch } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
 import "./Home.style.scss"; // Alt Shift O
 import Pusher from "pusher-js";
+import { join } from "../../../redux/reducers/realtime.reducer";
 
 interface IFile {
   fileName: string;
@@ -55,13 +56,16 @@ export const Home = () => {
 
     channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
       handleEventSocket(data.listUser, data.statistical);
-      console.log("home channel connected: ", data);
+      console.log("leadership channel connected: ", data);
     });
 
     channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
       handleEventSocket(data.listUser, data.statistical);
-      console.log("home channel disconnected: ", data);
+      console.log("leadership channel disconnected: ", data);
     });
+    if (user.id) {
+      dispatch(join(user.id));
+    }
     return () => {
       if (channel) {
         channel.unsubscribe();

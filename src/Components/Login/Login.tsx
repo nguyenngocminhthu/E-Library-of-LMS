@@ -20,7 +20,6 @@ const Login = () => {
     dispatch(logIn(values))
       .unwrap()
       .then((rs: any) => {
-        dispatch(join(rs.user.id));
         if (rs.user.role === "teacher") {
           navigate("/teacher/home");
         } else if (rs.user.role === "student") {
