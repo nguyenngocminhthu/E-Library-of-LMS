@@ -2,8 +2,12 @@ import React from 'react';
 import socketIOClient, { Socket } from 'socket.io-client';
 const ENDPOINT = process.env.REACT_APP_BASE_URL || 'http://localhost:4000';
 
-// let socket: any;
-export const socket = socketIOClient(ENDPOINT);
+export let socket: any;
+// if (ENDPOINT === 'http://localhost:4000') {
+//   socket = socketIOClient(ENDPOINT);
+// } else {
+socket = socketIOClient(ENDPOINT, { transports: ['websocket'] });
+// }
 
 let listUser: Array<any> = [];
 let statistical: any = {};

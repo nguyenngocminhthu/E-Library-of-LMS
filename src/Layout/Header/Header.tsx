@@ -42,9 +42,9 @@ export const HeaderComp = () => {
       <Button
         onClick={() => {
           dispatch(logout());
-          if (client.socket) {
-            client.socket.disconnect();
-          }
+          // if (client.socket) {
+          client.socket.disconnect();
+          // }
           navigate("/login");
         }}
         type="primary"
