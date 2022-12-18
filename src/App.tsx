@@ -21,29 +21,28 @@ const App: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    Pusher.logToConsole = true;
-
-    const pusher = new Pusher("6bd53f4e653611a72067", {
-      cluster: "ap1",
-    });
-    const channel = pusher.subscribe("my-channel");
-    channel.bind("my-event", function (data: any) {
-      console.log(JSON.stringify(data));
-    });
-    channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
-      console.log("app channel connected: ", data);
-    });
-    channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
-      console.log("app channel disconnected: ", data);
-    });
-    if (user.id) {
-      dispatch(join(user.id));
-    }
-    return () => {
-      if (channel) {
-        channel.unsubscribe();
-      }
-    };
+    // Pusher.logToConsole = true;
+    // const pusher = new Pusher("6bd53f4e653611a72067", {
+    //   cluster: "ap1",
+    // });
+    // const channel = pusher.subscribe("my-channel");
+    // channel.bind("my-event", function (data: any) {
+    //   console.log(JSON.stringify(data));
+    // });
+    // channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
+    //   console.log("app channel connected: ", data);
+    // });
+    // channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
+    //   console.log("app channel disconnected: ", data);
+    // });
+    // if (user.id) {
+    //   dispatch(join(user.id));
+    // }
+    // return () => {
+    //   if (channel) {
+    //     channel.unsubscribe();
+    //   }
+    // };
   }, []);
 
   useEffect(() => {

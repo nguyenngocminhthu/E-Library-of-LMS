@@ -1,9 +1,11 @@
 import { Column } from "@ant-design/plots";
 import { Card, Col, List, Progress, Row, Typography } from "antd";
+import Pusher from "pusher-js";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { join } from "../../../redux/reducers/realtime.reducer";
 import { ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getByStudentInCurrentWeek,
@@ -36,6 +38,31 @@ export const Home = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const [listLearnTime, setListLearnTime] = useState<ILearnTime[]>([]);
+
+  useEffect(() => {
+    Pusher.logToConsole = true;
+    const pusher = new Pusher("6bd53f4e653611a72067", {
+      cluster: "ap1",
+    });
+    const channel = pusher.subscribe("my-channel");
+    channel.bind("my-event", function (data: any) {
+      console.log(JSON.stringify(data));
+    });
+    channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
+      console.log("app channel connected: ", data);
+    });
+    channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
+      console.log("app channel disconnected: ", data);
+    });
+    if (user.id) {
+      dispatch(join(user.id));
+    }
+    return () => {
+      if (channel) {
+        channel.unsubscribe();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(
