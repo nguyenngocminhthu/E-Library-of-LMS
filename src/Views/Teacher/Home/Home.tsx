@@ -9,6 +9,7 @@ import {
   Skeleton,
   Typography,
 } from "antd";
+import Pusher from "pusher-js";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +22,7 @@ import {
   getLessons,
   totalLesson,
 } from "../../../redux/reducers/lesson.reducer";
+import { join } from "../../../redux/reducers/realtime.reducer";
 import {
   getSubjects,
   ISubject,
@@ -49,6 +51,34 @@ export const Home = () => {
   const files: any = useSelector(totalFile);
   const exams = useSelector(totalBank);
   const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    Pusher.logToConsole = true;
+    let channel: any;
+    if (process.env.REACT_APP_KEY_PUSHER) {
+      const pusher = new Pusher(process.env.REACT_APP_KEY_PUSHER, {
+        cluster: process.env.REACT_APP_CLUSTER_PUSHER,
+      });
+      channel = pusher.subscribe("my-channel");
+      channel.bind("my-event", function (data: any) {
+        console.log(JSON.stringify(data));
+      });
+      channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
+        console.log("teacher channel connected: ", data);
+      });
+      channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
+        console.log("teacher channel disconnected: ", data);
+      });
+      if (user.id) {
+        dispatch(join(user.id));
+      }
+    }
+    return () => {
+      if (channel) {
+        channel.unsubscribe();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     Promise.all([
