@@ -39,12 +39,6 @@ const App: React.FC = () => {
     if (user.id) {
       dispatch(join(user.id));
     }
-    return () => {
-      if (channel) {
-        dispatch(out(user.id));
-        channel.disconnect();
-      }
-    };
   }, []);
 
   useEffect(() => {
