@@ -49,22 +49,25 @@ export const Home = () => {
 
   useEffect(() => {
     Pusher.logToConsole = true;
-    const pusher = new Pusher("6bd53f4e653611a72067", {
-      cluster: "ap1",
-    });
-    const channel = pusher.subscribe("my-channel");
+    let channel: any;
+    if (process.env.REACT_APP_KEY_PUSHER) {
+      const pusher = new Pusher(process.env.REACT_APP_KEY_PUSHER, {
+        cluster: process.env.REACT_APP_CLUSTER_PUSHER,
+      });
+      channel = pusher.subscribe("my-channel");
 
-    channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
-      handleEventSocket(data.listUser, data.statistical);
-      console.log("leadership channel connected: ", data);
-    });
+      channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
+        handleEventSocket(data.listUser, data.statistical);
+        console.log("leadership channel connected: ", data);
+      });
 
-    channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
-      handleEventSocket(data.listUser, data.statistical);
-      console.log("leadership channel disconnected: ", data);
-    });
-    if (user.id) {
-      dispatch(join(user.id));
+      channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
+        handleEventSocket(data.listUser, data.statistical);
+        console.log("leadership channel disconnected: ", data);
+      });
+      if (user.id) {
+        dispatch(join(user.id));
+      }
     }
     return () => {
       if (channel) {
