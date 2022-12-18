@@ -16,7 +16,7 @@ import userReducer from "./reducers/user.reducer";
 import submissionReducer from "./reducers/submission.reducer";
 import timeLearningReducer from "./reducers/timeLearning.reducer";
 import paymentReducer from "./reducers/payment.reducer";
-import socketReducer from "./reducers/socket.reducer";
+import realtimeReducer from "./reducers/realtime.reducer";
 
 const reducer = {
   auth: authReducer,
@@ -36,7 +36,7 @@ const reducer = {
   submission: submissionReducer,
   timeLearning: timeLearningReducer,
   payment: paymentReducer,
-  socket: socketReducer,
+  realtime: realtimeReducer,
 };
 
 export const store = configureStore({

@@ -1,7 +1,7 @@
 import { CaretRightFilled } from "@ant-design/icons";
 import { Button, Card, Col, List, Row, Typography } from "antd";
 import moment from "moment";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { AnaCard } from "../../../Components/AnaCard";
@@ -16,7 +16,7 @@ import { getUsers, UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
 import "./Home.style.scss"; // Alt Shift O
-import { SocketContext } from "../../../context/socket.context";
+import Pusher from "pusher-js";
 
 interface IFile {
   fileName: string;
@@ -36,21 +36,38 @@ export const Home = () => {
     (state: any) => state.user.listUser.totalResults
   );
   const exams = useSelector(totalBank);
-  const client = useContext(SocketContext);
-  const [totalUser, setTotalUser] = useState(client.listUser.length);
-  const [statistical, setStatistical] = useState(client.statistical);
-
+  const [statistical, setStatistical] = useState<any>({});
+  const [listUser, setListUser] = useState(0);
+  const handleEventSocket = (listUser: number, statistical: any) => {
+    setListUser(listUser);
+    setStatistical(statistical);
+  };
   useEffect(() => {
     dispatch(getUsers({ limit: 999, role: "teacher" }));
   }, [subjects, exams]);
 
   useEffect(() => {
-    setTotalUser(client.listUser.length);
-  }, [client.listUser]);
+    Pusher.logToConsole = true;
+    const pusher = new Pusher("6bd53f4e653611a72067", {
+      cluster: "ap1",
+    });
+    const channel = pusher.subscribe("my-channel");
 
-  useEffect(() => {
-    setStatistical(client.statistical);
-  }, [client.statistical]);
+    channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
+      handleEventSocket(data.listUser, data.statistical);
+      console.log("home channel connected: ", data);
+    });
+
+    channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
+      handleEventSocket(data.listUser, data.statistical);
+      console.log("home channel disconnected: ", data);
+    });
+    return () => {
+      if (channel) {
+        channel.disconnect();
+      }
+    };
+  }, []);
 
   const year = [
     {
@@ -169,7 +186,7 @@ export const Home = () => {
                   <p>Tổng lượt truy cập:</p>
                 </Col>
                 <Col span={6} offset={2}>
-                  <h4>{totalUser}</h4>
+                  <h4>{listUser}</h4>
                   <h4>{statistical?.today?.total || 0}</h4>
                   <h4>{statistical?.week || 0}</h4>
                   <h4>{statistical?.month || 0}</h4>
