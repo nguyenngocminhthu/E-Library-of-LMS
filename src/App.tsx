@@ -9,7 +9,7 @@ import { Teacher } from "./routers/routerTeacher";
 import "./shared/styles/styles.scss";
 import Cover from "./Components/Cover/Cover";
 
-import { SocketContext } from "./context/socket.context";
+import { SocketContext, socket } from "./context/socket.context";
 import { UserState } from "./redux/reducers/user.reducer";
 import Login from "./Components/Login/Login";
 import PageNotFound from "./Components/PageNotFound/PageNotFound";
@@ -28,48 +28,48 @@ const App: React.FC = () => {
   };
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const dispatch: AppDispatch = useDispatch();
-  const [socket, setSocket] = useState<any>(null);
+  // const [socket, setSocket] = useState<any>(null);
   const isConnected = useSelector(
     (state: RootState) => state.socket.isConnected
   );
-  useEffect(() => {
-    if (!isConnected) {
-      dispatch(getSocket(""))
-        .unwrap()
-        .then((rs: any) => {
-          setSocket(socketIOClient(ENDPOINT));
-        });
-    }
-  });
+  // useEffect(() => {
+  //   if (!isConnected) {
+  //     dispatch(getSocket(""))
+  //       .unwrap()
+  //       .then((rs: any) => {
+  //         setSocket(socketIOClient(ENDPOINT));
+  //       });
+  //   }
+  // });
 
   useEffect(() => {
-    if (socket && isConnected) {
-      if (user.id) {
-        socket.emit("SEND_JOIN_REQUEST", user.id);
-      }
-      socket.on(
-        "RECEIVED_JOIN_REQUEST",
-        (data: { listUser: []; statistical: {} }) => {
-          handleEventSocket(data.listUser, data.statistical);
-          console.log("socket connected: ", data);
-        }
-      );
-      socket.on(
-        "RECEIVED_OUT_REQUEST",
-        (data: { listUser: []; statistical: {} }) => {
-          handleEventSocket(data.listUser, data.statistical);
-          console.log("socket disconnected: ", data);
-        }
-      );
+    // if (socket && isConnected) {
+    if (user.id) {
+      socket.emit("SEND_JOIN_REQUEST", user.id);
     }
+    socket.on(
+      "RECEIVED_JOIN_REQUEST",
+      (data: { listUser: []; statistical: {} }) => {
+        handleEventSocket(data.listUser, data.statistical);
+        console.log("socket connected: ", data);
+      }
+    );
+    socket.on(
+      "RECEIVED_OUT_REQUEST",
+      (data: { listUser: []; statistical: {} }) => {
+        handleEventSocket(data.listUser, data.statistical);
+        console.log("socket disconnected: ", data);
+      }
+    );
+    // }
 
     return () => {
-      if (socket) {
-        socket.off("RECEIVED_JOIN_REQUEST");
-        socket.off("RECEIVED_OUT_REQUEST");
-      }
+      // if (socket) {
+      socket.off("RECEIVED_JOIN_REQUEST");
+      socket.off("RECEIVED_OUT_REQUEST");
+      // }
     };
-  }, [isConnected]);
+  }, []);
 
   return (
     <SocketContext.Provider value={{ socket, listUser, statistical }}>
