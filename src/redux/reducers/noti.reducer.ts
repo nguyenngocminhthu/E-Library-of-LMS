@@ -29,6 +29,29 @@ export const getNotis = createAsyncThunk(
   }
 );
 
+export const getByMultiSubject = createAsyncThunk(
+  "Noti/getByMultiSubject",
+  async ({ subjects }: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Noti.getByMultiSubject({ subjects });
+      if (data) {
+        thunkAPI.dispatch(setLoading(false));
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export const getNoti = createAsyncThunk(
   "Noti/getNoti",
   async (id: string, thunkAPI) => {
@@ -184,6 +207,12 @@ export const NotiReducer = createSlice({
       state.listNoti = action.payload;
     });
     builder.addCase(getNoti.rejected, (state, action) => {
+      state.listNoti = [];
+    });
+    builder.addCase(getByMultiSubject.fulfilled, (state, action) => {
+      state.listNoti = action.payload;
+    });
+    builder.addCase(getByMultiSubject.rejected, (state, action) => {
       state.listNoti = [];
     });
   },

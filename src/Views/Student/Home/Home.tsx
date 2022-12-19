@@ -60,6 +60,7 @@ export const Home = () => {
         dispatch(join(user.id));
       }
     }
+    getDataView();
     return () => {
       if (channel) {
         channel.unsubscribe();
@@ -67,7 +68,7 @@ export const Home = () => {
     };
   }, []);
 
-  useEffect(() => {
+  const getDataView = () => {
     dispatch(
       getTimeLearnings({
         student: user.id,
@@ -103,7 +104,7 @@ export const Home = () => {
         });
         setTimeLearningInWeek(times);
       });
-  }, []);
+  };
 
   const listFile: any[] | undefined = [];
   for (let i = 0; i < 10; i++) {
