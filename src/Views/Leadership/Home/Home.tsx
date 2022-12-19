@@ -1,6 +1,7 @@
 import { CaretRightFilled } from "@ant-design/icons";
 import { Button, Card, Col, List, Row, Typography } from "antd";
 import moment from "moment";
+import Pusher from "pusher-js";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -8,6 +9,7 @@ import { AnaCard } from "../../../Components/AnaCard";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import { SelectComp } from "../../../Components/Select";
 import { totalBank } from "../../../redux/reducers/banks.reducer";
+import { join } from "../../../redux/reducers/realtime.reducer";
 import {
   ISubject,
   totalSubject,
@@ -16,8 +18,6 @@ import { getUsers, UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
 import "./Home.style.scss"; // Alt Shift O
-import Pusher from "pusher-js";
-import { join } from "../../../redux/reducers/realtime.reducer";
 
 interface IFile {
   fileName: string;

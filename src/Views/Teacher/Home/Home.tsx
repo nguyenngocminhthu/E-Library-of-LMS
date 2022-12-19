@@ -53,6 +53,7 @@ export const Home = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
+    getDataView();
     Pusher.logToConsole = true;
     let channel: any;
     if (process.env.REACT_APP_KEY_PUSHER) {
@@ -80,14 +81,14 @@ export const Home = () => {
     };
   }, []);
 
-  useEffect(() => {
+  const getDataView = () => {
     Promise.all([
       dispatch(getFiles({ limit: 999, user: user.id })),
       dispatch(getLessons({ limit: 999, user: user.id })),
       dispatch(getBanks({ limit: 999, user: user.id })),
       dispatch(getSubjects({ limit: 999, teacher: user.id })),
     ]);
-  }, []);
+  };
 
   const loadMoreData = () => {
     if (loading) {
