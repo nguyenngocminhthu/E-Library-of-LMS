@@ -1,7 +1,5 @@
-import {
-  CaretRightOutlined
-} from "@ant-design/icons";
-import { Button, Col, Collapse, Row, Tooltip } from "antd";
+import { CaretRightOutlined } from "@ant-design/icons";
+import { Button, Col, Collapse, Empty, Row, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -58,28 +56,32 @@ export const SubjectDetail = () => {
       <div>
         <h1>Danh sách chủ đề</h1>
         <Collapse bordered={false} className="site-collapse-custom-collapse">
-          {data?.topic.map((vl: ITopic, index: number) => (
-            <Panel
-              header={vl.title}
-              key={index}
-              className="site-collapse-custom-panel"
-            >
-              {vl.lesson.length !== 0 && (
-                <div className="accor-video">
-                  <Tooltip title="Play">
-                    <Button
-                      size="large"
-                      shape="circle"
-                      icon={<CaretRightOutlined />}
-                      onClick={() =>
-                        navigate(`/student/subjects/viewsubject/${vl.id}`)
-                      }
-                    />
-                  </Tooltip>
-                </div>
-              )}
-            </Panel>
-          ))}
+          {data?.topic && data?.topic.length > 0 ? (
+            data?.topic.map((vl: ITopic, index: number) => (
+              <Panel
+                header={vl.title}
+                key={index}
+                className="site-collapse-custom-panel"
+              >
+                {vl.lesson.length !== 0 && (
+                  <div className="accor-video">
+                    <Tooltip title="Play">
+                      <Button
+                        size="large"
+                        shape="circle"
+                        icon={<CaretRightOutlined />}
+                        onClick={() =>
+                          navigate(`/student/subjects/viewsubject/${vl.id}`)
+                        }
+                      />
+                    </Tooltip>
+                  </div>
+                )}
+              </Panel>
+            ))
+          ) : (
+            <Empty />
+          )}
         </Collapse>
       </div>
     </div>

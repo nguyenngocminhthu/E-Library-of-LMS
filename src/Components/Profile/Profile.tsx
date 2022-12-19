@@ -207,7 +207,7 @@ export const Profile = () => {
                       rules={[
                         {
                           required: true,
-                          message: "Please input your password!",
+                          message: "Vui lòng nhập mật khẩu!",
                         },
                       ]}
                     >
@@ -219,7 +219,7 @@ export const Profile = () => {
                       rules={[
                         {
                           required: true,
-                          message: "Please input your new password!",
+                          message: "Vui lòng nhập mật khẩu mới!",
                         },
                       ]}
                     >
@@ -231,7 +231,7 @@ export const Profile = () => {
                       rules={[
                         {
                           required: true,
-                          message: "Please input your new password again!",
+                          message: "Vui lòng nhập lại mật khẩu mới!",
                         },
                       ]}
                     >

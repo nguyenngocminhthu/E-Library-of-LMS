@@ -9,6 +9,7 @@ import {
   Button,
   Col,
   Collapse,
+  Empty,
   Form,
   Input,
   Modal,
@@ -241,30 +242,34 @@ export const SubjectDetail = () => {
                     bordered={false}
                     className="site-collapse-custom-collapse"
                   >
-                    {data?.topic.map((vl: ITopic, idx: number) => (
-                      <Panel
-                        header={vl.title}
-                        key={idx}
-                        className="site-collapse-custom-panel"
-                      >
-                        {vl.lesson.length !== 0 && (
-                          <div className="accor-video">
-                            <Tooltip title="Play">
-                              <Button
-                                size="large"
-                                shape="circle"
-                                icon={<CaretRightOutlined />}
-                                onClick={() =>
-                                  navigate(
-                                    `/teacher/subject/viewsubject/${vl.id}`
-                                  )
-                                }
-                              />
-                            </Tooltip>
-                          </div>
-                        )}
-                      </Panel>
-                    ))}
+                    {data?.topic && data?.topic.length > 0 ? (
+                      data?.topic.map((vl: ITopic, idx: number) => (
+                        <Panel
+                          header={vl.title}
+                          key={idx}
+                          className="site-collapse-custom-panel"
+                        >
+                          {vl.lesson.length !== 0 && (
+                            <div className="accor-video">
+                              <Tooltip title="Play">
+                                <Button
+                                  size="large"
+                                  shape="circle"
+                                  icon={<CaretRightOutlined />}
+                                  onClick={() =>
+                                    navigate(
+                                      `/teacher/subject/viewsubject/${vl.id}`
+                                    )
+                                  }
+                                />
+                              </Tooltip>
+                            </div>
+                          )}
+                        </Panel>
+                      ))
+                    ) : (
+                      <Empty />
+                    )}
                   </Collapse>
                 </div>
               </div>
@@ -403,53 +408,67 @@ export const SubjectDetail = () => {
                   Tạo thông báo mới
                 </Button>
               </div>
-
               <div
-                className="scroll-box sub-noti w-100 p1"
-                style={{ height: "60vh" }}
+                id="scrollableDiv"
+                style={{
+                  height: 500,
+                  overflow: "auto",
+                  padding: "0 16px",
+                }}
               >
-                {notify.map((value: INoti) => {
-                  return (
-                    <Row className="noti-detail">
-                      <Col span={7}>
-                        <Row>
-                          <Col span={3}>
-                            <Avatar
-                              src={
-                                value.from.avt ||
-                                "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
-                              }
+                <Collapse
+                  bordered={false}
+                  className="site-collapse-custom-collapse"
+                >
+                  {notify && notify.length > 0 ? (
+                    notify.map((value: INoti) => {
+                      return (
+                        <Row className="noti-detail">
+                          <Col span={7}>
+                            <Row>
+                              <Col span={3}>
+                                <Avatar
+                                  src={
+                                    value.from.avt ||
+                                    "https://banner2.cleanpng.com/20180603/jx/kisspng-user-interface-design-computer-icons-default-stephen-salazar-photography-5b1462e1b19d70.1261504615280626897275.jpg"
+                                  }
+                                />
+                              </Col>
+                              <Col
+                                span={20}
+                                offset={1}
+                                style={{ lineHeight: "normal" }}
+                              >
+                                <h4 style={{ marginBottom: "0" }}>
+                                  {value.from.userName}
+                                </h4>
+                                <div className="flex-row">
+                                  <span className="time">Giáo viên</span>
+                                  <span
+                                    style={{ marginLeft: "2rem" }}
+                                    className="time"
+                                  >
+                                    {moment(value.createdAt).fromNow()}
+                                  </span>
+                                </div>
+                              </Col>
+                            </Row>
+                          </Col>
+                          <Col span={17}>
+                            <h3>{value.title}</h3>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: value.content,
+                              }}
                             />
                           </Col>
-                          <Col
-                            span={20}
-                            offset={1}
-                            style={{ lineHeight: "normal" }}
-                          >
-                            <h4 style={{ marginBottom: "0" }}>
-                              {value.from.userName}
-                            </h4>
-                            <div className="flex-row">
-                              <span className="time">Giáo viên</span>
-                              <span
-                                style={{ marginLeft: "2rem" }}
-                                className="time"
-                              >
-                                {moment(value.createdAt).fromNow()}
-                              </span>
-                            </div>
-                          </Col>
                         </Row>
-                      </Col>
-                      <Col span={17}>
-                        <h3>{value.title}</h3>
-                        <div
-                          dangerouslySetInnerHTML={{ __html: value.content }}
-                        />
-                      </Col>
-                    </Row>
-                  );
-                })}
+                      );
+                    })
+                  ) : (
+                    <Empty />
+                  )}
+                </Collapse>
               </div>
             </TabPane>
             <TabPane tab="Đề kiểm tra" key="5">
@@ -462,21 +481,27 @@ export const SubjectDetail = () => {
                 }}
               >
                 <h1>Đề kiểm tra</h1>
-                {data?.bank.map((item) => (
-                  <div
-                    className="exam-card"
-                    onClick={() =>
-                      navigate(`/teacher/exams/examdetail/${item.id}`)
-                    }
-                  >
-                    <h3>{item.examName}</h3>
-                    <p>Thời lượng: {item.time}</p>
-                    <p>
-                      Giờ bắt đầu:{" "}
-                      {moment(data?.createdAt).format("DD/MM/YYYY")}
-                    </p>
-                  </div>
-                ))}
+                <Collapse className="site-collapse-custom-collapse">
+                  {data?.bank && data?.bank.length > 0 ? (
+                    data?.bank.map((item) => (
+                      <div
+                        className="exam-card"
+                        onClick={() =>
+                          navigate(`/teacher/exams/examdetail/${item.id}`)
+                        }
+                      >
+                        <h3>{item.examName}</h3>
+                        <p>Thời lượng: {item.time}</p>
+                        <p>
+                          Giờ bắt đầu:{" "}
+                          {moment(data?.createdAt).format("DD/MM/YYYY")}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <Empty />
+                  )}
+                </Collapse>
               </div>
             </TabPane>
           </Tabs>

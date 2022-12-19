@@ -197,6 +197,7 @@ export const Question = () => {
       title: "STT",
       dataIndex: "key",
       key: "key",
+      width: 50,
       render: (key: number) => {
         return <div>{key + 1}</div>;
       },

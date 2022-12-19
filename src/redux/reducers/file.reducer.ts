@@ -199,5 +199,4 @@ export const listFile = (state: RootState) => state.file.listFile;
 
 export const totalFile = (state: RootState) => state.file.listFile.totalResults;
 
-
 export default reducer;
