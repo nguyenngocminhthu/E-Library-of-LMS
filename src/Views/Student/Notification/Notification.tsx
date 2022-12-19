@@ -12,15 +12,21 @@ import {
 } from "antd";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { getByMultiSubject } from "../../../redux/reducers/noti.reducer";
+import { UserState } from "../../../redux/reducers/user.reducer";
+import { AppDispatch } from "../../../redux/store";
 import "./Notification.style.scss";
 
 export const Notification = () => {
   const { TabPane } = Tabs;
+  const dispatch: AppDispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const navigate = useNavigate();
+  const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const loadMoreData = () => {
     if (loading) {
       return;
@@ -32,6 +38,7 @@ export const Notification = () => {
       .then((res) => res.json())
       .then((body) => {
         setData([...data, ...body.results]);
+        console.log("temp data: ", [...data, ...body.results]);
         setLoading(false);
       })
       .catch(() => {
@@ -41,6 +48,14 @@ export const Notification = () => {
 
   useEffect(() => {
     loadMoreData();
+    if (user.subjects.length > 0) {
+      const subjects = user.subjects.map((item: any) => item.id);
+      dispatch(getByMultiSubject({ subjects }))
+        .unwrap()
+        .then((res) => {
+          console.log("noti real: ", res);
+        });
+    }
   }, []);
   const classTeach = [
     {

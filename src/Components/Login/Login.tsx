@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logIn } from "../../redux/reducers/auth.reducer";
-import { join } from "../../redux/reducers/realtime.reducer";
 import { AppDispatch } from "../../redux/store";
 import { ReactComponent as Account } from "../../shared/img/icon/account.svg";
 import logoLogin from "../../shared/img/icon/logo-second.svg";
