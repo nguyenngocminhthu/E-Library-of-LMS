@@ -28,12 +28,18 @@ const updateNoti = (id: string, payload: any) => {
   });
 };
 
+const getByMultiSubject = (payload: any) => {
+  return axiosClient.post(url + '/get-by-subjects', payload).then((rs: any) => {
+    return rs;
+  });
+};
+
 const deleteNoti = (id: string) => {
   return axiosClient.delete(url + `/${id}`).then((rs: any) => {
     return rs;
   });
 };
 
-const Noti = { getNotis, updateNoti, createNoti, deleteNoti, getNoti };
+const Noti = { getNotis, updateNoti, createNoti, deleteNoti, getNoti, getByMultiSubject };
 
 export default Noti;
