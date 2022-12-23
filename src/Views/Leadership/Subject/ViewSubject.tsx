@@ -47,6 +47,7 @@ export const ViewSubject = () => {
         .then((rs: ITopic) => {
           setData(rs);
           setVideo(rs.lesson[0].video);
+          setUrl(rs.lesson[0].url);
           dispatch(getLesson(rs.lesson[0].id))
             .unwrap()
             .then((rs) => {
@@ -65,6 +66,7 @@ export const ViewSubject = () => {
         .then((rs: ITopic) => {
           setData(rs);
           setVideo(rs.lesson[idx].video);
+          setUrl(rs.lesson[idx].url);
           dispatch(getLesson(rs.lesson[idx].id))
             .unwrap()
             .then((rs) => {
@@ -145,7 +147,12 @@ export const ViewSubject = () => {
               controls
             ></video>
           ) : (
-            <ReactPlayer url={url} volume={1} controls={true} />
+            <ReactPlayer
+              width={"inherit"}
+              url={url}
+              volume={1}
+              controls={true}
+            />
           )}
           <Tabs defaultActiveKey="1">
             <TabPane tab="Tổng quan" key="1">
@@ -155,9 +162,11 @@ export const ViewSubject = () => {
                 <Col span={3}>Mô tả:</Col>
                 <Col
                   span={21}
-                  className={data?.description !== "" ? "scroll-box" : ""}
+                  className={
+                    data?.subjectId.description !== "" ? "scroll-box" : ""
+                  }
                 >
-                  {data?.description}
+                  {data?.subjectId.description}
                 </Col>
               </Row>
             </TabPane>
@@ -410,7 +419,7 @@ export const ViewSubject = () => {
                           <FileFilled />
                         </Col>
                         <Col span={19} offset={1}>
-                          <h4>
+                          <h4 className="ellipsis">
                             {index + 1}. {fileName}
                           </h4>
                         </Col>
