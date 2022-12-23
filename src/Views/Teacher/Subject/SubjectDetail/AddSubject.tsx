@@ -1,5 +1,5 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Select, Upload } from "antd";
+import { Button, Form, Input, Upload } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import lodash from "lodash";
 import { useEffect, useState } from "react";
@@ -7,8 +7,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { uploadFilesToFirebase } from "../../../../Apis/Firebase";
 import { BreadcrumbComp } from "../../../../Components/Breadcrumb";
-import { ISelect, SelectComp } from "../../../../Components/Select";
-import { IClass } from "../../../../redux/reducers/classes.reducer";
 import { createLesson } from "../../../../redux/reducers/lesson.reducer";
 import { setLoading } from "../../../../redux/reducers/loading.reducer";
 import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
@@ -50,8 +48,6 @@ export const AddSubject = () => {
       });
     } else {
       delete values.video;
-
-      dispatch(setLoading(false));
     }
 
     await dispatch(uploadFilesToFirebase(values.file.fileList, "File")).then(
@@ -74,6 +70,7 @@ export const AddSubject = () => {
     )
       .unwrap()
       .then((rs) => {
+        dispatch(setLoading(false));
         navigate(`/teacher/subject/editsubject/${data?.subjectId.id}`);
       });
   };

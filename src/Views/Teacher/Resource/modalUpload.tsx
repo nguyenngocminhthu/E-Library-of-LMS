@@ -60,7 +60,6 @@ export const ModalUpload: React.FC<{
       });
     } else {
       delete values.video;
-
       dispatch(setLoading(false));
     }
     dispatch(createLesson({ ...values, user: user.id }))
@@ -123,19 +122,6 @@ export const ModalUpload: React.FC<{
             onChange={(e: any) => handleSelect(e)}
             style={{ display: "block" }}
             dataString={subjectSelect}
-          />
-        </Form.Item>
-        <Form.Item
-          label="Chọn lớp học"
-          name="classes"
-          rules={[{ required: true }]}
-        >
-          <SelectComp
-            mode="multiple"
-            allowClear={true}
-            disabled={classSelect === undefined}
-            style={{ display: "block" }}
-            dataString={classSelect}
           />
         </Form.Item>
         <Form.Item

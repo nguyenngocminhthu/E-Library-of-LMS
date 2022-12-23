@@ -101,6 +101,7 @@ export const CreateQuestions = () => {
       dispatch(createQuestion({ ...values, user: user.id, examType, level }))
         .unwrap()
         .then(() => {
+          setAnswerNum([]);
           form.resetFields();
         });
     }
@@ -113,7 +114,6 @@ export const CreateQuestions = () => {
         setDataSub(rs.results);
       });
   };
-  console.debug(answerNum);
 
   return (
     <div className="sub-exam-bank">
