@@ -210,8 +210,6 @@ export const Home = () => {
                   <Col span={15} offset={1}>
                     <h5>{item.subName}</h5>
                     <h6>{item.subCode}</h6>
-
-                    <span style={{ bottom: 0 }}>Đang dạy 5 lớp</span>
                   </Col>
                 </Row>
               </Card>
