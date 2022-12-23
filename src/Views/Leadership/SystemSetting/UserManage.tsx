@@ -125,20 +125,17 @@ export const UserManage = () => {
   const onFinish = (values: any) => {
     if (values.role !== "student") {
       delete values.userCode;
-    } else {
-      if (values.userCode === undefined) {
-        message.error("Hãy nhập MSSV");
-      } else {
-        dispatch(createUser(values)).then(() => {
-          dispatch(getUsers(filter))
-            .unwrap()
-            .then((rs: any) => {
-              setData(rs.results);
-              form.resetFields();
-            });
-        });
-      }
+    } else if (values.userCode === undefined) {
+      message.error("Hãy nhập MSSV");
     }
+    dispatch(createUser(values)).then(() => {
+      dispatch(getUsers(filter))
+        .unwrap()
+        .then((rs: any) => {
+          setData(rs.results);
+          form.resetFields();
+        });
+    });
   };
 
   const deleteRow = {
