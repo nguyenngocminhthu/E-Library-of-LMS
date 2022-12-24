@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
+import { ISelect, SelectComp } from "../../../Components/Select";
 import {
   getBanks,
   IBanks,
@@ -34,7 +34,6 @@ import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
-import { ISubjectSelect } from "../Subject/Subject";
 import "./ExamBank.style.scss";
 
 const status = [
@@ -58,10 +57,10 @@ export const ExamBank = () => {
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
+  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
-  const [teacherSelect, setTeacherSelect] = useState<ISubjectSelect[]>([
+  const [teacherSelect, setTeacherSelect] = useState<ISelect[]>([
     { name: "Tất cả giảng viên", value: "" },
   ]);
   const [filter, setFilter] = useState<any>({ limit: 999 });
@@ -81,7 +80,7 @@ export const ExamBank = () => {
   }, [filter]);
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
     dispatch(getSubjects({ limit: 999 }))
       .unwrap()
       .then((rs: any) => {
@@ -93,7 +92,7 @@ export const ExamBank = () => {
   }, []);
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả giảng viên", value: "" }];
+    const option: ISelect[] = [{ name: "Tất cả giảng viên", value: "" }];
     if (teacher) {
       teacher.forEach((it: UserState) => {
         option.push({ name: it.userName, value: it.id });

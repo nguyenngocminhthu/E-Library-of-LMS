@@ -3,7 +3,7 @@ import { Button, Form, Modal, Upload } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
-import { SelectComp } from "../../../Components/Select";
+import { ISelect, SelectComp } from "../../../Components/Select";
 import { IClass } from "../../../redux/reducers/classes.reducer";
 import { createFile } from "../../../redux/reducers/file.reducer";
 import { ILesson } from "../../../redux/reducers/lesson.reducer";
@@ -16,7 +16,6 @@ import {
 import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 
 export const ModalUploadFiles: React.FC<{
   visible: boolean;
@@ -28,10 +27,10 @@ export const ModalUploadFiles: React.FC<{
   const dispatch: AppDispatch = useDispatch();
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
 
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([]);
-  const [classSelect, setClassSelect] = useState<ISubjectSelect[]>();
-  const [topicSelect, setTopicSelect] = useState<ISubjectSelect[]>();
-  const [lessonSelect, setLessonSelect] = useState<ISubjectSelect[]>();
+  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([]);
+  const [classSelect, setClassSelect] = useState<ISelect[]>();
+  const [topicSelect, setTopicSelect] = useState<ISelect[]>();
+  const [lessonSelect, setLessonSelect] = useState<ISelect[]>();
 
   useEffect(() => {
     dispatch(getSubjects({ limit: 999, teacher: user.id }))

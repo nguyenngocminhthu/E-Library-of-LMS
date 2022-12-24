@@ -24,6 +24,7 @@ import {
   UserState,
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
+import { semester, year } from "../../Leadership/Subject/Subject";
 import "./Subject.style.scss";
 
 export const Subject = () => {
@@ -34,9 +35,10 @@ export const Subject = () => {
   const [disable, setDisable] = useState(false);
   const [data, setData] = useState<ISubject[]>([]);
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
+  const [filter, setFilter] = useState<any>({ limit: 999, teacher: user.id });
 
   useEffect(() => {
-    dispatch(getSubjects({ limit: 999, teacher: user.id }))
+    dispatch(getSubjects(filter))
       .unwrap()
       .then((rs: any) => {
         let list: ISubject[] = [];
@@ -45,7 +47,7 @@ export const Subject = () => {
         });
         setData(list);
       });
-  }, []);
+  }, [filter]);
 
   const handleClick = (id: string) => {
     navigate(`subjectdetail/${id}`);
@@ -86,6 +88,15 @@ export const Subject = () => {
               localStorage.setItem("user", JSON.stringify(rs));
             });
         });
+    }
+  };
+
+  const handleFilterSubject = (query: string, e: any) => {
+    if (e !== "") {
+      setFilter({ ...filter, [`${query}`]: e });
+    } else {
+      delete filter[query];
+      setFilter({ ...filter });
     }
   };
 
@@ -183,20 +194,14 @@ export const Subject = () => {
       key: "description",
     },
     {
-      title: "Tình trạng",
-      dataIndex: "status",
-      key: "status",
-      render: (status: number) => (
-        <div className={status === 0 ? "gray" : "green"}>
-          {status === 0 ? "Chờ phê duyệt" : "Đã phê duyệt"}
-        </div>
-      ),
+      title: "Niên khoá",
+      dataIndex: "year",
+      key: "year",
     },
     {
-      title: "Số tài liệu chờ duyệt",
-      dataIndex: "file",
-      key: "file",
-      width: 200,
+      title: "Học kỳ",
+      dataIndex: "semester",
+      key: "semester",
     },
     {
       title: "",
@@ -242,8 +247,17 @@ export const Subject = () => {
         <Col className="table-header" span={16}>
           <SelectComp
             style={{ display: "block" }}
-            defaultValue="Xếp theo tên môn học"
-            dataString={subjectSelect}
+            textLabel="Niên khoá"
+            defaultValue=""
+            dataString={year}
+            onChange={(e: any) => handleFilterSubject("year", e)}
+          />
+          <SelectComp
+            style={{ display: "block" }}
+            textLabel="Học kỳ"
+            defaultValue=""
+            dataString={semester}
+            onChange={(e: any) => handleFilterSubject("semester", e)}
           />
         </Col>
         <Col className="table-header" span={8}>

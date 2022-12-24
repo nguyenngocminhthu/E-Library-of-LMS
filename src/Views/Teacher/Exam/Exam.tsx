@@ -40,7 +40,6 @@ import {
 } from "../../../redux/reducers/subjectgroup.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
-import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 import "./Exam.style.scss";
 import { ModalCreateExamWithQuestion } from "./ModalCreateExamWithQuestion";
 
@@ -72,7 +71,7 @@ export const Exam = () => {
   }, [filter]);
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
 
     dispatch(getSubjects({ limit: 999, teacher: user.id }))
       .unwrap()
@@ -85,7 +84,7 @@ export const Exam = () => {
   }, []);
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả tổ bộ môn", value: "" }];
+    const option: ISelect[] = [{ name: "Tất cả tổ bộ môn", value: "" }];
     if (dataSubGroup) {
       dataSubGroup.forEach((it: ISubjectGroup) => {
         option.push({ name: it.groupName, value: it.id });
@@ -213,9 +212,11 @@ export const Exam = () => {
     };
 
     const onFinish = (values: any) => {
-      dispatch(updateBank({ id: id, payload: values })).unwrap().then(() => {
-        handleRefresh();
-      });
+      dispatch(updateBank({ id: id, payload: values }))
+        .unwrap()
+        .then(() => {
+          handleRefresh();
+        });
     };
     const assign = {
       title: "Phân bố đề thi",
@@ -238,7 +239,7 @@ export const Exam = () => {
             <DatePicker
               format="DD-MM-YYYY HH:mm:ss"
               showTime={{ defaultValue: moment("00:00:00", "HH:mm:ss") }}
-              disabledDate={(c) => c && c < moment().startOf('day')}
+              disabledDate={(c) => c && c < moment().startOf("day")}
             />
           </Form.Item>
         </Form>

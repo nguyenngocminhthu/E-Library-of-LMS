@@ -15,12 +15,13 @@ import {
   Tooltip,
 } from "antd";
 import modal from "antd/lib/modal";
+import lodash from "lodash";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
+import { ISelect, SelectComp } from "../../../Components/Select";
 import {
   deleteLesson,
   getLessons,
@@ -29,11 +30,8 @@ import {
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ReactComponent as Delete } from "../../../shared/img/icon/fi_delete.svg";
-import { ISubjectSelect } from "../../Leadership/Subject/Subject";
-import { ModalUpload } from "./modalUpload";
 import { ReactComponent as Mp4 } from "../../../shared/img/icon/mp4_file.svg";
-import lodash from "lodash";
+import { ModalUpload } from "./modalUpload";
 
 export const Lessons = () => {
   const [form] = Form.useForm();
@@ -42,7 +40,7 @@ export const Lessons = () => {
   const dispatch: AppDispatch = useDispatch();
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const [data, setData] = useState<any[]>([]);
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
+  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
   const [filter, setFilte] = useState<any>({ limit: 999, user: user.id });
@@ -56,7 +54,7 @@ export const Lessons = () => {
   }, [filter]);
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
     dispatch(getSubjects({ limit: 999, teacher: user.id }))
       .unwrap()
       .then((rs: any) => {

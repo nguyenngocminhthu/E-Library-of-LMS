@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
+import { ISelect, SelectComp } from "../../../Components/Select";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   createSubjectGroup,
@@ -29,10 +29,47 @@ import { ModalSubject } from "./ModalSubject";
 
 import "./Subject.style.scss";
 
-export interface ISubjectSelect {
-  name: string;
-  value: string;
-}
+export const year = [
+  {
+    name: "Tất cả niên khoá",
+    value: "",
+  },
+  {
+    name: "2018-2019",
+    value: "2018-2019",
+  },
+  {
+    name: "2019-2020",
+    value: "2019-2020",
+  },
+  {
+    name: "2020-2021",
+    value: "2020-2021",
+  },
+  {
+    name: "2021-2022",
+    value: "2021-2022",
+  },
+];
+
+export const semester = [
+  {
+    name: "Tất cả học kỳ",
+    value: "",
+  },
+  {
+    name: "Học kì 1",
+    value: 1,
+  },
+  {
+    name: "Học kì 2",
+    value: 2,
+  },
+  {
+    name: "Học kì 3",
+    value: 3,
+  },
+];
 
 export const Subject = () => {
   const navigate = useNavigate();
@@ -42,10 +79,10 @@ export const Subject = () => {
   const [currentRecord, setCurrentRecord] = useState<ISubject>();
   const [modeSubject, setModeSubject] = useState("create");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [subjectGroupSelect, setSubjectGroupSelect] = useState<
-    ISubjectSelect[]
-  >([{ name: "Tất cả bộ môn", value: "" }]);
-  const [teacherSelect, setTeacherSelect] = useState<ISubjectSelect[]>([
+  const [subjectGroupSelect, setSubjectGroupSelect] = useState<ISelect[]>([
+    { name: "Tất cả bộ môn", value: "" },
+  ]);
+  const [teacherSelect, setTeacherSelect] = useState<ISelect[]>([
     { name: "Tất cả giảng viên", value: "" },
   ]);
   const dispatch: AppDispatch = useDispatch();
@@ -54,7 +91,7 @@ export const Subject = () => {
   const [filter, setFilter] = useState<any>({ limit: 999 });
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
     dispatch(getSubjectGroups(999))
       .unwrap()
       .then((rs) => {
@@ -77,7 +114,7 @@ export const Subject = () => {
   }, [filter]);
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả giảng viên", value: "" }];
+    const option: ISelect[] = [{ name: "Tất cả giảng viên", value: "" }];
     if (teacher) {
       teacher.forEach((it: UserState) => {
         option.push({ name: it.userName, value: it.id });
@@ -99,7 +136,7 @@ export const Subject = () => {
   const handleRefresh = () => {
     dispatch(getSubjectGroups(999));
     dispatch(getUsers({ limit: 999, role: "teacher" }));
-    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
     dispatch(getSubjects(filter))
       .unwrap()
       .then((rs) => {
@@ -204,21 +241,6 @@ export const Subject = () => {
     modal.confirm(config);
   };
 
-  const status = [
-    {
-      name: "Tất cả tình trạng",
-      value: "",
-    },
-    {
-      name: "Đã phê duyệt",
-      value: "DPD",
-    },
-    {
-      name: "Chờ phê duyệt",
-      value: "CPD",
-    },
-  ];
-
   const columns = [
     {
       title: "Mã môn học",
@@ -248,12 +270,14 @@ export const Subject = () => {
       key: "description",
     },
     {
-      title: "Ngày tạo",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (createdAt: any) => {
-        return moment(createdAt).format("DD/MM/YYYY");
-      },
+      title: "Niên khoá",
+      dataIndex: "year",
+      key: "year",
+    },
+    {
+      title: "Học kỳ",
+      dataIndex: "semester",
+      key: "semester",
     },
     {
       title: "",
@@ -291,7 +315,7 @@ export const Subject = () => {
         <Col className="table-header" span={11}>
           <SelectComp
             style={{ display: "block" }}
-            textLabel="Bộ môn"
+            textLabel="Tổ bộ môn"
             defaultValue=""
             dataString={subjectGroupSelect}
             onChange={(e: any) => handleFilterSubject("subGroup", e)}
@@ -305,10 +329,17 @@ export const Subject = () => {
           />
           <SelectComp
             style={{ display: "block" }}
-            textLabel="Tình trạng tài liệu"
+            textLabel="Niên khoá"
             defaultValue=""
-            dataString={status}
-            onChange={(e: any) => handleFilterSubject("status", e)}
+            dataString={year}
+            onChange={(e: any) => handleFilterSubject("year", e)}
+          />
+          <SelectComp
+            style={{ display: "block" }}
+            textLabel="Học kỳ"
+            defaultValue=""
+            dataString={semester}
+            onChange={(e: any) => handleFilterSubject("semester", e)}
           />
         </Col>
         <Col className="table-header" span={8}>

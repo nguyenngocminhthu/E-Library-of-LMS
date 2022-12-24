@@ -1,13 +1,7 @@
-import {
-  AppstoreOutlined,
-  FilterOutlined,
-  MoreOutlined,
-  StarOutlined,
-} from "@ant-design/icons";
+import { MoreOutlined, StarOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
-  Dropdown,
   Menu,
   Popover,
   Row,
@@ -22,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
+import { ISelect, SelectComp } from "../../../Components/Select";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import {
   getUser,
@@ -30,14 +24,13 @@ import {
   UserState,
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 
 export const Subject = () => {
   const { Title } = Typography;
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
+  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
   const [filter, setFilter] = useState<any>();
@@ -59,7 +52,7 @@ export const Subject = () => {
       user.subjects?.forEach((value: ISubject, index: number) => {
         arr.push({ ...value, key: index });
       });
-      setData(arr);
+      setData(arr.reverse());
     }
   }, [filter]);
 
@@ -67,7 +60,7 @@ export const Subject = () => {
     dispatch(getSubjects({ limit: 999 }))
       .unwrap()
       .then((rs: any) => {
-        let option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+        let option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
 
         rs.results.forEach((value: ISubject) => {
           option.push({ name: value.subName, value: value.id });
@@ -169,6 +162,16 @@ export const Subject = () => {
       render: (teacher: UserState) => {
         return teacher.userName;
       },
+    },
+    {
+      title: "Niên khoá",
+      dataIndex: "year",
+      key: "year",
+    },
+    {
+      title: "Học kỳ",
+      dataIndex: "semester",
+      key: "semester",
     },
     {
       title: "",

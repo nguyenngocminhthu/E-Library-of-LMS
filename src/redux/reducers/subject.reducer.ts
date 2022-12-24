@@ -68,7 +68,10 @@ export const updateSubject = createAsyncThunk(
 
 export const getSubjects = createAsyncThunk(
   "subject/getSubjects",
-  async ({ limit, teacher, subGroup, status, sortBy }: any, thunkAPI) => {
+  async (
+    { limit, teacher, subGroup, status, sortBy, year, semester }: any,
+    thunkAPI
+  ) => {
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Subject.getSubjects({
@@ -77,6 +80,8 @@ export const getSubjects = createAsyncThunk(
         subGroup,
         sortBy,
         status,
+        year,
+        semester,
       });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
@@ -127,8 +132,10 @@ export interface ISubject {
   teacher: UserState;
   student: string[];
   description: string;
+  year: string;
   status: number;
   file: number;
+  semester: number;
   image: string;
   classes: IClass[];
   topic: ITopic[];
@@ -149,7 +156,7 @@ const initialState: SubjectState = {
     results: [],
     totalPages: 0,
     totalResults: 0,
-  }
+  },
 };
 
 export const subjectReducer = createSlice({

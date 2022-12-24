@@ -14,6 +14,40 @@ import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./Subject.style.scss";
 
+const year = [
+  {
+    name: "2018-2019",
+    value: "2018-2019",
+  },
+  {
+    name: "2019-2020",
+    value: "2019-2020",
+  },
+  {
+    name: "2020-2021",
+    value: "2020-2021",
+  },
+  {
+    name: "2021-2022",
+    value: "2021-2022",
+  },
+];
+
+const semester = [
+  {
+    name: "Học kì 1",
+    value: 1,
+  },
+  {
+    name: "Học kì 2",
+    value: 2,
+  },
+  {
+    name: "Học kì 3",
+    value: 3,
+  },
+];
+
 export const ModalSubject = (props: any) => {
   const dispatch: AppDispatch = useDispatch();
   const { Option } = Select;
@@ -59,6 +93,16 @@ export const ModalSubject = (props: any) => {
       value: "",
       disabled: false,
     },
+    year: {
+      required: true,
+      value: "",
+      disabled: false,
+    },
+    semester: {
+      required: true,
+      value: 1,
+      disabled: false,
+    },
   };
   const [action, setAction] = useState(createAction);
 
@@ -79,7 +123,7 @@ export const ModalSubject = (props: any) => {
   useEffect(() => {
     if (isModalOpen) {
       if (mode == "edit") {
-        const students = record?.students.map((item: any) => item.id);
+        const students = record?.students.map((item: UserState) => item.id);
         setAction({
           title: "Chỉnh sửa môn học",
           okText: "Lưu",
@@ -117,6 +161,16 @@ export const ModalSubject = (props: any) => {
             value: record?.image,
             disabled: false,
           },
+          year: {
+            required: false,
+            value: record?.year,
+            disabled: false,
+          },
+          semester: {
+            required: false,
+            value: record?.semester,
+            disabled: false,
+          },
         });
       } else {
         setAction(createAction);
@@ -131,6 +185,8 @@ export const ModalSubject = (props: any) => {
       form.setFieldsValue({
         subCode: action.subCode.value,
         subName: action.subName.value,
+        year: action.year.value,
+        semester: action.semester.value,
         description: action.description.value,
         subGroup: action.subGroup.value,
         teacher: action.teacher.value,
@@ -164,7 +220,7 @@ export const ModalSubject = (props: any) => {
   return (
     <Modal
       title={action.title}
-      visible={isModalOpen}
+      open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
       width="40%"
@@ -204,6 +260,38 @@ export const ModalSubject = (props: any) => {
         </Form.Item>
         <Form.Item name="description" label="Mô tả">
           <TextArea disabled={action.description.disabled} rows={4} />
+        </Form.Item>
+        <Form.Item
+          name="year"
+          label="Niên khoá"
+          rules={[
+            {
+              required: action.year.required,
+              message: "Hãy chọn niên khoá",
+            },
+          ]}
+        >
+          <Select>
+            {year.map((vl: any) => (
+              <Option value={vl.value}>{vl.name}</Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="semester"
+          label="Học kỳ"
+          rules={[
+            {
+              required: action.semester.required,
+              message: "Hãy chọn học kỳ",
+            },
+          ]}
+        >
+          <Select>
+            {semester.map((vl: any) => (
+              <Option value={vl.value}>{vl.name}</Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           name="subGroup"

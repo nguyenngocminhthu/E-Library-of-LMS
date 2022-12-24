@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
-import { SelectComp } from "../../../Components/Select";
+import { ISelect, SelectComp } from "../../../Components/Select";
 import { getFiles, IFile } from "../../../redux/reducers/file.reducer";
 import { getSubjects, ISubject } from "../../../redux/reducers/subject.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
@@ -30,7 +30,6 @@ import { ReactComponent as Word } from "../../../shared/img/icon/word.svg";
 
 import pdf from "../../../shared/img/pdf.png";
 import pptx from "../../../shared/img/pptx.png";
-import { ISubjectSelect } from "../../Leadership/Subject/Subject";
 import { ModalUploadFiles } from "./modalUploadFiles";
 
 export const Resources = () => {
@@ -41,7 +40,7 @@ export const Resources = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const [data, setData] = useState<IFile[]>([]);
   const [urls, setUrls] = useState<string[]>([]);
-  const [subjectSelect, setSubjectSelect] = useState<ISubjectSelect[]>([
+  const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
   const [filter, setFilter] = useState<any>({ limit: 999, user: user.id });
@@ -55,7 +54,7 @@ export const Resources = () => {
   }, [filter]);
 
   useEffect(() => {
-    const option: ISubjectSelect[] = [{ name: "Tất cả bộ môn", value: "" }];
+    const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
     dispatch(getSubjects({ limit: 999, teacher: user.id }))
       .unwrap()
       .then((rs: any) => {
