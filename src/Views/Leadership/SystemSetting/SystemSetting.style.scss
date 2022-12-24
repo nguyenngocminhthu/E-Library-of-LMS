@@ -130,12 +130,13 @@
   }
 
   .title-page {
-    position: relative;
-
+    // position: relative;
+    display: flex;
+    justify-content: space-between;
     .btn-location {
-      position: absolute;
-      top: 0;
-      right: 0;
+      // position: absolute;
+      // top: 0;
+      // right: 0;
     }
   }
 
@@ -289,5 +290,20 @@
 
   .note-span {
     font-style: italic;
+  }
+}
+
+.guide-form {
+  width: 50% !important;
+  height: 70% !important;
+  .img-in-modal {
+    max-width: 50%;
+    margin-left: 30px;
+  }
+
+  p {
+    margin-left: 30px;
+    font-size: 15px;
+    text-align: start;
   }
 }
