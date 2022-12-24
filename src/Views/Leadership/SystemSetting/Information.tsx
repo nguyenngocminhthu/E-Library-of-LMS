@@ -75,7 +75,7 @@ export const Information = () => {
   return (
     <div className="information-system-page">
       <BreadcrumbComp
-        title="Thông tin người dùng"
+        title="Thông tin hệ thống"
         prevFirstPageTitle="Cài đặt hệ thống"
         prevFirstPage="setting"
       />
