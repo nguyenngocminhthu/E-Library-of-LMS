@@ -103,6 +103,33 @@ export const createUser = createAsyncThunk(
   }
 );
 
+export const createUsers = createAsyncThunk(
+  "user/createUsers",
+  async (payload: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await User.createUsers(payload);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo tài khoản thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export const deleteUser = createAsyncThunk(
   "user/deleteUser",
   async (id: string, thunkAPI) => {
@@ -195,6 +222,18 @@ export const userReducer = createSlice({
       state.listUser = action.payload;
     });
     builder.addCase(createUser.rejected, (state, action) => {
+      state.listUser = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
+    });
+    builder.addCase(createUsers.fulfilled, (state, action) => {
+      state.listUser = action.payload;
+    });
+    builder.addCase(createUsers.rejected, (state, action) => {
       state.listUser = {
         limit: 0,
         page: 0,

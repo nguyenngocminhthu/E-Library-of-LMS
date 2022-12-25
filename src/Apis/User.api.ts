@@ -22,6 +22,12 @@ const createUser = (payload: any) => {
   });
 };
 
+const createUsers = (payload: any) => {
+  return axiosClient.post(`${url}/create-by-file`, payload).then((rs: any) => {
+    return rs;
+  });
+};
+
 const updateProfile = (id: string, payload: any) => {
   return axiosClient.patch(url + `/${id}`, payload).then((rs: any) => {
     return rs;
@@ -34,6 +40,6 @@ const deleteUser = (id: string) => {
   });
 };
 
-const User = { getUsers, updateProfile, createUser, deleteUser, getUser };
+const User = { getUsers, updateProfile, createUser, createUsers, deleteUser, getUser };
 
 export default User;

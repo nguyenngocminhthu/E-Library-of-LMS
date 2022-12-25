@@ -50,12 +50,12 @@ export const Home = () => {
   useEffect(() => {
     Pusher.logToConsole = true;
     let channel: any;
+    let pusher: any;
     if (process.env.REACT_APP_KEY_PUSHER) {
       const pusher = new Pusher(process.env.REACT_APP_KEY_PUSHER, {
         cluster: process.env.REACT_APP_CLUSTER_PUSHER,
       });
-      channel = pusher.subscribe("my-channel");
-
+      const channel = pusher.subscribe("my-channel");
       channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
         handleEventSocket(data.listUser, data.statistical);
         console.log("leadership channel connected: ", data);
@@ -70,8 +70,12 @@ export const Home = () => {
       }
     }
     return () => {
-      if (channel) {
-        channel.unsubscribe();
+      if (pusher) {
+        if (channel) {
+          channel.unbind("RECEIVED_JOIN_REQUEST");
+          channel.unbind("RECEIVED_OUT_REQUEST");
+        }
+        pusher.unsubscribe("my-channel");
       }
     };
   }, []);
