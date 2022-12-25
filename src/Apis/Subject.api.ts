@@ -10,6 +10,12 @@ const createSubject = (body: ISubject) => {
   });
 };
 
+const createSubjectByFile = (payload: any) => {
+  return axiosClient.post(`${url}/create-by-file`, payload).then((rs: any) => {
+    return rs;
+  });
+};
+
 const getSubjects = (params: any) => {
   const query = queryString.stringify(params);
   return axiosClient.get(url + `?${query}`).then((rs: any) => {
@@ -29,6 +35,6 @@ const updateSubject = (id: string, payload: ISubject) => {
   });
 };
 
-const Subject = { getSubjects, getSubject, createSubject, updateSubject };
+const Subject = { getSubjects, getSubject, createSubject, createSubjectByFile, updateSubject };
 
 export default Subject;

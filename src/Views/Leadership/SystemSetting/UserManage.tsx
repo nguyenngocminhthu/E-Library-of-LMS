@@ -269,6 +269,8 @@ export const UserManage = () => {
   useEffect(() => {
     if (excelRows.length) {
       if (
+        excelRows[0] &&
+        excelRows[0].length === 5 &&
         excelRows[0].includes("STT") &&
         excelRows[0].includes("TEN") &&
         excelRows[0].includes("MS") &&

@@ -39,6 +39,33 @@ export const createSubject = createAsyncThunk(
   }
 );
 
+export const createSubjectByFile = createAsyncThunk(
+  "subject/createSubjectByFile",
+  async (body: ISubject, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Subject.createSubjectByFile(body);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo môn học thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export const updateSubject = createAsyncThunk(
   "subject/updateSubject",
   async ({ id, payload }: any, thunkAPI) => {
@@ -172,6 +199,21 @@ export const subjectReducer = createSlice({
       return newState;
     });
     builder.addCase(createSubject.rejected, (state) => {
+      state.listSubject = {
+        limit: 0,
+        page: 0,
+        results: [],
+        totalPages: 0,
+        totalResults: 0,
+      };
+    });
+    builder.addCase(createSubjectByFile.fulfilled, (state, action) => {
+      if (action.payload.code) return state;
+      const newState = cloneDeep(state);
+      newState.listSubject.results.unshift(action.payload);
+      return newState;
+    });
+    builder.addCase(createSubjectByFile.rejected, (state) => {
       state.listSubject = {
         limit: 0,
         page: 0,
