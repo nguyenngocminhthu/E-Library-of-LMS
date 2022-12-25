@@ -160,7 +160,7 @@ export const Notification = () => {
         </Tabs>
         <div className="tab-control">
           <Space className="" size="middle">
-            <Tooltip title="Setting">
+            <Tooltip title="Cài đặt">
               <Button
                 className="setting-btn-icon"
                 type="link"

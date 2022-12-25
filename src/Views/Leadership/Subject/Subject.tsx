@@ -285,7 +285,7 @@ export const Subject = () => {
       width: 100,
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Chi tiết">
+          <Tooltip title="Xem chi tiết">
             <Button
               onClick={() => navigate(`/subjects/listfile/${record.id}`)}
               icon={<UnorderedListOutlined />}
