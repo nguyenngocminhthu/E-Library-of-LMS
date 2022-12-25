@@ -208,33 +208,31 @@ export const Subject = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Mở rộng">
-            <Popover
-              content={
-                <div className="popover">
-                  <p onClick={() => handleClick(record.id)}>Chi tiết môn học</p>
-                  <p onClick={() => navigate(`listfile/${record.id}`)}>
-                    Danh sách tài liệu
-                  </p>
-                  <p onClick={() => modal.confirm(modalCourseManage)}>
-                    Phân công tài liệu
-                  </p>
-                </div>
+          <Popover
+            content={
+              <div className="popover">
+                <p onClick={() => handleClick(record.id)}>Chi tiết môn học</p>
+                <p onClick={() => navigate(`listfile/${record.id}`)}>
+                  Danh sách tài liệu
+                </p>
+                <p onClick={() => modal.confirm(modalCourseManage)}>
+                  Phân công tài liệu
+                </p>
+              </div>
+            }
+            trigger="click"
+          >
+            <Button
+              // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
+              icon={
+                <MoreOutlined
+                  style={{
+                    fontSize: "24px",
+                  }}
+                />
               }
-              trigger="click"
-            >
-              <Button
-                // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
-                icon={
-                  <MoreOutlined
-                    style={{
-                      fontSize: "24px",
-                    }}
-                  />
-                }
-              />
-            </Popover>
-          </Tooltip>
+            />
+          </Popover>
         </Space>
       ),
     },

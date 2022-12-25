@@ -105,7 +105,6 @@ export const Notification = () => {
     dispatch(getSubject(e))
       .unwrap()
       .then((rs: ISubject) => {
-
         let arr: ISelect[] = [];
         rs.topic.forEach((vl: ITopic) => {
           arr.push({ name: vl.title, value: vl.id });
@@ -216,7 +215,7 @@ export const Notification = () => {
         </Tabs>
         <div className="tab-control">
           <Space className="" size="middle">
-            <Tooltip title="Setting">
+            <Tooltip title="Cài đặt">
               <Button
                 className="setting-btn-icon"
                 type="link"

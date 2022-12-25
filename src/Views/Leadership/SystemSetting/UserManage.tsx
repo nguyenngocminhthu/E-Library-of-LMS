@@ -263,7 +263,6 @@ export const UserManage = () => {
     },
     showUploadList: false,
     maxCount: 1,
-    className: "upload-inline",
     onChange: (info) => {},
   };
 
@@ -316,17 +315,22 @@ export const UserManage = () => {
         <Title ellipsis level={5}>
           Danh sách người dùng trên hệ thống
         </Title>
-        <div className="title-page" style={{ width: "15%" }}>
+        <div className="title-page">
           <Upload {...props}>
-            <Button icon={<UploadOutlined />}>Upload</Button>
+            <Button
+              icon={<UploadOutlined />}
+              className="default-btn icon-custom"
+            >
+              Tải lên danh sách
+            </Button>
           </Upload>
           <QuestionCircleOutlined
+            style={{ marginRight: "10px" }}
             onClick={() => {
               info();
             }}
           />
           <Button
-            // className="btn-location"
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => modal.confirm(modalAdd)}

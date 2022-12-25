@@ -15,6 +15,7 @@ import {
   Select,
   Space,
   Table,
+  Tooltip,
   Typography,
 } from "antd";
 import modal from "antd/lib/modal";
@@ -228,41 +229,35 @@ export const Question = () => {
     {
       title: "",
       key: "action",
+      width: 160,
       render: (text: any, record: IQuestion) => (
         <Space size="middle">
-          <Button
-            icon={
-              <EyeOutlined
-                style={{
-                  fontSize: "24px",
-                }}
-              />
-            }
-            onClick={() => handleShowQuestion(record)}
-          />
-          <Button
-            icon={
-              <Edit
-                style={{
-                  fontSize: "24px",
-                }}
-              />
-            }
-            onClick={() =>
-              navigate(`/teacher/questions/editQuestions/${record.id}`)
-            }
-          />
-          <Button
-            disabled={!lodash.isEmpty(record.bank)}
-            icon={
-              <Trash
-                onClick={() => modalRemove(record)}
-                style={{
-                  fontSize: "24px",
-                }}
-              />
-            }
-          />
+          <Tooltip title="Xem chi tiết">
+            <Button
+              icon={
+                <EyeOutlined
+                  style={{
+                    fontSize: "20px",
+                  }}
+                />
+              }
+              onClick={() => handleShowQuestion(record)}
+            />
+          </Tooltip>
+          <Tooltip title="Chỉnh sửa">
+            <Button
+              icon={<Edit />}
+              onClick={() =>
+                navigate(`/teacher/questions/editQuestions/${record.id}`)
+              }
+            />
+          </Tooltip>
+          <Tooltip title="Xóa">
+            <Button
+              disabled={!lodash.isEmpty(record.bank)}
+              icon={<Trash onClick={() => modalRemove(record)} />}
+            />
+          </Tooltip>
         </Space>
       ),
     },

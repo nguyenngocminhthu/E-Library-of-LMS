@@ -114,7 +114,6 @@ export const AddSubject = () => {
               name="video"
               label="Bài giảng"
               rules={[{ required: url === "" }]}
-              className="download-file"
             >
               <Upload
                 maxCount={1}
@@ -126,6 +125,7 @@ export const AddSubject = () => {
                 <Button
                   disabled={url !== ""}
                   icon={<UploadOutlined style={{ color: "#f17f21" }} />}
+                  className="default-btn icon-custom"
                 >
                   Tải lên
                 </Button>
@@ -141,19 +141,19 @@ export const AddSubject = () => {
                 controls
               />
             )}
-            <Form.Item
-              name="url"
-              label="hoặc Đường link"
-              className="download-file"
-            >
+            <Form.Item name="url" label="hoặc Đường link">
               <Input
                 onChange={(e: any) => setUrl(e.target.value)}
                 disabled={linkVideo !== ""}
+                style={{ width: "50%" }}
               />
             </Form.Item>
             <Form.Item name="file" label="Tài nguyên">
               <Upload maxCount={3} beforeUpload={() => false}>
-                <Button icon={<UploadOutlined style={{ color: "#f17f21" }} />}>
+                <Button
+                  icon={<UploadOutlined style={{ color: "#f17f21" }} />}
+                  className="default-btn icon-custom"
+                >
                   Tải lên
                 </Button>
               </Upload>
