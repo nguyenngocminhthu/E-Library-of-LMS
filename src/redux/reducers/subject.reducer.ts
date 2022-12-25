@@ -69,7 +69,7 @@ export const updateSubject = createAsyncThunk(
 export const getSubjects = createAsyncThunk(
   "subject/getSubjects",
   async (
-    { limit, teacher, subGroup, status, sortBy, year, semester }: any,
+    { limit, teacher, subGroup, status, sortBy, year, semester, subName }: any,
     thunkAPI
   ) => {
     try {
@@ -82,6 +82,7 @@ export const getSubjects = createAsyncThunk(
         status,
         year,
         semester,
+        subName,
       });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
