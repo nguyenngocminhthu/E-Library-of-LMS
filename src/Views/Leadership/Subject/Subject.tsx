@@ -6,7 +6,7 @@ import {
 import { Button, Col, Form, Input, Row, Space, Table, Tooltip } from "antd";
 import modal from "antd/lib/modal";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
@@ -285,7 +285,7 @@ export const Subject = () => {
       width: 100,
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Chi tiết">
+          <Tooltip title="Xem chi tiết">
             <Button
               onClick={() => navigate(`/subjects/listfile/${record.id}`)}
               icon={<UnorderedListOutlined />}
@@ -307,6 +307,19 @@ export const Subject = () => {
       ),
     },
   ];
+  const typingTimeoutRef = useRef<any>();
+  const onChangeSearchTerm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("change: ", e.target?.value);
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      const name = e.target.value;
+      handleFilterSubject("subName", name);
+    }, 300);
+  };
 
   return (
     <div className="subject">
@@ -343,7 +356,10 @@ export const Subject = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
+          <SearchComponent
+            placeholder="Tìm kết quả theo tên, lớp, môn học,..."
+            onChange={(e) => onChangeSearchTerm(e)}
+          />
         </Col>
         <Col
           className="table-header"

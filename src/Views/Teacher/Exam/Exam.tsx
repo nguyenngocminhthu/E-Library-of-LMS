@@ -331,48 +331,46 @@ export const Exam = () => {
       key: "action",
       render: (text: any, record: IBanks) => (
         <Space size="middle">
-          <Tooltip title="Mở rộng">
-            <Popover
-              content={
-                <div className="popover">
-                  <p
-                    onClick={() =>
-                      navigate(`/teacher/exams/examdetail/${record?.id}`)
-                    }
-                  >
-                    Xem chi tiết
-                  </p>
-                  <p
-                    onClick={() =>
-                      navigate(`/teacher/exams/submissions/${record?.id}`)
-                    }
-                  >
-                    Xem bài nộp
-                  </p>
-                  {record.status === 1 && (
-                    <p onClick={() => modalAssign(record.id)}>Phân bố đề thi</p>
-                  )}
+          <Popover
+            content={
+              <div className="popover">
+                <p
+                  onClick={() =>
+                    navigate(`/teacher/exams/examdetail/${record?.id}`)
+                  }
+                >
+                  Xem chi tiết
+                </p>
+                <p
+                  onClick={() =>
+                    navigate(`/teacher/exams/submissions/${record?.id}`)
+                  }
+                >
+                  Xem bài nộp
+                </p>
+                {record.status === 1 && (
+                  <p onClick={() => modalAssign(record.id)}>Phân bố đề thi</p>
+                )}
 
-                  <p onClick={() => modal.confirm(downloadFile)}>
-                    Tải xuống đề thi
-                  </p>
+                <p onClick={() => modal.confirm(downloadFile)}>
+                  Tải xuống đề thi
+                </p>
 
-                  <p onClick={() => ModalDelete(record.id)}>Xoá đề thi</p>
-                </div>
+                <p onClick={() => ModalDelete(record.id)}>Xoá đề thi</p>
+              </div>
+            }
+            trigger="click"
+          >
+            <Button
+              icon={
+                <MoreOutlined
+                  style={{
+                    fontSize: "24px",
+                  }}
+                />
               }
-              trigger="click"
-            >
-              <Button
-                icon={
-                  <MoreOutlined
-                    style={{
-                      fontSize: "24px",
-                    }}
-                  />
-                }
-              />
-            </Popover>
-          </Tooltip>
+            />
+          </Popover>
         </Space>
       ),
     },

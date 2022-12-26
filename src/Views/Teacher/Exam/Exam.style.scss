@@ -5,7 +5,12 @@
     font-size: 20px !important;
     width: -moz-fit-content !important;
     width: fit-content !important;
+
+    &:hover {
+      color: #ddd;
+    }
   }
+
 }
 
 .popover {

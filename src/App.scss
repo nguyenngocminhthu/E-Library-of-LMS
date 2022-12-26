@@ -101,3 +101,8 @@ $color-site-layout: #fafbfc;
 .ant-table tfoot>tr>th {
   padding: 10px;
 }
+
+.ant-collapse-borderless>.ant-collapse-item:last-child {
+  border-bottom: 1px solid #f17f21;
+  border-radius: 8px;
+}

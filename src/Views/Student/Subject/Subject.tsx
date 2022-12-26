@@ -178,36 +178,34 @@ export const Subject = () => {
       key: "action",
       render: (text: any, record: ISubject) => (
         <Space size="middle">
-          <Tooltip title="Mở rộng">
-            <Popover
-              content={
-                <div className="popover">
-                  <p onClick={() => handleClick(record.id)}>Chi tiết</p>
-                  <p onClick={() => modal.confirm(downloadFile)}>
-                    Tải xuống tài nguyên
-                  </p>
-                  <p
-                    onClick={() =>
-                      navigate(`/student/subjects/exams/${record.id}`)
-                    }
-                  >
-                    Đề thi và kiểm tra
-                  </p>
-                </div>
+          <Popover
+            content={
+              <div className="popover">
+                <p onClick={() => handleClick(record.id)}>Chi tiết</p>
+                <p onClick={() => modal.confirm(downloadFile)}>
+                  Tải xuống tài nguyên
+                </p>
+                <p
+                  onClick={() =>
+                    navigate(`/student/subjects/exams/${record.id}`)
+                  }
+                >
+                  Đề thi và kiểm tra
+                </p>
+              </div>
+            }
+            trigger="click"
+          >
+            <Button
+              icon={
+                <MoreOutlined
+                  style={{
+                    fontSize: "24px",
+                  }}
+                />
               }
-              trigger="click"
-            >
-              <Button
-                icon={
-                  <MoreOutlined
-                    style={{
-                      fontSize: "24px",
-                    }}
-                  />
-                }
-              />
-            </Popover>
-          </Tooltip>
+            />
+          </Popover>
         </Space>
       ),
     },

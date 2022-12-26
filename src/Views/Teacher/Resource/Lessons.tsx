@@ -253,33 +253,31 @@ export const Lessons = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Tooltip title="Mở rộng">
-            <Popover
-              content={
-                <div className="popover">
-                  <p onClick={() => modal.confirm(seeDetails)}>Xem chi tiết</p>
-                  <p onClick={() => modal.confirm(modalChangeName)}>Đổi tên</p>
-                  <p onClick={() => modal.confirm(downloadFile)}>Tải xuống</p>
-                  <p onClick={() => modal.confirm(modalAddSubject)}>
-                    Thêm vào môn học
-                  </p>
-                  <p onClick={() => handleDelete(record.id)}>Xoá bài giảng</p>
-                </div>
+          <Popover
+            content={
+              <div className="popover">
+                <p onClick={() => modal.confirm(seeDetails)}>Xem chi tiết</p>
+                <p onClick={() => modal.confirm(modalChangeName)}>Đổi tên</p>
+                <p onClick={() => modal.confirm(downloadFile)}>Tải xuống</p>
+                <p onClick={() => modal.confirm(modalAddSubject)}>
+                  Thêm vào môn học
+                </p>
+                <p onClick={() => handleDelete(record.id)}>Xoá bài giảng</p>
+              </div>
+            }
+            trigger="click"
+          >
+            <Button
+              // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
+              icon={
+                <MoreOutlined
+                  style={{
+                    fontSize: "24px",
+                  }}
+                />
               }
-              trigger="click"
-            >
-              <Button
-                // onClick={() => navigate(`/subjectManage/${record.subCode}`)}
-                icon={
-                  <MoreOutlined
-                    style={{
-                      fontSize: "24px",
-                    }}
-                  />
-                }
-              />
-            </Popover>
-          </Tooltip>
+            />
+          </Popover>
         </Space>
       ),
     },
