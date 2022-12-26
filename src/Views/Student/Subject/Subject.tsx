@@ -120,15 +120,6 @@ export const Subject = () => {
     }
   };
 
-  const downloadFile = {
-    title: "Tải xuống tệp",
-    className: "modal-common-style",
-    content:
-      "Xác nhận muốn tải xuống 25 tệp đã chọn. Các file đã chọn sẽ được lưu dưới dạng .rar.",
-    okText: "Xác nhận",
-    cancelText: "Huỷ",
-  };
-
   const columns = [
     {
       title: "",
@@ -182,9 +173,6 @@ export const Subject = () => {
             content={
               <div className="popover">
                 <p onClick={() => handleClick(record.id)}>Chi tiết</p>
-                <p onClick={() => modal.confirm(downloadFile)}>
-                  Tải xuống tài nguyên
-                </p>
                 <p
                   onClick={() =>
                     navigate(`/student/subjects/exams/${record.id}`)

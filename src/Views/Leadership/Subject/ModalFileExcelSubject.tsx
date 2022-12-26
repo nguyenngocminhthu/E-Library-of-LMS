@@ -50,7 +50,6 @@ export const ModalFileExcelSubject = (props: any) => {
     dispatch(createSubjectByFile(bodyCreate))
       .unwrap()
       .then((rs) => {
-        console.log("tao xong mon hoc: ", rs);
         setIsModalOpen(false);
       });
   };
@@ -79,7 +78,6 @@ export const ModalFileExcelSubject = (props: any) => {
   }, [isModalOpen]);
 
   useEffect(() => {
-    console.log("dataConverted: ", dataSource);
     if (dataSource.length) {
       const info = cloneDeep(excelRows).slice(0, 4);
       setExtraInfo({
@@ -103,7 +101,6 @@ export const ModalFileExcelSubject = (props: any) => {
         semester: parseInt(info[3][0].at(-1) || 1),
         students,
       };
-      console.log("temp: ", temp);
       setBodyCreate(temp);
     }
   }, [dataSource]);
@@ -114,17 +111,37 @@ export const ModalFileExcelSubject = (props: any) => {
       onOk={handleOk}
       onCancel={handleCancel}
       width="40%"
-      className="cancel-form"
-      okText="Import"
+      className="modal-common-style subject sub-exam-bank"
+      okText="Xác nhận"
       cancelText="Huỷ"
     >
-      <Row>
-        <label>Tổ bộ môn: {extraInfo.subGroup}.</label>
-        <label>Mã môn: {extraInfo.subCode}.</label>
-        <label>Tên môn: {extraInfo.subName}.</label>
-        <label>Niên khoá: {extraInfo.year}.</label>
-        <label>Học kỳ: {extraInfo.semester}.</label>
-      </Row>
+      <div
+        className="d-flex"
+        style={{ width: "30vw", justifyContent: "space-between" }}
+      >
+        <div className="d-flex">
+          <div className="label">
+            <div>Tổ bộ môn: </div>
+            <div>Mã môn: </div>
+            <div>Tên môn: </div>
+          </div>
+          <div>
+            <div>{extraInfo.subGroup}</div>
+            <div>{extraInfo.subCode}</div>
+            <div>{extraInfo.subName}</div>
+          </div>
+        </div>
+        <div className="d-flex">
+          <div className="label">
+            <div>Niên khoá: </div>
+            <div>Học kỳ: </div>
+          </div>
+          <div>
+            <div> {extraInfo.year}</div>
+            <div> {extraInfo.semester}</div>
+          </div>
+        </div>
+      </div>
       <Table
         dataSource={dataSource}
         columns={columns}

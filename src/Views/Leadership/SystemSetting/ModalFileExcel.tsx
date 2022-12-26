@@ -100,8 +100,8 @@ export const ModalFileExcel = (props: any) => {
       onOk={handleOk}
       onCancel={handleCancel}
       width="40%"
-      className="cancel-form"
-      okText="Import"
+      className="modal-common-style subject"
+      okText="Xác nhận"
       cancelText="Huỷ"
     >
       <Table

@@ -433,7 +433,7 @@ export const Subject = () => {
     <div className="subject">
       <BreadcrumbComp title="Danh sách môn học" />
       <Row>
-        <Col className="table-header" span={11}>
+        <Col className="table-header" span={12}>
           <SelectComp
             style={{ display: "block" }}
             textLabel="Tổ bộ môn"
@@ -471,23 +471,10 @@ export const Subject = () => {
         </Col>
         <Col
           className="table-header"
-          span={3}
+          span={4}
           style={{
             display: "flex",
             justifyContent: "right",
-          }}
-        >
-          <Button onClick={handleSubGroup} type="primary">
-            Tạo tổ bộ môn
-          </Button>
-        </Col>
-        <Col
-          className="table-header"
-          span={2}
-          style={{
-            display: "flex",
-            justifyContent: "right",
-            paddingRight: "6px",
           }}
         >
           <Upload {...props}>
@@ -505,8 +492,21 @@ export const Subject = () => {
             }}
           />
         </Col>
+      </Row>
+      <Row>
+        <Col span={19}></Col>
         <Col
-          className="table-header"
+          span={3}
+          style={{
+            display: "flex",
+            justifyContent: "right",
+          }}
+        >
+          <Button onClick={handleSubGroup} type="primary">
+            Tạo tổ bộ môn
+          </Button>
+        </Col>
+        <Col
           span={2}
           style={{
             display: "flex",

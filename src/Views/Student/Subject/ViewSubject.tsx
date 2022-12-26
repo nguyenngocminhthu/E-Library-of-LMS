@@ -157,8 +157,8 @@ export const ViewSubject = () => {
         title="Xem bài giảng"
         prevFirstPageTitle="Danh sách môn học"
         prevSecondPageTitle="Chủ đề"
-        prevFirstPage="student/subjects"
-        prevSecondPage="student/subjects"
+        prevFirstPage="student/subject"
+        prevSecondPage="student/subject"
       />
       <Row>
         <Col span={16}>
