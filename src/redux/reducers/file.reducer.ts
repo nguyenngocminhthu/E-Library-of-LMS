@@ -5,13 +5,12 @@ import { setLoading } from "./loading.reducer";
 import { UserState } from "./user.reducer";
 import { ISubject } from "./subject.reducer";
 import File from "../../Apis/File.api";
-import { IClass } from "./classes.reducer";
 import { message } from "antd";
 import { IList } from "./interface";
 
 export const createFile = createAsyncThunk(
   "File/createClass",
-  async (body: IClass, thunkAPI) => {
+  async (body: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await File.createFile(body);
@@ -112,7 +111,6 @@ export const updateFile = createAsyncThunk(
 export interface IFile {
   id: string;
   key?: string;
-  classes: [];
   fileName: string;
   user: UserState;
   file: [];

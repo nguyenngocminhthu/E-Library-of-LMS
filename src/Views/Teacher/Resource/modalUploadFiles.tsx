@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { ISelect, SelectComp } from "../../../Components/Select";
-import { IClass } from "../../../redux/reducers/classes.reducer";
 import { createFile } from "../../../redux/reducers/file.reducer";
 import { ILesson } from "../../../redux/reducers/lesson.reducer";
 import { setLoading } from "../../../redux/reducers/loading.reducer";
@@ -28,7 +27,6 @@ export const ModalUploadFiles: React.FC<{
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
 
   const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([]);
-  const [classSelect, setClassSelect] = useState<ISelect[]>();
   const [topicSelect, setTopicSelect] = useState<ISelect[]>();
   const [lessonSelect, setLessonSelect] = useState<ISelect[]>();
 
@@ -68,12 +66,6 @@ export const ModalUploadFiles: React.FC<{
     dispatch(getSubject(e))
       .unwrap()
       .then((rs: ISubject) => {
-        let option: any[] = [];
-        rs.classes.forEach((vl: IClass) => {
-          option.push({ name: vl.classCode, value: vl.id });
-        });
-        setClassSelect(option);
-
         let topic: any[] = [];
         rs.topic.forEach((vl: ITopic) => {
           topic.push({ name: vl.title, value: vl.id });
@@ -103,7 +95,6 @@ export const ModalUploadFiles: React.FC<{
       onCancel={() => {
         props.setVisible(false);
         form.resetFields();
-        setClassSelect(undefined);
         setTopicSelect(undefined);
         setLessonSelect(undefined);
       }}
@@ -128,19 +119,6 @@ export const ModalUploadFiles: React.FC<{
             onChange={(e: any) => handleSelect(e)}
             style={{ display: "block" }}
             dataString={subjectSelect}
-          />
-        </Form.Item>
-        <Form.Item
-          label="Chọn lớp học"
-          name="classes"
-          rules={[{ required: true }]}
-        >
-          <SelectComp
-            mode="multiple"
-            allowClear={true}
-            disabled={classSelect === undefined}
-            style={{ display: "block" }}
-            dataString={classSelect}
           />
         </Form.Item>
         <Form.Item
