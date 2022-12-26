@@ -7,6 +7,7 @@ import {
 import {
   Avatar,
   Button,
+  Card,
   Col,
   Collapse,
   Empty,
@@ -482,25 +483,36 @@ export const SubjectDetail = () => {
               >
                 <h1>Đề kiểm tra</h1>
                 <Collapse className="site-collapse-custom-collapse">
-                  {data?.bank && data?.bank.length > 0 ? (
-                    data?.bank.map((item) => (
-                      <div
-                        className="exam-card"
-                        onClick={() =>
-                          navigate(`/teacher/exams/examdetail/${item.id}`)
-                        }
-                      >
-                        <h3>{item.examName}</h3>
-                        <p>Thời lượng: {item.time}</p>
-                        <p>
-                          Giờ bắt đầu:{" "}
-                          {moment(data?.createdAt).format("DD/MM/YYYY")}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <Empty />
-                  )}
+                  <div
+                    className="site-card-wrapper"
+                    style={{ padding: "36px" }}
+                  >
+                    <Row
+                      gutter={16}
+                      style={{ justifyContent: "space-between" }}
+                    >
+                      {data?.bank && data?.bank.length > 0 ? (
+                        data?.bank.map((item) => (
+                          <div
+                            className="exam-card"
+                            onClick={() =>
+                              navigate(`/teacher/exams/examdetail/${item.id}`)
+                            }
+                          >
+                            <Card title={item.examName} bordered={false}>
+                              <div>Thời lượng: {item.time} phút</div>
+                              <div>
+                                Ngày bắt đầu:{" "}
+                                {moment(data?.createdAt).format("DD/MM/YYYY")}
+                              </div>
+                            </Card>
+                          </div>
+                        ))
+                      ) : (
+                        <Empty />
+                      )}
+                    </Row>
+                  </div>
                 </Collapse>
               </div>
             </TabPane>

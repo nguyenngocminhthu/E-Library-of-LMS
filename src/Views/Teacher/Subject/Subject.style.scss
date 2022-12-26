@@ -1,6 +1,7 @@
 @import "../../../shared/styles/variable";
 
 .teacher-subject {
+
   .ant-checkbox,
   .ant-radio {
     transform: scale(1.2);
@@ -170,6 +171,7 @@
 
     .add-subject-container {
       padding: 28px 56px;
+
       .ant-row {
         width: 100%;
       }
@@ -198,14 +200,21 @@
     border-radius: 8px 8px 0px 0px;
     margin-top: 8px;
   }
+
   .exam-card {
     :hover {
       cursor: pointer;
     }
+
     border: 1px solid rgb(205, 204, 204);
     padding: 1rem;
     width: 30%;
     border-radius: 8px;
+    margin-bottom: 36px;
+  }
+
+  .ant-card {
+    background-image: linear-gradient(to bottom right, #FDFCFB, #E2D1C3);
   }
 }
 
@@ -226,7 +235,7 @@
     text-align: center;
   }
 
-  .ant-table-thead > tr > th {
+  .ant-table-thead>tr>th {
     background: $color-secondary-dark-light;
   }
 }
