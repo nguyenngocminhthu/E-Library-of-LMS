@@ -10,6 +10,7 @@ import { ITopic } from "./topic.reducer";
 import { IQA } from "./QA.reducer";
 import { message } from "antd";
 import { IList } from "./interface";
+import { IBanks } from "./banks.reducer";
 
 export const createLesson = createAsyncThunk(
   "Lesson/createClass",
@@ -153,6 +154,7 @@ export interface ILesson {
   status: number;
   QA?: IQA[];
   url: string;
+  exams: [];
 }
 
 interface LessonState {
@@ -169,16 +171,17 @@ const initialState: LessonState = {
     totalResults: 0,
   },
   current: {
-    id: '',
+    id: "",
     classes: [],
-    title: '',
-    video: '',
+    title: "",
+    video: "",
     file: [],
-    createdAt: '',
-    updatedAt: '',
+    createdAt: "",
+    updatedAt: "",
     status: 0,
-    url: '',
-  }
+    url: "",
+    exams: [],
+  },
 };
 
 export const LessonReducer = createSlice({

@@ -38,7 +38,6 @@ export const ViewSubject = () => {
   const [idQA, setIdQA] = useState<string>("");
   const [visible, setVisible] = useState<boolean>(false);
   const [idx, setIdx] = useState<number>(0);
-  const [url, setUrl] = useState<string>("");
 
   useEffect(() => {
     if (params.idSub) {
@@ -47,7 +46,6 @@ export const ViewSubject = () => {
         .then((rs: ITopic) => {
           setData(rs);
           setVideo(rs.lesson[0].video);
-          setUrl(rs.lesson[0].url);
           dispatch(getLesson(rs.lesson[0].id))
             .unwrap()
             .then((rs) => {
@@ -66,7 +64,6 @@ export const ViewSubject = () => {
         .then((rs: ITopic) => {
           setData(rs);
           setVideo(rs.lesson[idx].video);
-          setUrl(rs.lesson[idx].url);
           dispatch(getLesson(rs.lesson[idx].id))
             .unwrap()
             .then((rs) => {
@@ -140,20 +137,12 @@ export const ViewSubject = () => {
 
       <Row>
         <Col span={16}>
-          {data?.lesson[idx].url === undefined ? (
-            <video
-              src={video}
-              style={{ width: "100%", height: "50vh" }}
-              controls
-            ></video>
-          ) : (
-            <ReactPlayer
-              width={"inherit"}
-              url={url}
-              volume={1}
-              controls={true}
-            />
-          )}
+          <ReactPlayer
+            width={"inherit"}
+            url={video}
+            volume={1}
+            controls={true}
+          />
           <Tabs defaultActiveKey="1">
             <TabPane tab="Tổng quan" key="1">
               <Row>
@@ -389,7 +378,6 @@ export const ViewSubject = () => {
                   onClick={() => {
                     setVideo(value.video);
                     setIdx(index);
-                    setUrl(value.url);
                     dispatch(getLesson(value.id))
                       .unwrap()
                       .then((rs) => {

@@ -1,48 +1,47 @@
-import { Button, Checkbox, Col, Radio, Row, Space, Statistic } from "antd";
+import { Button, Checkbox, Col, Modal, Radio, Row, Space } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-import lodash from "lodash";
+import Countdown from "antd/lib/statistic/Countdown";
+import lodash, { cloneDeep } from "lodash";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router";
-import { BreadcrumbComp } from "../../../Components/Breadcrumb";
+import { useNavigate } from "react-router";
 import { getBank, IBanks } from "../../../redux/reducers/banks.reducer";
 import { IQuestion } from "../../../redux/reducers/question.reducer";
 import {
   createSubmission,
+  getSubmissions,
   ISubmissions,
+  updateSubmission,
 } from "../../../redux/reducers/submission.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-const { Countdown } = Statistic;
+import { IAns } from "./ExamDetails";
 
-export interface IAns {
-  id: string;
-  ans: any;
-  correct: any;
-}
-
-export const ExamDetails = () => {
+export const ModalExam: React.FC<{
+  visible: boolean;
+  setVisible: any;
+  data: any;
+  handleRefresh: any;
+}> = (props) => {
   const dispatch: AppDispatch = useDispatch();
-  const params = useParams<{ id: string }>();
-  const [select, setSelect] = useState(0);
   const [data, setData] = useState<IBanks>();
+  const [select, setSelect] = useState(0);
   const [time, setTime] = useState<number>(0);
   const [releaseTime, setReleaseTime] = useState<any>();
-  const navigate = useNavigate();
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   let arr: IAns[] = [];
-  const [questions, setQuestions] = useState<IAns[]>(arr);
+  const [questions, setQuestions] = useState<IAns[]>([]);
 
   useEffect(() => {
-    if (params.id) {
-      dispatch(getBank(params.id))
+    if (props.data) {
+      dispatch(getBank(props.data))
         .unwrap()
         .then((rs: IBanks) => {
           setData(rs);
           setSelect(0);
           setTime(rs.time * 1000 * 60);
-          setReleaseTime(Date.parse(rs.releaseTime));
+          setReleaseTime(Date.now());
           if (!lodash.isEmpty(rs.submissions)) {
             rs.submissions.forEach((vl: ISubmissions) => {
               if (vl.user.id === user.id) {
@@ -78,17 +77,17 @@ export const ExamDetails = () => {
           }
         });
     }
-  }, []);
+  }, [props.data, props.visible]);
 
   const handleSubmit = (id: any, e: any) => {
-    setQuestions((value: IAns[]) =>
-      value.map((item: IAns) => {
-        if (item.id === id) {
-          item.ans = e;
-        }
-        return item;
-      })
-    );
+    let ques = cloneDeep(questions);
+    ques.map((item: IAns) => {
+      if (item.id === id) {
+        item.ans = e;
+      }
+      return item;
+    });
+    setQuestions(ques);
   };
 
   const takeDecimalNumber = (num: number) => {
@@ -98,32 +97,51 @@ export const ExamDetails = () => {
   };
 
   const onFinish = () => {
-    let submission: any[] = [];
-    let count: number = 0;
-    questions.forEach((item: IAns) => {
-      if (JSON.stringify(item.ans) === JSON.stringify(item.correct)) {
-        count = count + 1;
-      }
-      submission.push(
-        JSON.stringify(item.ans) === JSON.stringify(item.correct)
-      );
-    });
-    let score = (10 / submission.length) * count;
-    score = takeDecimalNumber(score);
-
-    dispatch(
-      createSubmission({
-        user: user.id,
-        score: score,
-        submit: questions,
-        correctNum: count,
-        bank: params.id,
-      })
-    )
-      .unwrap()
-      .then(() => {
-        navigate(`/student/subjects/exams/${data?.subject.id}`);
+    if (props.visible) {
+      let submission: any[] = [];
+      let count: number = 0;
+      questions.forEach((item: IAns) => {
+        if (JSON.stringify(item.ans) === JSON.stringify(item.correct)) {
+          count = count + 1;
+        }
+        submission.push(
+          JSON.stringify(item.ans) === JSON.stringify(item.correct)
+        );
       });
+      let score = (10 / submission.length) * count;
+      score = takeDecimalNumber(score);
+      dispatch(getSubmissions({ user: user.id, bank: props.data }))
+        .unwrap()
+        .then((rs) => {
+          if (rs.totalResults > 0 && rs.results[0].score < 5) {
+            dispatch(
+              updateSubmission({
+                id: rs.results[0].id,
+                payload: {
+                  score: score,
+                  submit: questions,
+                  correctNum: count,
+                  bank: props.data,
+                },
+              })
+            );
+          } else {
+            dispatch(
+              createSubmission({
+                user: user.id,
+                score: score,
+                submit: questions,
+                correctNum: count,
+                bank: props.data,
+              })
+            )
+              .unwrap()
+              .then(() => {
+                props.setVisible(false);
+              });
+          }
+        });
+    }
   };
 
   const handleSelect = (idx: number) => {
@@ -131,59 +149,21 @@ export const ExamDetails = () => {
   };
 
   return (
-    <div className="sub-exam-bank">
-      <BreadcrumbComp
-        title="Chi tiết đề thi"
-        prevFirstPageTitle="Ngân hàng đề thi"
-        prevFirstPage={`student/subjects/exams/${data?.subject.id}`}
-      />
-      <div className="top-head">
-        <div
-          className="d-flex"
-          style={{ width: "50vw", justifyContent: "space-between" }}
-        >
-          <div className="d-flex">
-            <div className="label">
-              <div>Môn học: </div>
-              <div>Thời lượng: </div>
-            </div>
-            <div>
-              <div>{data?.subject?.subName}</div>
-              <div>{data?.time}</div>
-            </div>
-          </div>
-          <div className="d-flex">
-            <div className="label">
-              <div>Tiêu đề thi: </div>
-              <div>Hình thức: </div>
-            </div>
-            <div>
-              <div>{data?.examName}</div>
-              <div>Kiểm tra {data?.time} phút</div>
-            </div>
-          </div>
-          <div className="d-flex">
-            <div className="label">
-              <div>Giáo viên đào tạo: </div>
-              <div>Thời gian kết thúc: </div>
-            </div>
-            <div>
-              <div>{data?.user?.userName || "null"}</div>
-              <div>
-                {moment(data?.releaseTime)
-                  .add(data?.time, "minutes")
-                  .format("DD/MM/YYYY HH:mm:ss")}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {moment() < moment(data?.releaseTime).add(data?.time, "minutes") && (
+    <Modal
+      title=""
+      className="modal-add-role "
+      width="40%"
+      open={props.visible}
+      onCancel={() => {
+        props.setVisible(false);
+      }}
+      footer={() => false}
+    >
+      {moment() < moment(releaseTime).add(data?.time, "minutes") && (
         <div style={{ textAlign: "right" }}>
           <Countdown value={releaseTime + time} onFinish={onFinish} />
         </div>
       )}
-
       <div className="body-bank">
         <Row>
           <Col span={6}>
@@ -226,10 +206,6 @@ export const ExamDetails = () => {
                       : ""
                   }
                   rows={10}
-                  disabled={
-                    lodash.isEmpty(questions[select]) &&
-                    lodash.isEmpty(questions[select].ans)
-                  }
                   onChange={(e: any) =>
                     handleSubmit(data?.question[select].id, e.target.value)
                   }
@@ -244,10 +220,6 @@ export const ExamDetails = () => {
                   !lodash.isEmpty(questions[select].ans)
                     ? questions[select].ans
                     : ""
-                }
-                disabled={
-                  lodash.isEmpty(questions[select]) &&
-                  lodash.isEmpty(questions[select].ans)
                 }
                 rows={10}
                 onChange={(e: any) =>
@@ -265,10 +237,6 @@ export const ExamDetails = () => {
                   !lodash.isEmpty(questions[select]) &&
                   !lodash.isEmpty(questions[select].ans) &&
                   questions[select].ans[0]
-                }
-                disabled={
-                  moment() >=
-                  moment(data?.releaseTime).add(data?.time, "minutes")
                 }
               >
                 <Space direction="vertical">
@@ -317,10 +285,6 @@ export const ExamDetails = () => {
                     ? handleSubmit(data?.question[select].id, e)
                     : handleSubmit(data?.questions[select]._id, e)
                 }
-                disabled={
-                  moment() >=
-                  moment(data?.releaseTime).add(data?.time, "minutes")
-                }
               >
                 {data?.question.length !== 0
                   ? data?.question[select]?.answers.map((vl: any, idx: any) => (
@@ -362,15 +326,13 @@ export const ExamDetails = () => {
               </Checkbox.Group>
             )}
           </Col>
-          {moment() < moment(data?.releaseTime).add(data?.time, "minutes") && (
-            <div className="t-right m1 w-100">
-              <Button onClick={onFinish} type="primary">
-                Nộp bài
-              </Button>
-            </div>
-          )}
+          <div className="t-right m1 w-100">
+            <Button onClick={onFinish} type="primary">
+              Nộp bài
+            </Button>
+          </div>
         </Row>
       </div>
-    </div>
+    </Modal>
   );
 };
