@@ -1,14 +1,29 @@
 import {
   DollarOutlined,
   EditOutlined,
+  QuestionCircleOutlined,
   UnorderedListOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Form, Input, Row, Space, Table, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Modal,
+  Row,
+  Space,
+  Table,
+  Tooltip,
+  Upload,
+} from "antd";
+import { UploadProps } from "antd/es/upload/interface";
 import modal from "antd/lib/modal";
-import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import * as XLSX from "xlsx";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
 import SearchComponent from "../../../Components/SearchComponent";
 import { ISelect, SelectComp } from "../../../Components/Select";
@@ -25,8 +40,9 @@ import {
   UserState,
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
+import guideUploadSubject from "../../../shared/img/exampleSubjectData.png";
+import { ModalFileExcelSubject } from "./ModalFileExcelSubject";
 import { ModalSubject } from "./ModalSubject";
-
 import "./Subject.style.scss";
 
 export const year = [
@@ -79,6 +95,7 @@ export const Subject = () => {
   const [currentRecord, setCurrentRecord] = useState<ISubject>();
   const [modeSubject, setModeSubject] = useState("create");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOpenModalFileExcel, setIsOpenModalFileExcel] = useState(false);
   const [subjectGroupSelect, setSubjectGroupSelect] = useState<ISelect[]>([
     { name: "Tất cả bộ môn", value: "" },
   ]);
@@ -89,6 +106,7 @@ export const Subject = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const [formGroup] = Form.useForm();
   const [filter, setFilter] = useState<any>({ limit: 999 });
+  const [excelRows, setExcelRows] = useState<any>([]);
 
   useEffect(() => {
     const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
@@ -321,6 +339,96 @@ export const Subject = () => {
     }, 300);
   };
 
+  const info = () => {
+    Modal.info({
+      title: "Hướng dẫn chọn file",
+      content: (
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "50%" }}>
+            <p>Chọn file excel có những cột tương ứng như hình bên:</p>
+            <p>STT là số thứ tự</p>
+            <p>TEN là tên người dùng</p>
+            <p>MS là mã số người dùng</p>
+            <p>Mã giáo viên có 2 chữ GV ở đầu mã</p>
+            <p>Dòng 1 là tên môn học</p>
+            <p>Dòng 2 là niên khoá</p>
+            <p>Dòng 3 là học kỳ</p>
+            <p>Dòng 5 là thông tin giảng viên</p>
+            <p>Các dòng còn lại là thông tin sinh viên</p>
+          </div>
+          <img className="img-in-modal" src={guideUploadSubject} alt="logo" />
+        </div>
+      ),
+      className: "guide-form",
+      onOk() {},
+    });
+  };
+
+  const processExcelFile = (data: any) => {
+    const workbook = XLSX.read(data, { type: "binary" });
+    const wsname = workbook.SheetNames[0];
+    const ws = workbook.Sheets[wsname];
+    const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
+    console.log(dataParse);
+    if (dataParse.length) {
+      setExcelRows(dataParse);
+    } else {
+      message.error("File rỗng");
+    }
+  };
+
+  const props: UploadProps = {
+    beforeUpload: (file) => {
+      const isXslx =
+        file.type ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+      if (!isXslx) {
+        message.error("Chỉ chấp nhận file excel!");
+        return false;
+      }
+      const isLt50MB = file.size / 1024 / 1024 < 50;
+      if (!isLt50MB) {
+        message.error("Chỉ chấp nhận file nhỏ hơn 50MB!");
+        return false;
+      }
+      if (typeof FileReader !== "undefined") {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          processExcelFile(e.target?.result);
+        };
+        reader.readAsBinaryString(file);
+      }
+      return false;
+    },
+    showUploadList: false,
+    maxCount: 1,
+    onChange: (info) => {},
+  };
+
+  useEffect(() => {
+    if (excelRows.length) {
+      if (
+        excelRows[0] &&
+        excelRows[0].length === 1 &&
+        excelRows[1] &&
+        excelRows[1].length === 2 &&
+        excelRows[2] &&
+        excelRows[2].length === 1 &&
+        excelRows[3] &&
+        excelRows[3].length === 1 &&
+        excelRows[4] &&
+        excelRows[4].length === 3 &&
+        excelRows[4].includes("STT") &&
+        excelRows[4].includes("TEN") &&
+        excelRows[4].includes("MS")
+      ) {
+        setIsOpenModalFileExcel(true);
+      } else {
+        message.error("File excel sai định dạng!");
+      }
+    }
+  }, [excelRows]);
+
   return (
     <div className="subject">
       <BreadcrumbComp title="Danh sách môn học" />
@@ -382,6 +490,30 @@ export const Subject = () => {
             paddingRight: "6px",
           }}
         >
+          <Upload {...props}>
+            <Button
+              icon={<UploadOutlined />}
+              className="default-btn icon-custom"
+            >
+              Tải lên danh sách
+            </Button>
+          </Upload>
+          <QuestionCircleOutlined
+            style={{ marginRight: "10px" }}
+            onClick={() => {
+              info();
+            }}
+          />
+        </Col>
+        <Col
+          className="table-header"
+          span={2}
+          style={{
+            display: "flex",
+            justifyContent: "right",
+            paddingRight: "6px",
+          }}
+        >
           <Button onClick={() => handleModal("create")} type="primary">
             Tạo mới
           </Button>
@@ -396,6 +528,11 @@ export const Subject = () => {
         setIsModalOpen={setIsModalOpen}
         mode={modeSubject}
       ></ModalSubject>
+      <ModalFileExcelSubject
+        excelRows={excelRows}
+        isModalOpen={isOpenModalFileExcel}
+        setIsModalOpen={setIsOpenModalFileExcel}
+      ></ModalFileExcelSubject>
     </div>
   );
 };

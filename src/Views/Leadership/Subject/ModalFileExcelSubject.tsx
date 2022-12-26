@@ -1,10 +1,11 @@
-import { Modal, Table } from "antd";
+import { Modal, Row, Table } from "antd";
 import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { createSubjectByFile } from "../../../redux/reducers/subject.reducer";
 import { createUsers } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
-import "./SystemSetting.style.scss";
+import "./Subject.style.scss";
 
 interface IUser {
   userName: string;
@@ -13,14 +14,20 @@ interface IUser {
   gender: number;
 }
 
-export const ModalFileExcel = (props: any) => {
+export const ModalFileExcelSubject = (props: any) => {
   const dispatch: AppDispatch = useDispatch();
   const { excelRows, isModalOpen, setIsModalOpen } = props;
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [dataSource, setDataSource] = useState([]);
+  const [dataSource, setDataSource] = useState<any>([]);
   const [bodyCreate, setBodyCreate] = useState<any>([]);
-
+  const [extraInfo, setExtraInfo] = useState({
+    subGroup: "",
+    subCode: "",
+    subName: "",
+    year: "",
+    semester: 1,
+  });
   const columns = [
     {
       title: "STT",
@@ -37,23 +44,13 @@ export const ModalFileExcel = (props: any) => {
       dataIndex: "userCode",
       key: "userCode",
     },
-    {
-      title: "SDT",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
-      title: "GIOITINH",
-      dataIndex: "gender",
-      key: "gender",
-    },
   ];
 
   const handleOk = () => {
-    dispatch(createUsers(bodyCreate))
+    dispatch(createSubjectByFile(bodyCreate))
       .unwrap()
       .then((rs) => {
-        console.log("tao xong: ", rs);
+        console.log("tao xong mon hoc: ", rs);
         setIsModalOpen(false);
       });
   };
@@ -63,33 +60,50 @@ export const ModalFileExcel = (props: any) => {
   };
   useEffect(() => {
     if (isModalOpen) {
-      let tempRows = cloneDeep(excelRows).filter(
-        (item: any) => item && item.length === 5
-      );
-      tempRows.shift();
-      const dataConverted = tempRows.map((item: any) => {
-        return {
-          key: item[0],
-          stt: item[0],
-          userName: item[1],
-          userCode: item[2].toString(),
-          phone: item[3].toString(),
-          gender: item[4],
-        };
-      });
-      setDataSource(dataConverted);
+      if (excelRows.length) {
+        let tempRows = cloneDeep(excelRows).filter(
+          (item: any) => item && item.length === 3
+        );
+        tempRows.shift();
+        const dataConverted = tempRows.map((item: any) => {
+          return {
+            key: item[0],
+            stt: item[0],
+            userName: item[1],
+            userCode: item[2].toString(),
+          };
+        });
+        setDataSource(dataConverted);
+      }
     }
   }, [isModalOpen]);
 
   useEffect(() => {
     console.log("dataConverted: ", dataSource);
     if (dataSource.length) {
-      const temp: any = cloneDeep(dataSource).map((item: any) => {
-        delete item.key;
-        delete item.stt;
-        item.gender = item.gender === "Nam" ? 0 : 1;
-        return item;
+      const info = cloneDeep(excelRows).slice(0, 4);
+      setExtraInfo({
+        subGroup: info[0][0],
+        subCode: info[1][0],
+        subName: info[1][1],
+        year: info[2][0],
+        semester: info[3][0].at(-1),
       });
+      const tempDataSource = cloneDeep(dataSource);
+      tempDataSource.shift();
+      const students: any = cloneDeep(tempDataSource).map((item: any) => {
+        return item.userCode;
+      });
+      const temp = {
+        subCode: info[1][0],
+        subName: info[1][1],
+        subGroup: info[0][0],
+        teacher: dataSource[0].userCode,
+        year: info[2][0],
+        semester: parseInt(info[3][0].at(-1) || 1),
+        students,
+      };
+      console.log("temp: ", temp);
       setBodyCreate(temp);
     }
   }, [dataSource]);
@@ -104,6 +118,13 @@ export const ModalFileExcel = (props: any) => {
       okText="Import"
       cancelText="Huỷ"
     >
+      <Row>
+        <label>Tổ bộ môn: {extraInfo.subGroup}.</label>
+        <label>Mã môn: {extraInfo.subCode}.</label>
+        <label>Tên môn: {extraInfo.subName}.</label>
+        <label>Niên khoá: {extraInfo.year}.</label>
+        <label>Học kỳ: {extraInfo.semester}.</label>
+      </Row>
       <Table
         dataSource={dataSource}
         columns={columns}

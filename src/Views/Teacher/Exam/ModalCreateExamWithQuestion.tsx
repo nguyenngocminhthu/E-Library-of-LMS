@@ -48,6 +48,7 @@ export const ModalCreateExamWithQuestion = (props: any) => {
         user: user.id,
         status: isFinal ? 0 : 1,
         isFinal,
+        fileType: 0,
       })
     );
     dispatch(setLoading(false));
