@@ -226,7 +226,7 @@ export const ModalUploadFileQuestion = (props: any) => {
           label="Tệp đính kèm"
           rules={[{ required: true, message: "Chọn file" }]}
         >
-          <div className="download-file">
+          <div style={{ display: "flex" }}>
             <Upload {...propsUpload}>
               <Button
                 icon={<UploadOutlined />}
