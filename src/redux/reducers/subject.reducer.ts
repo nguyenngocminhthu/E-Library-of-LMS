@@ -1,16 +1,15 @@
-import { ISubjectGroup } from "./subjectgroup.reducer";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { setMessage } from "./message.reducer";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { message } from "antd";
+import { cloneDeep } from "lodash";
 import Subject from "../../Apis/Subject.api";
 import { RootState } from "../store";
-import { setLoading } from "./loading.reducer";
-import { UserState } from "./user.reducer";
-import { IClass } from "./classes.reducer";
-import { ITopic } from "./topic.reducer";
-import { message } from "antd";
-import { IList } from "./interface";
-import { cloneDeep } from "lodash";
 import { IBanks } from "./banks.reducer";
+import { IList } from "./interface";
+import { setLoading } from "./loading.reducer";
+import { setMessage } from "./message.reducer";
+import { ISubjectGroup } from "./subjectgroup.reducer";
+import { ITopic } from "./topic.reducer";
+import { UserState } from "./user.reducer";
 
 export const createSubject = createAsyncThunk(
   "subject/createSubject",
@@ -165,7 +164,6 @@ export interface ISubject {
   file: number;
   semester: number;
   image: string;
-  classes: IClass[];
   topic: ITopic[];
   bank: IBanks[];
   createdAt: string;

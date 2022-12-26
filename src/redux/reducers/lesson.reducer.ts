@@ -5,16 +5,14 @@ import { setLoading } from "./loading.reducer";
 import { UserState } from "./user.reducer";
 import { ISubject } from "./subject.reducer";
 import Lesson from "../../Apis/Lesson.api";
-import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
 import { IQA } from "./QA.reducer";
 import { message } from "antd";
 import { IList } from "./interface";
-import { IBanks } from "./banks.reducer";
 
 export const createLesson = createAsyncThunk(
   "Lesson/createClass",
-  async (body: IClass, thunkAPI) => {
+  async (body: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Lesson.createLesson(body);
@@ -142,7 +140,6 @@ export const deleteLesson = createAsyncThunk(
 export interface ILesson {
   id: string;
   key?: string;
-  classes: [];
   title: string;
   user?: UserState;
   video: string;
@@ -172,7 +169,6 @@ const initialState: LessonState = {
   },
   current: {
     id: "",
-    classes: [],
     title: "",
     video: "",
     file: [],
