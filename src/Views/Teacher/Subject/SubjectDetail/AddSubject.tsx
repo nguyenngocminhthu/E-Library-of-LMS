@@ -1,5 +1,5 @@
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Upload } from "antd";
+import { CloseOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Select, Upload } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import lodash from "lodash";
 import { useEffect, useState } from "react";
@@ -11,6 +11,8 @@ import { createLesson } from "../../../../redux/reducers/lesson.reducer";
 import { setLoading } from "../../../../redux/reducers/loading.reducer";
 import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
+
+const { Option } = Select;
 
 export const AddSubject = () => {
   const [form] = Form.useForm();
@@ -38,6 +40,9 @@ export const AddSubject = () => {
 
   const onFinish = async (values: any) => {
     dispatch(setLoading(true));
+    values.exams.forEach((vl: any) => {
+      vl.time = parseFloat(vl.time);
+    });
     if (url === "") {
       delete values.url;
       await dispatch(
@@ -47,7 +52,8 @@ export const AddSubject = () => {
         dispatch(setLoading(false));
       });
     } else {
-      delete values.video;
+      values.video = values.url;
+      delete values.url;
     }
 
     await dispatch(uploadFilesToFirebase(values.file.fileList, "File")).then(
@@ -82,7 +88,7 @@ export const AddSubject = () => {
         prevFirstPageTitle="Danh sách môn giảng dạy"
         prevFirstPage="teacher/subject"
       />
-      <div className="box-cover">
+      <div className="box-cover lessons">
         <Form
           onFinish={onFinish}
           labelCol={{ span: 4 }}
@@ -158,6 +164,61 @@ export const AddSubject = () => {
                 </Button>
               </Upload>
             </Form.Item>
+            <Form.List name="exams">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map((field, index) => (
+                    <Form.Item
+                      label={`Đề thi thứ ${index + 1}`}
+                      required={false}
+                      key={field.key}
+                      className="answer-input"
+                      wrapperCol={{ span: 18 }}
+                    >
+                      <Form.Item
+                        {...field}
+                        wrapperCol={{ span: 24 }}
+                        name={[field.name, "exam"]}
+                        rules={[{ required: true }]}
+                      >
+                        <Select
+                          style={{ width: "290px", marginRight: "5px" }}
+                          placeholder="Chọn đề thi"
+                        >
+                          {data?.subjectId.bank?.map((item) => (
+                            <Option key={item.id} value={item.id}>
+                              {item.examName}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                      <Form.Item
+                        {...field}
+                        wrapperCol={{ span: 24 }}
+                        name={[field.name, "time"]}
+                        validateTrigger={["onChange", "onBlur"]}
+                      >
+                        <Input type="number" placeholder="Phút thứ: 9.5 eg" />
+                      </Form.Item>
+                      <CloseOutlined onClick={() => remove(field.name)} />
+                    </Form.Item>
+                  ))}
+                  <Form.Item
+                    wrapperCol={{ span: 24 }}
+                    style={{ textAlign: "right" }}
+                  >
+                    <Button
+                      className="add-btn"
+                      onClick={() => {
+                        add();
+                      }}
+                    >
+                      Thêm bài kiểm tra
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
           </div>
         </Form>
       </div>

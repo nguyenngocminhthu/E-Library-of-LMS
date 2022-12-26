@@ -8,7 +8,7 @@ import {
 import { Avatar, Button, Col, Collapse, Form, Input, Row, Tabs } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -17,10 +17,15 @@ import { SelectComp } from "../../../Components/Select";
 import { getLesson, ILesson } from "../../../redux/reducers/lesson.reducer";
 import { INoti } from "../../../redux/reducers/noti.reducer";
 import { createQA, IQA, updateQA } from "../../../redux/reducers/QA.reducer";
+import {
+  getSubmissions,
+  updateSubmission,
+} from "../../../redux/reducers/submission.reducer";
 import { updateTimeLearningByStudentAndSubject } from "../../../redux/reducers/timeLearning.reducer";
 import { getTopic, ITopic } from "../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch, RootState } from "../../../redux/store";
+import { ModalExam } from "./ModalExam";
 import { ModalReply } from "./ModalReply";
 import "./Subject.style.scss";
 
@@ -37,13 +42,18 @@ export const ViewSubject = () => {
   const [qa, setQa] = useState<IQA[]>([]);
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const [idQA, setIdQA] = useState<string>("");
+  const [idExam, setIdExam] = useState<string>("");
   const [visible, setVisible] = useState<boolean>(false);
+  const [visibleExam, setVisibleExam] = useState<boolean>(false);
   const [idx, setIdx] = useState<number>(0);
-  const [url, setUrl] = useState<string>("");
   const [time, setTime] = useState(Date.now());
   const currentSubject = useSelector(
     (state: RootState) => state.subject.current
   );
+  const [playing, setPlaying] = useState<boolean>(true);
+  const [playedTime, setPlayedTime] = useState<number>(0);
+  const [flag, setFlag] = useState(false);
+  const videoRef = useRef<any>();
 
   useEffect(() => {
     if (params.idSub) {
@@ -52,7 +62,6 @@ export const ViewSubject = () => {
         .then((rs: ITopic) => {
           setData(rs);
           setVideo(rs.lesson[0].video);
-          setUrl(rs.lesson[0].url);
           dispatch(getLesson(rs.lesson[0].id))
             .unwrap()
             .then((rs) => {
@@ -87,7 +96,6 @@ export const ViewSubject = () => {
         .then((rs: ITopic) => {
           setData(rs);
           setVideo(rs.lesson[idx].video);
-          setUrl(rs.lesson[idx].url);
           dispatch(getLesson(rs.lesson[idx].id))
             .unwrap()
             .then((rs) => {
@@ -97,6 +105,36 @@ export const ViewSubject = () => {
           setLesson(rs.lesson[idx]);
         });
     }
+  };
+
+  const handlePause = (props: any) => {
+    console.debug(props.playedSeconds);
+    let exam: any = lesson?.exams.find(
+      (element: any) =>
+        element.time <= parseFloat((props.playedSeconds / 60).toFixed(1))
+    );
+    if (exam) {
+      setIdExam(exam.exam);
+      if (!flag) {
+        dispatch(getSubmissions({ user: user.id, bank: exam.exam }))
+          .unwrap()
+          .then((rs) => {
+            setFlag(true);
+            if (
+              rs.totalResults === 0 ||
+              (rs.totalResults > 0 && rs.results[0].score < 5)
+            ) {
+              setPlaying(false);
+              setVisibleExam(true);
+            }
+          });
+      }
+    }
+  };
+
+  const handleBuffer = () => {
+    console.debug(videoRef.current.getCurrentTime());
+    handlePause({ playedSeconds: videoRef.current.getCurrentTime() });
   };
 
   const subject = [
@@ -162,20 +200,21 @@ export const ViewSubject = () => {
       />
       <Row>
         <Col span={16}>
-          {data?.lesson[idx].url === undefined ? (
-            <video
-              src={video}
-              style={{ width: "100%", height: "50vh" }}
-              controls
-            ></video>
-          ) : (
-            <ReactPlayer
-              width={"inherit"}
-              url={url}
-              volume={1}
-              controls={true}
-            />
-          )}
+          <ReactPlayer
+            width={"inherit"}
+            url={video}
+            volume={1}
+            controls={true}
+            ref={videoRef}
+            onProgress={(props) => handlePause(props)}
+            playing={playing}
+            onPlay={() => {
+              setPlaying(true);
+              setFlag(false);
+              handleBuffer();
+            }}
+            onBuffer={() => handleBuffer()}
+          />
           <Tabs defaultActiveKey="1">
             <TabPane tab="Tổng quan" key="1">
               <Row>
@@ -411,7 +450,6 @@ export const ViewSubject = () => {
                   onClick={() => {
                     setVideo(value.video);
                     setIdx(index);
-                    setUrl(value.url);
                     dispatch(getLesson(value.id))
                       .unwrap()
                       .then((rs) => {
@@ -459,6 +497,12 @@ export const ViewSubject = () => {
         visible={visible}
         setVisible={setVisible}
         data={idQA}
+        handleRefresh={handleRefresh}
+      />
+      <ModalExam
+        visible={visibleExam}
+        setVisible={setVisibleExam}
+        data={idExam}
         handleRefresh={handleRefresh}
       />
     </div>

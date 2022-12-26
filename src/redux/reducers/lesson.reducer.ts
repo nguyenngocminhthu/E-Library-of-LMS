@@ -5,7 +5,6 @@ import { setLoading } from "./loading.reducer";
 import { UserState } from "./user.reducer";
 import { ISubject } from "./subject.reducer";
 import Lesson from "../../Apis/Lesson.api";
-import { IClass } from "./classes.reducer";
 import { ITopic } from "./topic.reducer";
 import { IQA } from "./QA.reducer";
 import { message } from "antd";
@@ -13,7 +12,7 @@ import { IList } from "./interface";
 
 export const createLesson = createAsyncThunk(
   "Lesson/createClass",
-  async (body: IClass, thunkAPI) => {
+  async (body: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Lesson.createLesson(body);
@@ -141,7 +140,6 @@ export const deleteLesson = createAsyncThunk(
 export interface ILesson {
   id: string;
   key?: string;
-  classes: [];
   title: string;
   user?: UserState;
   video: string;
@@ -153,6 +151,7 @@ export interface ILesson {
   status: number;
   QA?: IQA[];
   url: string;
+  exams: [];
 }
 
 interface LessonState {
@@ -169,16 +168,16 @@ const initialState: LessonState = {
     totalResults: 0,
   },
   current: {
-    id: '',
-    classes: [],
-    title: '',
-    video: '',
+    id: "",
+    title: "",
+    video: "",
     file: [],
-    createdAt: '',
-    updatedAt: '',
+    createdAt: "",
+    updatedAt: "",
     status: 0,
-    url: '',
-  }
+    url: "",
+    exams: [],
+  },
 };
 
 export const LessonReducer = createSlice({

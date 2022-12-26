@@ -1,0 +1,28 @@
+.lessons {
+  .add-btn {
+    border: 1px solid rgb(241, 127, 33) !important;
+    color: rgb(241, 127, 33) !important;
+    background-color: white !important;
+    &:focus {
+      border: 1px solid rgb(241, 127, 33) !important;
+      color: rgb(241, 127, 33) !important;
+      background: white !important;
+    }
+    &:hover {
+      background: rgb(241, 127, 33) !important;
+      color: white !important;
+    }
+  }
+
+  .answer-input {
+    .ant-form-item-control-input-content {
+      display: flex;
+      align-items: center;
+    }
+
+    .anticon svg {
+      margin-left: 1rem;
+      color: #823b00 !important;
+    }
+  }
+}

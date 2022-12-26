@@ -1,18 +1,11 @@
-import {
-  DownloadOutlined,
-  EyeOutlined,
-  LinkOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
+import { EyeOutlined, UploadOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
   Col,
   Collapse,
-  Form,
   Radio,
   Row,
-  Select,
   Space,
   Table,
   Tooltip,
@@ -41,11 +34,11 @@ import { UserState } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import { ReactComponent as Edit } from "../../../shared/img/icon/edit.svg";
 import { ReactComponent as Trash } from "../../../shared/img/icon/trash.svg";
+import { ModalUploadFileQuestion } from "./ModalUploadFileQuestion";
 import "./Question.style.scss";
 
 export const Question = () => {
   const { Panel } = Collapse;
-  const { Option } = Select;
   const { Title } = Typography;
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,9 +48,12 @@ export const Question = () => {
   const [subjectGroupSelect, setSubjectGroupSelect] = useState<ISelect[]>([
     { name: "Tất cả tổ bộ môn", value: "" },
   ]);
-  const [form] = Form.useForm();
   const dataSubGroup = useSelector(
     (state: any) => state.subjectgroup.listSubjectGroup.results
+  );
+
+  const dataQuestions = useSelector(
+    (state: any) => state.question.listQuestion
   );
   const [data, setData] = useState<IQuestion[]>([]);
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -67,21 +63,25 @@ export const Question = () => {
 
   const [collapseShow, setCollapseShow] = useState<any>(false);
   const [question, setQuestion] = useState<IQuestion>();
+  const [showModalUpload, setShowModalUpload] = useState(false);
 
   useEffect(() => {
-    dispatch(getQuestions(filter))
-      .unwrap()
-      .then((rs: any) => {
-        let list: IQuestion[] = [];
-        rs.results.forEach((vl: IQuestion, idx: number) => {
-          list.push({ key: idx, ...vl });
-        });
-        setData(list);
-      });
+    dispatch(getQuestions(filter));
+  }, [filter]);
 
+  useEffect(() => {
+    let list: IQuestion[] = [];
+    if (dataQuestions.length) {
+      dataQuestions.forEach((vl: IQuestion, idx: number) => {
+        list.push({ key: idx, ...vl });
+      });
+      setData(list);
+    } else {
+      setData([]);
+    }
     dispatch(getSubjectGroups(999));
     setPage(1);
-  }, [filter]);
+  }, [dataQuestions]);
 
   const handleRefresh = () => {
     dispatch(getQuestions(filter))
@@ -115,66 +115,6 @@ export const Question = () => {
     } else {
       return "D";
     }
-  };
-
-  const modalUploadFile = {
-    title: "Tải lên file",
-    width: "50%",
-    content: (
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-        className="modal-add-role"
-        layout="horizontal"
-        form={form}
-        style={{ textAlign: "left" }}
-      >
-        <Form.Item
-          name="fileName"
-          label="Tệp đính kèm"
-          rules={[{ required: true }]}
-        >
-          <div className="download-file">
-            <div className="file-name">
-              <LinkOutlined />
-              HTKL_KT4SP_10A1.doc
-            </div>
-            <Button>Chọn tệp tải lên</Button>
-          </div>
-          <span className="note-span">Chỉ hỗ trợ tệp excel (.xlsx)</span>
-        </Form.Item>
-        <Form.Item name="fileName" label="Tải file mẫu">
-          <div className="span-download-file">
-            <DownloadOutlined /> [Tải xuống file mẫu]
-          </div>
-        </Form.Item>
-        <Form.Item
-          name="chooseTopic"
-          label="Chọn tổ - bộ môn"
-          rules={[{ required: true }]}
-        >
-          <Select defaultValue="Chọn tổ - bộ môn">
-            <Option value={0}>Văn hóa - xã hội</Option>
-            <Option value={1}>Khoa học - Tự nhiên</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name="ChooseLeason"
-          label="Chọn môn học"
-          rules={[{ required: true }]}
-        >
-          <Select defaultValue="Chọn môn học">
-            <Option value={0}>Thương mai điện tử</Option>
-            <Option value={1}>Sinh học</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item name="createBy" label="Được tạo bởi">
-          <div>Gv. Thanh Tâm</div>
-        </Form.Item>
-      </Form>
-    ),
-    okText: "Tải lên",
-    cancelText: "Huỷ",
   };
 
   const modalRemove = (record: IQuestion) => {
@@ -315,7 +255,7 @@ export const Question = () => {
           <Button
             icon={<UploadOutlined />}
             className="default-btn icon-custom"
-            onClick={() => modal.confirm(modalUploadFile)}
+            onClick={() => setShowModalUpload(true)}
           >
             Tải lên
           </Button>
@@ -428,6 +368,10 @@ export const Question = () => {
           )}
         </Col>
       </Row>
+      <ModalUploadFileQuestion
+        isModalOpen={showModalUpload}
+        setIsModalOpen={setShowModalUpload}
+      ></ModalUploadFileQuestion>
     </div>
   );
 };

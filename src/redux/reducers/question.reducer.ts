@@ -6,6 +6,7 @@ import { IBanks } from "./banks.reducer";
 import { ISubject } from "./subject.reducer";
 import Question from "../../Apis/Question.api";
 import { message } from "antd";
+import { cloneDeep } from "lodash";
 
 export const createQuestion = createAsyncThunk(
   "Question/createQuestion",
@@ -13,6 +14,33 @@ export const createQuestion = createAsyncThunk(
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Question.createQuestion(body);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Tạo câu hỏi thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const createQuestions = createAsyncThunk(
+  "Question/createQuestions",
+  async (body: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Question.createQuestions(body);
       if (data.code) {
         thunkAPI.dispatch(setLoading(false));
         message.error(data.message);
@@ -172,13 +200,25 @@ export const questionReducer = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(createQuestion.fulfilled, (state, action) => {
-      state.listQuestion = action.payload;
+      if (action.payload.code) return state;
+      const newState = cloneDeep(state);
+      newState.listQuestion.unshift(action.payload);
+      return newState;
     });
     builder.addCase(createQuestion.rejected, (state, action) => {
       state.listQuestion = [];
     });
+    builder.addCase(createQuestions.fulfilled, (state, action) => {
+      if (action.payload.code) return state;
+      const newState = cloneDeep(state);
+      newState.listQuestion.unshift(...action.payload);
+      return newState;
+    });
+    builder.addCase(createQuestions.rejected, (state, action) => {
+      state.listQuestion = [];
+    });
     builder.addCase(getQuestions.fulfilled, (state, action) => {
-      state.listQuestion = action.payload;
+      state.listQuestion = action.payload.results;
     });
     builder.addCase(getQuestions.rejected, (state, action) => {
       state.listQuestion = [];

@@ -9,6 +9,12 @@ const createQuestion = (body: any) => {
   });
 };
 
+const createQuestions = (payload: any) => {
+  return axiosClient.post(`${url}/create-by-file`, payload).then((rs: any) => {
+    return rs;
+  });
+};
+
 const getQuestions = (params: any) => {
   const query = queryString.stringify(params);
   return axiosClient.get(url + `?${query}`).then((rs: any) => {
@@ -36,6 +42,7 @@ const deleteQuestion = (id: string) => {
 
 const Banks = {
   getQuestions,
+  createQuestions,
   getQuestion,
   createQuestion,
   updateQuestion,
