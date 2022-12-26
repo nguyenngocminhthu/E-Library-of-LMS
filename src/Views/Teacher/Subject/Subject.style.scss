@@ -170,6 +170,9 @@
 
     .add-subject-container {
       padding: 28px 56px;
+      .ant-row {
+        width: 100%;
+      }
     }
 
     .note-span {

@@ -1,10 +1,10 @@
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Modal, Upload } from "antd";
+import { CloseOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Modal, Select, Upload } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uploadFilesToFirebase } from "../../../Apis/Firebase";
 import { ISelect, SelectComp } from "../../../Components/Select";
-import { IClass } from "../../../redux/reducers/classes.reducer";
+import { IBanks } from "../../../redux/reducers/banks.reducer";
 import { createLesson } from "../../../redux/reducers/lesson.reducer";
 import { setLoading } from "../../../redux/reducers/loading.reducer";
 import {
@@ -14,6 +14,9 @@ import {
 } from "../../../redux/reducers/subject.reducer";
 import { ITopic } from "../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../redux/store";
+import "./Resource.style.scss";
+
+const { Option } = Select;
 
 export const ModalUpload: React.FC<{
   visible: boolean;
@@ -26,7 +29,7 @@ export const ModalUpload: React.FC<{
   const dispatch: AppDispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [subjectSelect, setSubjectSelect] = useState<ISelect[]>([]);
-  const [classSelect, setClassSelect] = useState<ISelect[]>();
+  const [bankSelect, setBankSelect] = useState<ISelect[]>();
   const [topicSelect, setTopicSelect] = useState<ISelect[]>();
   const [url, setUrl] = useState<string>("");
 
@@ -49,7 +52,9 @@ export const ModalUpload: React.FC<{
 
   const onFinish = async (values: any) => {
     dispatch(setLoading(true));
-
+    values.exams.forEach((vl: any) => {
+      vl.time = parseFloat(vl.time);
+    });
     if (url === "") {
       delete values.url;
       await dispatch(
@@ -59,13 +64,15 @@ export const ModalUpload: React.FC<{
         dispatch(setLoading(false));
       });
     } else {
-      delete values.video;
+      values.video = values.url;
+      delete values.url;
       dispatch(setLoading(false));
     }
     dispatch(createLesson({ ...values, user: user.id }))
       .unwrap()
       .then((rs) => {
         props.handleRefresh();
+        props.setVisible(false);
       });
   };
 
@@ -75,10 +82,10 @@ export const ModalUpload: React.FC<{
       .then((rs: ISubject) => {
         let option: any[] = [];
 
-        rs.classes.forEach((vl: IClass) => {
-          option.push({ name: vl.classCode, value: vl.id });
+        rs.bank.forEach((vl: IBanks) => {
+          option.push({ name: vl.examName, value: vl.id });
         });
-        setClassSelect(option);
+        setBankSelect(option);
 
         let topic: any[] = [];
         rs.topic.forEach((vl: ITopic) => {
@@ -91,14 +98,14 @@ export const ModalUpload: React.FC<{
   return (
     <Modal
       title="Thêm bài giảng"
-      className="modal-add-role"
+      className="modal-add-role lessons"
       width="40%"
-      visible={props.visible}
+      open={props.visible}
       onCancel={() => {
         props.setVisible(false);
         form.resetFields();
         setLinkVideo("");
-        setClassSelect(undefined);
+        setBankSelect(undefined);
         setTopicSelect(undefined);
       }}
       okText="Lưu"
@@ -172,6 +179,62 @@ export const ModalUpload: React.FC<{
             disabled={linkVideo !== ""}
           />
         </Form.Item>
+        <Form.List name="exams">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map((field, index) => (
+                <Form.Item
+                  label={`Đề thi thứ ${index + 1}`}
+                  required={false}
+                  key={field.key}
+                  className="answer-input"
+                  wrapperCol={{ span: 18 }}
+                >
+                  <Form.Item
+                    {...field}
+                    wrapperCol={{ span: 24 }}
+                    name={[field.name, "exam"]}
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      disabled={bankSelect === undefined}
+                      style={{ width: "290px", marginRight: "5px" }}
+                      placeholder="Chọn đề thi"
+                    >
+                      {bankSelect?.map((item) => (
+                        <Option key={item.value} value={item.value}>
+                          {item.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    {...field}
+                    wrapperCol={{ span: 24 }}
+                    name={[field.name, "time"]}
+                    validateTrigger={["onChange", "onBlur"]}
+                  >
+                    <Input type="number" placeholder="Phút thứ: 9.5 eg" />
+                  </Form.Item>
+                  <CloseOutlined onClick={() => remove(field.name)} />
+                </Form.Item>
+              ))}
+              <Form.Item
+                wrapperCol={{ span: 24 }}
+                style={{ textAlign: "right" }}
+              >
+                <Button
+                  className="add-btn"
+                  onClick={() => {
+                    add();
+                  }}
+                >
+                  Thêm bài kiểm tra
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
       </Form>
     </Modal>
   );
