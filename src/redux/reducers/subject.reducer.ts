@@ -40,7 +40,7 @@ export const createSubject = createAsyncThunk(
 
 export const createSubjectByFile = createAsyncThunk(
   "subject/createSubjectByFile",
-  async (body: ISubject, thunkAPI) => {
+  async (body: ISubject[], thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await Subject.createSubjectByFile(body);
@@ -208,7 +208,7 @@ export const subjectReducer = createSlice({
     builder.addCase(createSubjectByFile.fulfilled, (state, action) => {
       if (action.payload.code) return state;
       const newState = cloneDeep(state);
-      newState.listSubject.results.unshift(action.payload);
+      newState.listSubject.results.unshift(...action.payload);
       return newState;
     });
     builder.addCase(createSubjectByFile.rejected, (state) => {
