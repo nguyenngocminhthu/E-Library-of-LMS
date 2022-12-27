@@ -19,6 +19,8 @@ import { AppDispatch } from "../../../redux/store";
 import { IAns } from "./ExamDetails";
 
 export const ModalExam: React.FC<{
+  examList: Array<{ exam: string; time: number; pass: boolean }>;
+  setExamList: any;
   visible: boolean;
   setVisible: any;
   data: any;
@@ -110,10 +112,17 @@ export const ModalExam: React.FC<{
       });
       let score = (10 / submission.length) * count;
       score = takeDecimalNumber(score);
+      let examList = cloneDeep(props.examList).map((ex: any) => {
+        if (ex.exam === props.data && score >= 5) {
+          ex.pass = true;
+        }
+        return ex;
+      });
+      props.setExamList(examList);
       dispatch(getSubmissions({ user: user.id, bank: props.data }))
         .unwrap()
         .then((rs) => {
-          if (rs.totalResults > 0 && rs.results[0].score < 5) {
+          if (rs.totalResults > 0) {
             dispatch(
               updateSubmission({
                 id: rs.results[0].id,
@@ -124,7 +133,11 @@ export const ModalExam: React.FC<{
                   bank: props.data,
                 },
               })
-            );
+            )
+              .unwrap()
+              .then(() => {
+                props.setVisible(false);
+              });
           } else {
             dispatch(
               createSubmission({
@@ -151,7 +164,7 @@ export const ModalExam: React.FC<{
   return (
     <Modal
       title=""
-      className="modal-add-role "
+      className="modal-add-role sub-exam-bank"
       width="40%"
       open={props.visible}
       onCancel={() => {
