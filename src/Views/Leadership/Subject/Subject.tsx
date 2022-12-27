@@ -20,6 +20,7 @@ import {
 } from "antd";
 import { UploadProps } from "antd/es/upload/interface";
 import modal from "antd/lib/modal";
+import { cloneDeep } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -106,7 +107,7 @@ export const Subject = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const [formGroup] = Form.useForm();
   const [filter, setFilter] = useState<any>({ limit: 999 });
-  const [excelRows, setExcelRows] = useState<any>([]);
+  const [excelData, setExcelData] = useState<any>([]);
 
   useEffect(() => {
     const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
@@ -350,11 +351,13 @@ export const Subject = () => {
             <p>TEN là tên người dùng</p>
             <p>MS là mã số người dùng</p>
             <p>Mã giáo viên có 2 chữ GV ở đầu mã</p>
-            <p>Dòng 1 là tên môn học</p>
-            <p>Dòng 2 là niên khoá</p>
-            <p>Dòng 3 là học kỳ</p>
-            <p>Dòng 5 là thông tin giảng viên</p>
+            <p>Dòng 1 là tên tổ bộ môn</p>
+            <p>Dòng 2 cột A là mã môn học, cột B và C là tên môn học</p>
+            <p>Dòng 3 là niên khoá</p>
+            <p>Dòng 4 là học kỳ</p>
+            <p>Dòng 6 là thông tin giảng viên</p>
             <p>Các dòng còn lại là thông tin sinh viên</p>
+            <p>Có thể dùng nhiều sheet. Mỗi sheet là 1 môn khác nhau</p>
           </div>
           <img className="img-in-modal" src={guideUploadSubject} alt="logo" />
         </div>
@@ -366,12 +369,16 @@ export const Subject = () => {
 
   const processExcelFile = (data: any) => {
     const workbook = XLSX.read(data, { type: "binary" });
-    const wsname = workbook.SheetNames[0];
-    const ws = workbook.Sheets[wsname];
-    const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
-    console.log(dataParse);
+    const wsNameList = workbook.SheetNames;
+    let dataParse = cloneDeep(wsNameList).map((wsName: string) => {
+      const ws = workbook.Sheets[wsName];
+      return XLSX.utils.sheet_to_json(ws, { header: 1 });
+    });
+    dataParse = dataParse.filter((sheet: Array<any>) => {
+      return sheet.length;
+    });
     if (dataParse.length) {
-      setExcelRows(dataParse);
+      setExcelData(dataParse);
     } else {
       message.error("File rỗng");
     }
@@ -406,28 +413,31 @@ export const Subject = () => {
   };
 
   useEffect(() => {
-    if (excelRows.length) {
-      if (
-        excelRows[0] &&
-        excelRows[0].length === 1 &&
-        excelRows[1] &&
-        excelRows[1].length === 2 &&
-        excelRows[2] &&
-        excelRows[2].length === 1 &&
-        excelRows[3] &&
-        excelRows[3].length === 1 &&
-        excelRows[4] &&
-        excelRows[4].length === 3 &&
-        excelRows[4].includes("STT") &&
-        excelRows[4].includes("TEN") &&
-        excelRows[4].includes("MS")
-      ) {
+    if (excelData.length) {
+      const isRigthFormat = excelData.every((sheet: Array<any>) => {
+        return (
+          sheet[0] &&
+          sheet[0].length === 1 &&
+          sheet[1] &&
+          sheet[1].length === 2 &&
+          sheet[2] &&
+          sheet[2].length === 1 &&
+          sheet[3] &&
+          sheet[3].length === 1 &&
+          sheet[4] &&
+          sheet[4].length === 3 &&
+          sheet[4].includes("STT") &&
+          sheet[4].includes("TEN") &&
+          sheet[4].includes("MS")
+        );
+      });
+      if (isRigthFormat) {
         setIsOpenModalFileExcel(true);
       } else {
         message.error("File excel sai định dạng!");
       }
     }
-  }, [excelRows]);
+  }, [excelData]);
 
   return (
     <div className="subject">
@@ -529,7 +539,7 @@ export const Subject = () => {
         mode={modeSubject}
       ></ModalSubject>
       <ModalFileExcelSubject
-        excelRows={excelRows}
+        excelData={excelData}
         isModalOpen={isOpenModalFileExcel}
         setIsModalOpen={setIsOpenModalFileExcel}
       ></ModalFileExcelSubject>

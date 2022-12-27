@@ -1,9 +1,8 @@
-import { Modal, Row, Table } from "antd";
+import { Modal, Table } from "antd";
 import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createSubjectByFile } from "../../../redux/reducers/subject.reducer";
-import { createUsers } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
 import "./Subject.style.scss";
 
@@ -16,18 +15,21 @@ interface IUser {
 
 export const ModalFileExcelSubject = (props: any) => {
   const dispatch: AppDispatch = useDispatch();
-  const { excelRows, isModalOpen, setIsModalOpen } = props;
+  const { excelData, isModalOpen, setIsModalOpen } = props;
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [dataSource, setDataSource] = useState<any>([]);
   const [bodyCreate, setBodyCreate] = useState<any>([]);
-  const [extraInfo, setExtraInfo] = useState({
-    subGroup: "",
-    subCode: "",
-    subName: "",
-    year: "",
-    semester: 1,
-  });
+  const [extraInfo, setExtraInfo] = useState([
+    {
+      subGroup: "",
+      subCode: "",
+      subName: "",
+      year: "",
+      semester: 1,
+    },
+  ]);
+
   const columns = [
     {
       title: "STT",
@@ -57,53 +59,78 @@ export const ModalFileExcelSubject = (props: any) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
   useEffect(() => {
     if (isModalOpen) {
-      if (excelRows.length) {
-        let tempRows = cloneDeep(excelRows).filter(
-          (item: any) => item && item.length === 3
+      setPage(1);
+      if (excelData.length) {
+        const extra: any[] = [];
+        const bodyReq: any[] = [];
+        const dataFromExcel = cloneDeep(excelData).map(
+          (sheet: Array<any>, index: number) => {
+            const info = cloneDeep(sheet).slice(0, 4);
+            extra.push({
+              subGroup: info[0][0],
+              subCode: info[1][0],
+              subName: info[1][1],
+              year: info[2][0],
+              semester: info[3][0].at(-1),
+            });
+
+            let tempRows = cloneDeep(sheet).filter(
+              (row: any) => row && row.length === 3
+            );
+            tempRows.shift();
+            const dataConverted = tempRows.map((row: any) => {
+              return {
+                key: row[0],
+                stt: row[0],
+                userName: row[1],
+                userCode: row[2].toString(),
+              };
+            });
+
+            const tempConverted = cloneDeep(dataConverted);
+            tempConverted.shift();
+            const students: any = cloneDeep(tempConverted).map((item: any) => {
+              return item.userCode;
+            });
+            const temp = {
+              subCode: info[1][0],
+              subName: info[1][1],
+              subGroup: info[0][0],
+              teacher: dataConverted[0].userCode,
+              year: info[2][0],
+              semester: parseInt(info[3][0].at(-1) || 1),
+              students,
+              description: info[1][1],
+            };
+            bodyReq.push(temp);
+
+            return dataConverted;
+          }
         );
-        tempRows.shift();
-        const dataConverted = tempRows.map((item: any) => {
-          return {
-            key: item[0],
-            stt: item[0],
-            userName: item[1],
-            userCode: item[2].toString(),
-          };
+
+        const convertToDataSource: any[] = [];
+        cloneDeep(dataFromExcel).map((item: any) => {
+          return item.map((ele: any) => {
+            convertToDataSource.push(ele);
+            return ele;
+          });
         });
-        setDataSource(dataConverted);
+
+        setBodyCreate(bodyReq);
+        setExtraInfo(extra);
+        setPageSize(dataFromExcel[0].length);
+        setDataSource(convertToDataSource);
       }
     }
   }, [isModalOpen]);
 
   useEffect(() => {
-    if (dataSource.length) {
-      const info = cloneDeep(excelRows).slice(0, 4);
-      setExtraInfo({
-        subGroup: info[0][0],
-        subCode: info[1][0],
-        subName: info[1][1],
-        year: info[2][0],
-        semester: info[3][0].at(-1),
-      });
-      const tempDataSource = cloneDeep(dataSource);
-      tempDataSource.shift();
-      const students: any = cloneDeep(tempDataSource).map((item: any) => {
-        return item.userCode;
-      });
-      const temp = {
-        subCode: info[1][0],
-        subName: info[1][1],
-        subGroup: info[0][0],
-        teacher: dataSource[0].userCode,
-        year: info[2][0],
-        semester: parseInt(info[3][0].at(-1) || 1),
-        students,
-      };
-      setBodyCreate(temp);
-    }
-  }, [dataSource]);
+    console.debug("bodyCreate", bodyCreate);
+  }, [bodyCreate]);
+
   return (
     <Modal
       title="Nội dung file"
@@ -115,34 +142,37 @@ export const ModalFileExcelSubject = (props: any) => {
       okText="Xác nhận"
       cancelText="Huỷ"
     >
-      <div
-        className="d-flex"
-        style={{ width: "30vw", justifyContent: "space-between" }}
-      >
-        <div className="d-flex">
-          <div className="label">
-            <div>Tổ bộ môn: </div>
-            <div>Mã môn: </div>
-            <div>Tên môn: </div>
-          </div>
-          <div>
-            <div>{extraInfo.subGroup}</div>
-            <div>{extraInfo.subCode}</div>
-            <div>{extraInfo.subName}</div>
-          </div>
-        </div>
-        <div className="d-flex">
-          <div className="label">
-            <div>Niên khoá: </div>
-            <div>Học kỳ: </div>
-          </div>
-          <div>
-            <div> {extraInfo.year}</div>
-            <div> {extraInfo.semester}</div>
-          </div>
-        </div>
-      </div>
       <Table
+        title={() => (
+          <div
+            className="d-flex"
+            style={{ width: "34vw", justifyContent: "space-between" }}
+          >
+            <div style={{ maxWidth: "70%" }}>
+              <div className="label">
+                <div>
+                  Tổ bộ môn: <label>{extraInfo[page - 1]?.subGroup}</label>
+                </div>
+                <div>
+                  Mã môn: <label>{extraInfo[page - 1]?.subCode}</label>
+                </div>
+                <div style={{ wordBreak: "break-word" }}>
+                  Tên môn: <label>{extraInfo[page - 1]?.subName}</label>
+                </div>
+              </div>
+            </div>
+            <div className="d-flex">
+              <div className="label">
+                <div>Niên khoá: </div>
+                <div>Học kỳ: </div>
+              </div>
+              <div>
+                <div> {extraInfo[page - 1]?.year}</div>
+                <div> {extraInfo[page - 1]?.semester}</div>
+              </div>
+            </div>
+          </div>
+        )}
         dataSource={dataSource}
         columns={columns}
         pagination={{
@@ -156,7 +186,7 @@ export const ModalFileExcelSubject = (props: any) => {
             setPage(page);
           },
           pageSize,
-          pageSizeOptions: ["10", "15", "20", "25"],
+          pageSizeOptions: [],
           showSizeChanger: true,
           onShowSizeChange(current, size) {
             setPageSize(size);
@@ -164,7 +194,7 @@ export const ModalFileExcelSubject = (props: any) => {
           },
         }}
         scroll={{
-          y: 600,
+          y: 400,
         }}
       />
     </Modal>
