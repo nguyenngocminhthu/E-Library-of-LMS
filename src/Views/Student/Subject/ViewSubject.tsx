@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Avatar, Button, Col, Collapse, Form, Input, Row, Tabs } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import { cloneDeep, isEmpty } from "lodash";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
@@ -50,10 +51,46 @@ export const ViewSubject = () => {
   const currentSubject = useSelector(
     (state: RootState) => state.subject.current
   );
-  const [playing, setPlaying] = useState<boolean>(true);
+  const [playing, setPlaying] = useState<boolean>(false);
   const [playedTime, setPlayedTime] = useState<number>(0);
-  const [flag, setFlag] = useState(false);
   const videoRef = useRef<any>();
+  const [currentExam, setCurrentExam] = useState<any>({});
+  const [currentSecond, setCurrentSecond] = useState<number>(0);
+  const [examList, setExamList] = useState<
+    Array<{ exam: string; time: number; pass: boolean }>
+  >([]);
+
+  useEffect(() => {
+    if (lesson?.exams.length) {
+      const getSubmit = async () => {
+        let examSorted: Array<any> = cloneDeep(lesson.exams).sort(
+          (a: any, b: any) => a.time - b.time
+        );
+
+        let exams = cloneDeep(examSorted).map((exam: any) => {
+          exam.pass = false;
+          return exam;
+        });
+
+        await Promise.all(
+          cloneDeep(examSorted).map(async (exam: any, index: number) => {
+            await dispatch(getSubmissions({ user: user.id, bank: exam.exam }))
+              .unwrap()
+              .then((rs) => {
+                if (rs.totalResults > 0 && rs.results[0].score >= 5) {
+                  exams[index].pass = true;
+                }
+              });
+            return exam;
+          })
+        );
+
+        setExamList(exams);
+      };
+
+      getSubmit();
+    }
+  }, [lesson]);
 
   useEffect(() => {
     if (params.idSub) {
@@ -68,7 +105,6 @@ export const ViewSubject = () => {
               setLesson(rs);
               setQa(rs.QA);
             });
-          setLesson(rs.lesson[0]);
         });
     }
   }, [params.idSub]);
@@ -89,6 +125,29 @@ export const ViewSubject = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isEmpty(currentExam)) {
+      setIdExam(currentExam.exam);
+      dispatch(getSubmissions({ user: user.id, bank: currentExam.exam }))
+        .unwrap()
+        .then((rs) => {
+          if (
+            rs.totalResults === 0 ||
+            (rs.totalResults > 0 && rs.results[0].score < 5)
+          ) {
+            setPlaying(false);
+            setVisibleExam(true);
+          }
+        });
+    }
+  }, [currentExam]);
+
+  useEffect(() => {
+    if (!visibleExam && !isEmpty(currentExam)) {
+      checkTimeExam(currentSecond);
+    }
+  }, [visibleExam]);
+
   const handleRefresh = () => {
     if (params.idSub) {
       dispatch(getTopic(params?.idSub))
@@ -102,34 +161,27 @@ export const ViewSubject = () => {
               setLesson(rs);
               setQa(rs.QA);
             });
-          setLesson(rs.lesson[idx]);
         });
+    }
+  };
+
+  const checkTimeExam = (playedSeconds: number) => {
+    let exam: any = examList.find(
+      (element: any) =>
+        element.time <= parseFloat((playedSeconds / 60).toFixed(1)) &&
+        !element.pass
+    );
+    if (exam) {
+      setCurrentExam(exam);
+    } else {
+      setCurrentExam({});
     }
   };
 
   const handlePause = (props: any) => {
     console.debug(props.playedSeconds);
-    let exam: any = lesson?.exams.find(
-      (element: any) =>
-        element.time <= parseFloat((props.playedSeconds / 60).toFixed(1))
-    );
-    if (exam) {
-      setIdExam(exam.exam);
-      if (!flag) {
-        dispatch(getSubmissions({ user: user.id, bank: exam.exam }))
-          .unwrap()
-          .then((rs) => {
-            setFlag(true);
-            if (
-              rs.totalResults === 0 ||
-              (rs.totalResults > 0 && rs.results[0].score < 5)
-            ) {
-              setPlaying(false);
-              setVisibleExam(true);
-            }
-          });
-      }
-    }
+    setCurrentSecond(props.playedSeconds);
+    checkTimeExam(props.playedSeconds);
   };
 
   const handleBuffer = () => {
@@ -210,7 +262,6 @@ export const ViewSubject = () => {
             playing={playing}
             onPlay={() => {
               setPlaying(true);
-              setFlag(false);
               handleBuffer();
             }}
             onBuffer={() => handleBuffer()}
@@ -500,6 +551,8 @@ export const ViewSubject = () => {
         handleRefresh={handleRefresh}
       />
       <ModalExam
+        examList={examList}
+        setExamList={setExamList}
         visible={visibleExam}
         setVisible={setVisibleExam}
         data={idExam}
