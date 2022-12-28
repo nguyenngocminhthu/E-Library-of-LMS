@@ -19,7 +19,7 @@ import { Subject } from "../Views/Student/Subject/Subject";
 import { SubjectDetail } from "../Views/Student/Subject/SubjectDetail";
 import { ViewSubject } from "../Views/Student/Subject/ViewSubject";
 
-export const Student = () => {
+export const Student = (props: any) => {
   return (
     <Routes>
       <Route element={<StudentLayout />}>

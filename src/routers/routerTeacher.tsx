@@ -21,7 +21,7 @@ import { SubjectDetail } from "../Views/Teacher/Subject/SubjectDetail/SubjectDet
 import { ViewSubject } from "../Views/Teacher/Subject/SubjectDetail/ViewSubject";
 import { ListFile } from "../Views/Teacher/Subject/SubjectList/ListFile";
 
-export const Teacher: React.FC = () => {
+export const Teacher = (props: any) => {
   return (
     <Routes>
       <Route element={<TeacherLayout />}>

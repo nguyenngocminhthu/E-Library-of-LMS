@@ -54,31 +54,31 @@ export const Home = () => {
 
   useEffect(() => {
     getDataView();
-    Pusher.logToConsole = true;
-    let channel: any;
-    if (process.env.REACT_APP_KEY_PUSHER) {
-      const pusher = new Pusher(process.env.REACT_APP_KEY_PUSHER, {
-        cluster: process.env.REACT_APP_CLUSTER_PUSHER,
-      });
-      channel = pusher.subscribe("my-channel");
-      channel.bind("my-event", function (data: any) {
-        console.log(JSON.stringify(data));
-      });
-      channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
-        console.log("teacher channel connected: ", data);
-      });
-      channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
-        console.log("teacher channel disconnected: ", data);
-      });
-      if (user.id) {
-        dispatch(join(user.id));
-      }
+    // Pusher.logToConsole = true;
+    // let channel: any;
+    // if (process.env.REACT_APP_KEY_PUSHER) {
+    //   const pusher = new Pusher(process.env.REACT_APP_KEY_PUSHER, {
+    //     cluster: process.env.REACT_APP_CLUSTER_PUSHER,
+    //   });
+    //   channel = pusher.subscribe("my-channel");
+    //   channel.bind("my-event", function (data: any) {
+    //     console.log(JSON.stringify(data));
+    //   });
+    //   channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
+    //     console.log("teacher channel connected: ", data);
+    //   });
+    //   channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
+    //     console.log("teacher channel disconnected: ", data);
+    //   });
+    if (user.id) {
+      dispatch(join(user.id));
     }
-    return () => {
-      if (channel) {
-        channel.unsubscribe();
-      }
-    };
+    // }
+    // return () => {
+    //   if (channel) {
+    //     channel.unsubscribe();
+    //   }
+    // };
   }, []);
 
   const getDataView = () => {

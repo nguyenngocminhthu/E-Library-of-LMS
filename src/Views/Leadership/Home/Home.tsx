@@ -15,7 +15,7 @@ import {
   totalSubject,
 } from "../../../redux/reducers/subject.reducer";
 import { getUsers, UserState } from "../../../redux/reducers/user.reducer";
-import { AppDispatch } from "../../../redux/store";
+import { AppDispatch, RootState } from "../../../redux/store";
 import ppt from "../../../shared/img/ppt.png";
 import "./Home.style.scss"; // Alt Shift O
 
@@ -27,7 +27,7 @@ interface IFile {
   avt: string;
 }
 
-export const Home = () => {
+export const Home = (props: any) => {
   const { Title } = Typography;
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const dispatch: AppDispatch = useDispatch();
@@ -37,46 +37,45 @@ export const Home = () => {
     (state: any) => state.user.listUser.totalResults
   );
   const exams = useSelector(totalBank);
-  const [statistical, setStatistical] = useState<any>({});
-  const [listUser, setListUser] = useState(0);
-  const handleEventSocket = (listUser: number, statistical: any) => {
-    setListUser(listUser);
-    setStatistical(statistical);
-  };
+  // const [listUser, setListUser] = useState(0);
+  // const handleEventSocket = (listUser: number, statistical: any) => {
+  //   setListUser(listUser);
+  //   setStatistical(statistical);
+  // };
   useEffect(() => {
     dispatch(getUsers({ limit: 999, role: "teacher" }));
   }, [subjects, exams]);
 
   useEffect(() => {
-    Pusher.logToConsole = true;
-    let channel: any;
-    let pusher: any;
-    if (process.env.REACT_APP_KEY_PUSHER) {
-      const pusher = new Pusher(process.env.REACT_APP_KEY_PUSHER, {
-        cluster: process.env.REACT_APP_CLUSTER_PUSHER,
-      });
-      const channel = pusher.subscribe("my-channel");
-      channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
-        handleEventSocket(data.listUser, data.statistical);
-        console.log("leadership channel connected: ", data);
-      });
+    // Pusher.logToConsole = true;
+    // let channel: any;
+    // let pusher: any;
+    // if (process.env.REACT_APP_KEY_PUSHER) {
+    //   const pusher = new Pusher(process.env.REACT_APP_KEY_PUSHER, {
+    //     cluster: process.env.REACT_APP_CLUSTER_PUSHER,
+    //   });
+    //   const channel = pusher.subscribe("my-channel");
+    //   channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
+    //     handleEventSocket(data.listUser, data.statistical);
+    //     console.log("leadership channel connected: ", data);
+    //   });
 
-      channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
-        handleEventSocket(data.listUser, data.statistical);
-        console.log("leadership channel disconnected: ", data);
-      });
-      if (user.id) {
-        dispatch(join(user.id));
-      }
+    //   channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
+    //     handleEventSocket(data.listUser, data.statistical);
+    //     console.log("leadership channel disconnected: ", data);
+    //   });
+    if (user.id) {
+      dispatch(join(user.id));
     }
+    // }
     return () => {
-      if (pusher) {
-        if (channel) {
-          channel.unbind("RECEIVED_JOIN_REQUEST");
-          channel.unbind("RECEIVED_OUT_REQUEST");
-        }
-        pusher.unsubscribe("my-channel");
-      }
+      // if (pusher) {
+      //   if (channel) {
+      //     channel.unbind("RECEIVED_JOIN_REQUEST");
+      //     channel.unbind("RECEIVED_OUT_REQUEST");
+      //   }
+      //   pusher.unsubscribe("my-channel");
+      // }
     };
   }, []);
 
@@ -197,11 +196,11 @@ export const Home = () => {
                   <p>Tổng lượt truy cập:</p>
                 </Col>
                 <Col span={6} offset={2}>
-                  <h4>{listUser}</h4>
-                  <h4>{statistical?.today?.total || 0}</h4>
-                  <h4>{statistical?.week || 0}</h4>
-                  <h4>{statistical?.month || 0}</h4>
-                  <h4>{statistical?.total || 0}</h4>
+                  <h4>{props.statistical?.listUser}</h4>
+                  <h4>{props.statistical?.statistical?.today?.total || 0}</h4>
+                  <h4>{props.statistical?.statistical?.week || 0}</h4>
+                  <h4>{props.statistical?.statistical?.month || 0}</h4>
+                  <h4>{props.statistical?.statistical?.total || 0}</h4>
                 </Col>
               </Row>
             </Card>
