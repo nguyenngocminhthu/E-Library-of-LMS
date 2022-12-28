@@ -16,10 +16,12 @@ import {
   Modal,
   Row,
   Select,
+  Table,
   Tabs,
   Tooltip,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import { cloneDeep } from "lodash";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -45,6 +47,7 @@ import {
   getSubjects,
   ISubject,
 } from "../../../../redux/reducers/subject.reducer";
+import { getSubmissions } from "../../../../redux/reducers/submission.reducer";
 import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../../redux/store";
@@ -71,25 +74,10 @@ export const SubjectDetail = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [lesson, setLesson] = useState<ILesson[]>([]);
   const [QAvisible, setQAVisible] = useState<boolean>(false);
+  const [studentList, setStudentList] = useState<any[]>([]);
 
   useEffect(() => {
-    if (params.id) {
-      dispatch(getSubject(params.id))
-        .unwrap()
-        .then((rs: ISubject) => {
-          setData(rs);
-        });
-      dispatch(getNotis({ limit: 9999, subject: params.id }))
-        .unwrap()
-        .then((rs) => {
-          setNotify(rs.results);
-        });
-      dispatch(getQAs({ limit: 9999, subject: params.id }))
-        .unwrap()
-        .then((rs) => {
-          setQa(rs.results);
-        });
-    }
+    handleRefresh();
   }, [params.id]);
 
   const handleRefresh = () => {
@@ -98,6 +86,49 @@ export const SubjectDetail = () => {
         .unwrap()
         .then((rs: ISubject) => {
           setData(rs);
+
+          dispatch(getSubmissions({ limit: 9999 }))
+            .unwrap()
+            .then((res: any) => {
+              console.debug("subm: ", res.results);
+              const listSubmission = res.results.filter(
+                (submit: any) =>
+                  submit.bank.user === user.id &&
+                  submit.bank.subject === params.id
+              );
+              const studentData = cloneDeep(rs.students).map((stu: any) => {
+                const stuSubmit = listSubmission.filter((item: any) => {
+                  return (
+                    item.user.userCode === stu.userCode && !item.bank.isFinal
+                  );
+                });
+                const midScore =
+                  stuSubmit.reduce((score: number, ele: any) => {
+                    return ele.score + score;
+                  }, 0) / stuSubmit.length;
+
+                const finalSubmit = listSubmission.find((item: any) => {
+                  return (
+                    item.user.userCode === stu.userCode && item.bank.isFinal
+                  );
+                });
+
+                const mid = midScore ? midScore.toFixed(2) : "";
+                const final = finalSubmit ? finalSubmit.score : "";
+                const avg =
+                  final && mid ? (parseFloat(final) + parseFloat(mid)) / 2 : "";
+
+                return {
+                  userCode: stu.userCode,
+                  userName: stu.userName,
+                  mid,
+                  final,
+                  avg,
+                };
+              });
+              setStudentList(studentData);
+              console.debug("listSubmission: ", listSubmission);
+            });
         });
       dispatch(getNotis({ limit: 9999, subject: params.id }))
         .unwrap()
@@ -185,6 +216,43 @@ export const SubjectDetail = () => {
         setQAVisible(false);
       });
   };
+
+  const columns = [
+    {
+      title: "MSSV",
+      dataIndex: "userCode",
+      key: "userCode",
+    },
+    {
+      title: "Tên",
+      dataIndex: "userName",
+      key: "userName",
+      sorter: (a: any, b: any) => {
+        if (a.userName < b.userName) {
+          return -1;
+        }
+        if (a.userName > b.userName) {
+          return 1;
+        }
+        return 0;
+      },
+    },
+    {
+      title: "Giữa kỳ",
+      dataIndex: "mid",
+      key: "mid",
+    },
+    {
+      title: "Cuối kỳ",
+      dataIndex: "final",
+      key: "final",
+    },
+    {
+      title: "TBC",
+      dataIndex: "avg",
+      key: "avg",
+    },
+  ];
 
   return (
     <div className="subDetail teacher-subject">
@@ -514,6 +582,19 @@ export const SubjectDetail = () => {
                     </Row>
                   </div>
                 </Collapse>
+              </div>
+            </TabPane>
+            <TabPane tab="Danh sách sinh viên" key="6">
+              <div
+                id="scrollableDiv"
+                style={{
+                  height: 600,
+                  // overflow: "auto",
+                  padding: "0 16px",
+                }}
+              >
+                <h1>Danh sách sinh viên</h1>
+                <Table columns={columns} dataSource={studentList} />
               </div>
             </TabPane>
           </Tabs>

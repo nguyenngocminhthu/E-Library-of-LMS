@@ -157,7 +157,7 @@ export interface ISubject {
   subName: string;
   subGroup: ISubjectGroup;
   teacher: UserState;
-  student: string[];
+  students: string[];
   description: string;
   year: string;
   status: number;
