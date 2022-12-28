@@ -39,7 +39,7 @@ export const createSubmission = createAsyncThunk(
 export const getSubmissions = createAsyncThunk(
   "Submissions/getSubmissions",
   async (
-    { limit, bank, sortBy }: any,
+    { limit, bank, sortBy, user }: any,
     thunkAPI
   ) => {
     try {
@@ -48,6 +48,7 @@ export const getSubmissions = createAsyncThunk(
         limit,
         bank,
         sortBy,
+        user,
       });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
@@ -97,7 +98,7 @@ export const updateSubmission = createAsyncThunk(
       const data = await Submissions.updateSubmission(id, payload);
       if (data.code) {
         thunkAPI.dispatch(setLoading(false));
-        message.error(data.message);     
+        message.error(data.message);
       } else {
         thunkAPI.dispatch(setLoading(false));
         message.success("Cập nhật bài nộp thành công");
