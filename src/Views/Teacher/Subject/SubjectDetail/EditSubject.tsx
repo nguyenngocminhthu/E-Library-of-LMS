@@ -9,12 +9,14 @@ import {
   Collapse,
   Dropdown,
   Form,
+  Input,
   Menu,
   Row,
   Tabs,
   Tooltip,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import modal from "antd/lib/modal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -26,6 +28,11 @@ import {
 import { createTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
 import { EditTopic } from "./EditTopic";
+
+interface titleTopicProps {
+  name: string;
+  index: number;
+}
 
 export const EditSubject = () => {
   const { TabPane } = Tabs;
@@ -41,6 +48,7 @@ export const EditSubject = () => {
   const [editTopic, setEditTopic] = useState<boolean>(false);
   const [idx, setIdx] = useState<number>(0);
   const [newIdx, setNewIdx] = useState<number>(0);
+  const [titleTopic, setTitleTopic] = useState<titleTopicProps>();
 
   useEffect(() => {
     if (params.id) {
@@ -80,10 +88,30 @@ export const EditSubject = () => {
       });
   };
 
+  const modalChangeName = {
+    title: "Đổi tên chủ đề",
+    width: "40%",
+    className: "modal-common-style",
+    content: (
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        name="profile-form"
+        layout="horizontal"
+        form={form}
+      >
+        <Form.Item label="Tên mới" name="">
+          <Input />
+        </Form.Item>
+      </Form>
+    ),
+    okText: "Lưu",
+    cancelText: "Huỷ",
+  };
+
   useEffect(() => {
     loadMoreData();
   }, []);
-
   const genExtra = (index: number) => (
     <div className="extra-style">
       <Dropdown.Button
@@ -99,7 +127,17 @@ export const EditSubject = () => {
               Thêm bài giảng
             </Menu.Item>
             <Menu.Divider />
-            <Menu.Item key="1">Chỉnh sửa</Menu.Item>
+            <Menu.Item
+              key="1"
+              onClick={() => {
+                // modal.confirm(modalChangeName);
+                // setIdx(index);
+                setTitleTopic({ name: "hahah", index: index });
+                // TO DO : test
+              }}
+            >
+              Chỉnh sửa
+            </Menu.Item>
             <Menu.Divider />
             <Menu.Item key="2">Xóa</Menu.Item>
           </Menu>
@@ -235,7 +273,13 @@ export const EditSubject = () => {
                   >
                     {data?.topic.map((vl: ITopic, index: number) => (
                       <Panel
-                        header={vl.title}
+                        header={
+                          titleTopic &&
+                          titleTopic.name !== "" &&
+                          titleTopic.index === index
+                            ? titleTopic.name
+                            : vl.title
+                        }
                         key={index}
                         className="site-collapse-custom-panel"
                         extra={genExtra(index)}
