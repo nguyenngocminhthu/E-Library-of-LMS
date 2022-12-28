@@ -96,16 +96,19 @@ export const SubjectDetail = () => {
                   submit.bank?.user === user.id &&
                   submit.bank?.subject === params.id
               );
+              const bank = rs.bank.length;
               const studentData = cloneDeep(rs.students).map((stu: any) => {
                 const stuSubmit = listSubmission.filter((item: any) => {
                   return (
                     item.user.userCode === stu.userCode && !item.bank?.isFinal
                   );
                 });
-                const midScore =
-                  stuSubmit.reduce((score: number, ele: any) => {
-                    return ele.score + score;
-                  }, 0) / stuSubmit.length;
+
+                const midScore = bank
+                  ? stuSubmit.reduce((score: number, ele: any) => {
+                      return ele.score + score;
+                    }, 0) / bank
+                  : "";
 
                 const finalSubmit = listSubmission.find((item: any) => {
                   return (
