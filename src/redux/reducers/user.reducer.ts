@@ -9,10 +9,10 @@ import { ISubject } from "./subject.reducer";
 
 export const getUsers = createAsyncThunk(
   "user/getUsers",
-  async ({ limit, role }: any, thunkAPI) => {
+  async ({ limit, role, userCode }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
-      const data = await User.getUsers({ limit, role });
+      const data = await User.getUsers({ limit, role, userCode });
       if (data) {
         thunkAPI.dispatch(setLoading(false));
       }

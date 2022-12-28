@@ -22,6 +22,12 @@ const getTopic = (id: string) => {
   });
 };
 
-const Topic = { createTopic, getTopics, getTopic };
+const updateTopic = (id: string, payload: any) => {
+  return axiosClient.patch(url + `/${id}`, payload).then((rs: any) => {
+    return rs;
+  });
+};
+
+const Topic = { createTopic, getTopics, getTopic, updateTopic };
 
 export default Topic;

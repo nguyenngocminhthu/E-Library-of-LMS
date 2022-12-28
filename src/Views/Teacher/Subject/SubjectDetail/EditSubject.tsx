@@ -25,14 +25,13 @@ import {
   getSubject,
   ISubject,
 } from "../../../../redux/reducers/subject.reducer";
-import { createTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
+import {
+  createTopic,
+  ITopic,
+  updateTopic,
+} from "../../../../redux/reducers/topic.reducer";
 import { AppDispatch } from "../../../../redux/store";
 import { EditTopic } from "./EditTopic";
-
-interface titleTopicProps {
-  name: string;
-  index: number;
-}
 
 export const EditSubject = () => {
   const { TabPane } = Tabs;
@@ -45,10 +44,11 @@ export const EditSubject = () => {
   const [dataNotification, setDataNotification] = useState<any>([]);
   const [form] = Form.useForm();
   const [formTopic] = Form.useForm();
+  const [formTitle] = Form.useForm();
   const [editTopic, setEditTopic] = useState<boolean>(false);
   const [idx, setIdx] = useState<number>(0);
   const [newIdx, setNewIdx] = useState<number>(0);
-  const [titleTopic, setTitleTopic] = useState<titleTopicProps>();
+  const [idTopic, setIdTopic] = useState<string>("");
 
   useEffect(() => {
     if (params.id) {
@@ -88,6 +88,24 @@ export const EditSubject = () => {
       });
   };
 
+  useEffect(() => {
+    loadMoreData();
+  }, []);
+
+  const onFinishChangeTitle = (values: any) => {
+    dispatch(
+      updateTopic({
+        id: idTopic,
+        payload: values,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        formTitle.resetFields();
+        handleRefresh();
+      });
+  };
+
   const modalChangeName = {
     title: "Đổi tên chủ đề",
     width: "40%",
@@ -98,21 +116,20 @@ export const EditSubject = () => {
         wrapperCol={{ span: 18 }}
         name="profile-form"
         layout="horizontal"
-        form={form}
+        form={formTitle}
+        onFinish={onFinishChangeTitle}
       >
-        <Form.Item label="Tên mới" name="">
+        <Form.Item label="Tên mới" name="title">
           <Input />
         </Form.Item>
       </Form>
     ),
     okText: "Lưu",
     cancelText: "Huỷ",
+    onOk: () => formTitle.submit(),
   };
 
-  useEffect(() => {
-    loadMoreData();
-  }, []);
-  const genExtra = (index: number) => (
+  const genExtra = (index: number, topicId: string) => (
     <div className="extra-style">
       <Dropdown.Button
         overlay={
@@ -130,10 +147,9 @@ export const EditSubject = () => {
             <Menu.Item
               key="1"
               onClick={() => {
-                // modal.confirm(modalChangeName);
-                // setIdx(index);
-                setTitleTopic({ name: "hahah", index: index });
-                // TO DO : test
+                modal.confirm(modalChangeName);
+                setIdx(index);
+                setIdTopic(topicId);
               }}
             >
               Chỉnh sửa
@@ -273,16 +289,10 @@ export const EditSubject = () => {
                   >
                     {data?.topic.map((vl: ITopic, index: number) => (
                       <Panel
-                        header={
-                          titleTopic &&
-                          titleTopic.name !== "" &&
-                          titleTopic.index === index
-                            ? titleTopic.name
-                            : vl.title
-                        }
+                        header={vl.title}
                         key={index}
                         className="site-collapse-custom-panel"
-                        extra={genExtra(index)}
+                        extra={genExtra(index, vl.id)}
                       >
                         {vl.lesson.length !== 0 && (
                           <div className="accor-video">

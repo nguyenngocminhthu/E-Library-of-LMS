@@ -21,7 +21,7 @@ import { UploadProps } from "antd/es/upload/interface";
 import modal from "antd/lib/modal";
 import Upload from "antd/lib/upload/Upload";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import * as XLSX from "xlsx";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
@@ -30,7 +30,9 @@ import { SelectComp } from "../../../Components/Select";
 import {
   createUser,
   deleteUser,
+  getUser,
   getUsers,
+  updateProfile,
   UserState,
 } from "../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../redux/store";
@@ -51,6 +53,7 @@ export const UserManage = () => {
   const [filter, setFilter] = useState<any>({ limit: 999 });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [excelRows, setExcelRows] = useState<any>([]);
+  const typingTimeoutRef = useRef<any>();
 
   useEffect(() => {
     dispatch(getUsers(filter))
@@ -59,6 +62,14 @@ export const UserManage = () => {
         setData(rs.results);
       });
   }, [filter]);
+
+  const handleRefresh = () => {
+    dispatch(getUsers(filter))
+      .unwrap()
+      .then((rs: any) => {
+        setData(rs.results);
+      });
+  };
 
   const roleMenu = [
     {
@@ -115,7 +126,7 @@ export const UserManage = () => {
       render: (text: any, record: any) => (
         <Space size="middle">
           <Tooltip title="Chỉnh sửa">
-            <Button icon={<Edit />} />
+            <Button icon={<Edit onClick={() => handleEdit(record.id)} />} />
           </Tooltip>
           <Tooltip title="Xóa">
             <Button
@@ -134,20 +145,41 @@ export const UserManage = () => {
     },
   ];
 
-  const onFinish = (values: any) => {
-    if (values.role !== "student") {
-      delete values.userCode;
-    } else if (values.userCode === undefined) {
-      message.error("Hãy nhập MSSV");
+  const handleEdit = (id: string) => {
+    modal.confirm(modalAdd);
+    setRowSelected(id);
+    dispatch(getUser(id))
+      .unwrap()
+      .then((rs: UserState) => {
+        form.setFieldsValue(rs);
+      });
+  };
+
+  const onChangeSearchTerm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
     }
-    dispatch(createUser(values)).then(() => {
-      dispatch(getUsers(filter))
+
+    typingTimeoutRef.current = setTimeout(() => {
+      const name = e.target.value;
+      handleFilter("userCode", name);
+    }, 300);
+  };
+
+  const onFinish = (values: any) => {
+    if (rowSelected !== "") {
+      dispatch(updateProfile({ id: rowSelected, payload: values }))
         .unwrap()
-        .then((rs: any) => {
-          setData(rs.results);
+        .then(() => {
+          handleRefresh();
           form.resetFields();
         });
-    });
+    } else {
+      dispatch(createUser(values)).then(() => {
+        handleRefresh();
+        form.resetFields();
+      });
+    }
   };
 
   const deleteRow = {
@@ -197,7 +229,11 @@ export const UserManage = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item label="MSSV" name="userCode">
+        <Form.Item
+          label="Mã người dùng"
+          name="userCode"
+          rules={[{ required: true }]}
+        >
           <Input maxLength={8} />
         </Form.Item>
 
@@ -216,11 +252,11 @@ export const UserManage = () => {
     onCancel: () => form.resetFields(),
   };
 
-  const handleFilter = (e: any) => {
+  const handleFilter = (query: string, e: any) => {
     if (e !== "") {
-      setFilter({ ...filter, role: e });
+      setFilter({ ...filter, [`${query}`]: e });
     } else {
-      delete filter.role;
+      delete filter[query];
       setFilter({ ...filter });
     }
   };
@@ -230,7 +266,6 @@ export const UserManage = () => {
     const wsname = workbook.SheetNames[0];
     const ws = workbook.Sheets[wsname];
     const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
-    console.log(dataParse);
     if (dataParse.length) {
       setExcelRows(dataParse);
     } else {
@@ -347,11 +382,14 @@ export const UserManage = () => {
             style={{ display: "block" }}
             defaultValue="Chọn vai trò"
             dataString={roleMenu}
-            onChange={(e: any) => handleFilter(e)}
+            onChange={(e: any) => handleFilter("role", e)}
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo mã người dùng, tên" />
+          <SearchComponent
+            onChange={(e: any) => onChangeSearchTerm(e)}
+            placeholder="Tìm kết quả theo mã người dùng"
+          />
         </Col>
       </Row>
       <Table columns={columns} dataSource={data} />

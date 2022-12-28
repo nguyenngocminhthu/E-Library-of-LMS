@@ -328,8 +328,6 @@ export const Subject = () => {
   ];
   const typingTimeoutRef = useRef<any>();
   const onChangeSearchTerm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("change: ", e.target?.value);
-
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
     }

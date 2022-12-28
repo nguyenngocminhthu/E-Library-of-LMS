@@ -82,6 +82,33 @@ export const getTopic = createAsyncThunk(
   }
 );
 
+export const updateTopic = createAsyncThunk(
+  "Topics/updateTopic",
+  async ({ id, payload }: any, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(setLoading(true));
+      const data = await Topic.updateTopic(id, payload);
+      if (data.code) {
+        thunkAPI.dispatch(setLoading(false));
+        message.error(data.message);
+      } else {
+        thunkAPI.dispatch(setLoading(false));
+        message.success("Cập nhật chủ đề thành công");
+      }
+      return data;
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(error.response);
+    }
+  }
+);
+
 export interface ITopic {
   id: string;
   key?: number;
@@ -125,6 +152,12 @@ export const topicReducer = createSlice({
       state.listTopic = action.payload;
     });
     builder.addCase(getTopic.rejected, (state) => {
+      state.listTopic = [];
+    });
+    builder.addCase(updateTopic.fulfilled, (state, action) => {
+      state.listTopic = action.payload;
+    });
+    builder.addCase(updateTopic.rejected, (state) => {
       state.listTopic = [];
     });
   },
