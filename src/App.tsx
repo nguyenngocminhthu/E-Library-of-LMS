@@ -19,35 +19,61 @@ import "./shared/styles/styles.scss";
 const App: React.FC = () => {
   const user: UserState = JSON.parse(localStorage.getItem("user") || "{}");
   const dispatch: AppDispatch = useDispatch();
+  const [channel, setChannel] = useState<any>();
+  const [pusher, setPusher] = useState<any>();
+  const [statistical, setStatistical] = useState({
+    statistical: {},
+    listUser: 0,
+  });
+
+  const handleEventSocket = (len: number, sta: any) => {
+    setStatistical({
+      statistical: sta,
+      listUser: len,
+    });
+  };
 
   useEffect(() => {
-    // Pusher.logToConsole = true;
-    // const pusher = new Pusher("6bd53f4e653611a72067", {
-    //   cluster: "ap1",
-    // });
-    // const channel = pusher.subscribe("my-channel");
-    // channel.bind("my-event", function (data: any) {
-    //   console.log(JSON.stringify(data));
-    // });
-    // channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
-    //   console.log("app channel connected: ", data);
-    // });
-    // channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
-    //   console.log("app channel disconnected: ", data);
-    // });
-    // if (user.id) {
-    //   dispatch(join(user.id));
-    // }
-    // return () => {
-    //   if (channel) {
-    //     channel.unsubscribe();
-    //   }
-    // };
+    Pusher.logToConsole = true;
+    setPusher(
+      new Pusher("6bd53f4e653611a72067", {
+        cluster: "ap1",
+      })
+    );
+
+    if (user.id) {
+      dispatch(join(user.id));
+    }
   }, []);
 
   useEffect(() => {
-    // if (channel && isConnected) {
-  }, [user.id]);
+    if (pusher) {
+      setChannel(pusher.subscribe("my-channel"));
+    }
+    return () => {
+      if (pusher) {
+        pusher.unsubscribe("my-channel");
+      }
+    };
+  }, [pusher]);
+
+  useEffect(() => {
+    if (channel) {
+      channel.bind("RECEIVED_JOIN_REQUEST", (data: any) => {
+        handleEventSocket(data.listUser, data.statistical);
+        console.log("app channel connected: ", data);
+      });
+      channel.bind("RECEIVED_OUT_REQUEST", (data: any) => {
+        handleEventSocket(data.listUser, data.statistical);
+        console.log("app channel disconnected: ", data);
+      });
+    }
+    return () => {
+      if (channel) {
+        channel.unbind();
+      }
+    };
+  }, [channel]);
 
   return (
     // <RealtimeContext.Provider value={{ channel }}>
@@ -60,9 +86,9 @@ const App: React.FC = () => {
             <Route path="/404" element={<PageNotFound />} />
           </Route>
         </Routes>
-        <Leadership />
-        <Teacher />
-        <Student />
+        <Leadership statistical={statistical} setStatistical={setStatistical} />
+        <Teacher statistical={statistical} setStatistical={setStatistical} />
+        <Student statistical={statistical} setStatistical={setStatistical} />
         <Loader />
       </Suspense>
     </div>

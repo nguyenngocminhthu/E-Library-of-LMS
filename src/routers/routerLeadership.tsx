@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router";
 import { Help } from "../Components/Help/Help";
 import { Profile } from "../Components/Profile/Profile";
@@ -18,11 +17,19 @@ import Information from "../Views/Leadership/SystemSetting/Information";
 import { SystemContainer } from "../Views/Leadership/SystemSetting/SystemContainer";
 import UserManage from "../Views/Leadership/SystemSetting/UserManage";
 
-export const Leadership = () => {
+export const Leadership = (props: any) => {
   return (
     <Routes>
       <Route element={<LeadershipLayout />}>
-        <Route path="/home" element={<Home />} />
+        <Route
+          path="/home"
+          element={
+            <Home
+              statistical={props?.statistical}
+              setStatistical={props?.setStatistical}
+            />
+          }
+        />
 
         <Route path="/subjects" element={<Subject />} />
 
