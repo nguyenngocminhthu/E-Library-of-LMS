@@ -25,6 +25,7 @@ export const ModalExam: React.FC<{
   setVisible: any;
   data: any;
   handleRefresh: any;
+  setCurrentExam: any;
 }> = (props) => {
   const dispatch: AppDispatch = useDispatch();
   const [data, setData] = useState<IBanks>();
@@ -168,6 +169,7 @@ export const ModalExam: React.FC<{
       width="40%"
       open={props.visible}
       onCancel={() => {
+        props.setCurrentExam({});
         props.setVisible(false);
       }}
       footer={() => false}

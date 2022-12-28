@@ -557,6 +557,7 @@ export const ViewSubject = () => {
         setVisible={setVisibleExam}
         data={idExam}
         handleRefresh={handleRefresh}
+        setCurrentExam={setCurrentExam}
       />
     </div>
   );
