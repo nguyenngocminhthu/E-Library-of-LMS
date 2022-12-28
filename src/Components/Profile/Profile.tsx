@@ -16,6 +16,7 @@ export const Profile = () => {
   const { Option } = Select;
   const { TabPane } = Tabs;
   const [form] = Form.useForm();
+  const [formChangePassWord] = Form.useForm();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [disable, setDisable] = useState(true);
   const dispatch: AppDispatch = useDispatch();
@@ -86,6 +87,19 @@ export const Profile = () => {
         setDisable(true);
       }
     );
+  };
+
+  const changePassword = (values: any) => {
+    dispatch(
+      updateProfile({
+        id: user.id,
+        payload: {
+          password: values.password,
+          newPassword: values.newPassword,
+        },
+      })
+    );
+    formChangePassWord.resetFields();
   };
 
   return (
@@ -197,13 +211,14 @@ export const Profile = () => {
                 wrapperCol={{ span: 18 }}
                 name="profile-form"
                 layout="horizontal"
-                form={form}
+                form={formChangePassWord}
+                onFinish={changePassword}
               >
                 <Row style={{ padding: "16px" }}>
                   <Col span={15} offset={1}>
                     <Form.Item
                       label="Mật khẩu hiện tại"
-                      name="passwordCurrent"
+                      name="password"
                       rules={[
                         {
                           required: true,
@@ -221,6 +236,11 @@ export const Profile = () => {
                           required: true,
                           message: "Vui lòng nhập mật khẩu mới!",
                         },
+                        {
+                          pattern:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                          message: "Mật khẩu không đúng định dạng",
+                        },
                       ]}
                     >
                       <Input.Password />
@@ -233,6 +253,19 @@ export const Profile = () => {
                           required: true,
                           message: "Vui lòng nhập lại mật khẩu mới!",
                         },
+                        ({ getFieldValue }) => ({
+                          validator(_, value) {
+                            if (
+                              !value ||
+                              getFieldValue("newPassword") === value
+                            ) {
+                              return Promise.resolve();
+                            }
+                            return Promise.reject(
+                              new Error("Mật khẩu không khớp")
+                            );
+                          },
+                        }),
                       ]}
                     >
                       <Input.Password />
@@ -258,7 +291,10 @@ export const Profile = () => {
                 </Row>
                 <div className="btn-center">
                   <Button className="default-btn">Hủy</Button>
-                  <Button type="primary" onClick={() => form.submit()}>
+                  <Button
+                    type="primary"
+                    onClick={() => formChangePassWord.submit()}
+                  >
                     Lưu
                   </Button>
                 </div>

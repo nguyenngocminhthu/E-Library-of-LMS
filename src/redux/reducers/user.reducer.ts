@@ -51,7 +51,7 @@ export const getUser = createAsyncThunk(
 
 export const updateProfile = createAsyncThunk(
   "user/updateProfile",
-  async ({ id, payload }: any, thunkAPI) => {
+  async ({ id, payload, type = 'profile' }: any, thunkAPI) => {
     try {
       thunkAPI.dispatch(setLoading(true));
       const data = await User.updateProfile(id, payload);
