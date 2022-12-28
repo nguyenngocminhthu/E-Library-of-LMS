@@ -52,6 +52,7 @@ import { getTopic, ITopic } from "../../../../redux/reducers/topic.reducer";
 import { UserState } from "../../../../redux/reducers/user.reducer";
 import { AppDispatch } from "../../../../redux/store";
 import { ModalReply } from "../../../Student/Subject/ModalReply";
+import "../Subject.style.scss";
 
 export const SubjectDetail = () => {
   const { Option } = Select;
@@ -90,16 +91,15 @@ export const SubjectDetail = () => {
           dispatch(getSubmissions({ limit: 9999 }))
             .unwrap()
             .then((res: any) => {
-              console.debug("subm: ", res.results);
               const listSubmission = res.results.filter(
                 (submit: any) =>
-                  submit.bank.user === user.id &&
-                  submit.bank.subject === params.id
+                  submit.bank?.user === user.id &&
+                  submit.bank?.subject === params.id
               );
               const studentData = cloneDeep(rs.students).map((stu: any) => {
                 const stuSubmit = listSubmission.filter((item: any) => {
                   return (
-                    item.user.userCode === stu.userCode && !item.bank.isFinal
+                    item.user.userCode === stu.userCode && !item.bank?.isFinal
                   );
                 });
                 const midScore =
@@ -109,14 +109,16 @@ export const SubjectDetail = () => {
 
                 const finalSubmit = listSubmission.find((item: any) => {
                   return (
-                    item.user.userCode === stu.userCode && item.bank.isFinal
+                    item.user.userCode === stu.userCode && item.bank?.isFinal
                   );
                 });
 
                 const mid = midScore ? midScore.toFixed(2) : "";
                 const final = finalSubmit ? finalSubmit.score : "";
                 const avg =
-                  final && mid ? (parseFloat(final) + parseFloat(mid)) / 2 : "";
+                  final !== "" && mid !== ""
+                    ? (parseFloat(final) + parseFloat(mid)) / 2
+                    : "";
 
                 return {
                   userCode: stu.userCode,
@@ -586,6 +588,7 @@ export const SubjectDetail = () => {
             </TabPane>
             <TabPane tab="Danh sách sinh viên" key="6">
               <div
+                className="subject"
                 id="scrollableDiv"
                 style={{
                   height: 600,
