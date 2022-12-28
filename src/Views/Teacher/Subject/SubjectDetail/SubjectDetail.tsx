@@ -555,10 +555,7 @@ export const SubjectDetail = () => {
                     className="site-card-wrapper"
                     style={{ padding: "36px" }}
                   >
-                    <Row
-                      gutter={16}
-                      style={{ justifyContent: "space-between" }}
-                    >
+                    <Row gutter={16} style={{ justifyContent: "space-around" }}>
                       {data?.bank && data?.bank.length > 0 ? (
                         data?.bank.map((item) => (
                           <div

@@ -9,13 +9,6 @@
   .tab-notilist {
     position: relative;
 
-    .tab-control {
-      display: flex;
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-
     .ant-form-item-label>label {
       font-weight: 600;
     }
@@ -55,6 +48,7 @@
 
       .btn-center {
         text-align: center;
+        margin-bottom: 16px;
       }
 
       .default-btn {

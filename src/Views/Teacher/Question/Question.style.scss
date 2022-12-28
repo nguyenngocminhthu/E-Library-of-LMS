@@ -51,22 +51,18 @@
     }
 }
 
-
-.ant-modal-content .anticon svg { 
-  color: #f17f21 !important
-}
-
 .guide-form {
-  width: 80% !important;
-  height: 70% !important;
-  .img-in-modal {
-    max-width: 50%;
-    margin-left: 30px;
-  }
+    width: 80% !important;
+    height: 70% !important;
 
-  p {
-    margin-left: 30px;
-    font-size: 15px;
-    text-align: start;
-  }
+    .img-in-modal {
+        max-width: 50%;
+        margin-left: 30px;
+    }
+
+    p {
+        margin-left: 30px;
+        font-size: 15px;
+        text-align: start;
+    }
 }

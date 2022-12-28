@@ -79,12 +79,6 @@ export const Information = () => {
         prevFirstPageTitle="Cài đặt hệ thống"
         prevFirstPage="setting"
       />
-      <div className="tab-control">
-        <Button type="primary" onClick={() => setDisable(!disable)}>
-          <FormOutlined />
-          Chỉnh sửa
-        </Button>
-      </div>
       <div className="tab-notilist">
         <div className="box-cover">
           <div className="header-box">
@@ -229,6 +223,12 @@ export const Information = () => {
                     <Option value={3}>2022-2023</Option>
                   </Select>
                 </Form.Item>
+                <div className="btn-center">
+                  <Button type="primary" onClick={() => setDisable(!disable)}>
+                    <FormOutlined />
+                    Chỉnh sửa
+                  </Button>
+                </div>
               </Col>
               <Col span={8} offset={1}></Col>
             </Row>

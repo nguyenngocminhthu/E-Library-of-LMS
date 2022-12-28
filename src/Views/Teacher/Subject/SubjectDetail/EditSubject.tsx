@@ -101,9 +101,7 @@ export const EditSubject = () => {
             <Menu.Divider />
             <Menu.Item key="1">Chỉnh sửa</Menu.Item>
             <Menu.Divider />
-            <Menu.Item key="2">Sao chép</Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key="3">Xóa</Menu.Item>
+            <Menu.Item key="2">Xóa</Menu.Item>
           </Menu>
         }
         icon={

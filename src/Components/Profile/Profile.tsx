@@ -94,17 +94,6 @@ export const Profile = () => {
       <div className="tab-notilist">
         <Tabs defaultActiveKey="1" type="card" size={"small"}>
           <TabPane tab="Thông tin cá nhân" key="1">
-            <div className="tab-control">
-              <Button
-                hidden={!disable}
-                type="primary"
-                onClick={() => {
-                  setDisable(!disable);
-                }}
-              >
-                Chỉnh sửa
-              </Button>
-            </div>
             <div className="box-cover">
               <div className="header-box">
                 <p className="text-header">Thông tin chung</p>
@@ -144,21 +133,21 @@ export const Profile = () => {
                     </Form.Item>
                   </Col>
                   <Col span={8}>
-                    <Form.Item label="Mã người dùng" name="id">
-                      <Input disabled={disable} />
+                    <Form.Item label="Mã người dùng" name="userCode">
+                      <Input disabled />
                     </Form.Item>
                     <Form.Item label="Giới tính" name="gender">
-                      <Select disabled={disable} style={{ width: 120 }}>
+                      <Select disabled style={{ width: 120 }}>
                         <Option value={0}>Nam</Option>
                         <Option value={1}>Nữ</Option>
                         <Option value={2}>Other</Option>
                       </Select>
                     </Form.Item>
                     <Form.Item label="Vai trò" name="role">
-                      <Input disabled={disable} />
+                      <Input disabled />
                     </Form.Item>
                     <Form.Item label="Email" name="email">
-                      <Input disabled={disable} />
+                      <Input disabled />
                     </Form.Item>
                   </Col>
                   <Col span={8} offset={1}>
@@ -173,6 +162,17 @@ export const Profile = () => {
                     </Form.Item>
                   </Col>
                 </Row>
+                <div className="btn-center">
+                  <Button
+                    hidden={!disable}
+                    type="primary"
+                    onClick={() => {
+                      setDisable(!disable);
+                    }}
+                  >
+                    Chỉnh sửa
+                  </Button>
+                </div>
                 <div hidden={disable} className="btn-center">
                   <Button
                     className="default-btn"

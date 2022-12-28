@@ -74,7 +74,7 @@ export const UserManage = () => {
       value: "student",
     },
     {
-      name: "Giáo viên",
+      name: "Giảng viên",
       value: "teacher",
     },
   ];
@@ -182,7 +182,7 @@ export const UserManage = () => {
         <Form.Item label="Tên vai trò" name="role" rules={[{ required: true }]}>
           <Select>
             <Option value={"leadership"}>Quản trị viên</Option>
-            <Option value={"teacher"}>Giáo viên</Option>
+            <Option value={"teacher"}>Giảng viên</Option>
             <Option value={"student"}>Sinh viên</Option>
           </Select>
         </Form.Item>
