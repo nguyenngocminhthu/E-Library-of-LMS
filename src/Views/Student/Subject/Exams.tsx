@@ -24,36 +24,6 @@ export const Exam = () => {
 
   useEffect(() => {
     if (params.id) {
-      dispatch(getSubmissions({ limit: 9999, user: user.id }))
-        .unwrap()
-        .then((rs) => {
-          if (rs.totalResults) {
-            const stuSubmit = rs.results.filter((item: any) => {
-              return (
-                item.user.userCode === user.userCode && !item.bank?.isFinal
-              );
-            });
-
-            const midScore =
-              stuSubmit.reduce((score: number, ele: any) => {
-                return ele.score + score;
-              }, 0) / stuSubmit.length;
-
-            const finalSubmit = rs.results.find((item: any) => {
-              return item.user.userCode === user.userCode && item.bank?.isFinal;
-            });
-
-            const mid = midScore ? midScore.toFixed(2) : "";
-            const final = finalSubmit ? finalSubmit.score : "";
-            const avgMark =
-              final !== "" && mid !== ""
-                ? ((parseFloat(final) + parseFloat(mid)) / 2).toString()
-                : "";
-            setAvgMid(mid);
-            setAvg(avgMark);
-          }
-        });
-
       dispatch(getSubject(params.id))
         .unwrap()
         .then((rs) => {
@@ -61,6 +31,39 @@ export const Exam = () => {
             return item.isFinal;
           });
           setBanks(bankList);
+          dispatch(getSubmissions({ limit: 9999, user: user.id }))
+            .unwrap()
+            .then((res) => {
+              if (res.totalResults) {
+                const stuSubmit = res.results.filter((item: any) => {
+                  return (
+                    item.user.userCode === user.userCode && !item.bank?.isFinal
+                  );
+                });
+
+                const bank = rs.bank.length;
+                const midScore = bank
+                  ? stuSubmit.reduce((score: number, ele: any) => {
+                      return ele.score + score;
+                    }, 0) / bank
+                  : "";
+
+                const finalSubmit = res.results.find((item: any) => {
+                  return (
+                    item.user.userCode === user.userCode && item.bank?.isFinal
+                  );
+                });
+
+                const mid = midScore ? midScore.toFixed(2) : "";
+                const final = finalSubmit ? finalSubmit.score : "";
+                const avgMark =
+                  final !== "" && mid !== ""
+                    ? ((parseFloat(final) + parseFloat(mid)) / 2).toString()
+                    : "";
+                setAvgMid(mid);
+                setAvg(avgMark);
+              }
+            });
         });
     }
   }, [params.id]);
@@ -136,10 +139,10 @@ export const Exam = () => {
                           <PlayCircleOutlined
                             disabled={
                               moment() >=
-                              moment(value.releaseTime).add(
-                                value.time,
-                                "minutes"
-                              )
+                                moment(value.releaseTime).add(
+                                  value.time,
+                                  "minutes"
+                                ) || moment() < moment(value.releaseTime)
                             }
                             onClick={() =>
                               navigate(
