@@ -43,7 +43,7 @@ export const SubmitDetail = () => {
           setSelect(0);
           if (rs.submit) {
             setQuestions(rs.submit);
-          } else if (rs.bank.question.length !== 0) {
+          } else if (rs.bank.question?.length !== 0) {
             rs.bank.question.forEach((vl: IQuestion) => {
               if (vl.correctEssay !== undefined) {
                 arr.push({
@@ -202,8 +202,8 @@ export const SubmitDetail = () => {
         <Row>
           <Col span={6}>
             <div>Phần câu hỏi - đáp án:</div>
-            {data?.bank?.question.length !== 0
-              ? data?.bank?.question.map((vl, idx) => (
+            {data?.bank?.question?.length !== 0
+              ? data?.bank?.question?.map((vl, idx) => (
                   <div
                     className={select === idx ? "answer true" : "answer"}
                     key={vl.id}
@@ -212,7 +212,7 @@ export const SubmitDetail = () => {
                     Câu {idx + 1}
                   </div>
                 ))
-              : data?.bank?.questions.map((vl, idx) => (
+              : data?.bank?.questions?.map((vl, idx) => (
                   <div
                     className={select === idx ? "answer true" : "answer"}
                     key={vl.id}
@@ -225,12 +225,12 @@ export const SubmitDetail = () => {
           <Col style={{ padding: "2rem" }} span={18}>
             <h3>
               Câu {select + 1}:{" "}
-              {data?.bank?.question.length !== 0
+              {data?.bank?.question?.length !== 0
                 ? data?.bank?.question[select]?.quesName
                 : data?.bank?.questions[select]?.quesName}
             </h3>
 
-            {data?.bank?.question.length !== 0 ? (
+            {data?.bank?.question?.length !== 0 ? (
               data?.bank?.question[select]?.correctEssay ? (
                 <div>
                   <TextArea
@@ -280,8 +280,8 @@ export const SubmitDetail = () => {
               ""
             )}
 
-            {data?.bank?.questions[select]?.correct.length === 1 ||
-            data?.bank?.question[select]?.correct.length === 1 ? (
+            {data?.bank?.questions[select]?.correct?.length === 1 ||
+            data?.bank?.question[select]?.correct?.length === 1 ? (
               <div>
                 <Radio.Group
                   value={
@@ -291,15 +291,15 @@ export const SubmitDetail = () => {
                   }
                 >
                   <Space direction="vertical">
-                    {data?.bank?.question.length !== 0
-                      ? data?.bank?.question[select]?.answers.map(
+                    {data?.bank?.question?.length !== 0
+                      ? data?.bank?.question[select]?.answers?.map(
                           (vl: string, idx: number) => (
                             <Radio key={idx} value={idx}>
                               {vl}
                             </Radio>
                           )
                         )
-                      : data?.bank?.questions[select]?.answers.map(
+                      : data?.bank?.questions[select]?.answers?.map(
                           (vl: string, idx: number) => (
                             <Radio key={idx} value={idx}>
                               {vl}
@@ -332,8 +332,8 @@ export const SubmitDetail = () => {
                     questions[select].ans
                   }
                 >
-                  {data?.bank?.question.length !== 0
-                    ? data?.bank?.question[select]?.answers.map(
+                  {data?.bank?.question?.length !== 0
+                    ? data?.bank?.question[select]?.answers?.map(
                         (vl: any, idx: any) => (
                           <>
                             <Checkbox key={vl} value={idx}>
@@ -344,7 +344,7 @@ export const SubmitDetail = () => {
                           </>
                         )
                       )
-                    : data?.bank?.questions[select]?.answers.map(
+                    : data?.bank?.questions[select]?.answers?.map(
                         (vl: any, idx: any) => (
                           <>
                             <Checkbox key={vl} value={idx}>
