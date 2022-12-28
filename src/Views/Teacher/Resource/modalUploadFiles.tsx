@@ -58,6 +58,7 @@ export const ModalUploadFiles: React.FC<{
       .unwrap()
       .then((rs) => {
         props.handleRefresh();
+        form.resetFields();
         props.setVisible(false);
       });
   };
