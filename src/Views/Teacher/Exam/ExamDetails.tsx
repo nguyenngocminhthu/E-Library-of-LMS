@@ -140,14 +140,14 @@ export const ExamDetails = () => {
                   {data?.question.length !== 0
                     ? data?.question[select]?.answers.map(
                         (vl: any, idx: any) => (
-                          <Radio key={vl} value={idx}>
+                          <Radio key={`${vl}-${idx}`} value={idx}>
                             {vl}
                           </Radio>
                         )
                       )
                     : data?.questions[select]?.answers.map(
                         (vl: any, idx: any) => (
-                          <Radio key={vl} value={idx}>
+                          <Radio key={`${vl}-${idx}`} value={idx}>
                             {vl}
                           </Radio>
                         )
@@ -165,7 +165,7 @@ export const ExamDetails = () => {
                 {data?.question.length !== 0
                   ? data?.question[select]?.answers.map((vl: any, idx: any) => (
                       <>
-                        <Checkbox key={vl} value={idx}>
+                        <Checkbox key={`${vl}-${idx}`} value={idx}>
                           {vl}
                         </Checkbox>
                         <br />
@@ -174,7 +174,7 @@ export const ExamDetails = () => {
                   : data?.questions[select]?.answers.map(
                       (vl: any, idx: any) => (
                         <>
-                          <Checkbox key={vl} value={idx}>
+                          <Checkbox key={`${vl}-${idx}`} value={idx}>
                             {vl}
                           </Checkbox>
                           <br />
