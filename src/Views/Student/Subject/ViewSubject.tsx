@@ -168,7 +168,7 @@ export const ViewSubject = () => {
   const checkTimeExam = (playedSeconds: number) => {
     let exam: any = examList.find(
       (element: any) =>
-        element.time <= parseFloat((playedSeconds / 60).toFixed(1)) &&
+        element.time * 60 <= parseFloat(playedSeconds.toFixed(1)) &&
         !element.pass
     );
     if (exam) {
