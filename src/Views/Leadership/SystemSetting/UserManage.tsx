@@ -397,6 +397,7 @@ export const UserManage = () => {
         excelRows={excelRows}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        handleRefresh={handleRefresh}
       ></ModalFileExcel>
     </div>
   );

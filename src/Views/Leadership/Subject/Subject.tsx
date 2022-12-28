@@ -110,26 +110,7 @@ export const Subject = () => {
   const [excelData, setExcelData] = useState<any>([]);
 
   useEffect(() => {
-    const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    dispatch(getSubjectGroups(999))
-      .unwrap()
-      .then((rs) => {
-        rs.results.forEach((it: ISubjectGroup) => {
-          option.push({ name: it.groupName, value: it.id });
-        });
-      });
-    setSubjectGroupSelect(option);
-    dispatch(getSubjects(filter));
-    dispatch(getUsers({ limit: 999, role: "student" }))
-      .unwrap()
-      .then((rs: any) => {
-        setStudent(rs.results);
-      });
-    dispatch(getUsers({ limit: 999, role: "teacher" }))
-      .unwrap()
-      .then((rs) => {
-        setTeacher(rs.results);
-      });
+    handleRefresh();
   }, [filter]);
 
   useEffect(() => {
@@ -153,18 +134,26 @@ export const Subject = () => {
   };
 
   const handleRefresh = () => {
-    dispatch(getSubjectGroups(999));
-    dispatch(getUsers({ limit: 999, role: "teacher" }));
     const option: ISelect[] = [{ name: "Tất cả bộ môn", value: "" }];
-    dispatch(getSubjects(filter))
+    dispatch(getSubjectGroups(999))
       .unwrap()
       .then((rs) => {
-        rs.results.forEach((it: ISubject) => {
-          option.push({ name: it.subName, value: it.id });
+        rs.results.forEach((it: ISubjectGroup) => {
+          option.push({ name: it.groupName, value: it.id });
         });
+        setSubjectGroupSelect(option);
       });
-
-    setSubjectGroupSelect(option);
+    dispatch(getSubjects(filter));
+    dispatch(getUsers({ limit: 999, role: "student" }))
+      .unwrap()
+      .then((rs: any) => {
+        setStudent(rs.results);
+      });
+    dispatch(getUsers({ limit: 999, role: "teacher" }))
+      .unwrap()
+      .then((rs) => {
+        setTeacher(rs.results);
+      });
   };
 
   const handleClick = (id: string) => {

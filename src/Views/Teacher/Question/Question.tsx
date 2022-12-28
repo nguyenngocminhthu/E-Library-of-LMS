@@ -145,8 +145,8 @@ export const Question = () => {
     },
     {
       title: "Mã câu hỏi",
-      dataIndex: "quesCode",
-      key: "quesCode",
+      dataIndex: "id",
+      key: "id",
     },
     {
       title: "Độ khó",

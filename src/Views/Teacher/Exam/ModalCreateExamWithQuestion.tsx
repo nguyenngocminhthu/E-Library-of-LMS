@@ -108,7 +108,7 @@ export const ModalCreateExamWithQuestion = (props: any) => {
           rules={[{ required: true, message: "Hãy chọn thời gian" }]}
         >
           <Select className="small-input" defaultValue="">
-            <Option value="">Chọn hời gian</Option>
+            <Option value="">Chọn thời gian</Option>
             <Option value={"15"}>15 Phút</Option>
             <Option value={"30"}>30 Phút</Option>
             <Option value={"45"}>45 Phút</Option>

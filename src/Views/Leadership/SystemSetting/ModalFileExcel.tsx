@@ -15,7 +15,7 @@ interface IUser {
 
 export const ModalFileExcel = (props: any) => {
   const dispatch: AppDispatch = useDispatch();
-  const { excelRows, isModalOpen, setIsModalOpen } = props;
+  const { excelRows, isModalOpen, setIsModalOpen, handleRefresh } = props;
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [dataSource, setDataSource] = useState([]);
@@ -53,7 +53,7 @@ export const ModalFileExcel = (props: any) => {
     dispatch(createUsers(bodyCreate))
       .unwrap()
       .then((rs) => {
-        console.log("tao xong: ", rs);
+        handleRefresh();
         setIsModalOpen(false);
       });
   };

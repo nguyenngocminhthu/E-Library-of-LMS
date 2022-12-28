@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from "antd";
 import modal from "antd/lib/modal";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { BreadcrumbComp } from "../../../Components/Breadcrumb";
@@ -181,7 +181,15 @@ export const Subject = () => {
       title: "Tên môn học",
       dataIndex: "subName",
       key: "subName",
-      sorter: (a: any, b: any) => a.subName.length - b.subName.length,
+      sorter: (a: any, b: any) => {
+        if (a.subName < b.subName) {
+          return -1;
+        }
+        if (a.subName > b.subName) {
+          return 1;
+        }
+        return 0;
+      },
       render: (subName: string, record: any) => (
         <div onClick={() => navigate(`subjectdetail/${record.id}`)}>
           {subName}
@@ -238,6 +246,18 @@ export const Subject = () => {
     },
   ];
 
+  const typingTimeoutRef = useRef<any>();
+  const onChangeSearchTerm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      const name = e.target.value;
+      handleFilterSubject("subName", name);
+    }, 300);
+  };
+
   return (
     <div className="subject">
       <BreadcrumbComp title="Danh sách môn giảng dạy" />
@@ -259,7 +279,10 @@ export const Subject = () => {
           />
         </Col>
         <Col className="table-header" span={8}>
-          <SearchComponent placeholder="Tìm kết quả theo tên, lớp, môn học,..." />
+          <SearchComponent
+            placeholder="Tìm kết quả theo tên, lớp, môn học,..."
+            onChange={(e) => onChangeSearchTerm(e)}
+          />
         </Col>
       </Row>
       <Table
